@@ -1,0 +1,49 @@
+@use "./reset";
+@use "./vars";
+@use "./content";
+@use "./display";
+@use "./flex";
+@use "./gap";
+@use "./overflow";
+@use "./utilities";
+@use "./headers";
+@use "./sass-vars" as *;
+@forward "./sass-vars";
+
+
+* {
+  box-sizing: border-box;
+}
+
+
+html, body {
+  background: var(--app-background);
+  color: var(--text-color);
+  font-family: var(--font-family), serif;
+  height: 100%;
+  line-height: 1.6;
+  font-weight: 200;
+}
+
+body {
+  padding: 1em;
+  box-sizing: border-box;
+}
+
+div#app {
+  height: calc(100% - 2em);
+}
+
+
+a, a:visited, a:active, a:hover {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-shadow: 0 0 1px var(--link-color);
+}
+
+b {
+  font-weight: var(--font-weight-bold);
+}

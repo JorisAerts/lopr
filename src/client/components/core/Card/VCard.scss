@@ -1,0 +1,8 @@
+.v-card {
+  border-radius: var(--border-radius);
+  background: rgba(var(--background-color), 0.05);
+
+  &--clickable {
+    cursor: pointer;
+  }
+}

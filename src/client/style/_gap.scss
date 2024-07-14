@@ -1,0 +1,8 @@
+$spacer: 4px;
+
+@for $i from 1 through 12 {
+  .gap-#{$i} {
+    gap: $i * $spacer !important;
+  }
+
+}

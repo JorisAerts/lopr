@@ -1,0 +1,51 @@
+{
+  "name": "js-proxy",
+  "version": "0.0.1",
+  "license": "MIT",
+  "packageManager": "yarn@4.3.1",
+  "author": {
+    "name": "Joris Aerts"
+  },
+  "scripts": {
+    "build:node": "tsc -p src/node --outDir dist --esModuleInterop | true && tsc-alias --dir dist",
+    "run:node": "node dist/node/index.js",
+    "build": "yarn build:node && yarn build:client",
+    "dev": "vite",
+    "build:client": "vite build",
+    "preview": "vite preview"
+  },
+  "private": true,
+  "main": "dist/index.js",
+  "type": "module",
+  "dependencies": {
+    "picocolors": "^1.0.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.7.0",
+    "@types/node": "20.14.11",
+    "@types/ws": "^8.5.11",
+    "@vitejs/plugin-vue": "5.0.5",
+    "@vitejs/plugin-vue-jsx": "4.0.0",
+    "eslint": "9.7.0",
+    "eslint-plugin-vue": "9.27.0",
+    "globals": "15.8.0",
+    "pinia": "2.1.7",
+    "postcss": "^8.4.39",
+    "prettier": "3.3.3",
+    "sass": "1.77.8",
+    "stylelint": "^16.7.0",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "tsc-alias": "^1.8.10",
+    "type-fest": "^4.22.0",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "7.16.1",
+    "vite": "5.3.4",
+    "vite-plugin-vue-devtools": "7.3.6",
+    "vue": "3.4.32",
+    "vue-router": "4.4.0"
+  },
+  "resolutions": {
+    "postcss": "^8.4.39"
+  }
+}

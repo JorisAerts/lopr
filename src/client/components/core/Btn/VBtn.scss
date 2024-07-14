@@ -1,0 +1,68 @@
+@use '../../../style/sass-vars' as *;
+
+:root {
+  --btn-padding: #{$spacer * 1.5} #{$spacer * 4};
+  --btn-rounding: #{$spacer * 1.5};
+  --btn-font-weight: 500;
+}
+
+.v-btn {
+  @at-root button.v-btn {
+    --underlay-opacity: 0;
+
+    position: relative;
+    background: rgb(var(--primary-color));
+    box-shadow: inset -1px 1px 1px rgba(255, 255, 255, 25%),
+    -0 1px 2px rgba(0, 0, 0, 50%);
+    overflow: hidden;
+    border: none;
+    line-height: 1;
+    padding: var(--btn-padding);
+    border-radius: var(--btn-rounding);
+    outline: none;
+    cursor: pointer;
+    color: rgb(var(--text-color));
+  }
+
+  &__underlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: $spacer;
+  }
+
+  &__underlay {
+    background: white;
+    opacity: var(--underlay-opacity);
+  }
+
+  &--transparent {
+    background: transparent;
+  }
+
+  .btn--prepend-icon {
+    margin-left: -2 * $spacer;
+    margin-right: 1 * $spacer;
+  }
+
+  &--content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-weight: var(--btn-font-weight);
+  }
+
+  &:hover {
+    --underlay-opacity: 0.05;
+  }
+
+  &.selected,
+  &:active {
+    --underlay-opacity: 0.2;
+  }
+
+  &.active {
+    background: rgba(var(--primary-color), 1);
+  }
+}

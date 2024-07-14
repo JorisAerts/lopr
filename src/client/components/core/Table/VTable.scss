@@ -1,0 +1,38 @@
+@use "../../../style/vars" as *;
+
+.v-table {
+  --table-header-font-weight: var(--font-weight-bold);
+  --table-border-color: var(--border-color);
+  --table-border-size: var(--border-size);
+  --cell-border: var(--table-border-size) solid var(--table-border-color);
+
+  @at-root & {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  > thead tr:last-child {
+    th, td {
+      border-bottom: var(--cell-border);
+      padding-bottom: 2 * $spacer;
+    }
+  }
+
+  > tr:not(:first-child, :last-child),
+  > tbody > tr:not(:first-child) {
+    th, td {
+      border-top: var(--cell-border);
+    }
+  }
+
+  td, th {
+    padding: calc(var(--spacer) * 0) calc(var(--spacer) * 2);
+  }
+
+  th {
+    text-align: left;
+    font-weight: var(--table-header-font-weight);
+  }
+
+
+}

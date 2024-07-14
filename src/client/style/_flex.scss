@@ -1,0 +1,42 @@
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.flex-grow-0 {
+  flex-grow: 0;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.flex-shrink-1 {
+  flex-shrink: 1;
+}
+
+
+@each $type in (center, start, end, flex-start, flex-end, left, right, space-between, space-around, space-evenly, stretch) {
+  .justify-#{$type} {
+    justify-content: $type;
+  }
+
+  .align-#{$type} {
+    align-self: $type;
+  }
+
+  .align-items-#{$type} {
+    align-items: $type;
+  }
+}
