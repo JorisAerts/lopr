@@ -1,0 +1,31 @@
+@use "../../../style/vars" as *;
+@use "../../../style/transitions" as *;
+
+.request-structure {
+
+  /**
+   * When an item is expanded, it's icon needs to be expanded too
+   */
+  &-group--open > .v-list-group--activator .v-list-item--prepend-icon {
+    transform: rotate(90deg);
+  }
+
+  .v-list-group--new > .v-list-group--activator > .v-list-item,
+  .v-list-item--new {
+    animation: new-list-item-blink;
+    animation-duration: var(--animation-duration);
+    animation-iteration-count: 1;
+    animation-timing-function: #{map-get(map-get($penner-transitions, "ease-in"), "quart")}; // var(--transition-timing-function);
+  }
+
+
+}
+
+@keyframes new-list-item-blink {
+  from {
+    background: rgb(var(--primary-color));
+  }
+  to {
+    background-color: inherit;
+  }
+}

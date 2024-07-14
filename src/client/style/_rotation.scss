@@ -1,0 +1,14 @@
+@use "./sass-vars" as *;
+
+@for $i from 0 through 8 {
+  $deg: 45 * $i;
+  .rotate-#{$deg} {
+    transform: rotate($i * 45deg);
+  }
+  @if $i > 0 {
+    .rotate-n#{$deg} {
+      transform: rotate($i * -45deg);
+    }
+  }
+}
+

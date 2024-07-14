@@ -1,0 +1,9 @@
+.v-container {
+  display: flex;
+  width: 100%;
+
+  &.center {
+    align-items: center;
+  }
+
+}

@@ -1,0 +1,81 @@
+{
+  "name": "@jorisaerts/js-proxy",
+  "version": "0.1.0",
+  "description": "A reverse proxy server with a GUI",
+  "keywords": [
+    "reverse proxy",
+    "proxy",
+    "server",
+    "web",
+    "node",
+    "ssl",
+    "http",
+    "https",
+    "monitoring"
+  ],
+  "license": "MIT",
+  "packageManager": "yarn@4.4.0",
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
+  "type": "module",
+  "author": {
+    "name": "Joris Aerts",
+    "url": "https://github.com/JorisAerts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JorisAerts/js-proxy.git"
+  },
+  "files": [
+    "dist/**/*",
+    "cert/**/*"
+  ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build:node": "vite build --config vite.config.node.ts",
+    "run:node": "node dist/index.js",
+    "build": "yarn build:node && yarn build:client",
+    "dev": "vite",
+    "build:client": "vite build",
+    "preview": "vite preview",
+    "test": "vitest --typecheck"
+  },
+  "dependencies": {
+    "@mongodb-js/zstd": "1.2.0",
+    "node-forge": "1.3.1",
+    "picocolors": "1.0.1",
+    "uuid": "10.0.0",
+    "ws": "8.18.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/node": "^22.4.1",
+    "@types/node-forge": "^1.3.11",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.5.12",
+    "@vitejs/plugin-vue": "^5.1.2",
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
+    "eslint": "^9.9.0",
+    "eslint-plugin-vue": "^9.27.0",
+    "globals": "^15.9.0",
+    "pinia": "^2.2.2",
+    "postcss": "^8.4.41",
+    "prettier": "^3.3.3",
+    "sass": "^1.77.8",
+    "stylelint": "^16.8.2",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "type-fest": "^4.25.0",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.2.0",
+    "vite": "^5.4.1",
+    "vite-plugin-vue-devtools": "^7.3.8",
+    "vitest": "^2.0.5",
+    "vue": "^3.4.38",
+    "vue-router": "^4.4.3"
+  },
+  "resolutions": {
+    "postcss": "^8.4.41"
+  }
+}

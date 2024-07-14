@@ -1,0 +1,22 @@
+@each $type in (none, auto, hidden) {
+  .overflow-#{$type} {
+    overflow: $type;
+  }
+
+  .overflow-y-#{$type} {
+    overflow-y: $type;
+  }
+
+  .overflow-x-#{$type} {
+    overflow-x: $type;
+  }
+}
+
+@each $type in (clip, ellipsis) {
+  .overflow-#{$type} {
+    overflow: hidden;
+    text-overflow: $type;
+  }
+}
+
+

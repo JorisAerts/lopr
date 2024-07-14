@@ -1,0 +1,34 @@
+@use '../../../style/vars' as *;
+@use '../../../style/sass-vars' as *;
+
+:root {
+  --tooltip-background: rgba(var(--app-background-color), 1);
+  --tooltip-text-color: rgba(var(--text-color), var(--text-emphasis));
+}
+
+.v-tooltip {
+
+  display: contents;
+  vertical-align: middle;
+  padding: $spacer 0;
+
+  &--popup {
+    z-index: 1000;
+    position: absolute;
+    background: transparent;
+    color: currentColor;
+    border: none;
+    transition: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &--contents {
+    border: var(--panel-border);
+    font-size: 1rem;
+    padding: 0 $spacer * 2;
+    background: var(--tooltip-background);
+    color: var(--tooltip-text-color);
+  }
+
+}

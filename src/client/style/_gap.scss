@@ -1,0 +1,8 @@
+@use './sass-vars' as *;
+
+@for $i from 1 through 12 {
+  .gap-#{$i} {
+    gap: $i * $spacer !important;
+  }
+
+}

@@ -1,0 +1,55 @@
+// generated from https://matthewlein.com/tools/ceaser
+$penner-transitions: (
+        ease-in: (
+                quad: cubic-bezier(0.550, 0.085, 0.680, 0.530), /* easeInQuad */
+                cubic: cubic-bezier(0.550, 0.055, 0.675, 0.190), /* easeInCubic */
+                quart: cubic-bezier(0.895, 0.030, 0.685, 0.220), /* easeInQuart */
+                quint: cubic-bezier(0.755, 0.050, 0.855, 0.060), /* easeInQuint */
+                sine: cubic-bezier(0.470, 0.000, 0.745, 0.715), /* easeInSine */
+                expo: cubic-bezier(0.950, 0.050, 0.795, 0.035), /* easeInExpo */
+                circ: cubic-bezier(0.600, 0.040, 0.980, 0.335), /* easeInCirc */
+                back: cubic-bezier(0.600, -0.280, 0.735, 0.045), /* easeInBack */
+        ),
+        ease-out: (
+                quad: cubic-bezier(0.250, 0.460, 0.450, 0.940), /* easeOutQuad */
+                cubic: cubic-bezier(0.215, 0.610, 0.355, 1.000), /* easeOutCubic */
+                quart: cubic-bezier(0.165, 0.840, 0.440, 1.000), /* easeOutQuart */
+                quint: cubic-bezier(0.230, 1.000, 0.320, 1.000), /* easeOutQuint */
+                sine: cubic-bezier(0.390, 0.575, 0.565, 1.000), /* easeOutSine */
+                expo: cubic-bezier(0.190, 1.000, 0.220, 1.000), /* easeOutExpo */
+                circ: cubic-bezier(0.075, 0.820, 0.165, 1.000), /* easeOutCirc */
+                back: cubic-bezier(0.175, 0.885, 0.320, 1.275), /* easeOutBack */
+        ),
+        ease-in-out: (
+                quad: cubic-bezier(0.455, 0.030, 0.515, 0.955), /* easeInOutQuad */
+                cubic: cubic-bezier(0.645, 0.045, 0.355, 1.000), /* easeInOutCubic */
+                quart: cubic-bezier(0.770, 0.000, 0.175, 1.000), /* easeInOutQuart */
+                quint: cubic-bezier(0.860, 0.000, 0.070, 1.000), /* easeInOutQuint */
+                sine: cubic-bezier(0.445, 0.050, 0.550, 0.950), /* easeInOutSine */
+                expo: cubic-bezier(1.000, 0.000, 0.000, 1.000), /* easeInOutExpo */
+                circ: cubic-bezier(0.785, 0.135, 0.150, 0.860), /* easeInOutCirc */
+                back: cubic-bezier(0.680, -0.550, 0.265, 1.550), /* easeInOutBack */
+        ),
+);
+
+$transition_duration: 500ms !default;
+$transition_property: all !default;
+
+@mixin penner-transition($type, $name, $property:$transition_property, $duration:$transition_duration ) {
+  transition: $property $duration map-get(map-get($penner-transitions, $type), $name);
+  transition-timing-function: map-get(map-get($penner-transitions, $type), $name);
+  @content
+}
+
+// generate helper classes
+@each $type, $names in $penner-transitions {
+  @each $name, $fn in $names {
+    $suffix: "-#{$name}";
+    @if $name == '' {
+      $suffix: '';
+    }
+    .#{$type + $suffix} {
+      @include penner-transition($type, $name, all, var(--transition-duration));
+    }
+  }
+}

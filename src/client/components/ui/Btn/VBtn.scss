@@ -1,0 +1,76 @@
+@use '../../../style/sass-vars' as *;
+
+:root {
+  --btn-padding: #{$spacer * 1.5} #{$spacer * 4};
+  --btn-rounding: #{$spacer * 1.5};
+  --btn-font-weight: 500;
+
+  --btn-box-shadow-inset: inset -1px 1px 1px rgba(255, 255, 255, 25%);
+  --btn-box-shadow-outset: -0 1px 2px rgba(0, 0, 0, 50%);
+  --btn-box-shadow: var(--btn-box-shadow-inset), var(--btn-box-shadow-outset);
+}
+
+.v-btn {
+  --underlay-opacity: 0;
+
+  position: relative;
+  background: rgb(var(--primary-color));
+  box-shadow: var(--btn-box-shadow);
+  overflow: hidden;
+  border: none;
+  line-height: 1;
+  padding: var(--btn-padding);
+  border-radius: var(--btn-rounding);
+  outline: none;
+  cursor: pointer;
+  color: rgba(var(--text-color), var(--text-emphasis));
+
+  &__underlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: $spacer;
+  }
+
+  &__underlay {
+    background: white;
+    opacity: var(--underlay-opacity);
+  }
+
+  @at-root button.v-btn--transparent {
+    // override the box-shadow, we need none
+    // TODO: override only the inset shadow, the outset shadow should be disabled by Dark Mode
+    --btn-box-shadow: none;
+    background: transparent;
+  }
+
+  .btn--prepend-icon {
+    margin-left: -2 * $spacer;
+    margin-right: 1 * $spacer;
+  }
+
+  &--content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-weight: var(--btn-font-weight);
+  }
+
+  &--disabled {
+    --text-emphasis: .4;
+  }
+
+  &:not(.v-btn--disabled):hover {
+    --underlay-opacity: 0.05;
+  }
+
+  &.selected:not(.v-btn--disabled),
+  &:not(.v-btn--disabled):active {
+    --underlay-opacity: 0.2;
+  }
+
+  &:not(.v-btn--disabled).active {
+    background: rgba(var(--primary-color), 1);
+  }
+}
