@@ -3,11 +3,12 @@ import type {
   WebSocketMessageType,
 } from '../../shared/WebSocketMessage'
 import { parseWebSocketMessage } from '../../shared/WebSocketMessage'
+import { WEBSOCKET_ROOT } from '../../shared/constants'
 
 const url = new URL(location.toString())
 url.hash = ''
 url.protocol = 'ws'
-url.pathname = 'ws'
+url.pathname = WEBSOCKET_ROOT
 
 type ParsedDataHandler<Data = any> = (data: WebSocketMessage<Data>) => void
 
@@ -18,14 +19,25 @@ export const registerDataHandler = <Data = any>(
   dataHandler: ParsedDataHandler<Data>
 ) => (registry[type] = dataHandler)
 
-export const socket = new WebSocket(url)
-socket.onmessage = (msg: MessageEvent) => {
-  const data = parseWebSocketMessage(msg)
-  if (typeof data === 'object') {
-    registry[data.type]?.(data)
-  } else {
-    console.warn(`Could not find WebSocket handler for:`, data)
+let socket = createSocket()
+
+function createSocket() {
+  const newSocket = new WebSocket(url)
+  newSocket.onmessage = (msg: MessageEvent) => {
+    const data = parseWebSocketMessage(msg)
+    if (typeof data === 'object') {
+      registry[data.type]?.(data)
+    } else {
+      console.warn(`Could not find WebSocket handler for:`, data)
+    }
   }
+  newSocket.onclose = () => {
+    console.info('Websocket connection lost, trying to reconnect')
+    setTimeout(() => {
+      socket = createSocket()
+    }, 1000)
+  }
+  return newSocket
 }
 
 export const sendWsData = async (type: WebSocketMessageType, data: any) => {
@@ -38,5 +50,5 @@ socket.addEventListener('open', (event) => {
 })
 
 socket.addEventListener('error', (error) => {
-  console.error({ error })
+  // console.error({ error })
 })

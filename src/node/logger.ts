@@ -1,8 +1,16 @@
 import * as readline from 'node:readline'
 
-export type Logger = Console
+export type Logger = {
+  clear: () => void
 
-export const Logger: Logger = console
+  debug: (...args: unknown[]) => void
+
+  info: (...args: unknown[]) => void
+  warn: (...args: unknown[]) => void
+  error: (...args: unknown[]) => void
+}
+
+const Logger: Logger = console
 
 export function clearScreen() {
   const repeatCount = process.stdout.rows - 2
