@@ -42,8 +42,8 @@
     "typescript-eslint": "7.16.1",
     "vite": "5.3.4",
     "vite-plugin-vue-devtools": "7.3.6",
-    "vue": "3.4.32",
-    "vue-router": "4.4.0"
+    "vue": "3.4.35",
+    "vue-router": "4.4.1"
   },
   "resolutions": {
     "postcss": "^8.4.39"
