@@ -2812,7 +2812,7 @@ __metadata:
     stylelint: "npm:^16.7.0"
     stylelint-config-standard-scss: "npm:^13.1.0"
     tsc-alias: "npm:^1.8.10"
-    type-fest: "npm:^4.22.0"
+    type-fest: "npm:^4.23.0"
     typescript: "npm:^5.5.3"
     typescript-eslint: "npm:7.16.1"
     vite: "npm:5.3.4"
@@ -4202,10 +4202,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^4.22.0":
-  version: 4.22.0
-  resolution: "type-fest@npm:4.22.0"
-  checksum: 10c0/31a4529606283e871973bbe6fd942ea18ea1864633040988db22749c2f725ede79324c4ffcdecd99771656847c414eb05166e2f99fd6959c2b3dc7950ab86962
+"type-fest@npm:^4.23.0":
+  version: 4.23.0
+  resolution: "type-fest@npm:4.23.0"
+  checksum: 10c0/c42bb14e99329ab37983d1f188e307bf0cc705a23807d9b2268d8fb2ae781d610ac6e2058dde8f9ea2b1b8ddc77ceb578d157fa81f69f8f70aef1d42fb002996
   languageName: node
   linkType: hard
 
