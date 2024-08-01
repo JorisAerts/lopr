@@ -1100,13 +1100,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:5.0.5":
-  version: 5.0.5
-  resolution: "@vitejs/plugin-vue@npm:5.0.5"
+"@vitejs/plugin-vue@npm:5.1.1":
+  version: 5.1.1
+  resolution: "@vitejs/plugin-vue@npm:5.1.1"
   peerDependencies:
     vite: ^5.0.0
     vue: ^3.2.25
-  checksum: 10c0/03b16e398be8de1e89a631ce8329722b26aa0856f3f4722acaefbd834edc16abdba2b7898091ec0b38adb1421b1abcf7c284aad39243ecde02128c8254188d2d
+  checksum: 10c0/d9fdede5e04097340a5206edb53c59ae191c0d6352a4fd7ad7bf11041054926ad01954c6ab4efac398dbc9f051bb075862e4eb77e66061ce45f8c2c1ea506b39
   languageName: node
   linkType: hard
 
@@ -1263,43 +1263,43 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-core@npm:^7.3.6":
-  version: 7.3.6
-  resolution: "@vue/devtools-core@npm:7.3.6"
+"@vue/devtools-core@npm:^7.3.7":
+  version: 7.3.7
+  resolution: "@vue/devtools-core@npm:7.3.7"
   dependencies:
-    "@vue/devtools-kit": "npm:^7.3.6"
-    "@vue/devtools-shared": "npm:^7.3.6"
+    "@vue/devtools-kit": "npm:^7.3.7"
+    "@vue/devtools-shared": "npm:^7.3.7"
     mitt: "npm:^3.0.1"
     nanoid: "npm:^3.3.4"
     pathe: "npm:^1.1.2"
     vite-hot-client: "npm:^0.2.3"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 10c0/db3cc35b3b3763307f0f467f78e625aaeae40b858976f24991f3f82246cedd9e3f6dc129b253758bc06f37e26955e1d2deb737adb9cf188c4c1a1d4f7c016f67
+  checksum: 10c0/fc8f635fb40d3f36a02fd12778fa664081d7de3296b545f1b958c5ebfd5af9637a69258ce223c378a7b61f3551a9495236e354edf97af301cb15a63da72a29d6
   languageName: node
   linkType: hard
 
-"@vue/devtools-kit@npm:^7.3.6":
-  version: 7.3.6
-  resolution: "@vue/devtools-kit@npm:7.3.6"
+"@vue/devtools-kit@npm:^7.3.7":
+  version: 7.3.7
+  resolution: "@vue/devtools-kit@npm:7.3.7"
   dependencies:
-    "@vue/devtools-shared": "npm:^7.3.6"
+    "@vue/devtools-shared": "npm:^7.3.7"
     birpc: "npm:^0.2.17"
     hookable: "npm:^5.5.3"
     mitt: "npm:^3.0.1"
     perfect-debounce: "npm:^1.0.0"
     speakingurl: "npm:^14.0.1"
     superjson: "npm:^2.2.1"
-  checksum: 10c0/9032150a0234366707c555a1dbdda0686bd6345580760236c17fe4d1712cbe22c6c6868446071456cb8f177230d676e76d8f45847b58537739c2354a5048d5de
+  checksum: 10c0/955519458cd27f724c0f65f2599ed50353b4dcde35f61bb52d96d8f68e4afcf07dbab31f886272342ec6b5c297d3460c8e6db80d981e2d75cf313c22e2331a07
   languageName: node
   linkType: hard
 
-"@vue/devtools-shared@npm:^7.3.6":
-  version: 7.3.6
-  resolution: "@vue/devtools-shared@npm:7.3.6"
+"@vue/devtools-shared@npm:^7.3.7":
+  version: 7.3.7
+  resolution: "@vue/devtools-shared@npm:7.3.7"
   dependencies:
     rfdc: "npm:^1.4.1"
-  checksum: 10c0/aba91bb767d63d2037c9e137ddbaacead0290f8fce646c43b1e26e88e574c6f789e0e94b19926366c0ab989d85fb05a70cd856179c53aea521275691a4e967e9
+  checksum: 10c0/5bb79d60bec620b3947051f462d39bb8aa89e3d7ec4926d03d8160f1f9c455911e6a9918790405b86529cfc871128e0ebc9593a40b057518f93fa4d41bd9e442
   languageName: node
   linkType: hard
 
@@ -2799,7 +2799,7 @@ __metadata:
     "@eslint/js": "npm:9.7.0"
     "@types/node": "npm:20.14.11"
     "@types/ws": "npm:^8.5.11"
-    "@vitejs/plugin-vue": "npm:5.0.5"
+    "@vitejs/plugin-vue": "npm:5.1.1"
     "@vitejs/plugin-vue-jsx": "npm:4.0.0"
     eslint: "npm:9.7.0"
     eslint-plugin-vue: "npm:9.27.0"
@@ -2815,8 +2815,8 @@ __metadata:
     type-fest: "npm:^4.22.0"
     typescript: "npm:^5.5.3"
     typescript-eslint: "npm:7.16.1"
-    vite: "npm:5.3.4"
-    vite-plugin-vue-devtools: "npm:7.3.6"
+    vite: "npm:5.3.5"
+    vite-plugin-vue-devtools: "npm:7.3.7"
     vue: "npm:3.4.32"
     vue-router: "npm:4.4.0"
     ws: "npm:^8.18.0"
@@ -4338,26 +4338,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-vue-devtools@npm:7.3.6":
-  version: 7.3.6
-  resolution: "vite-plugin-vue-devtools@npm:7.3.6"
+"vite-plugin-vue-devtools@npm:7.3.7":
+  version: 7.3.7
+  resolution: "vite-plugin-vue-devtools@npm:7.3.7"
   dependencies:
-    "@vue/devtools-core": "npm:^7.3.6"
-    "@vue/devtools-kit": "npm:^7.3.6"
-    "@vue/devtools-shared": "npm:^7.3.6"
+    "@vue/devtools-core": "npm:^7.3.7"
+    "@vue/devtools-kit": "npm:^7.3.7"
+    "@vue/devtools-shared": "npm:^7.3.7"
     execa: "npm:^8.0.1"
     sirv: "npm:^2.0.4"
     vite-plugin-inspect: "npm:^0.8.4"
-    vite-plugin-vue-inspector: "npm:^5.1.2"
+    vite-plugin-vue-inspector: "npm:^5.1.3"
   peerDependencies:
     vite: ^3.1.0 || ^4.0.0-0 || ^5.0.0-0
-  checksum: 10c0/6a33436b61a6ac1c24baf61f98df3bf6fa9d45fb736488676b893f07ea0f0bbc90f83055088d865586cf843da39d26f08b18610aa981fbe045191c0db95cc2cf
+  checksum: 10c0/cb2c67f8f97d89347374312f6e77837ed32f18cc2e9520b164b54f9afebedb4ffe1fa1beab9bfbc6d995964e9de3f976d320fa2e33d47fccc97dab80f3954073
   languageName: node
   linkType: hard
 
-"vite-plugin-vue-inspector@npm:^5.1.2":
-  version: 5.1.2
-  resolution: "vite-plugin-vue-inspector@npm:5.1.2"
+"vite-plugin-vue-inspector@npm:^5.1.3":
+  version: 5.1.3
+  resolution: "vite-plugin-vue-inspector@npm:5.1.3"
   dependencies:
     "@babel/core": "npm:^7.23.0"
     "@babel/plugin-proposal-decorators": "npm:^7.23.0"
@@ -4370,13 +4370,13 @@ __metadata:
     magic-string: "npm:^0.30.4"
   peerDependencies:
     vite: ^3.0.0-0 || ^4.0.0-0 || ^5.0.0-0
-  checksum: 10c0/4841b39d865de4f3eb7d6ed4d86aad8d171a7b7f3db5206bbee2b2a17b031f4ad317696e1474e72b62c605fc1326054501d3e5deeb95185fa7d5b79b83e162c6
+  checksum: 10c0/8d6d46778f87a32d0dd0dcaec24b9463f1d48405066212f2f0b2cfc6799ecd72f43a2e3fea7f762d9205fe519e4de4b44656637bd063b7a5f7018e00f09e9beb
   languageName: node
   linkType: hard
 
-"vite@npm:5.3.4":
-  version: 5.3.4
-  resolution: "vite@npm:5.3.4"
+"vite@npm:5.3.5":
+  version: 5.3.5
+  resolution: "vite@npm:5.3.5"
   dependencies:
     esbuild: "npm:^0.21.3"
     fsevents: "npm:~2.3.3"
@@ -4410,7 +4410,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/604a1c8698bcf09d6889533c552f20137c80cb5027e9e7ddf6215d51e3df763414f8712168c22b3c8c16383aff9447094c05f21d7cca3c115874ff9d12e1538e
+  checksum: 10c0/795c7e0dbc94b96c4a0aff0d5d4b349dd28ad8b7b70979c1010f96b4d83f7d6c1700ebd6fed91de2e021b0a3689b9abc2d8017f6dfa8c9a6ca5c7af637d6afc6
   languageName: node
   linkType: hard
 
