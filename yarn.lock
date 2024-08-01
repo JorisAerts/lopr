@@ -2806,7 +2806,7 @@ __metadata:
     globals: "npm:15.8.0"
     picocolors: "npm:^1.0.1"
     pinia: "npm:2.1.7"
-    postcss: "npm:^8.4.39"
+    postcss: "npm:^8.4.40"
     prettier: "npm:3.3.3"
     sass: "npm:1.77.8"
     stylelint: "npm:^16.7.0"
