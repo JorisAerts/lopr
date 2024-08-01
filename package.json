@@ -39,7 +39,7 @@
     "tsc-alias": "^1.8.10",
     "type-fest": "^4.22.0",
     "typescript": "^5.5.3",
-    "typescript-eslint": "7.16.1",
+    "typescript-eslint": "8.0.0",
     "vite": "5.3.4",
     "vite-plugin-vue-devtools": "7.3.6",
     "vue": "3.4.32",
