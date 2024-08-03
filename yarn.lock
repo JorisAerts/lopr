@@ -910,6 +910,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node-forge@npm:^1.3.11":
+  version: 1.3.11
+  resolution: "@types/node-forge@npm:1.3.11"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/3d7d23ca0ba38ac0cf74028393bd70f31169ab9aba43f21deb787840170d307d662644bac07287495effe2812ddd7ac8a14dbd43f16c2936bbb06312e96fc3b9
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*, @types/node@npm:22.1.0":
   version: 22.1.0
   resolution: "@types/node@npm:22.1.0"
@@ -2699,12 +2708,14 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:9.8.0"
     "@types/node": "npm:22.1.0"
+    "@types/node-forge": "npm:^1.3.11"
     "@types/ws": "npm:^8.5.12"
     "@vitejs/plugin-vue": "npm:5.1.2"
     "@vitejs/plugin-vue-jsx": "npm:4.0.0"
     eslint: "npm:9.8.0"
     eslint-plugin-vue: "npm:9.27.0"
     globals: "npm:15.9.0"
+    node-forge: "npm:^1.3.1"
     picocolors: "npm:^1.0.1"
     pinia: "npm:2.2.0"
     postcss: "npm:^8.4.40"
@@ -3148,6 +3159,13 @@ __metadata:
   version: 0.6.3
   resolution: "negotiator@npm:0.6.3"
   checksum: 10c0/3ec9fd413e7bf071c937ae60d572bc67155262068ed522cf4b3be5edbe6ddf67d095ec03a3a14ebf8fc8e95f8e1d61be4869db0dbb0de696f6b837358bd43fc2
+  languageName: node
+  linkType: hard
+
+"node-forge@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "node-forge@npm:1.3.1"
+  checksum: 10c0/e882819b251a4321f9fc1d67c85d1501d3004b4ee889af822fd07f64de3d1a8e272ff00b689570af0465d65d6bf5074df9c76e900e0aff23e60b847f2a46fbe8
   languageName: node
   linkType: hard
 
