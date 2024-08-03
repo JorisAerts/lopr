@@ -7,6 +7,7 @@ import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { createProxyRequest } from '../utils/proxy-request'
 import type * as tls from 'node:tls'
 import { packageRoot } from '../utils/package'
+import * as http from 'node:http'
 
 const createOptions = (
   req: IncomingMessage
@@ -25,7 +26,7 @@ const createOptions = (
 /**
  * Forward requests
  */
-export const handleRequest = (req: IncomingMessage, res: ServerResponse) => {
+export const handleRequestOld = (req: IncomingMessage, res: ServerResponse) => {
   sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
   const url = req.url!
@@ -45,4 +46,32 @@ export const handleRequest = (req: IncomingMessage, res: ServerResponse) => {
 
   req.rawTrailers.forEach((chunk) => proxyReq.write(chunk))
   proxyReq.end()
+}
+
+export const handleRequest = (req: IncomingMessage, res: ServerResponse) => {
+  console.log(`HTTP Request: ${req.method} ${req.url}`)
+
+  // Options for the request to the target server
+  const options = {
+    hostname: req.headers.host,
+    port: 80,
+    path: req.url,
+    method: req.method,
+    headers: req.headers,
+  }
+
+  // Forward the request to the target server
+  const proxyReq = http.request(options, (proxyRes) => {
+    res.writeHead(proxyRes.statusCode!, proxyRes.headers)
+    proxyRes.pipe(res)
+  })
+
+  // Handle errors
+  proxyReq.on('error', (err) => {
+    console.error('Error with proxy request:', err)
+    res.writeHead(500)
+    res.end('Error with proxy request')
+  })
+
+  req.pipe(proxyReq)
 }

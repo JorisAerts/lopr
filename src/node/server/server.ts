@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'http'
-import { createServer } from 'http'
+import { createServer } from 'https'
 import { handleRequest } from './handler'
 import { createLogger } from '../logger'
 import { handleSelf } from './self-handler'
@@ -46,7 +46,7 @@ export const start = (
       requestCert: true,
     }
     const server = createServer({
-      //...options,
+      ...options,
     })
 
     const onError = (e: Error & { code?: string }) => {
@@ -82,6 +82,7 @@ export const start = (
             undefined,
             function () {
               // creating pipes in both ends
+              conn.write(head)
               conn.pipe(socket)
               socket.pipe(conn)
             }
@@ -119,7 +120,7 @@ export const start = (
     })
 
     server.on('clientError', (err) => {
-      logger.error('Server client error: ' + err)
+      // logger.error('Server client error: ' + err)
     })
 
     defineSocketServer({ logger, server })
