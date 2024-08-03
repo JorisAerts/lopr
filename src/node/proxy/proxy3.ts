@@ -3,10 +3,13 @@ import * as http from 'http'
 import * as https from 'https'
 import * as url from 'url'
 import * as net from 'net'
-import { createCertForHost, rootCert, rootKey } from './certUtils'
+import { createCertForHost, readRootCert, rootCert, rootKey } from './certUtils'
+import * as tls from 'node:tls'
 
 const HTTP_PORT = 8080
 const HTTPS_PORT = 8443
+
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'
 
 export const start = () => {
   // HTTP Proxy Server
@@ -39,11 +42,17 @@ export const start = () => {
     console.log(`HTTP proxy server is listening on port ${HTTP_PORT}`)
   })
 
+  const customAgent = new https.Agent({
+    ca: readRootCert(),
+  })
+
   // HTTPS Proxy Server
   const httpsServer = https.createServer(
     {
       key: rootKey,
       cert: rootCert,
+      // requestCert: true,
+      rejectUnauthorized: false,
     },
     (req, res) => {
       console.log('HTTPS Request:', req.url)
@@ -55,9 +64,10 @@ export const start = () => {
         path: targetUrl.path,
         method: req.method,
         headers: req.headers,
+        agent: customAgent,
       }
 
-      const proxyReq = https.request(options, (proxyRes) => {
+      const proxyReq = https.request({ ...options }, (proxyRes) => {
         res.writeHead(proxyRes.statusCode!, proxyRes.headers)
         proxyRes.pipe(res, { end: true })
       })
@@ -82,8 +92,35 @@ export const start = () => {
 
     const { key, cert } = createCertForHost(hostname)
 
+    const serverOptions = {
+      key: key,
+      cert: cert,
+      //requestCert: true,
+      //strictSSL: false,
+      rejectUnauthorized: false,
+      //allowHalfOpen: true,
+
+      SNICallback: (
+        servername: string,
+        cb: (err: Error | null, ctx?: any) => void
+      ) => {
+        const certObj = createCertForHost(servername)
+        cb(
+          null,
+          tls.createSecureContext({
+            key: certObj.key,
+            cert: certObj.cert,
+            ca: rootCert,
+          })
+        )
+      },
+    }
+
+    clientSocket.on('error', (err) => {
+      console.log('client error: ', err)
+    })
+
     const proxySocket = new net.Socket()
-    // proxySocket.connect({ port: parseInt(port), host: 'localhost',  }, () => {
     proxySocket.connect(HTTPS_PORT, 'localhost', () => {
       clientSocket.write(
         'HTTP/1.1 200 Connection Established\r\n' +
@@ -91,9 +128,32 @@ export const start = () => {
           '\r\n'
       )
 
-      proxySocket.write(head)
-      proxySocket.pipe(clientSocket)
-      clientSocket.pipe(proxySocket)
+      const secureSocket = tls.connect(
+        {
+          socket: proxySocket,
+          servername: hostname,
+          ...serverOptions,
+          enableTrace: true,
+        },
+        () => {
+          //console.log({ secureSocket })
+          if (secureSocket.authorized) {
+            console.log('Connection authorized by a Certificate Authority.')
+          } else {
+            console.log(
+              `Connection not authorized: ${secureSocket.authorizationError}`
+            )
+          }
+        }
+      )
+
+      secureSocket.on('error', (err) => {
+        console.log('Secure error: ', err)
+      })
+
+      secureSocket.write(head)
+      secureSocket.pipe(clientSocket)
+      clientSocket.pipe(secureSocket)
     })
 
     proxySocket.on('error', (err) => {
