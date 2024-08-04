@@ -10,6 +10,7 @@ import type {
   Certificate,
   CertificateFields,
   CertificateOptions,
+  EmailAddress,
 } from './Certificate'
 
 const tempDir = os.tmpdir() || '/tmp'
@@ -41,12 +42,7 @@ export function createPrivateKey(
 
   keyBitSize = Number(keyBitSize) || 1024
 
-  const params = [
-    'genrsa',
-    '-rand',
-    '/var/log/mail:/var/log/messages',
-    `${keyBitSize}`,
-  ]
+  const params = ['genrsa', '-rand', '/var/log/system.log', `${keyBitSize}`]
 
   execOpenSSL(params, 'RSA PRIVATE KEY', (error, key) => {
     return error ? callback!(error) : callback!(null, { key: key! })
@@ -440,7 +436,7 @@ function fetchCertificateData(
     certValues.commonName = (tmp && tmp[1]) || ''
     //email
     tmp = extra.match(/emailAddress=([^,\n/].*?)[,\n/]/)
-    certValues.emailAddress = (tmp && tmp[1]) || ''
+    certValues.emailAddress = ((tmp && tmp[1]) as EmailAddress) || ''
   }
   if (
     (tmp = certDataStr.match(/Not Before\s?:\s?([^\n]*)\n/)) &&
@@ -649,6 +645,8 @@ function execOpenSSL(
       const end = endMatch
         ? (endMatch.index ?? 0) + (endMatch[0] || '').length
         : -1
+
+      console.log({ outStr, start, end, searchStr })
 
       if (start >= 0 && end >= 0) {
         return callback!(null, outStr.substring(start, end))

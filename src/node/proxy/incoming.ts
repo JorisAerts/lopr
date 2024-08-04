@@ -3,11 +3,11 @@ import outgoing from './outgoing'
 import type { IncomingMessage, ServerResponse } from 'http'
 import * as http from 'http'
 import * as https from 'https'
-import type { Option } from './Option'
+import type { Options } from './Options'
 import { isReqHttps, setupOutgoing } from './utils'
 
 export interface IncomingRequest {
-  (req: IncomingMessage, res: ServerResponse, options: Option): void
+  (req: IncomingMessage, res: ServerResponse, options: Options): void
 }
 
 export default [
@@ -25,11 +25,10 @@ export default [
    */
   function (req: IncomingMessage) {
     const values = {
-      for: req.connection.remoteAddress || req.socket.remoteAddress,
-      port: req.connection.remotePort || req.socket.remotePort,
+      for: /* req.connection.remoteAddress || */ req.socket.remoteAddress,
+      port: /* req.connection.remotePort || */ req.socket.remotePort,
       proto: isReqHttps(req) ? 'https' : 'http',
     }
-
     Object.keys(values).forEach((header) => {
       req.headers[`x-forwarded-${header}`] =
         (req.headers[`x-forwarded-${header}`] || '') +
@@ -38,7 +37,7 @@ export default [
     })
   },
 
-  function (req: IncomingMessage, res: ServerResponse, option: Option) {
+  function (req: IncomingMessage, res: ServerResponse, option: Options) {
     const isHttps = isReqHttps(req)
 
     function response(proxyRes: IncomingMessage) {

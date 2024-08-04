@@ -6,6 +6,7 @@ import fs from 'fs'
 import path from 'path'
 import { packageRoot } from '../utils/package'
 import { createCertificate } from './pem'
+import type * as tls from 'node:tls'
 
 const pkiDir = path.normalize(`${packageRoot}/cert`)
 
@@ -21,12 +22,7 @@ if (!fs.existsSync(`${pkiDir}/generated/`)) {
   fs.mkdirSync(`${pkiDir}/generated/`)
 }
 
-export interface KPI {
-  key: string | Buffer
-  cert: string | Buffer
-}
-
-export const getRootPKI = (): KPI => ({
+export const getRootPKI = (): tls.SecureContextOptions => ({
   key: serviceKey,
   cert: serviceCertificate,
 })
@@ -36,7 +32,10 @@ export const getRootPKI = (): KPI => ({
  * @param commonName
  * @param callback
  */
-export function getPKI(commonName: string, callback?: (kpi: KPI) => void) {
+export function getPKI(
+  commonName: string,
+  callback?: (kpi: tls.SecureContextOptions) => void
+) {
   const cnDir = `${pkiDir}/generated/${commonName}`
   const keyPath = `${cnDir}/key.pem`
   const certPath = `${cnDir}/cert.pem`
@@ -53,12 +52,13 @@ export function getPKI(commonName: string, callback?: (kpi: KPI) => void) {
       commonName: commonName,
       serviceKey: serviceKey,
       serviceCertificate: serviceCertificate,
-      days: 1000,
+      days: 3650,
     },
     (error, ret) => {
       if (!fs.existsSync(cnDir)) {
         fs.mkdirSync(cnDir)
       }
+      console.log({ error, ret })
       fs.writeFileSync(certPath, new Buffer(ret!.certificate!, 'utf-8'))
       fs.writeFileSync(keyPath, new Buffer(ret!.clientKey!, 'utf-8'))
       callback?.({

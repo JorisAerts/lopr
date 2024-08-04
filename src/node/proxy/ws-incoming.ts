@@ -4,13 +4,13 @@ import * as http from 'http'
 import * as https from 'https'
 import type { Socket } from 'net'
 import * as utils from './utils'
-import type { Option } from './Option'
+import type { Options } from './Options'
 
 export interface WSIncomingRequest {
   (
     req: IncomingMessage,
     socket: Socket,
-    options: Option,
+    options: Options,
     server: http.Server | https.Server,
     head: Buffer
   ): void
@@ -61,7 +61,7 @@ export default [
   /**
    * Does the actual proxying. Make the request and upgrade it send the Switching Protocols request and pipe the sockets.
    */
-  function (req: IncomingMessage, socket: Socket, options: Option) {
+  function (req: IncomingMessage, socket: Socket, options: Options) {
     utils.setupSocket(socket)
 
     const config = utils.setupOutgoing({}, req, null, options)

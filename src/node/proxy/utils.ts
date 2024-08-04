@@ -1,7 +1,7 @@
 // https://github.com/nodejitsu/node-http-proxy
 import type * as net from 'node:net'
 import type { IncomingMessage, RequestOptions, ServerResponse } from 'http'
-import type { Option } from './Option'
+import type { Options } from './Options'
 import type * as tls from 'node:tls'
 
 type OutgoingOptions = tls.ConnectionOptions & RequestOptions
@@ -10,7 +10,7 @@ export function setupOutgoing(
   outgoing: Partial<OutgoingOptions>,
   req: IncomingMessage,
   res: ServerResponse | null,
-  option: Option
+  option: Options
 ): OutgoingOptions {
   const urlObj = new URL(req.url!)
   const isHttps = isReqHttps(req)
@@ -28,7 +28,11 @@ export function setupOutgoing(
 }
 
 export function isReqHttps(req: IncomingMessage): boolean {
-  return (req as any).isSpdy || req.socket?.asIndexedPairs().readableLength
+  return (
+    new URL(`http://${req.url}`).port === '443' ||
+    (req as any).isSpdy ||
+    req.socket?.asIndexedPairs?.().readableLength
+  )
 }
 
 /**

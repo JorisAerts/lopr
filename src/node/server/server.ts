@@ -78,7 +78,7 @@ export const start = (
         function () {
           // tell the client that the connection is established
           socket.write(
-            `HTTP/${  req.httpVersion  } 200 OK\r\n\r\n`,
+            `HTTP/${req.httpVersion} 200 OK\r\n\r\n`,
             undefined,
             function () {
               // creating pipes in both ends
@@ -106,7 +106,7 @@ export const start = (
       })
 
       conn.on('error', function (e) {
-        logger.error(`Server connection error: ${  e}`)
+        logger.error(`Server connection error: ${e}`)
         socket.end()
       })
     })

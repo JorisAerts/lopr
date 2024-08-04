@@ -1,4 +1,4 @@
-type EmailAddress = string
+export type EmailAddress = `${string}@${string}`
 
 export interface Certificate {
   C: string
@@ -7,7 +7,7 @@ export interface Certificate {
   O: string
   OU: string
   CN: string
-  emailAddress: EmailAddress
+  emailAddress: EmailAddress | ''
 }
 
 export interface CertificateFields {
@@ -36,7 +36,7 @@ export interface CertificateFields {
    */
   commonName: string
 
-  emailAddress: EmailAddress
+  emailAddress: EmailAddress | ''
 }
 
 export interface CertificateOptions extends Certificate, CertificateFields {}

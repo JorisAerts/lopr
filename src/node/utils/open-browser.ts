@@ -5,5 +5,5 @@ const start =
   platform == 'darwin' ? 'open' : platform == 'win32' ? 'start' : 'xdg-open'
 
 export const openBrowser = (url: URL | string) => {
-  exec(`${start  } ${  url}`)
+  exec(`${start} ${url}`)
 }
