@@ -2,7 +2,7 @@
 import forge from 'node-forge'
 import * as fs from 'fs'
 import path from 'path'
-import { packageRoot } from '../utils/package'
+import { packageRoot } from '../../utils/package'
 
 const pki = forge.pki
 

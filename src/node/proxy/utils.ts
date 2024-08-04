@@ -9,7 +9,7 @@ type OutgoingOptions = tls.ConnectionOptions & RequestOptions
 export function setupOutgoing(
   outgoing: Partial<OutgoingOptions>,
   req: IncomingMessage,
-  res: ServerResponse,
+  res: ServerResponse | null,
   option: Option
 ): OutgoingOptions {
   const urlObj = new URL(req.url!)

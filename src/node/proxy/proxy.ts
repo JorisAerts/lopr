@@ -10,27 +10,30 @@ import * as net from 'net'
 import incoming from './incoming'
 import wsIncoming from './ws-incoming'
 import pki from './pki'
+import type { Option } from './Option'
+import type * as tls from 'node:tls'
+import type { HttpServer } from 'vite'
 
 module.exports = {
   createServer: createProxy,
 }
 
-function createProxy(option) {
+function createProxy(option: Option) {
   // one host on https Server
-  const pkiPromises = {}
-  let httpsPort
+  const pkiPromises = {} as Record<string, Promise<any>>
+  let httpsPort: number
 
-  function generatePKI(host) {
-    const defer = Q.defer()
-    pkiPromises[host] = defer.promise
-    pki.getPKI(host, function (option) {
-      //debug('add context for: %s', host);
-      httpsServer.addContext(host, option)
-      defer.resolve()
+  function generatePKI(host: string) {
+    pkiPromises[host] = new Promise((resolve) => {
+      pki.getPKI(host, function (option: tls.SecureContextOptions) {
+        //debug('add context for: %s', host);
+        httpsServer.addContext(host, option)
+        resolve(undefined)
+      })
     })
   }
 
-  var httpsServer = https
+  const httpsServer = https
     .createServer(
       {
         key: pki.getRootPKI().key,
@@ -43,9 +46,11 @@ function createProxy(option) {
       //debug('listening https on: %s', httpsPort);
     })
 
-  const httpServer = http.createServer(forward).listen(option.port, function () {
-    //debug('listening http on: %s', httpServer.address().port);
-  })
+  const httpServer = http
+    .createServer(forward)
+    .listen(option.port, function () {
+      //debug('listening http on: %s', httpServer.address().port);
+    })
 
   function forward(req, res) {
     //debug('fetch: %s', (utils.isReqHttps(req) ? 'https://' + req.headers.host + '' : '') + req.url);
@@ -84,8 +89,8 @@ function createProxy(option) {
     }
   })
 
-  function upgrade(req, socket, head) {
-    const server = this
+  function upgrade(this: HttpServer, req, socket, head) {
+    const server = this as HttpServer
     //debug('upgrade: %s', (utils.isReqHttps(req) ? 'https://' + req.headers.host + '' : '') + req.url);
     wsIncoming.forEach(function (come) {
       come(req, socket, option, server, head)
