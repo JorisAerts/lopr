@@ -36,7 +36,7 @@ export const getRootPKI = (): KPI => ({
  * @param commonName
  * @param callback
  */
-exports.getPKI = function (commonName: string, callback?: (kpi: KPI) => void) {
+export function getPKI(commonName: string, callback?: (kpi: KPI) => void) {
   const cnDir = `${pkiDir}/generated/${commonName}`
   const keyPath = `${cnDir}/key.pem`
   const certPath = `${cnDir}/cert.pem`

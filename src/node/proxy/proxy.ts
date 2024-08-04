@@ -1,15 +1,10 @@
-/**
- * simple reverse http proxy
- * @author yiminghe@gmail.com
- */
-
+import type { IncomingMessage, ServerResponse } from 'http'
 import * as http from 'http'
 import * as https from 'https'
 import * as net from 'net'
-
 import incoming from './incoming'
 import wsIncoming from './ws-incoming'
-import pki from './pki'
+import { getPKI, getRootPKI } from './pki'
 import type { Option } from './Option'
 import type * as tls from 'node:tls'
 import type { HttpServer } from 'vite'
@@ -20,12 +15,12 @@ module.exports = {
 
 function createProxy(option: Option) {
   // one host on https Server
-  const pkiPromises = {} as Record<string, Promise<any>>
+  const pkiPromises = {} as Record<string, Promise<void>>
   let httpsPort: number
 
   function generatePKI(host: string) {
     pkiPromises[host] = new Promise((resolve) => {
-      pki.getPKI(host, function (option: tls.SecureContextOptions) {
+      getPKI(host, function (option: tls.SecureContextOptions) {
         //debug('add context for: %s', host);
         httpsServer.addContext(host, option)
         resolve(undefined)
@@ -36,8 +31,8 @@ function createProxy(option: Option) {
   const httpsServer = https
     .createServer(
       {
-        key: pki.getRootPKI().key,
-        cert: pki.getRootPKI().cert,
+        key: getRootPKI().key,
+        cert: getRootPKI().cert,
       },
       forward
     )
@@ -52,22 +47,19 @@ function createProxy(option: Option) {
       //debug('listening http on: %s', httpServer.address().port);
     })
 
-  function forward(req, res) {
+  function forward(req: IncomingMessage, res: ServerResponse) {
     //debug('fetch: %s', (utils.isReqHttps(req) ? 'https://' + req.headers.host + '' : '') + req.url);
-    incoming.forEach(function (come) {
-      come(req, res, option)
-    })
+    incoming.forEach((come) => come(req, res, option))
   }
 
   // en.wikipedia.org/wiki/HTTP_tunnel
   httpServer.on('connect', function (req, socket) {
     //debug('connect %s', req.url);
-    if (req.url.match(/:443$/)) {
+    if (req.url?.match(/:443$/)) {
       const host = req.url.substring(0, req.url.length - 4)
       if (option.mapHttpsReg === true || host.match(option.mapHttpsReg)) {
         let promise
-        if ((promise = pkiPromises[host])) {
-        } else {
+        if (!(promise = pkiPromises[host])) {
           generatePKI(host)
           promise = pkiPromises[host]
         }

@@ -10,9 +10,9 @@ export default [
   /**
    * Sets `content-length` to '0' if request is of DELETE type.
    */
-  function (req: http.ClientRequest) {
-    if (req.method === 'DELETE' && !req.hasHeader('content-length')) {
-      req.setHeader('content-length', '0')
+  function (req: IncomingMessage) {
+    if (req.method === 'DELETE' && !req.headers['content-length']) {
+      req.headers['content-length'] = '0'
     }
   },
 
