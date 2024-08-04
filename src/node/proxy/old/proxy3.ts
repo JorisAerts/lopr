@@ -3,7 +3,12 @@ import * as http from 'http'
 import * as https from 'https'
 import * as url from 'url'
 import * as net from 'net'
-import { createCertForHost, readRootCert, rootCert, rootKey } from './certUtils'
+import {
+  createCertForHost,
+  readRootCert,
+  rootCert,
+  rootKey,
+} from '../certUtils'
 import * as tls from 'node:tls'
 
 const HTTP_PORT = 8080
