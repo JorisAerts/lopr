@@ -16,7 +16,11 @@ const tempDir = os.tmpdir() || '/tmp'
 
 // PUBLIC API
 
-export type Callback = (err: string, data: string) => void
+export interface CreatePrivateKeyCallback {
+  (err: Error | null): void
+
+  (err: string | null, opts: { key: string }): void
+}
 
 /**
  * Creates a private key
@@ -24,9 +28,15 @@ export type Callback = (err: string, data: string) => void
  * @param {Number} [keyBitSize=1024] Size of the key, defaults to 1024bit
  * @param {Function} callback Callback function with an error object and {key}
  */
-export function createPrivateKey(callback): void
-export function createPrivateKey(keyBitSize: number, callback): void
-export function createPrivateKey(keyBitSize: unknown, callback) {
+export function createPrivateKey(callback: CreatePrivateKeyCallback): void
+export function createPrivateKey(
+  keyBitSize: number,
+  callback: CreatePrivateKeyCallback
+): void
+export function createPrivateKey(
+  keyBitSize: number | CreatePrivateKeyCallback | undefined,
+  callback?: CreatePrivateKeyCallback
+) {
   if (!callback && typeof keyBitSize == 'function') {
     callback = keyBitSize
     keyBitSize = undefined
@@ -41,11 +51,8 @@ export function createPrivateKey(keyBitSize: unknown, callback) {
     `${keyBitSize}`,
   ]
 
-  execOpenSSL(params, 'RSA PRIVATE KEY', function (error, key) {
-    if (error) {
-      return callback(error)
-    }
-    return callback(null, { key: key })
+  execOpenSSL(params, 'RSA PRIVATE KEY', (error, key) => {
+    return error ? callback!(error) : callback!(null, { key })
   })
 }
 
@@ -65,13 +72,16 @@ export interface CreateCSROptions extends CertificateFields {
  */
 //export function createCSR(options: CreateCSROptions, callback: any): void
 //export function createCSR(callback: any): void
-export function createCSR(options: CreateCSROptions, callback: any) {
+export function createCSR(
+  options: Partial<CreateCSROptions> | undefined,
+  callback: any
+) {
   if (!callback && typeof options == 'function') {
     callback = options
     options = undefined
   }
 
-  options = options || {}
+  options ??= {}
 
   if (!options.clientKey) {
     createPrivateKey(options.keyBitSize || 1024, function (error, keyData) {
@@ -166,7 +176,7 @@ export function createCertificate(options, callback) {
     '-in',
     '--TMPFILE--',
   ]
-  const tmpfiles = [options.csr]
+  const tmpFiles = [options.csr]
   if (options.serviceCertificate) {
     if (!options.serial) {
       return callback(new Error('serial option required for CA signing'))
@@ -177,15 +187,15 @@ export function createCertificate(options, callback) {
     params.push('--TMPFILE--')
     params.push('-set_serial')
     params.push(`0x${`00000000${options.serial.toString(16)}`.slice(-8)}`)
-    tmpfiles.push(options.serviceCertificate)
-    tmpfiles.push(options.serviceKey)
+    tmpFiles.push(options.serviceCertificate)
+    tmpFiles.push(options.serviceKey)
   } else {
     params.push('-signkey')
     params.push('--TMPFILE--')
-    tmpfiles.push(options.serviceKey)
+    tmpFiles.push(options.serviceKey)
   }
 
-  execOpenSSL(params, 'CERTIFICATE', tmpfiles, function (error, data) {
+  execOpenSSL(params, 'CERTIFICATE', tmpFiles, function (error, data) {
     if (error) {
       return callback(error)
     }
@@ -237,7 +247,7 @@ export function getPublicKey(certificate, callback) {
  * @param {String} certificate PEM encoded CSR or certificate
  * @param {Function} callback Callback function with an error object and {country, state, locality, organization, organizationUnit, commonName, emailAddress}
  */
-export function readCertificateInfo(certificate, callback) {
+export function readCertificateInfo(certificate: string, callback) {
   if (!callback && typeof certificate == 'function') {
     callback = certificate
     certificate = undefined
@@ -247,12 +257,9 @@ export function readCertificateInfo(certificate, callback) {
 
   const type = certificate.match(/BEGIN CERTIFICATE REQUEST/) ? 'req' : 'x509',
     params = [type, '-noout', '-text', '-in', '--TMPFILE--']
-  spawnWrapper(params, certificate, function (err, code, stdout, stderr) {
-    if (err) {
-      return callback(err)
-    }
-    return fetchCertificateData(stdout, callback)
-  })
+  spawnWrapper(params, certificate, (err, code, stdout, stderr) =>
+    err ? callback(err) : fetchCertificateData(stdout, callback)
+  )
 }
 
 /**
@@ -261,7 +268,7 @@ export function readCertificateInfo(certificate, callback) {
  * @param {String} certificate PEM encoded, CSR PEM encoded, or private key
  * @param {Function} callback Callback function with an error object and {modulus}
  */
-export function getModulus(certificate, callback) {
+export function getModulus(certificate: string, callback) {
   let type = ''
   if (certificate.match(/BEGIN CERTIFICATE REQUEST/)) {
     type = 'req'
@@ -308,7 +315,7 @@ export function getFingerprint(certificate, callback) {
 
 // HELPER FUNCTIONS
 
-function fetchCertificateData(certData, callback) {
+function fetchCertificateData(certData: string, callback) {
   certData = (certData || '').toString()
 
   let subject, extra, tmp
@@ -378,14 +385,22 @@ function generateCSRSubject(options: CertificateOptions) {
   return csrBuilder.join('')
 }
 
+interface SpawnOpenSSLCallback {
+  (error: Error | null, exitCode: number, stdout: Buffer, stderr: Buffer): void
+
+  (error: Error | null, exitCode: number): void
+
+  (error: Error | null, exitCode: number, stdout: Buffer, stderr: Buffer): void
+}
+
 /**
  * Generically spawn openSSL, without processing the result
  *
  * @param {Array}        params   The parameters to pass to openssl
- * @param {String|Array} tmpfiles    Stuff to pass to tmpfiles
+ * @param {String|Array} tmpFiles    Stuff to pass to tmpFiles
  * @param {Function}     callback Called with (error, exitCode, stdout, stderr)
  */
-function spawnOpenSSL(params: string[], callback) {
+function spawnOpenSSL(params: string[], callback: SpawnOpenSSLCallback) {
   const openssl = spawn('openssl', params)
   let stdout = Buffer.alloc(0)
   let stderr = Buffer.alloc(0)
@@ -437,15 +452,19 @@ function spawnOpenSSL(params: string[], callback) {
 
 type FileData = { path: string; contents: string | undefined }
 
-function spawnWrapper(params: string[], tmpfiles: string[], callback) {
+function spawnWrapper(
+  params: string[],
+  tmpFiles: false | string | string[],
+  callback
+) {
   const files = [] as FileData[]
 
-  if (tmpfiles) {
-    tmpfiles = [...tmpfiles]
+  if (tmpFiles) {
+    tmpFiles = Array.isArray(tmpFiles) ? [...tmpFiles] : [tmpFiles]
     params.forEach(function (value, i) {
       if (value === '--TMPFILE--') {
         const path = join(tempDir, crypto.randomBytes(20).toString('hex'))
-        files.push({ path, contents: tmpfiles.shift() })
+        files.push({ path, contents: (tmpFiles as string[]).shift() })
         params[i] = path
       }
     })
@@ -458,7 +477,7 @@ function spawnWrapper(params: string[], tmpfiles: string[], callback) {
       return spawnSSL()
     }
 
-    fs.writeFile(file.path, file.contents ?? '', function (err, bytes) {
+    fs.writeFile(file.path, file.contents ?? '', function () {
       processFiles()
     })
   }
@@ -475,58 +494,73 @@ function spawnWrapper(params: string[], tmpfiles: string[], callback) {
   processFiles()
 }
 
+interface ExecOpenSSLCallback {
+  (error: Error | null): unknown
+
+  (error: Error | null, key: string): unknown
+}
+
 /**
  * Spawn an openssl command
  */
-function execOpenSSL(params: string[], searchStr: string, callback): void
 function execOpenSSL(
   params: string[],
   searchStr: string,
-  tmpfiles: string[],
-  callback
+  callback: ExecOpenSSLCallback
 ): void
 function execOpenSSL(
   params: string[],
   searchStr: string,
-  tmpfiles: string[],
-  callback
+  tmpFiles: false | string | string[],
+  callback: ExecOpenSSLCallback
+): void
+function execOpenSSL(
+  params: string[],
+  searchStr: string,
+  tmpFiles: false | string | string[] | ExecOpenSSLCallback,
+  callback?: ExecOpenSSLCallback
 ) {
-  if (!callback && typeof tmpfiles == 'function') {
-    callback = tmpfiles
-    tmpfiles = false
+  if (!callback && typeof tmpFiles == 'function') {
+    callback = tmpFiles
+    tmpFiles = false
   }
 
-  spawnWrapper(params, tmpfiles, function (err, code, stdout, stderr) {
-    let start, end
+  spawnWrapper(
+    params,
+    tmpFiles as false | string | string[],
+    function (err, code, stdout, stderr) {
+      let start, end
 
-    if (err) {
-      return callback(err)
-    }
+      if (err) {
+        return callback!(err)
+      }
 
-    if (
-      (start = stdout.match(new RegExp(`\\-+BEGIN ${searchStr}\\-+$`, 'm')))
-    ) {
-      start = start.index
-    } else {
-      start = -1
-    }
+      if (
+        (start = stdout.match(new RegExp(`\\-+BEGIN ${searchStr}\\-+$`, 'm')))
+      ) {
+        start = start.index
+      } else {
+        start = -1
+      }
 
-    if ((end = stdout.match(new RegExp(`^\\-+END ${searchStr}\\-+`, 'm')))) {
-      end = end.index + (end[0] || '').length
-    } else {
-      end = -1
-    }
+      if ((end = stdout.match(new RegExp(`^-+END ${searchStr}-+`, 'm')))) {
+        end = end.index + (end[0] || '').length
+      } else {
+        end = -1
+      }
 
-    if (start >= 0 && end >= 0) {
-      return callback(null, stdout.substring(start, end))
-    } else {
-      return callback(
-        new Error(
-          `${searchStr} not found from openssl output:\n---stdout---\n${
-            stdout
-          }\n---stderr---\n${stderr}\ncode: ${code}\nsignal: ${signal}`
+      if (start >= 0 && end >= 0) {
+        return callback!(null, stdout.substring(start, end))
+      } else {
+        const signal = 0
+        return callback!(
+          new Error(
+            `${searchStr} not found from openssl output:\n---stdout---\n${
+              stdout
+            }\n---stderr---\n${stderr}\ncode: ${code}\nsignal: ${signal}`
+          )
         )
-      )
+      }
     }
-  })
+  )
 }

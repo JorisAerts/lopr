@@ -7,6 +7,7 @@ import wsIncoming from './ws-incoming'
 import { getPKI, getRootPKI } from './pki'
 import type * as tls from 'node:tls'
 import type { HttpServer } from 'vite'
+import type { AddressInfo } from 'ws'
 
 interface CreateProxyOptions {
   port: number
@@ -37,7 +38,7 @@ export function createProxy(option: CreateProxyOptions) {
       forward
     )
     .listen(function (this: HttpServer) {
-      httpsPort = (this.address() as any).port
+      httpsPort = (this.address() as AddressInfo).port
       //debug('listening https on: %s', httpsPort);
     })
 
