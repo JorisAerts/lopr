@@ -99,11 +99,11 @@ export const start = () => {
     })
 
   httpsServer.on('connect', (req: http.IncomingMessage) => {
-    console.log('HTTPS:' + req.url)
+    console.log(`HTTPS:${req.url}`)
   })
 
   httpsServer.on('request', (req: http.IncomingMessage) => {
-    console.log('HTTPS:' + req.url)
+    console.log(`HTTPS:${req.url}`)
   })
 
   return Promise.resolve('http://localhost:8080')

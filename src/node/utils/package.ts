@@ -8,7 +8,9 @@ const packageJsonFile = (process.env as any).npm_package_json
 /**
  * parsed package.json
  */
-export const packageJson: PackageJson = JSON.parse(fs.readFileSync(packageJsonFile).toString()) as PackageJson
+export const packageJson: PackageJson = JSON.parse(
+  fs.readFileSync(packageJsonFile).toString()
+) as PackageJson
 
 /**
  * root directory

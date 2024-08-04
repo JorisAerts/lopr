@@ -1,1 +1,1 @@
-export {start} from "./server"
+export { start } from './server'
