@@ -4,13 +4,13 @@ import type { IncomingMessage, RequestOptions, ServerResponse } from 'http'
 import type { Options } from './Options'
 import type * as tls from 'node:tls'
 
-type OutgoingOptions = tls.ConnectionOptions & RequestOptions
+export type OutgoingOptions = tls.ConnectionOptions & RequestOptions
 
 export function setupOutgoing(
   outgoing: Partial<OutgoingOptions>,
   req: IncomingMessage,
   res: ServerResponse | null,
-  option: Options
+  options: Options
 ): OutgoingOptions {
   const urlObj = new URL(req.url!)
   const isHttps = isReqHttps(req)
@@ -21,8 +21,8 @@ export function setupOutgoing(
   outgoing.path = urlObj.pathname
   outgoing.rejectUnauthorized = false
   outgoing.headers = headers
-  if (option.map) {
-    outgoing = option.map(outgoing, req, res)
+  if (options.map) {
+    outgoing = options.map(outgoing, req, res)
   }
   return outgoing
 }

@@ -6,10 +6,12 @@ import type { AddressInfo } from 'ws'
 import incoming from './incoming'
 import wsIncoming from './ws-incoming'
 import { getPKI, getRootPKI } from './pki'
+import type { OutgoingOptions } from './utils'
 
 interface CreateProxyOptions {
   port: number
   mapHttpsReg: boolean | undefined | string | RegExp
+  map: ((options: OutgoingOptions) => OutgoingOptions) | undefined
 }
 
 export function createProxy(options: Partial<CreateProxyOptions> = {}) {
