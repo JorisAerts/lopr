@@ -16,11 +16,8 @@ const tempDir = os.tmpdir() || '/tmp'
 
 // PUBLIC API
 
-export interface CreatePrivateKeyCallback {
-  (err: Error | null): void
-
-  (err: string | null, opts: { key: string }): void
-}
+type CreatePrivateKeyCallback = ((err: Error, keyData?: undefined) => void) &
+  ((err: null, keyData: { key: string }) => void)
 
 /**
  * Creates a private key
@@ -52,7 +49,7 @@ export function createPrivateKey(
   ]
 
   execOpenSSL(params, 'RSA PRIVATE KEY', (error, key) => {
-    return error ? callback!(error) : callback!(null, { key })
+    return error ? callback!(error) : callback!(null, { key: key! })
   })
 }
 
@@ -61,6 +58,14 @@ export interface CreateCSROptions extends CertificateFields {
   keyBitSize: number
   hash: string
 }
+
+interface CreateCSRCallbackData {
+  csr: string
+  clientKey?: string
+}
+
+export type CreateCSRCallback = ((err: Error, keyData?: never) => void) &
+  ((err: null, keyData: CreateCSRCallbackData) => void)
 
 /**
  * Creates a Certificate Signing Request
@@ -74,7 +79,7 @@ export interface CreateCSROptions extends CertificateFields {
 //export function createCSR(callback: any): void
 export function createCSR(
   options: Partial<CreateCSROptions> | undefined,
-  callback: any
+  callback: CreateCSRCallback
 ) {
   if (!callback && typeof options == 'function') {
     callback = options
@@ -88,7 +93,7 @@ export function createCSR(
       if (error) {
         return callback(error)
       }
-      options.clientKey = keyData.key
+      options.clientKey = keyData!.key
       createCSR(options, callback)
     })
     return
@@ -113,13 +118,40 @@ export function createCSR(
         return callback(error)
       }
       const response = {
-        csr: data,
+        csr: data!,
         clientKey: options.clientKey,
       }
       return callback(null, response)
     }
   )
 }
+
+export interface CreateCertificateOptions {
+  serviceKey: string
+  selfSigned: boolean
+  csr: string
+  days: number
+
+  commonName: string
+
+  clientKey: string
+  keyBitSize: number
+  serviceCertificate: string
+  serial: number
+}
+
+type CreateCertificateCallbackData = {
+  certificate: string
+  csr: string
+  clientKey: string
+  serviceKey: string
+}
+
+export type CreateCertificateCallback = ((
+  err: Error,
+  data?: undefined
+) => void) &
+  ((err: null, data: CreateCertificateCallbackData) => void)
 
 /**
  * Creates a certificate based on a CSR. If CSR is not defined, a new one
@@ -133,21 +165,22 @@ export function createCSR(
  * @param {Number} [options.days] Certificate expire time in days
  * @param {Function} callback Callback function with an error object and {certificate, csr, clientKey, serviceKey}
  */
-export function createCertificate(options, callback) {
+export function createCertificate(
+  options: Partial<CreateCertificateOptions>,
+  callback: CreateCertificateCallback
+) {
   if (!callback && typeof options == 'function') {
     callback = options
-    options = undefined
+    options = {}
   }
-
-  options = options || {}
 
   if (!options.csr) {
     createCSR(options, function (error, keyData) {
       if (error) {
         return callback(error)
       }
-      options.csr = keyData.csr
-      options.clientKey = keyData.clientKey
+      options.csr = keyData!.csr
+      options.clientKey = keyData!.clientKey
       createCertificate(options, callback)
     })
     return
@@ -161,7 +194,7 @@ export function createCertificate(options, callback) {
         if (error) {
           return callback(error)
         }
-        options.serviceKey = keyData.key
+        options.serviceKey = keyData!.key
         createCertificate(options, callback)
       })
       return
@@ -172,7 +205,7 @@ export function createCertificate(options, callback) {
     'x509',
     '-req',
     '-days',
-    Number(options.days) || '365',
+    `${Number(options.days) || 365}`,
     '-in',
     '--TMPFILE--',
   ]
@@ -188,26 +221,35 @@ export function createCertificate(options, callback) {
     params.push('-set_serial')
     params.push(`0x${`00000000${options.serial.toString(16)}`.slice(-8)}`)
     tmpFiles.push(options.serviceCertificate)
-    tmpFiles.push(options.serviceKey)
   } else {
     params.push('-signkey')
     params.push('--TMPFILE--')
-    tmpFiles.push(options.serviceKey)
   }
+  if (options.serviceKey) tmpFiles.push(options.serviceKey)
 
   execOpenSSL(params, 'CERTIFICATE', tmpFiles, function (error, data) {
     if (error) {
       return callback(error)
     }
     const response = {
-      csr: options.csr,
-      clientKey: options.clientKey,
-      certificate: data,
-      serviceKey: options.serviceKey,
+      csr: options.csr!,
+      clientKey: options.clientKey!,
+      certificate: data!,
+      serviceKey: options.serviceKey!,
     }
     return callback(null, response)
   })
 }
+
+export interface GetPublicKeyCallbackData {
+  publicKey: string
+}
+
+export type GetPublicKeyCallback<Result> = ((
+  err: Error,
+  data?: never
+) => Result) &
+  ((err: null, data: GetPublicKeyCallbackData) => Result)
 
 /**
  * Exports a public key from a private key, CSR or certificate
@@ -215,10 +257,13 @@ export function createCertificate(options, callback) {
  * @param {String} certificate PEM encoded private key, CSR or certificate
  * @param {Function} callback Callback function with an error object and {publicKey}
  */
-export function getPublicKey(certificate, callback) {
+export function getPublicKey<Result>(
+  certificate: string,
+  callback: GetPublicKeyCallback<Result>
+) {
   if (!callback && typeof certificate == 'function') {
     callback = certificate
-    certificate = undefined
+    certificate = ''
   }
 
   certificate = (certificate || '').toString()
@@ -233,13 +278,18 @@ export function getPublicKey(certificate, callback) {
     params = ['x509', '-in', '--TMPFILE--', '-pubkey', '-noout']
   }
 
-  execOpenSSL(params, 'PUBLIC KEY', certificate, function (error, key) {
-    if (error) {
-      return callback(error)
-    }
-    return callback(null, { publicKey: key })
-  })
+  execOpenSSL(params, 'PUBLIC KEY', certificate, (error, key) =>
+    error ? callback(error) : callback(null, { publicKey: key! })
+  )
 }
+
+export type ReadCertificateInfoCallbackData = CertificateFields
+
+export type ReadCertificateInfoCallback<Result> = ((
+  err: Error,
+  data?: never
+) => Result) &
+  ((err: null, data: ReadCertificateInfoCallbackData) => Result)
 
 /**
  * Reads subject data from a certificate or a CSR
@@ -247,20 +297,33 @@ export function getPublicKey(certificate, callback) {
  * @param {String} certificate PEM encoded CSR or certificate
  * @param {Function} callback Callback function with an error object and {country, state, locality, organization, organizationUnit, commonName, emailAddress}
  */
-export function readCertificateInfo(certificate: string, callback) {
+export function readCertificateInfo<Result>(
+  certificate: string,
+  callback: ReadCertificateInfoCallback<Result>
+) {
   if (!callback && typeof certificate == 'function') {
     callback = certificate
-    certificate = undefined
+    certificate = ''
   }
 
   certificate = (certificate || '').toString()
 
   const type = certificate.match(/BEGIN CERTIFICATE REQUEST/) ? 'req' : 'x509',
     params = [type, '-noout', '-text', '-in', '--TMPFILE--']
-  spawnWrapper(params, certificate, (err, code, stdout, stderr) =>
-    err ? callback(err) : fetchCertificateData(stdout, callback)
+  spawnWrapper(params, certificate, (err, code, stdout) =>
+    err ? callback(err) : fetchCertificateData(`${stdout}`, callback)
   )
 }
+
+export interface GetModulusCallbackData {
+  modulus: string
+}
+
+export type GetModulusCallback<Result> = ((
+  err: Error,
+  data?: never
+) => Result) &
+  ((err: null, data: GetModulusCallbackData) => Result)
 
 /**
  * get the modulus from a certificate, a CSR or a private key
@@ -268,7 +331,10 @@ export function readCertificateInfo(certificate: string, callback) {
  * @param {String} certificate PEM encoded, CSR PEM encoded, or private key
  * @param {Function} callback Callback function with an error object and {modulus}
  */
-export function getModulus(certificate: string, callback) {
+export function getModulus<Result>(
+  certificate: string,
+  callback: GetModulusCallback<Result>
+) {
   let type = ''
   if (certificate.match(/BEGIN CERTIFICATE REQUEST/)) {
     type = 'req'
@@ -278,11 +344,11 @@ export function getModulus(certificate: string, callback) {
     type = 'x509'
   }
   const params = [type, '-noout', '-modulus', '-in', '--TMPFILE--']
-  spawnWrapper(params, certificate, function (err, code, stdout, stderr) {
+  spawnWrapper(params, certificate, function (err, code, stdout) {
     if (err) {
       return callback(err)
     }
-    const match = stdout.match(/Modulus=([0-9a-fA-F]+)$/m)
+    const match = `${stdout}`.match(/Modulus=([0-9a-fA-F]+)$/m)
     if (match) {
       return callback(null, { modulus: match[1] })
     } else {
@@ -291,38 +357,64 @@ export function getModulus(certificate: string, callback) {
   })
 }
 
+export interface FingerPrintData {
+  fingerprint: string
+}
+
+export type GetFingerPrintCallback = ((err: Error) => void) &
+  ((err: null, data: FingerPrintData) => void)
+
 /**
  * Gets the fingerprint for a certificate
  *
  * @param {String} PEM encoded certificate
  * @param {Function} callback Callback function with an error object and {fingerprint}
  */
-export function getFingerprint(certificate, callback) {
+export function getFingerprint(
+  certificate: string,
+  callback: GetFingerPrintCallback
+) {
   const params = ['x509', '-in', '--TMPFILE--', '-fingerprint', '-noout']
 
-  spawnWrapper(params, certificate, function (err, code, stdout, stderr) {
+  spawnWrapper(params, certificate, function (err, code, stdout) {
     if (err) {
       return callback(err)
     }
-    const match = stdout.match(/Fingerprint=([0-9a-fA-F:]+)$/m)
-    if (match) {
-      return callback(null, { fingerprint: match[1] })
-    } else {
-      return callback(new Error('No fingerprint'))
-    }
+    const match = `${stdout}`.match(/Fingerprint=([0-9a-fA-F:]+)$/m)
+    return match
+      ? callback(null, { fingerprint: match[1] })
+      : callback(new Error('No fingerprint'))
   })
 }
 
+export interface Validity {
+  start: number
+  end: number
+}
+
+export interface FetchCertificateDataCallbackData extends CertificateOptions {
+  validity: Validity
+}
+
+export type FetchCertificateDataCallback = ((err: Error) => void) &
+  ((err: null, data: FetchCertificateDataCallbackData) => void)
+
 // HELPER FUNCTIONS
 
-function fetchCertificateData(certData: string, callback) {
-  certData = (certData || '').toString()
+function fetchCertificateData(
+  certData: Buffer | string,
+  callback: FetchCertificateDataCallback
+) {
+  const certDataStr = (certData || '').toString()
 
   let subject, extra, tmp
-  const certValues = {} as Record<string, unknown>
-  const validity = {} as Record<string, unknown>
+  const certValues = {} as FetchCertificateDataCallbackData
+  const validity = {} as Validity
 
-  if ((subject = certData.match(/Subject:([^\n]*)\n/)) && subject.length > 1) {
+  if (
+    (subject = certDataStr.match(/Subject:([^\n]*)\n/)) &&
+    subject.length > 1
+  ) {
     subject = subject[1]
     extra = subject.split('/')
     subject = `${extra.shift()}\n`
@@ -350,9 +442,12 @@ function fetchCertificateData(certData: string, callback) {
     tmp = extra.match(/emailAddress=([^,\n/].*?)[,\n/]/)
     certValues.emailAddress = (tmp && tmp[1]) || ''
   }
-  if ((tmp = certData.match(/Not Before\s?:\s?([^\n]*)\n/)) && tmp.length > 1)
+  if (
+    (tmp = certDataStr.match(/Not Before\s?:\s?([^\n]*)\n/)) &&
+    tmp.length > 1
+  )
     validity.start = Date.parse((tmp && tmp[1]) || '')
-  if ((tmp = certData.match(/Not After\s?:\s?([^\n]*)\n/)) && tmp.length > 1)
+  if ((tmp = certDataStr.match(/Not After\s?:\s?([^\n]*)\n/)) && tmp.length > 1)
     validity.end = Date.parse((tmp && tmp[1]) || '')
   if (validity.start && validity.end) certValues.validity = validity
 
@@ -361,7 +456,7 @@ function fetchCertificateData(certData: string, callback) {
 
 const RX_CSR = /[^\w .\-@]+/g
 
-function generateCSRSubject(options: CertificateOptions) {
+function generateCSRSubject(options: Partial<CertificateOptions>) {
   options = options || {}
   const csrData: Certificate = {
     C: options.country || options.C || '',
@@ -385,13 +480,12 @@ function generateCSRSubject(options: CertificateOptions) {
   return csrBuilder.join('')
 }
 
-interface SpawnOpenSSLCallback {
-  (error: Error | null, exitCode: number, stdout: Buffer, stderr: Buffer): void
-
-  (error: Error | null, exitCode: number): void
-
-  (error: Error | null, exitCode: number, stdout: Buffer, stderr: Buffer): void
-}
+type SpawnOpenSSLCallback = (
+  error: Error | null,
+  exitCode: number,
+  stdout: Buffer,
+  stderr: Buffer
+) => void
 
 /**
  * Generically spawn openSSL, without processing the result
@@ -426,7 +520,9 @@ function spawnOpenSSL(params: string[], callback: SpawnOpenSSLCallback) {
             stderr
           }`
         ),
-        code
+        code,
+        stdout,
+        stderr
       )
     } else {
       callback(null, code, stdout, stderr)
@@ -450,12 +546,22 @@ function spawnOpenSSL(params: string[], callback: SpawnOpenSSLCallback) {
   })
 }
 
-type FileData = { path: string; contents: string | undefined }
+export interface FileData {
+  path: string
+  contents: string | undefined
+}
 
-function spawnWrapper(
+export type SpawnWrapperCallback<Result> = (
+  err: Error | null,
+  code: number,
+  stdout: Buffer,
+  stderr: Buffer
+) => Result
+
+function spawnWrapper<CallbackResult>(
   params: string[],
   tmpFiles: false | string | string[],
-  callback
+  callback: SpawnWrapperCallback<CallbackResult>
 ) {
   const files = [] as FileData[]
 
@@ -494,11 +600,11 @@ function spawnWrapper(
   processFiles()
 }
 
-interface ExecOpenSSLCallback {
-  (error: Error | null): unknown
-
-  (error: Error | null, key: string): unknown
-}
+export type ExecOpenSSLCallback = ((
+  error: Error | null,
+  key?: never
+) => unknown) &
+  ((error: Error | null, key: string) => unknown)
 
 /**
  * Spawn an openssl command
@@ -529,35 +635,28 @@ function execOpenSSL(
     params,
     tmpFiles as false | string | string[],
     function (err, code, stdout, stderr) {
-      let start, end
-
       if (err) {
         return callback!(err)
       }
 
-      if (
-        (start = stdout.match(new RegExp(`\\-+BEGIN ${searchStr}\\-+$`, 'm')))
-      ) {
-        start = start.index
-      } else {
-        start = -1
-      }
+      const outStr = `${stdout}`
+      const startMatch = outStr.match(
+        new RegExp(`\\-+BEGIN ${searchStr}\\-+$`, 'm')
+      )
+      const start = startMatch ? (startMatch.index ?? 0) : -1
 
-      if ((end = stdout.match(new RegExp(`^-+END ${searchStr}-+`, 'm')))) {
-        end = end.index + (end[0] || '').length
-      } else {
-        end = -1
-      }
+      const endMatch = outStr.match(new RegExp(`^-+END ${searchStr}-+`, 'm'))
+      const end = endMatch
+        ? (endMatch.index ?? 0) + (endMatch[0] || '').length
+        : -1
 
       if (start >= 0 && end >= 0) {
-        return callback!(null, stdout.substring(start, end))
+        return callback!(null, outStr.substring(start, end))
       } else {
         const signal = 0
         return callback!(
           new Error(
-            `${searchStr} not found from openssl output:\n---stdout---\n${
-              stdout
-            }\n---stderr---\n${stderr}\ncode: ${code}\nsignal: ${signal}`
+            `${searchStr} not found from openssl output:\n---stdout---\n${stdout}\n---stderr---\n${stderr}\ncode: ${code}\nsignal: ${signal}`
           )
         )
       }

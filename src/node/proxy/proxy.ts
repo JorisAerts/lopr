@@ -2,12 +2,11 @@ import type { IncomingMessage, ServerResponse } from 'http'
 import * as http from 'http'
 import * as https from 'https'
 import * as net from 'net'
+import type * as tls from 'tls'
+import type { AddressInfo } from 'ws'
 import incoming from './incoming'
 import wsIncoming from './ws-incoming'
 import { getPKI, getRootPKI } from './pki'
-import type * as tls from 'node:tls'
-import type { HttpServer } from 'vite'
-import type { AddressInfo } from 'ws'
 
 interface CreateProxyOptions {
   port: number
@@ -30,23 +29,15 @@ export function createProxy(option: CreateProxyOptions) {
   }
 
   const httpsServer = https
-    .createServer(
-      {
-        key: getRootPKI().key,
-        cert: getRootPKI().cert,
-      },
-      forward
-    )
-    .listen(function (this: HttpServer) {
-      httpsPort = (this.address() as AddressInfo).port
+    .createServer({ ...getRootPKI() }, forward)
+    .listen(() => {
+      httpsPort = (httpsServer.address() as AddressInfo).port
       //debug('listening https on: %s', httpsPort);
     })
 
-  const httpServer = http
-    .createServer(forward)
-    .listen(option.port, function () {
-      //debug('listening http on: %s', httpServer.address().port);
-    })
+  const httpServer = http.createServer(forward).listen(option.port, () => {
+    //debug('listening http on: %s', httpServer.address().port);
+  })
 
   function forward(req: IncomingMessage, res: ServerResponse) {
     //debug('fetch: %s', (utils.isReqHttps(req) ? 'https://' + req.headers.host + '' : '') + req.url);

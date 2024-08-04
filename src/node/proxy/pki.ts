@@ -55,12 +55,12 @@ export function getPKI(commonName: string, callback?: (kpi: KPI) => void) {
       serviceCertificate: serviceCertificate,
       days: 1000,
     },
-    function (error: string, ret) {
+    (error, ret) => {
       if (!fs.existsSync(cnDir)) {
         fs.mkdirSync(cnDir)
       }
-      fs.writeFileSync(certPath, new Buffer(ret.certificate, 'utf-8'))
-      fs.writeFileSync(keyPath, new Buffer(ret.clientKey, 'utf-8'))
+      fs.writeFileSync(certPath, new Buffer(ret!.certificate!, 'utf-8'))
+      fs.writeFileSync(keyPath, new Buffer(ret!.clientKey!, 'utf-8'))
       callback?.({
         key: fs.readFileSync(keyPath),
         cert: fs.readFileSync(certPath),

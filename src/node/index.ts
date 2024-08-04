@@ -1,4 +1,4 @@
-import { start } from './proxy/old/proxy'
+import { start } from './proxy/old/proxy3'
 import process from 'node:process'
 import { openBrowser } from './utils/open-browser'
 
