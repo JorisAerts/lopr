@@ -3,38 +3,42 @@
  */
 import { spawn } from 'child_process'
 import os from 'os'
-import pathlib from 'path'
+import { join } from 'path'
 import fs from 'fs'
 import crypto from 'crypto'
-import Certificate = module
+import type {
+  Certificate,
+  CertificateFields,
+  CertificateOptions,
+} from './Certificate'
 
 const tempDir = os.tmpdir() || '/tmp'
 
 // PUBLIC API
 
-type Callback = (err: string, data: string) => void
+export type Callback = (err: string, data: string) => void
 
 /**
  * Creates a private key
  *
- * @param {Number} [keyBitsize=1024] Size of the key, defaults to 1024bit
+ * @param {Number} [keyBitSize=1024] Size of the key, defaults to 1024bit
  * @param {Function} callback Callback function with an error object and {key}
  */
 export function createPrivateKey(callback): void
-export function createPrivateKey(keyBitsize: number, callback): void
-export function createPrivateKey(keyBitsize: unknown, callback) {
-  if (!callback && typeof keyBitsize == 'function') {
-    callback = keyBitsize
-    keyBitsize = undefined
+export function createPrivateKey(keyBitSize: number, callback): void
+export function createPrivateKey(keyBitSize: unknown, callback) {
+  if (!callback && typeof keyBitSize == 'function') {
+    callback = keyBitSize
+    keyBitSize = undefined
   }
 
-  keyBitsize = Number(keyBitsize) || 1024
+  keyBitSize = Number(keyBitSize) || 1024
 
   const params = [
     'genrsa',
     '-rand',
     '/var/log/mail:/var/log/messages',
-    `${keyBitsize}`,
+    `${keyBitSize}`,
   ]
 
   execOpenSSL(params, 'RSA PRIVATE KEY', function (error, key) {
@@ -45,26 +49,23 @@ export function createPrivateKey(keyBitsize: unknown, callback) {
   })
 }
 
+export interface CreateCSROptions extends CertificateFields {
+  clientKey: string
+  keyBitSize: number
+  hash: string
+}
+
 /**
  * Creates a Certificate Signing Request
  *
  * If client key is undefined, a new key is created automatically. The used key is included
  * in the callback return as clientKey
  *
- * @param {Object} [options] Optional options object
- * @param {String} [options.clientKey] Optional client key to use
- * @param {Number} [options.keyBitsize] If clientKey is undefined, bit size to use for generating a new key (defaults to 1024)
- * @param {String} [options.hash] Hash function to use (either md5 or sha1, defaults to sha1)
- * @param {String} [options.country] CSR country field
- * @param {String} [options.state] CSR state field
- * @param {String} [options.locality] CSR locality field
- * @param {String} [options.organization] CSR organization field
- * @param {String} [options.organizationUnit] CSR organizational unit field
- * @param {String} [options.commonName="localhost"] CSR common name field
- * @param {String} [options.emailAddress] CSR email address field
  * @param {Function} callback Callback function with an error object and {csr, clientKey}
  */
-export function createCSR(options, callback) {
+//export function createCSR(options: CreateCSROptions, callback: any): void
+//export function createCSR(callback: any): void
+export function createCSR(options: CreateCSROptions, callback: any) {
   if (!callback && typeof options == 'function') {
     callback = options
     options = undefined
@@ -73,7 +74,7 @@ export function createCSR(options, callback) {
   options = options || {}
 
   if (!options.clientKey) {
-    createPrivateKey(options.keyBitsize || 1024, function (error, keyData) {
+    createPrivateKey(options.keyBitSize || 1024, function (error, keyData) {
       if (error) {
         return callback(error)
       }
@@ -146,7 +147,7 @@ export function createCertificate(options, callback) {
     if (options.selfSigned) {
       options.serviceKey = options.clientKey
     } else {
-      createPrivateKey(options.keyBitsize || 1024, function (error, keyData) {
+      createPrivateKey(options.keyBitSize || 1024, function (error, keyData) {
         if (error) {
           return callback(error)
         }
@@ -353,7 +354,7 @@ function fetchCertificateData(certData, callback) {
 
 const RX_CSR = /[^\w .\-@]+/g
 
-function generateCSRSubject(options: Certificate) {
+function generateCSRSubject(options: CertificateOptions) {
   options = options || {}
   const csrData: Certificate = {
     C: options.country || options.C || '',
@@ -367,8 +368,10 @@ function generateCSRSubject(options: Certificate) {
   const csrBuilder = [] as string[]
 
   Object.keys(csrData).forEach(function (key) {
-    if (csrData[key]) {
-      csrBuilder.push(`/${key}=${csrData[key].replace(RX_CSR, ' ').trim()}`)
+    if (csrData[key as keyof Certificate]) {
+      csrBuilder.push(
+        `/${key}=${csrData[key as keyof Certificate].replace(RX_CSR, ' ').trim()}`
+      )
     }
   })
 
@@ -441,10 +444,7 @@ function spawnWrapper(params: string[], tmpfiles: string[], callback) {
     tmpfiles = [...tmpfiles]
     params.forEach(function (value, i) {
       if (value === '--TMPFILE--') {
-        const path = pathlib.join(
-          tempDir,
-          crypto.randomBytes(20).toString('hex')
-        )
+        const path = join(tempDir, crypto.randomBytes(20).toString('hex'))
         files.push({ path, contents: tmpfiles.shift() })
         params[i] = path
       }

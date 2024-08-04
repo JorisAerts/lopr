@@ -5,15 +5,15 @@ import * as net from 'net'
 import incoming from './incoming'
 import wsIncoming from './ws-incoming'
 import { getPKI, getRootPKI } from './pki'
-import type { Option } from './Option'
 import type * as tls from 'node:tls'
 import type { HttpServer } from 'vite'
 
-module.exports = {
-  createServer: createProxy,
+interface CreateProxyOptions {
+  port: number
+  mapHttpsReg: boolean | string | RegExp
 }
 
-function createProxy(option: Option) {
+export function createProxy(option: CreateProxyOptions) {
   // one host on https Server
   const pkiPromises = {} as Record<string, Promise<void>>
   let httpsPort: number
@@ -36,8 +36,8 @@ function createProxy(option: Option) {
       },
       forward
     )
-    .listen(function () {
-      httpsPort = this.address().port
+    .listen(function (this: HttpServer) {
+      httpsPort = (this.address() as any).port
       //debug('listening https on: %s', httpsPort);
     })
 
@@ -57,7 +57,10 @@ function createProxy(option: Option) {
     //debug('connect %s', req.url);
     if (req.url?.match(/:443$/)) {
       const host = req.url.substring(0, req.url.length - 4)
-      if (option.mapHttpsReg === true || host.match(option.mapHttpsReg)) {
+      if (
+        option.mapHttpsReg === true ||
+        (option.mapHttpsReg !== false && host.match(option.mapHttpsReg))
+      ) {
         let promise
         if (!(promise = pkiPromises[host])) {
           generatePKI(host)
@@ -81,11 +84,10 @@ function createProxy(option: Option) {
     }
   })
 
-  function upgrade(this: HttpServer, req, socket, head) {
-    const server = this as HttpServer
+  function upgrade(req: IncomingMessage, socket: net.Socket, head: Buffer) {
     //debug('upgrade: %s', (utils.isReqHttps(req) ? 'https://' + req.headers.host + '' : '') + req.url);
     wsIncoming.forEach(function (come) {
-      come(req, socket, option, server, head)
+      come(req, socket, option, httpServer, head)
     })
   }
 

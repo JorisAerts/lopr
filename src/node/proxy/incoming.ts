@@ -6,6 +6,10 @@ import * as https from 'https'
 import type { Option } from './Option'
 import { isReqHttps, setupOutgoing } from './utils'
 
+export interface IncomingRequest {
+  (req: IncomingMessage, res: ServerResponse, options: Option): void
+}
+
 export default [
   /**
    * Sets `content-length` to '0' if request is of DELETE type.
@@ -57,4 +61,4 @@ export default [
       req.pipe(proxyReq)
     }
   },
-]
+] as IncomingRequest[]

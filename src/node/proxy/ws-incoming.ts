@@ -2,15 +2,25 @@
 import type { IncomingMessage } from 'http'
 import * as http from 'http'
 import * as https from 'https'
-import type * as net from 'net'
+import type { Socket } from 'net'
 import * as utils from './utils'
 import type { Option } from './Option'
+
+export interface WSIncomingRequest {
+  (
+    req: IncomingMessage,
+    socket: Socket,
+    options: Option,
+    server: http.Server | https.Server,
+    head: Buffer
+  ): void
+}
 
 export default [
   /**
    * WebSocket requests must have the `GET` method and the `upgrade:websocket` header
    */
-  function (req: IncomingMessage, socket: net.Socket) {
+  function (req: IncomingMessage, socket: Socket) {
     if (req.method !== 'GET' || !req.headers.upgrade) {
       socket.destroy()
       return
@@ -24,7 +34,7 @@ export default [
   /**
    * Set the proper configuration for sockets, set no delay and set keep alive, also set the timeout to 0.
    */
-  function (req: IncomingMessage, socket: net.Socket) {
+  function (req: IncomingMessage, socket: Socket) {
     socket.setTimeout(0)
     socket.setNoDelay(true)
 
@@ -34,7 +44,7 @@ export default [
   /**
    * Sets `x-forwarded-*` headers if specified in config.
    */
-  function (req: IncomingMessage /*, socket: net.Socket, options: Option */) {
+  function (req: IncomingMessage /*, socket: Socket, options: Option */) {
     const values = {
       for: req.connection.remoteAddress || req.socket.remoteAddress,
       port: req.connection.remotePort || req.socket.remotePort,
@@ -49,14 +59,9 @@ export default [
   },
 
   /**
-   * Does the actual proxying. Make the request and upgrade it
-   * send the Switching Protocols request and pipe the sockets.
-   *
-   * @param {ClientRequest} req Request object
-   * @param {Socket} socket
-   * @param {Object} options Config object passed to the proxy
+   * Does the actual proxying. Make the request and upgrade it send the Switching Protocols request and pipe the sockets.
    */
-  function (req: IncomingMessage, socket: net.Socket, options: Option) {
+  function (req: IncomingMessage, socket: Socket, options: Option) {
     utils.setupSocket(socket)
 
     const config = utils.setupOutgoing({}, req, null, options)
@@ -89,4 +94,4 @@ export default [
     })
     req.pipe(proxyReq)
   },
-]
+] as WSIncomingRequest[]
