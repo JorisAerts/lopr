@@ -1,18 +1,25 @@
-// certUtils.ts
-import forge from 'node-forge'
-import * as fs from 'fs'
-import path from 'path'
+import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { join } from 'path'
+import { md, pki } from 'node-forge'
 import { packageRoot } from '../../utils/package'
 
-const pki = forge.pki
+export type PrivateKey = pki.PrivateKey
+export type Certificate = pki.Certificate
 
 const keyFiles = {
-  key: path.join(packageRoot, `${'cert/'}rootCA.key`),
-  cert: path.join(packageRoot, `${'cert/'}rootCA.crt`),
+  key: join(packageRoot, `${'cert/root'}rootCA.key`),
+  cert: join(packageRoot, `${'cert/root'}rootCA.crt`),
+}
+
+export interface RootCertificate {
+  key: string | Buffer
+  cert: string | Buffer
+  forgeCert: Certificate
+  forgeKey: PrivateKey
 }
 
 // Create a root CA certificate
-const generateRootCert = () => {
+const generateRootCert = (): RootCertificate => {
   const keys = pki.rsa.generateKeyPair(2048)
   const cert = pki.createCertificate()
   cert.publicKey = keys.publicKey
@@ -22,12 +29,13 @@ const generateRootCert = () => {
   cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
 
   const attrs = [
-    { name: 'commonName', value: `localhost` },
-    { name: 'countryName', value: 'BE' },
-    { shortName: 'ST', value: 'Brussels' },
-    { name: 'localityName', value: 'Brussels' },
-    { name: 'organizationName', value: 'localhost' /* packageJson.name */ },
-    //{ shortName: 'OU', value: 'Proxy Division' },
+    { shortName: 'C', value: '' },
+    { shortName: 'ST', value: '' },
+    { shortName: 'L', value: '' },
+    { shortName: 'O', value: '' },
+    { shortName: 'OU', value: '' },
+    { shortName: 'CN', value: 'localhost' },
+    { name: 'emailAddress', value: '' },
   ]
 
   cert.setSubject(attrs)
@@ -50,13 +58,13 @@ const generateRootCert = () => {
     },
   ])
 
-  cert.sign(keys.privateKey, forge.md.sha256.create())
+  cert.sign(keys.privateKey, md.sha256.create())
 
-  if (fs.existsSync(keyFiles.cert) && fs.existsSync(keyFiles.key)) {
+  if (existsSync(keyFiles.cert) && existsSync(keyFiles.key)) {
     console.info('reading keys')
     return {
-      key: fs.readFileSync(keyFiles.key),
-      cert: fs.readFileSync(keyFiles.cert),
+      key: readFileSync(keyFiles.key),
+      cert: readFileSync(keyFiles.cert),
       forgeCert: cert,
       forgeKey: keys.privateKey,
     }
@@ -66,8 +74,8 @@ const generateRootCert = () => {
   const pemCert = pki.certificateToPem(cert)
 
   console.info('writing keys')
-  fs.writeFileSync(keyFiles.key, pemKey)
-  fs.writeFileSync(keyFiles.cert, pemCert)
+  writeFileSync(keyFiles.key, pemKey)
+  writeFileSync(keyFiles.cert, pemCert)
 
   return {
     key: pemKey,
@@ -90,10 +98,10 @@ const createCertForHost = (hostname: string) => {
   const keys = pki.rsa.generateKeyPair(2048)
   const cert = pki.createCertificate()
   cert.publicKey = keys.publicKey
-  cert.serialNumber = new Date().getTime().toString()
+  cert.serialNumber = Date.now().toString()
   cert.validity.notBefore = new Date()
   cert.validity.notAfter = new Date()
-  cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1)
+  cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
 
   const attrs = [{ name: 'commonName', value: hostname }]
 
@@ -115,11 +123,13 @@ const createCertForHost = (hostname: string) => {
     },
   ])
 
-  cert.sign(forgeRootKey, forge.md.sha256.create())
+  cert.sign(forgeRootKey, md.sha256.create())
+  const pemKey = pki.privateKeyToPem(keys.privateKey)
+  const pemCert = pki.certificateToPem(cert)
 
   return {
-    key: pki.privateKeyToPem(keys.privateKey),
-    cert: pki.certificateToPem(cert),
+    key: pemKey,
+    cert: pemCert,
   }
 }
 

@@ -3,8 +3,8 @@ import * as http from 'http'
 import * as https from 'https'
 import * as net from 'net'
 import type { AddressInfo } from 'ws'
-import incoming from './incoming'
-import wsIncoming from './ws-incoming'
+import { incoming } from './incoming'
+import { wsIncoming } from './ws-incoming'
 import { getPKI, getRootPKI } from './pki'
 import type { OutgoingOptions } from './utils'
 
@@ -48,7 +48,7 @@ export function createProxy(options: Partial<CreateProxyOptions> = {}) {
 
   function forward(req: IncomingMessage, res: ServerResponse) {
     //debug('fetch: %s', (utils.isReqHttps(req) ? 'https://' + req.headers.host + '' : '') + req.url);
-    incoming.forEach((come) => come(req, res, options))
+    incoming(req, res, options)
   }
 
   // en.wikipedia.org/wiki/HTTP_tunnel
@@ -82,9 +82,7 @@ export function createProxy(options: Partial<CreateProxyOptions> = {}) {
 
   function upgrade(req: IncomingMessage, socket: net.Socket, head: Buffer) {
     //debug('upgrade: %s', (utils.isReqHttps(req) ? 'https://' + req.headers.host + '' : '') + req.url);
-    wsIncoming.forEach(function (come) {
-      come(req, socket, options, httpServer, head)
-    })
+    wsIncoming(req, socket, options, httpServer, head)
   }
 
   httpServer.on('upgrade', upgrade)

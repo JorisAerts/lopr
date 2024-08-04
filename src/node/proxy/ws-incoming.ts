@@ -16,7 +16,7 @@ export interface WSIncomingRequest {
   ): void
 }
 
-export default [
+const inc = [
   /**
    * WebSocket requests must have the `GET` method and the `upgrade:websocket` header
    */
@@ -95,3 +95,11 @@ export default [
     req.pipe(proxyReq)
   },
 ] as WSIncomingRequest[]
+
+export const wsIncoming = (
+  req: IncomingMessage,
+  socket: Socket,
+  options: Options,
+  server: http.Server | https.Server,
+  head: Buffer
+) => inc.forEach((come) => come(req, socket, options, server, head))

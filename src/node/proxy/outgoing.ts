@@ -6,7 +6,7 @@ export interface OutgoingRequest {
   (req: IncomingMessage, res: ServerResponse, proxyRes: IncomingMessage): void
 }
 
-export default [
+const go = [
   /**
    * If is a HTTP 1.0 request, remove chunk headers
    */
@@ -64,3 +64,9 @@ export default [
     res.writeHead(proxyRes.statusCode ?? 200, proxyRes.statusMessage)
   },
 ] as OutgoingRequest[]
+
+export const outgoing = (
+  req: IncomingMessage,
+  res: ServerResponse,
+  proxyRes: IncomingMessage
+) => go.forEach((come) => come(req, res, proxyRes))

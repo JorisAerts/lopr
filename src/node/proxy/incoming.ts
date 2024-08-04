@@ -1,5 +1,5 @@
 // https://github.com/nodejitsu/node-http-proxy
-import outgoing from './outgoing'
+import { outgoing } from './outgoing'
 import type { IncomingMessage, ServerResponse } from 'http'
 import * as http from 'http'
 import * as https from 'https'
@@ -10,7 +10,7 @@ export interface IncomingRequest {
   (req: IncomingMessage, res: ServerResponse, options: Options): void
 }
 
-export default [
+const inc = [
   /**
    * Sets `content-length` to '0' if request is of DELETE type.
    */
@@ -37,13 +37,12 @@ export default [
     })
   },
 
-  function (req: IncomingMessage, res: ServerResponse, option: Options) {
-    const isHttps = isReqHttps(req)
-
+  /**
+   * Pipe to the outgoing pipeline
+   */
+  function (req: IncomingMessage, res: ServerResponse, options: Options) {
     function response(proxyRes: IncomingMessage) {
-      outgoing.forEach(function (go) {
-        go(req, res, proxyRes)
-      })
+      outgoing(req, res, proxyRes)
       proxyRes.pipe(res)
     }
 
@@ -52,12 +51,20 @@ export default [
       console.error(err)
     }
 
-    const outConfig = setupOutgoing({}, req, res, option)
-
-    if (outConfig) {
-      const proxyReq = (isHttps ? https : http).request(outConfig, response)
+    const requestOptions = setupOutgoing({}, req, res, options)
+    if (requestOptions) {
+      const proxyReq = (isReqHttps(req) ? https : http).request(
+        requestOptions,
+        response
+      )
       proxyReq.on('error', onError)
       req.pipe(proxyReq)
     }
   },
 ] as IncomingRequest[]
+
+export const incoming = (
+  req: IncomingMessage,
+  res: ServerResponse,
+  options: Options
+) => inc.forEach((come) => come(req, res, options))
