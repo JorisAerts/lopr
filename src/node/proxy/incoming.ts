@@ -3,11 +3,11 @@ import { outgoing } from './outgoing'
 import type { IncomingMessage, ServerResponse } from 'http'
 import * as http from 'http'
 import * as https from 'https'
-import type { Options } from './Options'
 import { isReqHttps, setupOutgoing } from './utils'
+import type { CreateProxyOptions } from './proxy'
 
 export interface IncomingRequest {
-  (req: IncomingMessage, res: ServerResponse, options: Options): void
+  (req: IncomingMessage, res: ServerResponse, options: CreateProxyOptions): void
 }
 
 const inc = [
@@ -40,7 +40,11 @@ const inc = [
   /**
    * Pipe to the outgoing pipeline
    */
-  function (req: IncomingMessage, res: ServerResponse, options: Options) {
+  function (
+    req: IncomingMessage,
+    res: ServerResponse,
+    options: CreateProxyOptions
+  ) {
     function response(proxyRes: IncomingMessage) {
       outgoing(req, res, proxyRes)
       proxyRes.pipe(res)
@@ -66,5 +70,5 @@ const inc = [
 export const incoming = (
   req: IncomingMessage,
   res: ServerResponse,
-  options: Options
+  options: CreateProxyOptions
 ) => inc.forEach((come) => come(req, res, options))

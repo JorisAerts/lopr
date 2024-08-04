@@ -1,8 +1,8 @@
 // https://github.com/nodejitsu/node-http-proxy
 import type * as net from 'node:net'
 import type { IncomingMessage, RequestOptions, ServerResponse } from 'http'
-import type { Options } from './Options'
 import type * as tls from 'node:tls'
+import type { CreateProxyOptions } from './proxy'
 
 export type OutgoingOptions = tls.ConnectionOptions & RequestOptions
 
@@ -10,7 +10,7 @@ export function setupOutgoing(
   outgoing: Partial<OutgoingOptions>,
   req: IncomingMessage,
   res: ServerResponse | null,
-  options: Options
+  options: CreateProxyOptions
 ): OutgoingOptions {
   const urlObj = new URL(req.url!)
   const isHttps = isReqHttps(req)
@@ -22,7 +22,11 @@ export function setupOutgoing(
   outgoing.rejectUnauthorized = false
   outgoing.headers = headers
   if (options.map) {
-    outgoing = options.map(outgoing, req, res)
+    outgoing = (options.map as Exclude<CreateProxyOptions['map'], undefined>)(
+      outgoing,
+      req,
+      res
+    )
   }
   return outgoing
 }

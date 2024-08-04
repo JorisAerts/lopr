@@ -4,13 +4,13 @@ import * as http from 'http'
 import * as https from 'https'
 import type { Socket } from 'net'
 import * as utils from './utils'
-import type { Options } from './Options'
+import type { CreateProxyOptions } from './proxy'
 
 export interface WSIncomingRequest {
   (
     req: IncomingMessage,
     socket: Socket,
-    options: Options,
+    options: CreateProxyOptions,
     server: http.Server | https.Server,
     head: Buffer
   ): void
@@ -61,10 +61,15 @@ const inc = [
   /**
    * Does the actual proxying. Make the request and upgrade it send the Switching Protocols request and pipe the sockets.
    */
-  function (req: IncomingMessage, socket: Socket, options: Options) {
+  function (req: IncomingMessage, socket: Socket, options: CreateProxyOptions) {
     utils.setupSocket(socket)
 
-    const config = utils.setupOutgoing({}, req, null, options)
+    const config = utils.setupOutgoing(
+      {},
+      req,
+      null,
+      options as CreateProxyOptions
+    )
 
     const proxyReq = (
       req.connection.asIndexedPairs().readableLength ? https : http
@@ -99,7 +104,7 @@ const inc = [
 export const wsIncoming = (
   req: IncomingMessage,
   socket: Socket,
-  options: Options,
+  options: CreateProxyOptions,
   server: http.Server | https.Server,
   head: Buffer
 ) => inc.forEach((come) => come(req, socket, options, server, head))

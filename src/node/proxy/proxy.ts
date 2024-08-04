@@ -7,20 +7,37 @@ import { incoming } from './incoming'
 import { wsIncoming } from './ws-incoming'
 import { getPKI, getRootPKI } from './pki'
 import type { OutgoingOptions } from './utils'
+import { isReqHttps } from './utils'
+import type { Logger } from '../logger'
+import { createLogger } from '../logger'
 
-interface CreateProxyOptions {
+export interface CreateProxyOptions {
   port: number
   mapHttpsReg: boolean | undefined | string | RegExp
-  map: ((options: OutgoingOptions) => OutgoingOptions) | undefined
+  map:
+    | ((
+        options: OutgoingOptions,
+        req: IncomingMessage,
+        res: ServerResponse | null
+      ) => OutgoingOptions)
+    | undefined
 }
 
-export function createProxy(options: Partial<CreateProxyOptions> = {}) {
-  options = {
+export interface CommonOptions {
+  logger: Logger
+}
+
+export function createProxy<Options extends Partial<CreateProxyOptions>>(
+  opt = {} as Options
+) {
+  const options = {
     port: 8080,
     mapHttpsReg: true,
+    ...opt,
+    logger: createLogger(),
+  } as CreateProxyOptions & CommonOptions & Options
 
-    ...options,
-  }
+  const { logger } = options
 
   // one host on https Server
   const pkiPromises = {} as Record<string, Promise<void>>
@@ -29,7 +46,7 @@ export function createProxy(options: Partial<CreateProxyOptions> = {}) {
   const generatePKI = (host: string) =>
     (pkiPromises[host] = new Promise((resolve) => {
       getPKI(host, (options) => {
-        //debug('add context for: %s', host);
+        logger.debug('add context for: %s', host)
         httpsServer.addContext(host, options)
         resolve()
       })
@@ -39,21 +56,27 @@ export function createProxy(options: Partial<CreateProxyOptions> = {}) {
     .createServer({ ...getRootPKI() }, forward)
     .listen(() => {
       httpsPort = (httpsServer.address() as AddressInfo).port
-      //debug('listening https on: %s', httpsPort);
+      logger.debug('listening https on: %s', httpsPort)
     })
 
   const httpServer = http.createServer(forward).listen(options.port, () => {
-    //debug('listening http on: %s', httpServer.address().port);
+    logger.debug(
+      'listening http on: %s',
+      (httpServer.address() as AddressInfo)?.port
+    )
   })
 
   function forward(req: IncomingMessage, res: ServerResponse) {
-    //debug('fetch: %s', (utils.isReqHttps(req) ? 'https://' + req.headers.host + '' : '') + req.url);
-    incoming(req, res, options)
+    logger.debug(
+      'fetch: %s',
+      (isReqHttps(req) ? `https://${req.headers.host}` : '') + req.url
+    )
+    incoming(req, res, options as CreateProxyOptions)
   }
 
   // en.wikipedia.org/wiki/HTTP_tunnel
   httpServer.on('connect', function (req, socket) {
-    //debug('connect %s', req.url);
+    logger.debug('connect %s', req.url)
     if (req.url?.match(/:443$/)) {
       const host = req.url.substring(0, req.url.length - 4)
       if (
@@ -64,7 +87,7 @@ export function createProxy(options: Partial<CreateProxyOptions> = {}) {
         promise.then(function () {
           const mediator = net.connect(httpsPort)
           mediator.on('connect', () => {
-            //debug('connected %s', req.url);
+            logger.debug('connected %s', req.url)
             socket.write('HTTP/1.1 200 Connection established\r\n\r\n')
           })
           socket.pipe(mediator).pipe(socket)
@@ -81,8 +104,11 @@ export function createProxy(options: Partial<CreateProxyOptions> = {}) {
   })
 
   function upgrade(req: IncomingMessage, socket: net.Socket, head: Buffer) {
-    //debug('upgrade: %s', (utils.isReqHttps(req) ? 'https://' + req.headers.host + '' : '') + req.url);
-    wsIncoming(req, socket, options, httpServer, head)
+    logger.debug(
+      'upgrade: %s',
+      (isReqHttps(req) ? `https://${req.headers.host}` : '') + req.url
+    )
+    wsIncoming(req, socket, options as CreateProxyOptions, httpServer, head)
   }
 
   httpServer.on('upgrade', upgrade)
