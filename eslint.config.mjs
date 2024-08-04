@@ -18,4 +18,5 @@ export default [
       '@typescript-eslint/consistent-type-imports': ['error', { 'fixStyle': 'separate-type-imports' }],
     },
   },
+  { ignores: ['dist/**/*', '.yarn/**/*'] },
 ]
