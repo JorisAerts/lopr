@@ -2,13 +2,14 @@
 import forge from 'node-forge'
 import * as fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
-import { packageJson, packageRoot } from '../utils/package'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import { packageRoot } from '../utils/package'
 
 const pki = forge.pki
+
+const keyFiles = {
+  key: path.join(packageRoot, `${'cert/'}rootCA.key`),
+  cert: path.join(packageRoot, `${'cert/'}rootCA.crt`),
+}
 
 // Create a root CA certificate
 const generateRootCert = () => {
@@ -21,11 +22,11 @@ const generateRootCert = () => {
   cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
 
   const attrs = [
-    { name: 'commonName', value: `${packageJson.name} CA` },
+    { name: 'commonName', value: `localhost` },
     { name: 'countryName', value: 'BE' },
     { shortName: 'ST', value: 'Brussels' },
     { name: 'localityName', value: 'Brussels' },
-    { name: 'organizationName', value: packageJson.name },
+    { name: 'organizationName', value: 'localhost' /* packageJson.name */ },
     //{ shortName: 'OU', value: 'Proxy Division' },
   ]
 
@@ -49,22 +50,24 @@ const generateRootCert = () => {
     },
   ])
 
-  if (fs.existsSync(path.join(packageRoot, 'rootCA.key'))) {
+  cert.sign(keys.privateKey, forge.md.sha256.create())
+
+  if (fs.existsSync(keyFiles.cert) && fs.existsSync(keyFiles.key)) {
+    console.info('reading keys')
     return {
-      key: fs.readFileSync(path.join(packageRoot, 'rootCA.key')),
-      cert: fs.readFileSync(path.join(packageRoot, 'rootCA.crt')),
+      key: fs.readFileSync(keyFiles.key),
+      cert: fs.readFileSync(keyFiles.cert),
       forgeCert: cert,
       forgeKey: keys.privateKey,
     }
   }
 
-  cert.sign(keys.privateKey, forge.md.sha256.create())
-
   const pemKey = pki.privateKeyToPem(keys.privateKey)
   const pemCert = pki.certificateToPem(cert)
 
-  fs.writeFileSync(path.join(packageRoot, 'rootCA.key'), pemKey)
-  fs.writeFileSync(path.join(packageRoot, 'rootCA.crt'), pemCert)
+  console.info('writing keys')
+  fs.writeFileSync(keyFiles.key, pemKey)
+  fs.writeFileSync(keyFiles.cert, pemCert)
 
   return {
     key: pemKey,
@@ -81,8 +84,7 @@ const {
   forgeKey: forgeRootKey,
 } = generateRootCert()
 
-export const readRootCert = () =>
-  fs.readFileSync(path.join(packageRoot, 'rootCA.crt'))
+export const readRootCert = () => rootKey
 
 const createCertForHost = (hostname: string) => {
   const keys = pki.rsa.generateKeyPair(2048)
