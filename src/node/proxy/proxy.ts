@@ -14,6 +14,7 @@ import { generatePac } from '../server/pac'
 import { handleSelf } from '../server/self-handler'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { createProxyRequest } from '../utils/proxy-request'
+import { isLocalhost } from '../utils/is-localhost'
 
 export interface CreateProxyOptions {
   port: number
@@ -45,6 +46,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
 
   // one host on https Server
   const pkiPromises = {} as Record<string, Promise<void>>
+  const httpPort = options.port
   let httpsPort: number
 
   const generatePKI = (host: string) =>
@@ -64,7 +66,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
 
   const httpServer = http //
     .createServer(forwardHttp)
-    .listen(options.port, () => {
+    .listen(httpPort, () => {
       /*
       logger.debug(
         'listening http on: %s',
@@ -76,18 +78,24 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
   function forwardHttp(req: IncomingMessage, res: ServerResponse) {
     sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
-    // intercept local requests
-    if (req.url === '/pac') {
-      const pac = generatePac(`localhost:${options.port}`)
-      res.setHeader('content-type', 'text/javascript')
-      res.end(pac)
+    if (isLocalhost(req, httpPort)) {
+      // intercept local requests
+      if (req.url === '/pac') {
+        const pac = generatePac(`localhost:${httpPort}`)
+        res.setHeader('content-type', 'text/javascript')
+        res.end(pac)
+      }
+
+      // requests to this server (proxy UI)
+      else {
+        //console.log({ req })
+        handleSelf(req, res)
+      }
+
+      return
     }
 
-    // requests to this server (proxy UI)
-    else if (req.url?.startsWith('/')) {
-      return handleSelf(req, res)
-    }
-
+    // forward the request to the proxy
     return forward(req, res)
   }
 
@@ -135,14 +143,16 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
     */
     sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
-    wsIncoming(req, socket, options as CreateProxyOptions, httpServer, head)
+    // ignore local ws request (don't forward to the proxy)
+    if (!isLocalhost(req, httpPort))
+      wsIncoming(req, socket, options as CreateProxyOptions, httpServer, head)
   }
 
   httpServer.on('upgrade', upgrade)
 
   defineSocketServer({ logger, server: httpServer })
 
-  const address = `http://localhost:${options.port}`
+  const address = `http://localhost:${httpPort}`
 
   return Promise.resolve({
     logger,

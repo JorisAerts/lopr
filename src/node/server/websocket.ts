@@ -19,29 +19,25 @@ export const sendWsData = (type: WebSocketMessageType, data: any) => {
 
 export const defineSocketServer = ({ logger, server }: InstanceOptions) => {
   const wss = new WebSocketServer({ server, path: WEBSOCKET_ROOT })
-  wss.on('connection', function connection(ws) {
+  instance.wss = wss.on('connection', function connection(ws) {
     sendWsData(WebSocketMessageType.App, 'Connection Established')
-    ws.on('message', (msg: MessageEvent) => {
-      const data = parseWebSocketMessage(msg)
-      if (typeof data === 'object') {
-        registry[data.type]?.(data)
-      } else {
-        logger.warn(`Could not find WebSocket handler for:`, data)
-      }
-    })
-    ws.on('error', (err: Error) => {
-      // console.error(err)
-    })
-    ws.on('open', () => {
-      logger.info('Websocket connection opened.')
-    })
-    ws.on('close', (err: Error) => {
-      //console.log('Connection closed', err)
-      console.info('Websocket connection lost', err)
-    })
     instance.ws = ws
+      .on('message', (msg: MessageEvent) => {
+        const data = parseWebSocketMessage(msg)
+        if (typeof data === 'object') {
+          registry[data.type]?.(data)
+        } else {
+          logger.warn(`Could not find WebSocket handler for:`, data)
+        }
+      })
+      .on('error', (err: Error) => {})
+      .on('open', () => {
+        logger.info('Websocket connection opened.')
+      })
+      .on('close', (err: Error) => {
+        console.info('Websocket connection lost', err)
+      })
   })
-  instance.wss = wss
 }
 
 export const useWebSocketServer = () => {

@@ -33,7 +33,7 @@ export const tmpDir = (() => {
  */
 const rootDir = (() => {
   const packageCertRoot = join(packageRoot, 'cert')
-  if (existsSync(join(packageCertRoot, 'root/rootCA.key'))) {
+  if (existsSync(join(packageCertRoot, 'root', 'rootCA.key'))) {
     return packageCertRoot
   }
   return join(tmpDir(), 'cert')
@@ -47,17 +47,17 @@ interface RootKeyFiles {
 const ROOT_KEY_FILES: RootKeyFiles = getRootKeyFiles()
 
 function getRootKeyFiles(): RootKeyFiles {
-  const key = join(rootDir, `root/rootCA.key`)
-  const cert = join(rootDir, `root/rootCA.crt`)
+  const key = join(rootDir, 'root', 'rootCA.key')
+  const cert = join(rootDir, 'root', 'rootCA.crt')
   if (existsSync(key) && existsSync(cert)) return { key, cert }
   return {
-    key: join(tmpDir(), `cert/root/rootCA.key`),
-    cert: join(tmpDir(), `cert/root/rootCA.crt`),
+    key: join(tmpDir(), 'cert', 'root', 'rootCA.key'),
+    cert: join(tmpDir(), 'cert', 'root', 'rootCA.crt'),
   }
 }
 
 export const generatedKeyFiles = (host: string): RootKeyFiles => {
-  const root = join(tmpDir(), `${'cert/generated/'}${host}`)
+  const root = join(tmpDir(), 'cert', 'generated', host)
   return {
     key: `${root}.key`,
     cert: `${root}.crt`,
@@ -81,7 +81,7 @@ const generateRootCert = (): RootCertificateInfo => {
   const keys = pki.rsa.generateKeyPair(2048)
   const cert = pki.createCertificate()
   cert.publicKey = keys.publicKey
-  cert.serialNumber = '01'
+  cert.serialNumber = Date.now().toString()
   cert.validity.notBefore = new Date()
   cert.validity.notBefore.setFullYear(
     cert.validity.notBefore.getFullYear() + -1
@@ -91,13 +91,16 @@ const generateRootCert = (): RootCertificateInfo => {
   cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
 
   const attrs = [
-    { shortName: 'C', value: '' },
-    { shortName: 'ST', value: '' },
-    { shortName: 'L', value: '' },
-    { shortName: 'O', value: '' },
-    { shortName: 'OU', value: '' },
+    { shortName: 'C', value: 'BE' },
+    { shortName: 'ST', value: 'OVL' },
+    { shortName: 'L', value: 'Ghent' },
+    { shortName: 'O', value: packageJson.name },
+    { shortName: 'OU', value: packageJson.name },
     { shortName: 'CN', value: 'localhost' },
-    { name: 'emailAddress', value: '' },
+    {
+      name: 'emailAddress',
+      value: '3611758+JorisAerts@users.noreply.github.com',
+    },
   ]
 
   cert.setSubject(attrs)
@@ -148,15 +151,7 @@ const createCertForHost = (hostname: string) => {
   cert.validity.notAfter = new Date()
   cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
 
-  const attrs = [
-    { shortName: 'C', value: '' },
-    { shortName: 'ST', value: '' },
-    { shortName: 'L', value: '' },
-    { shortName: 'O', value: '' },
-    { shortName: 'OU', value: '' },
-    { shortName: 'CN', value: hostname },
-    { name: 'emailAddress', value: '' },
-  ]
+  const attrs = [{ shortName: 'CN', value: hostname }]
 
   cert.setSubject(attrs)
   cert.setIssuer(forgeRootCert.subject.attributes)
