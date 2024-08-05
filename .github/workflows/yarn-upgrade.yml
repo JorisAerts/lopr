@@ -1,0 +1,48 @@
+name: Yarn Upgrade
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 1 * *'
+
+jobs:
+  yarn_dedupe:
+    name: "Yarn upgrade"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - name: Yarn set latest version
+        run: |
+          yarn set version latest --yarn-path
+
+      - name: Detect version changes
+        id: verify_diff
+        run: |
+          git diff --quiet . || echo "deduped_changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit changes
+        if: steps.verify_diff.outputs.deduped_changes == 'true'
+        run: |
+          export YARN_VERSION="$(yarn --version)"
+          git checkout -B "yarn_upgrade/$YARN_VERSION"
+          git config user.name "Joris Aerts"
+          git config user.email "github@jorisaerts.com"
+          git commit -a -m "[Yarn Upgrade] bump yarn to v$YARN_VERSION"
+          git push --set-upstream origin "yarn_upgrade/$YARN_VERSION"
+
+      - name: Create pull request
+        if: steps.verify_diff.outputs.deduped_changes == 'true'
+        run: |
+          export YARN_VERSION="$(yarn --version)"
+          export UPGRADE_BRANCH="yarn_upgrade/$YARN_VERSION"
+          gh pr create -B main -H "$UPGRADE_BRANCH" --title "Merge $UPGRADE_BRANCH into main" --body "Bump yarn to version $YARN_VERSION"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
