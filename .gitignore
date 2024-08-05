@@ -137,3 +137,7 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+
+
+# Generated certificates
+cert/generated/**

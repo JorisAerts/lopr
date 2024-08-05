@@ -6,13 +6,24 @@ import type { CreateProxyOptions } from './proxy'
 
 export type OutgoingOptions = tls.ConnectionOptions & RequestOptions
 
+export function extractURL(req: IncomingMessage) {
+  return new URL(
+    req.url.startsWith('http')
+      ? req.url
+      : `http://${req.client.servername}${req.url}`
+  )
+}
+
 export function setupOutgoing(
   outgoing: Partial<OutgoingOptions>,
   req: IncomingMessage,
   res: ServerResponse | null,
   options: CreateProxyOptions
 ): OutgoingOptions {
-  const urlObj = new URL(req.url!)
+  const urlObj = extractURL(req)
+
+  console.log('  => ', { isHttps: isReqHttps(req), urlObj: urlObj.toString() })
+
   const isHttps = isReqHttps(req)
   const headers = req.headers
   outgoing.port = isHttps ? 443 : +urlObj.port || 80
@@ -32,10 +43,11 @@ export function setupOutgoing(
 }
 
 export function isReqHttps(req: IncomingMessage): boolean {
-  return (
-    new URL(`http://${req.url}`).port === '443' ||
+  return !!(
+    req.connection.encrypted ||
     (req as any).isSpdy ||
-    req.socket?.asIndexedPairs?.().readableLength
+    req.socket?.asIndexedPairs?.().readableLength ||
+    extractURL(req).port === '443'
   )
 }
 

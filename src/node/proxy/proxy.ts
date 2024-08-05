@@ -5,11 +5,11 @@ import * as net from 'net'
 import type { AddressInfo } from 'ws'
 import { incoming } from './incoming'
 import { wsIncoming } from './ws-incoming'
-import { getPKI, getRootPKI } from './pki'
 import type { OutgoingOptions } from './utils'
 import { isReqHttps } from './utils'
 import type { Logger } from '../logger'
 import { createLogger } from '../logger'
+import { createCertForHost, rootCert, rootKey } from './util/cert-utils'
 
 export interface CreateProxyOptions {
   port: number
@@ -45,15 +45,20 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
 
   const generatePKI = (host: string) =>
     (pkiPromises[host] = new Promise((resolve) => {
-      getPKI(host, (options) => {
-        logger.debug('add context for: %s', host)
-        httpsServer.addContext(host, options)
-        resolve()
-      })
+      const cert = createCertForHost(host)
+      logger.debug('add context for: %s', host)
+      httpsServer.addContext(host, cert)
+      resolve()
+
+      //getPKI(host, (options) => {
+      //  logger.debug('add context for: %s', host)
+      //  httpsServer.addContext(host, options)
+      //  resolve()
+      //})
     }))
 
   const httpsServer = https
-    .createServer({ ...getRootPKI() }, forward)
+    .createServer({ key: rootKey, cert: rootCert }, forward)
     .listen(() => {
       httpsPort = (httpsServer.address() as AddressInfo).port
       logger.debug('listening https on: %s', httpsPort)

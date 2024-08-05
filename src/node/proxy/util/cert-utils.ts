@@ -1,3 +1,4 @@
+import os from 'os'
 import {
   existsSync,
   mkdirSync,
@@ -6,8 +7,10 @@ import {
   writeFileSync,
 } from 'fs'
 import { dirname, join } from 'path'
-import { md, pki } from 'node-forge'
+import forge from 'node-forge'
 import { packageJson, packageRoot } from '../../utils/package'
+
+const { md, pki } = forge
 
 export type PrivateKey = pki.PrivateKey
 export type Certificate = pki.Certificate
@@ -15,10 +18,10 @@ export type Certificate = pki.Certificate
 /**
  * a getter function, which will create the temp-folder upon first access
  */
-const tmpDir = (() => {
+export const tmpDir = (() => {
   let tmp: string
   let t = () => {
-    tmp = mkdtempSync(packageJson.name!)
+    tmp = mkdtempSync(join(os.tmpdir(), `${packageJson.name!}-`))
     t = () => tmp
     return tmp
   }
