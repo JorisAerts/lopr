@@ -8,7 +8,7 @@ import {
   readRootCert,
   rootCert,
   rootKey,
-} from '../proxy/util/cert-utils'
+} from '../utils/cert-utils'
 import * as tls from 'node:tls'
 
 const HTTP_PORT = 8080

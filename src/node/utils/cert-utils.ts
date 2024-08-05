@@ -8,7 +8,7 @@ import {
 } from 'fs'
 import { dirname, join } from 'path'
 import forge from 'node-forge'
-import { packageJson, packageRoot } from '../../utils/package'
+import { packageJson, packageRoot } from './package'
 
 const { md, pki } = forge
 

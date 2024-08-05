@@ -9,7 +9,7 @@ import type { OutgoingOptions } from './utils'
 import { isReqHttps } from './utils'
 import type { Logger } from '../logger'
 import { createLogger } from '../logger'
-import { createCertForHost, rootCert, rootKey } from './util/cert-utils'
+import { createCertForHost, rootCert, rootKey } from '../utils/cert-utils'
 
 export interface CreateProxyOptions {
   port: number
