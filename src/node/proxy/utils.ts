@@ -22,7 +22,7 @@ export function setupOutgoing(
 ): OutgoingOptions {
   const urlObj = extractURL(req)
 
-  console.log('  => ', { isHttps: isReqHttps(req), urlObj: urlObj.toString() })
+  //console.log('  => ', { isHttps: isReqHttps(req), urlObj: urlObj.toString() })
 
   const isHttps = isReqHttps(req)
   const headers = req.headers

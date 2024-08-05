@@ -135,8 +135,6 @@ const {
   forgeKey: forgeRootKey,
 } = generateRootCert()
 
-export const readRootCert = () => rootKey
-
 const createCertForHost = (hostname: string) => {
   const keys = pki.rsa.generateKeyPair(2048)
   const cert = pki.createCertificate()
@@ -146,7 +144,15 @@ const createCertForHost = (hostname: string) => {
   cert.validity.notAfter = new Date()
   cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
 
-  const attrs = [{ name: 'commonName', value: hostname }]
+  const attrs = [
+    { shortName: 'C', value: '' },
+    { shortName: 'ST', value: '' },
+    { shortName: 'L', value: '' },
+    { shortName: 'O', value: '' },
+    { shortName: 'OU', value: '' },
+    { shortName: 'CN', value: hostname },
+    { name: 'emailAddress', value: '' },
+  ]
 
   cert.setSubject(attrs)
   cert.setIssuer(forgeRootCert.subject.attributes)

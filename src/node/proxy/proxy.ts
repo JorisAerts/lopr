@@ -57,22 +57,26 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
     .createServer(getRootCert(), forward) //
     .listen(() => {
       httpsPort = (httpsServer.address() as AddressInfo).port
-      logger.debug('listening https on: %s', httpsPort)
+      //logger.debug('listening https on: %s', httpsPort)
     })
 
   const httpServer = http.createServer(forwardHttp).listen(options.port, () => {
+    /*
     logger.debug(
       'listening http on: %s',
       (httpServer.address() as AddressInfo)?.port
     )
+    */
   })
 
   function forwardHttp(req: IncomingMessage, res: ServerResponse) {
+    /*
     console.log({
       host: req.headers.host,
       url: req.url,
       same: req.headers.host === httpServer.address(),
     })
+    */
 
     // intercept local requests
     if (req.url === '/pac') {
@@ -96,7 +100,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
 
   // en.wikipedia.org/wiki/HTTP_tunnel
   httpServer.on('connect', function (req, socket) {
-    logger.debug('connect %s', req.url)
+    //logger.debug('connect %s', req.url)
     if (req.url?.match(/:443$/)) {
       const host = req.url.substring(0, req.url.length - 4)
       if (
@@ -107,7 +111,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
         promise.then(function () {
           const mediator = net.connect(httpsPort)
           mediator.on('connect', () => {
-            logger.debug('connected %s', req.url)
+            //logger.debug('connected %s', req.url)
             socket.write('HTTP/1.1 200 Connection established\r\n\r\n')
           })
           socket.pipe(mediator).pipe(socket)
