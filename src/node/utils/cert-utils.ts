@@ -197,4 +197,9 @@ function getOrWriteKeys(
   return data
 }
 
+export const getRootCert = () => ({
+  cert: rootCert,
+  key: rootKey,
+})
+
 export { rootKey, rootCert, createCertForHost }
