@@ -1,18 +1,13 @@
 name: Yarn Upgrade
 
-
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: [ "Pull Request merged" ]
-    types:
-      - completed
-  #schedule:
-  #  - cron: '0 1 * * *'
+  schedule:
+    - cron: '0 1 * * *'
 
 jobs:
   yarn_dedupe:
-    name: "Yarn dedupe"
+    name: "Yarn upgrade"
 
     runs-on: ubuntu-latest
 
@@ -27,9 +22,9 @@ jobs:
 
       - name: Yarn set latest version
         run: |
-          yarn set version latest
+          yarn set version latest --yarn-path
 
-      - name: Check changes
+      - name: Detect version changes
         id: verify_diff
         run: |
           git diff --quiet . || echo "deduped_changes=true" >> $GITHUB_OUTPUT
@@ -37,8 +32,17 @@ jobs:
       - name: Commit changes
         if: steps.verify_diff.outputs.deduped_changes == 'true'
         run: |
-          git checkout -b "yarn_upgrade/${yarn --version}"
+          export YARN_VERSION="$(yarn --version)"
+          git checkout -B "yarn_upgrade/$YARN_VERSION"
           git config user.name "Joris Aerts"
           git config user.email "github@jorisaerts.com"
-          git commit -a -m "[GitHub Actions] [yarn] dedupe"
+          git commit -a -m "[Yarn Upgrade] bump yarn to v$YARN_VERSION"
           git push
+
+      - name: Create pull request
+        run: |
+          export YARN_VERSION="$(yarn --version)"
+          export UPGRADE_BRANCH="yarn_upgrade/$YARN_VERSION"
+          gh pr create -B main -H "$UPGRADE_BRANCH" --title "Merge $UPGRADE_BRANCH into base_branch" --body "Bump yarn to version $YARN_VERSION"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
