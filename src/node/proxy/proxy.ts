@@ -10,6 +10,7 @@ import { isReqHttps } from './utils'
 import type { Logger } from '../logger'
 import { createLogger } from '../logger'
 import { createCertForHost, rootCert, rootKey } from '../utils/cert-utils'
+import { defineSocketServer } from '../server/websocket'
 
 export interface CreateProxyOptions {
   port: number
@@ -117,4 +118,15 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
   }
 
   httpServer.on('upgrade', upgrade)
+
+  defineSocketServer({ logger, server: httpServer })
+
+  const address = `http://localhost:${options.port}`
+
+  return Promise.resolve({
+    logger,
+    address,
+    url: new URL(address),
+    server: httpServer,
+  })
 }
