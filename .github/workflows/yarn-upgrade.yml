@@ -3,7 +3,7 @@ name: Yarn Upgrade
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '0 0 1 * *'
 
 jobs:
   yarn_dedupe:
@@ -18,7 +18,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20.x
-          cache: 'yarn'
 
       - name: Yarn set latest version
         run: |
@@ -37,12 +36,13 @@ jobs:
           git config user.name "Joris Aerts"
           git config user.email "github@jorisaerts.com"
           git commit -a -m "[Yarn Upgrade] bump yarn to v$YARN_VERSION"
-          git push
+          git push --set-upstream origin "yarn_upgrade/$YARN_VERSION"
 
       - name: Create pull request
+        if: steps.verify_diff.outputs.deduped_changes == 'true'
         run: |
           export YARN_VERSION="$(yarn --version)"
           export UPGRADE_BRANCH="yarn_upgrade/$YARN_VERSION"
-          gh pr create -B main -H "$UPGRADE_BRANCH" --title "Merge $UPGRADE_BRANCH into base_branch" --body "Bump yarn to version $YARN_VERSION"
+          gh pr create -B main -H "$UPGRADE_BRANCH" --title "Merge $UPGRADE_BRANCH into main" --body "Bump yarn to version $YARN_VERSION"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
