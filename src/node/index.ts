@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { createProxy } from './proxy/proxy'
+import { createProxy } from './proxy'
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
