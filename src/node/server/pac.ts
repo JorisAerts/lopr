@@ -3,7 +3,7 @@
  *
  * @see https://en.wikipedia.org/wiki/Proxy_auto-config
  */
-export const getPac = (proxy: string) =>
+export const generatePac = (proxy: string) =>
   `
 function FindProxyForURL(url, host) {
   if (

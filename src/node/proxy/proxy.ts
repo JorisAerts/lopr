@@ -11,7 +11,7 @@ import type { Logger } from '../logger'
 import { createLogger } from '../logger'
 import { createCertForHost, getRootCert } from '../utils/cert-utils'
 import { defineSocketServer } from '../server/websocket'
-import { getPac } from '../server/pac'
+import { generatePac } from '../server/pac'
 
 export interface CreateProxyOptions {
   port: number
@@ -76,7 +76,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
 
     // intercept local requests
     if (req.url === '/pac') {
-      const pac = getPac(`localhost:${options.port}`)
+      const pac = generatePac(`localhost:${options.port}`)
       res.setHeader('content-type', 'text/javascript')
       res.end(pac)
     }

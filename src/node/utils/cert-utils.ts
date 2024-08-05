@@ -57,7 +57,7 @@ function getRootKeyFiles(): RootKeyFiles {
 }
 
 export const generatedKeyFiles = (host: string): RootKeyFiles => {
-  const root = join(packageRoot, `${'cert/generated/'}${host}`)
+  const root = join(tmpDir(), `${'cert/generated/'}${host}`)
   return {
     key: `${root}.key`,
     cert: `${root}.crt`,
@@ -188,6 +188,7 @@ function getOrWriteKeys(
   }
 
   console.info('writing keys for host: ', hostname)
+  console.info('   => ', dirname(keyFiles.cert))
   const data = { key: key(), cert: cert() }
   mkdirSync(dirname(keyFiles.key), { recursive: true })
   writeFileSync(keyFiles.key, data.key)
