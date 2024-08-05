@@ -35,6 +35,7 @@ jobs:
           git checkout -B "yarn_upgrade/$YARN_VERSION"
           git config user.name "Joris Aerts"
           git config user.email "github@jorisaerts.com"
+          git add --al
           git commit -a -m "[Yarn Upgrade] bump yarn to v$YARN_VERSION"
           git push --set-upstream origin "yarn_upgrade/$YARN_VERSION"
 
