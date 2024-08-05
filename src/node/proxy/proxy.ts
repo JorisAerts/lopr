@@ -74,14 +74,6 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
     })
 
   function forwardHttp(req: IncomingMessage, res: ServerResponse) {
-    /*
-    console.log({
-      host: req.headers.host,
-      url: req.url,
-      same: req.headers.host === httpServer.address(),
-    })
-    */
-
     sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
     // intercept local requests
@@ -92,7 +84,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
     }
 
     // requests to this server (proxy UI)
-    if (req.url?.startsWith('/')) {
+    else if (req.url?.startsWith('/')) {
       return handleSelf(req, res)
     }
 
@@ -100,12 +92,6 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
   }
 
   function forward(req: IncomingMessage, res: ServerResponse) {
-    /*
-    logger.debug(
-      'fetch: %s',
-      (isReqHttps(req) ? `https://${req.headers.host}` : '') + req.url
-    )
-    */
     incoming(req, res, options as CreateProxyOptions)
   }
 
