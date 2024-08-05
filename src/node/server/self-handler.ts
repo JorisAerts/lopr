@@ -7,14 +7,14 @@ import { getContentType } from './content-type'
 const staticRoot = resolve(packageRoot, 'dist', 'client')
 
 const getStaticCandidates = (req: IncomingMessage) => [
-  path.resolve(staticRoot + '/' + req.url),
-  path.resolve(staticRoot + '/' + req.url + 'index.html'),
+  path.resolve(`${staticRoot}/${req.url}`),
+  path.resolve(`${staticRoot}/${req.url}index.html`),
 ]
 
 const isStaticMatch = (file: string) => {
   try {
     return statSync(file, { throwIfNoEntry: false })?.isFile()
-  } catch (e) {
+  } catch {
     return false
   }
 }
@@ -25,10 +25,10 @@ export const handleSelf = (req: IncomingMessage, res: ServerResponse) => {
 
     if (!file) {
       // handle404(req, res)
-      file = path.resolve(staticRoot + '/index.html')
+      file = path.resolve(`${staticRoot}/index.html`)
     }
 
-    const data = readFileSync(file) + ''
+    const data = `${readFileSync(file)}`
     const contentType = getContentType(file)
 
     //res.writeHead(200)
@@ -38,4 +38,3 @@ export const handleSelf = (req: IncomingMessage, res: ServerResponse) => {
     console.error(e)
   }
 }
-

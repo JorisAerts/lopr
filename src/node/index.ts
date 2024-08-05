@@ -1,7 +1,11 @@
-import { start } from './server'
 import process from 'node:process'
+import { createProxy } from './proxy'
 import { openBrowser } from './utils/open-browser'
+import { displayServerInfo } from './server/server-info'
 
-start().then((address) => {
-  if (process.argv.includes('--open')) openBrowser(address)
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+
+createProxy().then(({ url, server, logger }) => {
+  displayServerInfo({ logger, server })
+  if (process.argv.includes('--open')) openBrowser(url)
 })

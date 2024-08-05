@@ -1,139 +1,167 @@
-// proxy.ts
+import type { IncomingMessage, ServerResponse } from 'http'
 import * as http from 'http'
 import * as https from 'https'
 import * as net from 'net'
-import * as forge from 'node-forge'
+import type { AddressInfo } from 'ws'
+import { incoming } from './incoming'
+import { wsIncoming } from './ws-incoming'
+import type { OutgoingOptions } from './utils'
+import type { Logger } from '../logger'
+import { createLogger } from '../logger'
+import { createCertForHost, getRootCert } from '../utils/cert-utils'
+import { defineSocketServer, sendWsData } from '../server/websocket'
+import { generatePac } from '../server/pac'
+import { handleSelf } from '../server/self-handler'
+import { WebSocketMessageType } from '../../shared/WebSocketMessage'
+import { createProxyRequest } from '../utils/proxy-request'
 
-// Function to create a self-signed certificate
-function createCertificate() {
-  const pki = forge.pki
-  const keys = pki.rsa.generateKeyPair(2048)
-  const cert = pki.createCertificate()
-
-  cert.publicKey = keys.publicKey
-  cert.serialNumber = '01'
-  cert.validity.notBefore = new Date()
-  cert.validity.notAfter = new Date()
-  cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
-
-  const attrs = [
-    { name: 'commonName', value: 'localhost' },
-    { name: 'countryName', value: '' },
-    { shortName: 'ST', value: '' },
-    { name: 'localityName', value: '' },
-    { name: 'organizationName', value: '' },
-    { shortName: 'OU', value: '' },
-  ]
-
-  cert.setSubject(attrs)
-  cert.setIssuer(attrs)
-  cert.sign(keys.privateKey, forge.md.sha256.create())
-
-  const pem_pkey = pki.privateKeyToPem(keys.privateKey)
-  const pem_cert = pki.certificateToPem(cert)
-
-  return { key: pem_pkey, cert: pem_cert }
+export interface CreateProxyOptions {
+  port: number
+  mapHttpsReg: boolean | undefined | string | RegExp
+  map:
+    | ((
+        options: OutgoingOptions,
+        req: IncomingMessage,
+        res: ServerResponse | null
+      ) => OutgoingOptions)
+    | undefined
 }
 
-// Generate a self-signed certificate
-const { key, cert } = createCertificate()
+export interface CommonOptions {
+  logger: Logger
+}
 
-// HTTP Proxy Server
-http
-  .createServer((req, res) => {
-    console.log('HTTP Request:', req.url)
+export function createProxy<Options extends Partial<CreateProxyOptions>>(
+  opt = {} as Options
+) {
+  const options = {
+    port: 8080,
+    mapHttpsReg: true,
+    ...opt,
+    logger: createLogger(),
+  } as CreateProxyOptions & CommonOptions & Options
 
-    const options = {
-      hostname: req.headers.host,
-      port: 80,
-      path: req.url,
-      method: req.method,
-      headers: req.headers,
+  const { logger } = options
+
+  // one host on https Server
+  const pkiPromises = {} as Record<string, Promise<void>>
+  let httpsPort: number
+
+  const generatePKI = (host: string) =>
+    (pkiPromises[host] = new Promise((resolve) => {
+      const cert = createCertForHost(host)
+      //logger.debug('add context for: %s', host)
+      httpsServer.addContext(host, cert)
+      resolve()
+    }))
+
+  const httpsServer = https //
+    .createServer(getRootCert(), forwardHttp)
+    .listen(() => {
+      httpsPort = (httpsServer.address() as AddressInfo).port
+      //logger.debug('listening https on: %s', httpsPort)
+    })
+
+  const httpServer = http //
+    .createServer(forwardHttp)
+    .listen(options.port, () => {
+      /*
+      logger.debug(
+        'listening http on: %s',
+        (httpServer.address() as AddressInfo)?.port
+      )
+      */
+    })
+
+  function forwardHttp(req: IncomingMessage, res: ServerResponse) {
+    /*
+    console.log({
+      host: req.headers.host,
+      url: req.url,
+      same: req.headers.host === httpServer.address(),
+    })
+    */
+
+    sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
+
+    // intercept local requests
+    if (req.url === '/pac') {
+      const pac = generatePac(`localhost:${options.port}`)
+      res.setHeader('content-type', 'text/javascript')
+      res.end(pac)
     }
 
-    const proxyReq = http.request(options, (proxyRes) => {
-      res.writeHead(proxyRes.statusCode!, proxyRes.headers)
-      proxyRes.pipe(res, {
-        end: true,
-      })
-    })
-
-    req.pipe(proxyReq, {
-      end: true,
-    })
-
-    proxyReq.on('error', (err) => {
-      console.error('HTTP Proxy Error:', err)
-      res.writeHead(500)
-      res.end('Internal Server Error')
-    })
-  })
-  .listen(8080, () => {
-    console.log('HTTP proxy server is listening on port 8080')
-  })
-
-// HTTPS Proxy Server
-https
-  .createServer({ key, cert }, (req, res) => {
-    console.log('HTTPS Request:', req.url)
-
-    const options = {
-      hostname: req.headers.host,
-      port: 443,
-      path: req.url,
-      method: req.method,
-      headers: req.headers,
+    // requests to this server (proxy UI)
+    if (req.url?.startsWith('/')) {
+      return handleSelf(req, res)
     }
 
-    const proxyReq = https.request(options, (proxyRes) => {
-      res.writeHead(proxyRes.statusCode!, proxyRes.headers)
-      proxyRes.pipe(res, {
-        end: true,
-      })
-    })
+    return forward(req, res)
+  }
 
-    req.pipe(proxyReq, {
-      end: true,
-    })
-
-    proxyReq.on('error', (err) => {
-      console.error('HTTPS Proxy Error:', err)
-      res.writeHead(500)
-      res.end('Internal Server Error')
-    })
-  })
-  .listen(8443, () => {
-    console.log('HTTPS proxy server is listening on port 8443')
-  })
-
-// Handle HTTPS CONNECT requests
-const proxyServer = http.createServer()
-
-proxyServer.on('connect', (req, clientSocket, head) => {
-  const { port, hostname } = new URL(`http://${req.url}`)
-
-  const serverSocket = net.connect(parseInt(port || '443'), hostname, () => {
-    clientSocket.write(
-      'HTTP/1.1 200 Connection Established\r\n' +
-        'Proxy-agent: Node.js-Proxy\r\n' +
-        '\r\n'
+  function forward(req: IncomingMessage, res: ServerResponse) {
+    /*
+    logger.debug(
+      'fetch: %s',
+      (isReqHttps(req) ? `https://${req.headers.host}` : '') + req.url
     )
-    serverSocket.write(head)
-    serverSocket.pipe(clientSocket)
-    clientSocket.pipe(serverSocket)
+    */
+    incoming(req, res, options as CreateProxyOptions)
+  }
+
+  // en.wikipedia.org/wiki/HTTP_tunnel
+  httpServer.on('connect', function (req, socket) {
+    sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
+
+    //logger.debug('connect %s', req.url)
+    if (req.url?.match(/:443$/)) {
+      const host = req.url.substring(0, req.url.length - 4)
+      if (
+        options.mapHttpsReg === true ||
+        (options.mapHttpsReg && host.match(options.mapHttpsReg))
+      ) {
+        const promise = pkiPromises[host] ?? generatePKI(host)
+        promise.then(function () {
+          const mediator = net.connect(httpsPort)
+          mediator.on('connect', () => {
+            //logger.debug('connected %s', req.url)
+            socket.write('HTTP/1.1 200 Connection established\r\n\r\n')
+          })
+          socket.pipe(mediator).pipe(socket)
+        })
+      } else {
+        const mediator = net //
+          .connect(443, host)
+          .on('connect', () =>
+            socket.write('HTTP/1.1 200 Connection established\r\n\r\n')
+          )
+        socket.pipe(mediator).pipe(socket)
+      }
+    }
   })
 
-  serverSocket.on('error', (err) => {
-    console.error('HTTPS CONNECT Error:', err)
-    clientSocket.write(
-      'HTTP/1.1 500 Internal Server Error\r\n' +
-        'Proxy-agent: Node.js-Proxy\r\n' +
-        '\r\n'
+  function upgrade(req: IncomingMessage, socket: net.Socket, head: Buffer) {
+    /*
+    logger.debug(
+      'upgrade: %s',
+      (isReqHttps(req) ? `https://${req.headers.host}` : '') + req.url
     )
-    clientSocket.end()
-  })
-})
+    */
+    sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
-proxyServer.listen(8081, () => {
-  console.log('HTTPS CONNECT proxy server is listening on port 8081')
-})
+    wsIncoming(req, socket, options as CreateProxyOptions, httpServer, head)
+  }
+
+  httpServer.on('upgrade', upgrade)
+
+  defineSocketServer({ logger, server: httpServer })
+
+  const address = `http://localhost:${options.port}`
+
+  return Promise.resolve({
+    logger,
+    address,
+    url: new URL(address),
+    server: httpServer,
+  })
+}
