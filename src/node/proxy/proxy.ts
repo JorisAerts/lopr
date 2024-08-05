@@ -6,13 +6,14 @@ import type { AddressInfo } from 'ws'
 import { incoming } from './incoming'
 import { wsIncoming } from './ws-incoming'
 import type { OutgoingOptions } from './utils'
-import { isReqHttps } from './utils'
 import type { Logger } from '../logger'
 import { createLogger } from '../logger'
 import { createCertForHost, getRootCert } from '../utils/cert-utils'
-import { defineSocketServer } from '../server/websocket'
+import { defineSocketServer, sendWsData } from '../server/websocket'
 import { generatePac } from '../server/pac'
 import { handleSelf } from '../server/self-handler'
+import { WebSocketMessageType } from '../../shared/WebSocketMessage'
+import { createProxyRequest } from '../utils/proxy-request'
 
 export interface CreateProxyOptions {
   port: number
@@ -49,26 +50,28 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
   const generatePKI = (host: string) =>
     (pkiPromises[host] = new Promise((resolve) => {
       const cert = createCertForHost(host)
-      logger.debug('add context for: %s', host)
+      //logger.debug('add context for: %s', host)
       httpsServer.addContext(host, cert)
       resolve()
     }))
 
-  const httpsServer = https
-    .createServer(getRootCert(), forward) //
+  const httpsServer = https //
+    .createServer(getRootCert(), forwardHttp)
     .listen(() => {
       httpsPort = (httpsServer.address() as AddressInfo).port
       //logger.debug('listening https on: %s', httpsPort)
     })
 
-  const httpServer = http.createServer(forwardHttp).listen(options.port, () => {
-    /*
-    logger.debug(
-      'listening http on: %s',
-      (httpServer.address() as AddressInfo)?.port
-    )
-    */
-  })
+  const httpServer = http //
+    .createServer(forwardHttp)
+    .listen(options.port, () => {
+      /*
+      logger.debug(
+        'listening http on: %s',
+        (httpServer.address() as AddressInfo)?.port
+      )
+      */
+    })
 
   function forwardHttp(req: IncomingMessage, res: ServerResponse) {
     /*
@@ -78,6 +81,8 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
       same: req.headers.host === httpServer.address(),
     })
     */
+
+    sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
     // intercept local requests
     if (req.url === '/pac') {
@@ -106,6 +111,8 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
 
   // en.wikipedia.org/wiki/HTTP_tunnel
   httpServer.on('connect', function (req, socket) {
+    sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
+
     //logger.debug('connect %s', req.url)
     if (req.url?.match(/:443$/)) {
       const host = req.url.substring(0, req.url.length - 4)
@@ -134,10 +141,14 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
   })
 
   function upgrade(req: IncomingMessage, socket: net.Socket, head: Buffer) {
+    /*
     logger.debug(
       'upgrade: %s',
       (isReqHttps(req) ? `https://${req.headers.host}` : '') + req.url
     )
+    */
+    sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
+
     wsIncoming(req, socket, options as CreateProxyOptions, httpServer, head)
   }
 

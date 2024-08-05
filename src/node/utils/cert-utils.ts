@@ -25,7 +25,7 @@ export const tmpDir = (() => {
     t = () => tmp
     return tmp
   }
-  return () => t()
+  return () => packageRoot //t()
 })()
 
 /**
@@ -83,6 +83,10 @@ const generateRootCert = (): RootCertificateInfo => {
   cert.publicKey = keys.publicKey
   cert.serialNumber = '01'
   cert.validity.notBefore = new Date()
+  cert.validity.notBefore.setFullYear(
+    cert.validity.notBefore.getFullYear() + -1
+  )
+
   cert.validity.notAfter = new Date()
   cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
 
@@ -186,15 +190,15 @@ function getOrWriteKeys(
   { key, cert }: { key: () => string; cert: () => string }
 ): CertificateInfo {
   if (existsSync(keyFiles.cert) && existsSync(keyFiles.key)) {
-    console.info('reading keys')
+    //console.info('reading keys')
     return {
       key: readFileSync(keyFiles.key),
       cert: readFileSync(keyFiles.cert),
     }
   }
 
-  console.info('writing keys for host: ', hostname)
-  console.info('   => ', dirname(keyFiles.cert))
+  //console.info('writing keys for host: ', hostname)
+  //console.info('   => ', dirname(keyFiles.cert))
   const data = { key: key(), cert: cert() }
   mkdirSync(dirname(keyFiles.key), { recursive: true })
   writeFileSync(keyFiles.key, data.key)
