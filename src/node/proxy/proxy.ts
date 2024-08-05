@@ -11,6 +11,7 @@ import type { Logger } from '../logger'
 import { createLogger } from '../logger'
 import { createCertForHost, getRootCert } from '../utils/cert-utils'
 import { defineSocketServer } from '../server/websocket'
+import { getPac } from '../server/pac'
 
 export interface CreateProxyOptions {
   port: number
@@ -59,18 +60,37 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
       logger.debug('listening https on: %s', httpsPort)
     })
 
-  const httpServer = http.createServer(forward).listen(options.port, () => {
+  const httpServer = http.createServer(forwardHttp).listen(options.port, () => {
     logger.debug(
       'listening http on: %s',
       (httpServer.address() as AddressInfo)?.port
     )
   })
 
+  function forwardHttp(req: IncomingMessage, res: ServerResponse) {
+    console.log({
+      host: req.headers.host,
+      url: req.url,
+      same: req.headers.host === httpServer.address(),
+    })
+
+    // intercept local requests
+    if (req.url === '/pac') {
+      const pac = getPac(`localhost:${options.port}`)
+      res.setHeader('content-type', 'text/javascript')
+      res.end(pac)
+    }
+
+    return forward(req, res)
+  }
+
   function forward(req: IncomingMessage, res: ServerResponse) {
+    /*
     logger.debug(
       'fetch: %s',
       (isReqHttps(req) ? `https://${req.headers.host}` : '') + req.url
     )
+    */
     incoming(req, res, options as CreateProxyOptions)
   }
 

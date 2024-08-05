@@ -14,7 +14,7 @@ const getStaticCandidates = (req: IncomingMessage) => [
 const isStaticMatch = (file: string) => {
   try {
     return statSync(file, { throwIfNoEntry: false })?.isFile()
-  } catch (e) {
+  } catch {
     return false
   }
 }
