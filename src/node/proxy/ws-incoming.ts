@@ -48,7 +48,7 @@ const inc = [
     const values = {
       for: req.connection.remoteAddress || req.socket.remoteAddress,
       port: req.connection.remotePort || req.socket.remotePort,
-      proto: req.connection.asIndexedPairs().readableLength ? 'wss' : 'ws',
+      proto: req.connection.asIndexedPairs?.().readableLength ? 'wss' : 'ws',
     }
     Object.keys(values).forEach(function (header) {
       req.headers[`x-forwarded-${header}`] =
@@ -72,7 +72,7 @@ const inc = [
     )
 
     const proxyReq = (
-      req.connection.asIndexedPairs().readableLength ? https : http
+      req.connection.asIndexedPairs?.().readableLength ? https : http
     ).request(config)
 
     function onError(err: string) {

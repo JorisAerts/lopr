@@ -12,6 +12,7 @@ import { createLogger } from '../logger'
 import { createCertForHost, getRootCert } from '../utils/cert-utils'
 import { defineSocketServer } from '../server/websocket'
 import { generatePac } from '../server/pac'
+import { handleSelf } from '../server/self-handler'
 
 export interface CreateProxyOptions {
   port: number
@@ -83,6 +84,11 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
       const pac = generatePac(`localhost:${options.port}`)
       res.setHeader('content-type', 'text/javascript')
       res.end(pac)
+    }
+
+    // requests to this server (proxy UI)
+    if (req.url?.startsWith('/')) {
+      return handleSelf(req, res)
     }
 
     return forward(req, res)
