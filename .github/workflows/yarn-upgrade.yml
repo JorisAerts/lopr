@@ -1,0 +1,44 @@
+name: Yarn Upgrade
+
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [ "Pull Request merged" ]
+    types:
+      - completed
+  #schedule:
+  #  - cron: '0 1 * * *'
+
+jobs:
+  yarn_dedupe:
+    name: "Yarn dedupe"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: 'yarn'
+
+      - name: Yarn set latest version
+        run: |
+          yarn set version latest
+
+      - name: Check changes
+        id: verify_diff
+        run: |
+          git diff --quiet . || echo "deduped_changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit changes
+        if: steps.verify_diff.outputs.deduped_changes == 'true'
+        run: |
+          git checkout -b "yarn_upgrade/${yarn --version}"
+          git config user.name "Joris Aerts"
+          git config user.email "github@jorisaerts.com"
+          git commit -a -m "[GitHub Actions] [yarn] dedupe"
+          git push
