@@ -3,7 +3,7 @@ name: Yarn Upgrade
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '0 0 1 * *'
 
 jobs:
   yarn_dedupe:
@@ -40,9 +40,10 @@ jobs:
           git push --set-upstream origin "yarn_upgrade/$YARN_VERSION"
 
       - name: Create pull request
+        if: steps.verify_diff.outputs.deduped_changes == 'true'
         run: |
           export YARN_VERSION="$(yarn --version)"
           export UPGRADE_BRANCH="yarn_upgrade/$YARN_VERSION"
-          gh pr create -B main -H "$UPGRADE_BRANCH" --title "Merge $UPGRADE_BRANCH into base_branch" --body "Bump yarn to version $YARN_VERSION"
+          gh pr create -B main -H "$UPGRADE_BRANCH" --title "Merge $UPGRADE_BRANCH into main" --body "Bump yarn to version $YARN_VERSION"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
