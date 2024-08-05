@@ -36,7 +36,7 @@ jobs:
           git config user.name "Joris Aerts"
           git config user.email "github@jorisaerts.com"
           git add --al
-          git commit -a -m "[Yarn Upgrade] bump yarn to v$YARN_VERSION"
+          git commit -a -m "Bump Yarn to $YARN_VERSION"
           git push --set-upstream origin "yarn_upgrade/$YARN_VERSION"
 
       - name: Create pull request
@@ -44,6 +44,6 @@ jobs:
         run: |
           export YARN_VERSION="$(yarn --version)"
           export UPGRADE_BRANCH="yarn_upgrade/$YARN_VERSION"
-          gh pr create -B main -H "$UPGRADE_BRANCH" --title "Merge $UPGRADE_BRANCH into main" --body "Bump yarn to version $YARN_VERSION"
+          gh pr create -B main -H "$UPGRADE_BRANCH" --title "Bump Yarn to $YARN_VERSION" --body "Bump Yarn to version $YARN_VERSION" --label "dependencies"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
