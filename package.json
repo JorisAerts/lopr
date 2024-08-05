@@ -2,7 +2,7 @@
   "name": "js-proxy",
   "version": "0.0.1",
   "license": "MIT",
-  "packageManager": "yarn@4.3.1",
+  "packageManager": "yarn@4.4.0",
   "author": {
     "name": "Joris Aerts"
   },
