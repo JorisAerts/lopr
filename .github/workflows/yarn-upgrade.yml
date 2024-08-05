@@ -37,7 +37,7 @@ jobs:
           git config user.name "Joris Aerts"
           git config user.email "github@jorisaerts.com"
           git commit -a -m "[Yarn Upgrade] bump yarn to v$YARN_VERSION"
-          git push
+          git push --set-upstream origin "yarn_upgrade/$YARN_VERSION"
 
       - name: Create pull request
         run: |
