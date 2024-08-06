@@ -1,7 +1,6 @@
 import type { PropType, Ref } from 'vue'
 import { computed, defineComponent, shallowRef } from 'vue'
-import { VCard, VContainer, VList, VListItem, VTable } from '../components'
-import { useRequestStore } from '../stores/request'
+import { RequestSequence, VCard, VContainer, VTable } from '../components'
 import type { ProxyRequestInfo } from '../../shared/Request'
 
 export const Sequence = defineComponent({
@@ -15,16 +14,11 @@ export const Sequence = defineComponent({
   },
 
   setup(props) {
-    const requestStore = useRequestStore()
     const current: Ref<ProxyRequestInfo | undefined> = shallowRef()
 
     const width = computed(() =>
       typeof props.width === 'number' ? `${props.width}px` : props.width
     )
-
-    const handleSelect = (item: ProxyRequestInfo) => {
-      current.value = item
-    }
 
     return () => (
       <VContainer class={['fill-height', 'gap-2']}>
@@ -36,29 +30,7 @@ export const Sequence = defineComponent({
           }}
         >
           <h3 class={'px-3'}>Requests</h3>
-          <VList class={['fill-height', 'overflow-auto', 'mt-2']}>
-            {requestStore.requests.map((req) => (
-              <VListItem
-                onClick={() => handleSelect(req)}
-                class={[
-                  'py-0',
-                  'mx-1',
-                  'px-1',
-                  'overflow-ellipsis',
-                  {
-                    selected: current.value === req,
-                  },
-                ]}
-                prependIcon={'InputCircle'}
-              >
-                <div
-                  class={['no-wrap', 'overflow-hidden', 'overflow-ellipsis']}
-                >
-                  {req.method} — {req.url}
-                </div>
-              </VListItem>
-            ))}
-          </VList>
+          <RequestSequence v-model={current.value} />
         </VCard>
 
         <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>

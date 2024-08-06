@@ -10,7 +10,7 @@ import type { Logger } from '../logger'
 import { createLogger } from '../logger'
 import { createCertForHost, getRootCert } from '../utils/cert-utils'
 import { defineSocketServer, sendWsData } from '../server/websocket'
-import { generatePac } from '../server/pac'
+import { generatePac } from './pac'
 import { handleSelf } from '../server/self-handler'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { createProxyRequest } from '../utils/proxy-request'
@@ -32,6 +32,11 @@ export interface CreateProxyOptions {
 
 export interface CommonOptions {
   logger: Logger
+}
+
+const defaultServerOptions = {
+  IncomingMessage: ProxyRequest,
+  ServerResponse: ProxyResponse,
 }
 
 export function createProxy<Options extends Partial<CreateProxyOptions>>(
@@ -64,8 +69,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
       .createServer(
         {
           ...getRootCert(),
-          IncomingMessage: ProxyRequest,
-          ServerResponse: ProxyResponse,
+          ...defaultServerOptions,
         },
         forwardHttp
       )
@@ -74,13 +78,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
         //logger.debug('listening https on: %s', httpsPort)
       })
 
-    const httpServer = http.createServer(
-      {
-        IncomingMessage: ProxyRequest,
-        ServerResponse: ProxyResponse,
-      },
-      forwardHttp
-    )
+    const httpServer = http.createServer(defaultServerOptions, forwardHttp)
 
     const onError = (e: Error & { code?: string }) => {
       if (e.code === 'EADDRINUSE') {
@@ -109,7 +107,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
     httpServer.listen(httpPort)
 
     // HTTP
-    function forwardHttp(req: IncomingMessage, res: ServerResponse) {
+    function forwardHttp(req: ProxyRequest, res: ProxyResponse) {
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
       if (isLocalhost(req, httpPort)) {
@@ -133,7 +131,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
       return forward(req, res)
     }
 
-    function forward(req: IncomingMessage, res: ServerResponse) {
+    function forward(req: ProxyRequest, res: ProxyResponse) {
       incoming(req, res, options as CreateProxyOptions)
     }
 

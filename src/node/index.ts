@@ -8,7 +8,6 @@ import { processCliParams } from './cli'
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
 const cliOptions = processCliParams()
-
 const options: Partial<CreateProxyOptions> = {
   port: cliOptions.port ?? 8080,
 }
