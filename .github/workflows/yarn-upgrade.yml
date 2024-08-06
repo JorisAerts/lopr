@@ -33,7 +33,7 @@ jobs:
         run: |
           export YARN_VERSION="$(yarn --version)"
           git config user.name "Joris Aerts"
-          git config user.email "github@jorisaerts.com"
+          git config user.email "3611758+JorisAerts@users.noreply.github.com"
           git checkout -B "yarn_upgrade/$YARN_VERSION"
           git add --al
           git commit -a -m "Bump Yarn to $YARN_VERSION" --allow-empty
