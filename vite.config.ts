@@ -30,6 +30,7 @@ export default defineConfig({
         target: `ws://${DEFAULT_HOST}:${DEFAULT_PORT}`,
         ws: true,
         rewriteWsOrigin: true,
+        changeOrigin: true,
       },
     },
   },
