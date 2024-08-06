@@ -6,6 +6,10 @@
   "author": {
     "name": "Joris Aerts"
   },
+  "files": [
+    "dist/**/*",
+    "cert/**/*"
+  ],
   "scripts": {
     "build:node": "tsc -p src/node --outDir dist --esModuleInterop | true && tsc-alias --dir dist",
     "run:node": "node dist/node/index.js",
