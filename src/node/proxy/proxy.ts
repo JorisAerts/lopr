@@ -93,6 +93,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
 
     httpServer.listen(httpPort)
 
+    // HTTP
     function forwardHttp(req: IncomingMessage, res: ServerResponse) {
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
@@ -121,7 +122,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
       incoming(req, res, options as CreateProxyOptions)
     }
 
-    // en.wikipedia.org/wiki/HTTP_tunnel
+    // HTTPS (en.wikipedia.org/wiki/HTTP_tunnel)
     httpServer.on('connect', function (req, socket) {
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
@@ -152,13 +153,8 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
       }
     })
 
+    // Websockets
     function upgrade(req: IncomingMessage, socket: net.Socket, head: Buffer) {
-      /*
-      logger.debug(
-        'upgrade: %s',
-        (isReqHttps(req) ? `https://${req.headers.host}` : '') + req.url
-      )
-      */
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
       // ignore local ws request (don't forward to the proxy)

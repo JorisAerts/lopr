@@ -15,6 +15,6 @@ const options: Partial<CreateProxyOptions> = {
 
 // spin up the proxy server
 createProxy(options).then(({ url, server, logger }) => {
-  displayServerInfo({ logger, server })
+  displayServerInfo({ logger, server, options })
   if (cliOptions.open) openBrowser(url)
 })

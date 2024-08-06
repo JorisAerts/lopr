@@ -5,6 +5,7 @@ import { packageJson } from '../utils/package'
 import tui from '../utils/tui'
 import type { InstanceOptions } from '../utils/Options'
 import { tempDir } from '../utils/temp-dir'
+import { sep } from 'path'
 
 const getAddress = (server: Server) => {
   const address = server.address()
@@ -15,7 +16,7 @@ const getAddress = (server: Server) => {
 
 export const displayServerInfo = ({ logger, server }: InstanceOptions) => {
   const title = `${APP_NAME} - ${packageJson.version}`
-  const tmp = `file://${tempDir().replace('\\', '/')}`
+  const tmp = `file://${tempDir().split(sep).join('/')}`
 
   clearScreen()
   logger.info()
