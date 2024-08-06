@@ -35,7 +35,7 @@ export const defineSocketServer = ({ logger, server }: InstanceOptions) => {
         logger.info('Websocket connection opened.')
       })
       .on('close', (err: Error) => {
-        console.info('Websocket connection lost', err)
+        logger.info('Websocket connection lost', err)
       })
   })
 }

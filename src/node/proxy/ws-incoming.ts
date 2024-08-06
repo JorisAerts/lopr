@@ -4,7 +4,9 @@ import * as http from 'http'
 import * as https from 'https'
 import type { Socket } from 'net'
 import * as utils from './utils'
+import { isReqWebSocket } from './utils'
 import type { CreateProxyOptions } from './proxy'
+import { isLocalhost } from '../utils/is-localhost'
 
 export interface WSIncomingRequest {
   (
@@ -75,7 +77,11 @@ const inc = [
       req.connection.asIndexedPairs?.().readableLength ? https : http
     ).request(config)
 
-    function onError(err: string) {
+    function onError(err: Error) {
+      if (isReqWebSocket(req) && isLocalhost(req) && err.code === 'ENOTFOUND') {
+        // WS tried to reconnect but the websocket isn't running yet
+        return
+      }
       console.error(`error in ${req.url}`)
       console.error(err)
     }
