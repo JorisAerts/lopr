@@ -1,10 +1,9 @@
-// https://github.com/nodejitsu/node-http-proxy
 import type { IncomingMessage } from 'http'
 import * as http from 'http'
 import * as https from 'https'
 import type { Socket } from 'net'
 import * as utils from './utils'
-import { isReqWebSocket } from './utils'
+import { isReqHttps, isReqWebSocket } from './utils'
 import type { CreateProxyOptions } from './proxy'
 import { isLocalhost } from '../utils/is-localhost'
 
@@ -73,17 +72,15 @@ const inc = [
       options as CreateProxyOptions
     )
 
-    const proxyReq = (
-      req.connection.asIndexedPairs?.().readableLength ? https : http
-    ).request(config)
+    const proxyReq = (isReqHttps(req) ? https : http).request(config)
 
-    function onError(err: Error) {
+    function onError(err: Error & { code: string }) {
       if (isReqWebSocket(req) && isLocalhost(req) && err.code === 'ENOTFOUND') {
         // WS tried to reconnect but the websocket isn't running yet
         return
       }
       console.error(`error in ${req.url}`)
-      console.error(err)
+      //console.error(err)
     }
 
     // Error Handler

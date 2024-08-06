@@ -35,9 +35,9 @@ export interface CommonOptions {
 }
 
 const defaultServerOptions = {
-  IncomingMessage: ProxyRequest,
-  ServerResponse: ProxyResponse,
-}
+  IncomingMessage: ProxyRequest satisfies typeof IncomingMessage,
+  ServerResponse: ProxyResponse satisfies typeof ServerResponse<ProxyRequest>,
+} as http.ServerOptions<typeof ProxyRequest, typeof ServerResponse>
 
 export function createProxy<Options extends Partial<CreateProxyOptions>>(
   opt = {} as Options
@@ -65,20 +65,28 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
         resolve()
       }))
 
+    // HTTPS-tunnel
     const httpsServer = https //
       .createServer(
-        {
-          ...getRootCert(),
-          ...defaultServerOptions,
-        },
-        forwardHttp
+        { ...getRootCert(), ...defaultServerOptions },
+        forwardHttp as http.RequestListener<
+          typeof ProxyRequest,
+          typeof ServerResponse
+        >
       )
       .listen(() => {
         httpsPort = (httpsServer.address() as AddressInfo).port
         //logger.debug('listening https on: %s', httpsPort)
       })
 
-    const httpServer = http.createServer(defaultServerOptions, forwardHttp)
+    // HTTP Server (the actual proxy)
+    const httpServer = http.createServer(
+      defaultServerOptions,
+      forwardHttp as http.RequestListener<
+        typeof ProxyRequest,
+        typeof ServerResponse
+      >
+    )
 
     const onError = (e: Error & { code?: string }) => {
       if (e.code === 'EADDRINUSE') {
@@ -120,7 +128,6 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
 
         // requests to this server (proxy UI)
         else {
-          //console.log({ req })
           handleSelf(req, res)
         }
 
@@ -167,7 +174,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
     })
 
     // Websockets
-    function upgrade(req: IncomingMessage, socket: net.Socket, head: Buffer) {
+    function upgrade(req: ProxyRequest, socket: net.Socket, head: Buffer) {
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
       // ignore local ws request (don't forward to the proxy)

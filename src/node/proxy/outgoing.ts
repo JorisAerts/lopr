@@ -1,7 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'http'
 
-// https://github.com/nodejitsu/node-http-proxy
-
 export interface OutgoingRequest {
   (req: IncomingMessage, res: ServerResponse, proxyRes: IncomingMessage): void
 }

@@ -6,11 +6,24 @@ import type { CreateProxyOptions } from './proxy'
 
 export type OutgoingOptions = tls.ConnectionOptions & RequestOptions
 
+const RX_PROTOCOL = /^[a-z]+:\/\//i
+
+export function extractProtocol(req: IncomingMessage) {
+  const secure = isReqHttps(req)
+  return isReqWebSocket(req)
+    ? secure
+      ? 'wss'
+      : 'ws'
+    : secure
+      ? 'https'
+      : 'http'
+}
+
 export function extractURL(req: IncomingMessage) {
   return new URL(
-    req.url.startsWith('http')
-      ? req.url
-      : `http://${req.client.servername}${req.url}`
+    RX_PROTOCOL.test(req.url!)
+      ? req.url!
+      : `${extractProtocol(req)}://${req.headers.host /*?? req.client.servername*/}${req.url ?? ''}`
   )
 }
 
@@ -21,9 +34,6 @@ export function setupOutgoing(
   options: CreateProxyOptions
 ): OutgoingOptions {
   const urlObj = extractURL(req)
-
-  //console.log('  => ', { isHttps: isReqHttps(req), urlObj: urlObj.toString() })
-
   const isHttps = isReqHttps(req)
   const headers = req.headers
   outgoing.port = isHttps ? 443 : +urlObj.port || 80
@@ -51,11 +61,13 @@ export function isReqWebSocket(req: IncomingMessage): boolean {
 
 export function isReqHttps(req: IncomingMessage): boolean {
   return !!(
-    req.connection.encrypted ||
-    req.socket.encrypted ||
-    (req as any).isSpdy ||
-    req.socket?.asIndexedPairs?.().readableLength ||
-    extractURL(req).port === '443'
+    (
+      (req.connection as any).encrypted ||
+      (req.socket as any).encrypted ||
+      (req as any).isSpdy ||
+      req.socket?.asIndexedPairs?.().readableLength
+    )
+    // || extractURL(req).port === '443'
   )
 }
 

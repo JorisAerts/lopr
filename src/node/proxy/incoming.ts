@@ -1,4 +1,3 @@
-// https://github.com/nodejitsu/node-http-proxy
 import { outgoing } from './outgoing'
 import type { IncomingMessage, ServerResponse } from 'http'
 import * as http from 'http'
