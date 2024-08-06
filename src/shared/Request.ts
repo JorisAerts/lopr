@@ -1,6 +1,6 @@
 interface RawRequest {
   // provide an ID to tie multiple requests together
-  id?: string
+  uuid?: string
   url: string
   headers: string[]
   trailers?: string[]
@@ -11,6 +11,6 @@ interface RawRequest {
   ts: Date
 }
 
-export interface ProxyRequest extends RawRequest {
+export interface ProxyRequestInfo extends RawRequest {
   //
 }

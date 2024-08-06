@@ -2,7 +2,7 @@ import type { PropType, Ref } from 'vue'
 import { computed, defineComponent, shallowRef } from 'vue'
 import { VCard, VContainer, VList, VListItem, VTable } from '../components'
 import { useRequestStore } from '../stores/request'
-import type { ProxyRequest } from '../../shared/Request'
+import type { ProxyRequestInfo } from '../../shared/Request'
 
 export const Sequence = defineComponent({
   name: 'v-home-view',
@@ -16,13 +16,13 @@ export const Sequence = defineComponent({
 
   setup(props) {
     const requestStore = useRequestStore()
-    const current: Ref<ProxyRequest | undefined> = shallowRef()
+    const current: Ref<ProxyRequestInfo | undefined> = shallowRef()
 
     const width = computed(() =>
       typeof props.width === 'number' ? `${props.width}px` : props.width
     )
 
-    const handleSelect = (item: ProxyRequest) => {
+    const handleSelect = (item: ProxyRequestInfo) => {
       current.value = item
     }
 

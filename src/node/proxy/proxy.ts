@@ -15,6 +15,8 @@ import { handleSelf } from '../server/self-handler'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { createProxyRequest } from '../utils/proxy-request'
 import { isLocalhost } from '../utils/is-localhost'
+import { ProxyRequest } from './ProxyRequest'
+import { ProxyResponse } from './ProxyResponse'
 
 export interface CreateProxyOptions {
   port: number
@@ -44,7 +46,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
 
   const { logger } = options
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     // one host on https Server
     const pkiPromises = {} as Record<string, Promise<void>>
     let httpPort = options.port
@@ -59,13 +61,26 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
       }))
 
     const httpsServer = https //
-      .createServer(getRootCert(), forwardHttp)
+      .createServer(
+        {
+          ...getRootCert(),
+          IncomingMessage: ProxyRequest,
+          ServerResponse: ProxyResponse,
+        },
+        forwardHttp
+      )
       .listen(() => {
         httpsPort = (httpsServer.address() as AddressInfo).port
         //logger.debug('listening https on: %s', httpsPort)
       })
 
-    const httpServer = http.createServer(forwardHttp)
+    const httpServer = http.createServer(
+      {
+        IncomingMessage: ProxyRequest,
+        ServerResponse: ProxyResponse,
+      },
+      forwardHttp
+    )
 
     const onError = (e: Error & { code?: string }) => {
       if (e.code === 'EADDRINUSE') {
