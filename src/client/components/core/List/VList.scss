@@ -32,6 +32,8 @@
   padding: var(--list-padding);
   padding-inline-start: var(--list-ident-padding);
 
+  border-radius: var(--border-radius);
+
   &--prepend {
     flex-grow: 0;
     flex-shrink: 1;
@@ -54,7 +56,8 @@
     flex-grow: 1;
   }
 
-  &:hover {
-    background: rgba(255, 255, 255, 5%);
+  &:hover,
+  &.selected {
+    background: rgba(var(--primary-color), 100%);
   }
 }

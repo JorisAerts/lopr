@@ -40,7 +40,15 @@ export const Sequence = defineComponent({
             {requestStore.requests.map((req) => (
               <VListItem
                 onClick={() => handleSelect(req)}
-                class={['py-0', 'mx-1', 'px-1', 'overflow-ellipsis']}
+                class={[
+                  'py-0',
+                  'mx-1',
+                  'px-1',
+                  'overflow-ellipsis',
+                  {
+                    selected: current.value === req,
+                  },
+                ]}
                 prependIcon={'InputCircle'}
               >
                 <div
