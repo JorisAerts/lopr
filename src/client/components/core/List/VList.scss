@@ -1,4 +1,4 @@
-@use '../../../style/sass-vars' as *;
+@use '../../../style/vars' as *;
 
 :root {
   --list-ident: calc(2 * #{$spacer});
