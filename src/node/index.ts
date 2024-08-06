@@ -1,11 +1,20 @@
 import process from 'node:process'
+import type { CreateProxyOptions } from './proxy'
 import { createProxy } from './proxy'
 import { openBrowser } from './utils/open-browser'
 import { displayServerInfo } from './server/server-info'
+import { processCliParams } from './cli'
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
-createProxy().then(({ url, server, logger }) => {
+const cliOptions = processCliParams()
+
+const options: Partial<CreateProxyOptions> = {
+  port: cliOptions.port ?? 8080,
+}
+
+// spin up the proxy server
+createProxy(options).then(({ url, server, logger }) => {
   displayServerInfo({ logger, server })
-  if (process.argv.includes('--open')) openBrowser(url)
+  if (cliOptions.open) openBrowser(url)
 })
