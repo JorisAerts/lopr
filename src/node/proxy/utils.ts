@@ -42,9 +42,17 @@ export function setupOutgoing(
   return outgoing
 }
 
+export function isReqWebSocket(req: IncomingMessage): boolean {
+  return (
+    req.headers.origin?.startsWith('ws://') ||
+    req.headers.upgrade === 'websocket'
+  )
+}
+
 export function isReqHttps(req: IncomingMessage): boolean {
   return !!(
     req.connection.encrypted ||
+    req.socket.encrypted ||
     (req as any).isSpdy ||
     req.socket?.asIndexedPairs?.().readableLength ||
     extractURL(req).port === '443'

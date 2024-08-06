@@ -1,32 +1,13 @@
-import os from 'os'
-import {
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  writeFileSync,
-} from 'fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { dirname, join } from 'path'
 import forge from 'node-forge'
 import { packageJson, packageRoot } from './package'
+import { tempDir } from './temp-dir'
 
 const { md, pki } = forge
 
 export type PrivateKey = pki.PrivateKey
 export type Certificate = pki.Certificate
-
-/**
- * a getter function, which will create the temp-folder upon first access
- */
-export const tmpDir = (() => {
-  let tmp: string
-  let t = () => {
-    tmp = mkdtempSync(join(os.tmpdir(), `${packageJson.name!}-`))
-    t = () => tmp
-    return tmp
-  }
-  return () => packageRoot //t()
-})()
 
 /**
  * the location where the root key and certificate can be found
@@ -36,7 +17,7 @@ const rootDir = (() => {
   if (existsSync(join(packageCertRoot, 'root', 'rootCA.key'))) {
     return packageCertRoot
   }
-  return join(tmpDir(), 'cert')
+  return join(tempDir(), 'cert')
 })()
 
 interface RootKeyFiles {
@@ -51,13 +32,13 @@ function getRootKeyFiles(): RootKeyFiles {
   const cert = join(rootDir, 'root', 'rootCA.crt')
   if (existsSync(key) && existsSync(cert)) return { key, cert }
   return {
-    key: join(tmpDir(), 'cert', 'root', 'rootCA.key'),
-    cert: join(tmpDir(), 'cert', 'root', 'rootCA.crt'),
+    key: join(tempDir(), 'cert', 'root', 'rootCA.key'),
+    cert: join(tempDir(), 'cert', 'root', 'rootCA.crt'),
   }
 }
 
 export const generatedKeyFiles = (host: string): RootKeyFiles => {
-  const root = join(tmpDir(), 'cert', 'generated', host)
+  const root = join(tempDir(), 'cert', 'generated', host)
   return {
     key: `${root}.key`,
     cert: `${root}.crt`,

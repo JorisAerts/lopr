@@ -29,6 +29,7 @@ export default defineConfig({
       [WEBSOCKET_ROOT]: {
         target: `ws://${DEFAULT_HOST}:${DEFAULT_PORT}`,
         ws: true,
+        rewriteWsOrigin: true,
       },
     },
   },

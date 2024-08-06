@@ -29,12 +29,14 @@ const inc = [
       port: /* req.connection.remotePort || */ req.socket.remotePort,
       proto: isReqHttps(req) ? 'https' : 'http',
     }
-    Object.keys(values).forEach((header) => {
-      req.headers[`x-forwarded-${header}`] =
-        (req.headers[`x-forwarded-${header}`] || '') +
-        (req.headers[`x-forwarded-${header}`] ? ',' : '') +
-        values[header as keyof typeof values]
-    })
+    Object.keys(values)
+      .map((header) => `x-forwarded-${header}`)
+      .forEach((header) => {
+        req.headers[header] =
+          (req.headers[header] || '') +
+          (req.headers[header] ? ',' : '') +
+          values[header as keyof typeof values]
+      })
   },
 
   /**
