@@ -57,16 +57,16 @@
     font-weight: var(--btn-font-weight);
   }
 
-  &:hover {
+  &:not(.v-btn--disabled):hover {
     --underlay-opacity: 0.05;
   }
 
-  &.selected,
-  &:active {
+  &.selected:not(.v-btn--disabled),
+  &:not(.v-btn--disabled):active {
     --underlay-opacity: 0.2;
   }
 
-  &.active {
+  &:not(.v-btn--disabled).active {
     background: rgba(var(--primary-color), 1);
   }
 }

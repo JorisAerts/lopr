@@ -47,7 +47,7 @@ export const Sequence = defineComponent({
                 size={20}
                 class={['pa-1', 'mr-1']}
                 transparent
-              ></VBtn>
+              />
             </VTooltip>
             <VTooltip text={'Structure view'}>
               <VBtn
@@ -55,7 +55,8 @@ export const Sequence = defineComponent({
                 size={20}
                 class={['pa-1']}
                 transparent
-              ></VBtn>
+                disabled
+              />
             </VTooltip>
           </VSheet>
           <RequestSequence v-model={current.value} />

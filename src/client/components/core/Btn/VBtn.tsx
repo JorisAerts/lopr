@@ -24,6 +24,8 @@ export const VBtn = defineComponent({
     color: { type: String },
 
     transparent: { type: Boolean, default: false },
+
+    disabled: { type: Boolean, default: false },
   },
 
   setup(props, { attrs, emit, slots }) {
@@ -34,9 +36,11 @@ export const VBtn = defineComponent({
           class={{
             'v-btn': true,
             'v-btn--transparent': props.transparent,
+            'v-btn--disabled': props.disabled,
           }}
           onClick={(e) => emit(EventTypes.Click, e)}
           {...attrs}
+          disabled={props.disabled}
         >
           <span class={'v-btn__underlay'} />
           <span
