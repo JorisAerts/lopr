@@ -6,8 +6,8 @@ import { tempDir } from './temp-dir'
 
 const { md, pki } = forge
 
-export type PrivateKey = pki.PrivateKey
-export type Certificate = pki.Certificate
+export type PrivateKey = forge.pki.PrivateKey
+export type Certificate = forge.pki.Certificate
 
 /**
  * the location where the root key and certificate can be found
