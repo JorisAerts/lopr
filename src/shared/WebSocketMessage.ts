@@ -1,5 +1,6 @@
 export enum WebSocketMessageType {
   App,
+  Error,
   ProxyRequest,
   ProxyResponse,
 }

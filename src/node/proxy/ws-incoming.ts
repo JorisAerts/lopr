@@ -6,6 +6,8 @@ import * as utils from './utils'
 import { isReqHttps, isReqWebSocket } from './utils'
 import type { CreateProxyOptions } from './proxy'
 import { isLocalhost } from '../utils/is-localhost'
+import { sendWsData } from '../server/websocket'
+import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 
 export interface WSIncomingRequest {
   (
@@ -79,7 +81,8 @@ const inc = [
         // WS tried to reconnect but the websocket isn't running yet
         return
       }
-      console.error(`error in ${req.url}`)
+      //console.error(`error in ${req.url}`)
+      sendWsData(WebSocketMessageType.Error, { ws: true, err })
       //console.error(err)
     }
 

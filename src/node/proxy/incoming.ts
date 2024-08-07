@@ -68,8 +68,9 @@ const inc = [
     }
 
     function onError(err: string) {
-      console.error(`error in ${req.url}`)
-      console.error(err)
+      //console.error(`error in ${req.url}`)
+      //console.error(err)
+      sendWsData(WebSocketMessageType.Error, { err })
     }
 
     const requestOptions = setupOutgoing({}, req, res, options)
