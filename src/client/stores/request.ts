@@ -6,23 +6,33 @@ import type { WebSocketMessage } from '../../shared/WebSocketMessage'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { ProxyResponseInfo } from '../../shared/Response'
 
-export const STORE_NAME = 'REQ'
+export const STORE_NAME = 'Requests'
 
 export const useRequestStore = defineStore(STORE_NAME, () => {
-  // define an endpoint to the websockets and intercept incoming requests
-  const idMap = shallowRef(new Map<string, ProxyResponseInfo>())
+  /**
+   * The request data sent from the client.
+   * All requests are tagged with a unique UUID
+   */
   const requests = ref([] as ProxyRequestInfo[])
+  /**
+   * A map of response data to the client, mapped to the UUID of the request
+   */
+  const responces = shallowRef(new Map<string, ProxyResponseInfo>())
+  // methods
+  const getResponse = (request: ProxyResponseInfo) => responces.value.get(request.uuid)
+  const clear = () => {
+    responces.value.clear()
+    requests.value.length = 0
+  }
 
+  // register the handlers (they will overwrite the previous ones)
   registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
     data.ts = new Date(data.ts)
     requests.value.push(data)
   })
   registerDataHandler(WebSocketMessageType.ProxyResponse, ({ data }: WebSocketMessage<ProxyResponseInfo>) => {
     data.ts = new Date(data.ts)
-    idMap.value.set(data.uuid, data)
+    responces.value.set(data.uuid, data)
   })
-
-  const getResponse = (request: ProxyResponseInfo) => idMap.value.get(request.uuid)
-
-  return { requests, map: idMap, getResponse }
+  return { requests, responses: responces, getResponse, clear }
 })

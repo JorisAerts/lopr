@@ -1,12 +1,9 @@
-import type { UUID } from './UUID'
+import type { Unique } from './UUID'
+import type { Timestamped } from './Timestamped'
 
-interface RawResponse {
-  uuid: UUID
+interface RawResponse extends Unique, Timestamped {
   headers: string[]
   body: unknown
-  ts: Date
-
-  // provide an ID to tie multiple requests together
   contentLength: number
 }
 

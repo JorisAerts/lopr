@@ -1,8 +1,8 @@
-import type { UUID } from './UUID'
+import type { Unique } from './UUID'
+import type { Timestamped } from './Timestamped'
 
-interface RawRequest {
+interface RawRequest extends Unique, Timestamped {
   // provide an ID to tie multiple requests together
-  uuid: UUID
   url: string
   headers: string[]
   trailers?: string[]
@@ -10,7 +10,6 @@ interface RawRequest {
   method: string | undefined
   statusCode: number | undefined
   contentLength: number
-  ts: Date
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

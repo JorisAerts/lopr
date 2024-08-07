@@ -16,6 +16,14 @@ export interface WSIncomingRequest {
 const NEWLINE = '\r\n'
 const newLine = (socket: Socket) => socket.write(NEWLINE)
 
+interface ForwardHeaders {
+  for?: string
+  port?: number
+  proto: string
+}
+
+type ForwardHeaderKeys = keyof ForwardHeaders
+
 const inc = [
   /**
    * WebSocket requests must have the `GET` method and the `upgrade:websocket` header
@@ -45,13 +53,14 @@ const inc = [
    * Sets `x-forwarded-*` headers if specified in config.
    */
   function (req: IncomingMessage /*, socket: Socket, options: Option */) {
-    const values = {
+    const values: ForwardHeaders = {
       for: req.connection.remoteAddress || req.socket.remoteAddress,
       port: req.connection.remotePort || req.socket.remotePort,
       proto: req.connection.asIndexedPairs?.().readableLength ? 'wss' : 'ws',
     }
-    Object.keys(values).forEach(function (header) {
-      req.headers[`x-forwarded-${header}`] = (req.headers[`x-forwarded-${header}`] || '') + (req.headers[`x-forwarded-${header}`] ? ',' : '') + values[header as keyof typeof values]
+    ;(Object.keys(values) as ForwardHeaderKeys[]).forEach(function (header) {
+      const forwardHeader = req.headers[`x-forwarded-${header}`]
+      req.headers[`x-forwarded-${header}`] = (forwardHeader || '') + (forwardHeader ? ',' : '') + values[header]
     })
   },
 
@@ -70,7 +79,11 @@ const inc = [
         // WS tried to reconnect but the websocket isn't running yet
         return
       }
-      sendWsData(WebSocketMessageType.Error, { ws: true, err })
+      sendWsData(WebSocketMessageType.Error, {
+        ts: new Date(),
+        ws: true,
+        err,
+      })
     }
 
     // Error Handler
@@ -94,4 +107,5 @@ const inc = [
   },
 ] as WSIncomingRequest[]
 
-export const wsIncoming = (req: IncomingMessage, socket: Socket, options: CreateProxyOptions, server: http.Server | https.Server, head: Buffer) => inc.forEach((come) => come(req, socket, options, server, head))
+export const wsIncoming = (req: IncomingMessage, socket: Socket, options: CreateProxyOptions, server: http.Server | https.Server, head: Buffer) =>
+  inc.forEach((come) => come(req, socket, options, server, head))

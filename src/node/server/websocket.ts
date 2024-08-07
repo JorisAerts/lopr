@@ -27,9 +27,9 @@ export const defineSocketServer = ({ logger, server }: InstanceOptions) => {
           logger.warn(`Could not find WebSocket handler for:`, data)
         }
       })
-      .on('error', (err: Error) => err && sendWsData(WebSocketMessageType.Error, err))
+      .on('error', (err: Error) => err && sendWsData(WebSocketMessageType.Error, { err }))
       .on('open', () => logger.info('Websocket connection opened.'))
-      .on('close', (err: Error) => err && sendWsData(WebSocketMessageType.Error, err))
+      .on('close', (err: Error) => err && sendWsData(WebSocketMessageType.Error, { err }))
   })
 }
 

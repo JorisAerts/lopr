@@ -7,7 +7,7 @@ import type { CreateProxyOptions } from './proxy'
 import { getDecodedIncomingMessageData } from '../utils/incoming-message'
 import { sendWsData } from '../server/websocket'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
-import { createProxyResponse } from '../utils/proxy-response'
+import { createProxyResponse } from '../utils/ws-messages'
 import type { ProxyRequest } from './ProxyRequest'
 
 export interface IncomingRequest {
@@ -56,9 +56,10 @@ const inc = [
     }
 
     function onError(err: string) {
-      //console.error(`error in ${req.url}`)
-      //console.error(err)
-      sendWsData(WebSocketMessageType.Error, { err })
+      sendWsData(WebSocketMessageType.Error, {
+        ts: new Date(),
+        err,
+      })
     }
 
     const requestOptions = setupOutgoing({}, req, res, options)

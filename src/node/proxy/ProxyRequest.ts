@@ -11,6 +11,6 @@ export class ProxyRequest extends IncomingMessage {
 
   constructor(socket: Socket) {
     super(socket)
-    this.uuid = uuid()
+    this.uuid = uuid() as UUID
   }
 }

@@ -13,10 +13,10 @@ import { defineSocketServer, sendWsData } from '../server/websocket'
 import { generatePac } from './pac'
 import { handleSelf } from '../server/self-handler'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
-import { createProxyRequest } from '../utils/proxy-request'
 import { isLocalhost } from '../utils/is-localhost'
 import { ProxyRequest } from './ProxyRequest'
 import { ProxyResponse } from './ProxyResponse'
+import { createProxyRequest } from '../utils/ws-messages'
 
 export interface CreateProxyOptions {
   port: number
