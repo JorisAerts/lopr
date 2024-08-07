@@ -2,7 +2,7 @@ import type { UUID } from './UUID'
 
 interface RawRequest {
   // provide an ID to tie multiple requests together
-  uuid?: UUID
+  uuid: UUID
   url: string
   headers: string[]
   trailers?: string[]

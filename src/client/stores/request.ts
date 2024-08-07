@@ -10,39 +10,26 @@ export const STORE_NAME = 'REQ'
 
 export const useRequestStore = defineStore(STORE_NAME, () => {
   // define an endpoint to the websockets and intercept incoming requests
-  const idMap = shallowRef(
-    new Map<string, (ProxyRequestInfo | ProxyResponseInfo)[]>()
-  )
+  const idMap = shallowRef(new Map<string, ProxyResponseInfo>())
   const requests = ref([] as ProxyRequestInfo[])
-
-  const addMapData = <Data extends ProxyRequestInfo | ProxyResponseInfo>(
-    data: Data
-  ) => {
-    if (!data.uuid) return data
-    if (!idMap.value.has(data.uuid)) {
-      idMap.value.set(data.uuid, [])
-    }
-    idMap.value.get(data.uuid)!.push(data)
-    return data
-  }
 
   registerDataHandler(
     WebSocketMessageType.ProxyRequest,
     ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
       data.ts = new Date(data.ts)
       requests.value.push(data)
-
-      addMapData(data)
     }
   )
   registerDataHandler(
     WebSocketMessageType.ProxyResponse,
     ({ data }: WebSocketMessage<ProxyResponseInfo>) => {
       data.ts = new Date(data.ts)
-
-      addMapData(data)
+      idMap.value.set(data.uuid, data)
     }
   )
 
-  return { requests, map: idMap }
+  const getResponse = (request: ProxyResponseInfo) =>
+    idMap.value.get(request.uuid)
+
+  return { requests, map: idMap, getResponse }
 })

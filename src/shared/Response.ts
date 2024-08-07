@@ -1,7 +1,7 @@
 import type { UUID } from './UUID'
 
 interface RawResponse {
-  uuid?: UUID
+  uuid: UUID
   headers: string[]
   body: unknown
   ts: Date
