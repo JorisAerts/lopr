@@ -13,6 +13,6 @@ const promise = (what: keyof ZLibMethods) => (buffer: Uint8Array) =>
     )
   ) as Promise<Buffer>
 
-export const gunzip = promise('gunzip')
+export const gzip = promise('gunzip')
 export const deflate = promise('deflate')
 export const brotli = promise('brotliDecompress')

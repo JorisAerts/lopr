@@ -1,6 +1,6 @@
 import type { IncomingMessage } from 'http'
 import { identity } from './identity'
-import { brotli, deflate, gunzip } from './decompress'
+import * as decompress from './decompress'
 
 export const getIncomingMessageData = (res: IncomingMessage) =>
   new Promise((resolve, reject) => {
@@ -9,20 +9,29 @@ export const getIncomingMessageData = (res: IncomingMessage) =>
     res.on('end', () => resolve(Buffer.from(buffer)))
   }) as Promise<Uint8Array>
 
+const RX_COMMA = /\s*,\s*/
+const decompressKeys = Object.keys(decompress)
+/**
+ * Returns a `(buffer:Buffer) => Promise<Buffer>` that decodes the incoming compressed data
+ */
 export const decodeIncomingMessageData = (
   res: IncomingMessage
-): ((a: Uint8Array) => Uint8Array | Promise<Uint8Array>) => {
+):
+  | ((a: Uint8Array) => Uint8Array)
+  | ((a: Uint8Array) => Promise<Uint8Array>) => {
   const encoding = res.headers['content-encoding']
-  if (!encoding) return identity
-  switch (encoding) {
-    case 'gzip':
-      return gunzip
-    case 'deflate':
-      return deflate
-    case 'br':
-      return brotli
-  }
-  return identity
+    ?.toLowerCase()
+    .split(RX_COMMA)
+  return encoding?.every((key) => decompressKeys.includes(key))
+    ? encoding.reduce(
+        (a, b) => {
+          const next: (a: Uint8Array) => Promise<Uint8Array> =
+            decompress[b as keyof typeof decompress] ?? identity
+          return (buffer: Uint8Array) => a(buffer).then(next)
+        },
+        (buffer: Uint8Array) => Promise.resolve(buffer)
+      )
+    : identity
 }
 
 export const getDecodedIncomingMessageData = (res: IncomingMessage) =>
