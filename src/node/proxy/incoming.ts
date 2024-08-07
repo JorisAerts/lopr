@@ -4,6 +4,11 @@ import * as http from 'http'
 import * as https from 'https'
 import { isReqHttps, setupOutgoing } from './utils'
 import type { CreateProxyOptions } from './proxy'
+import { getDecodedIncomingMessageData } from '../utils/incoming-message'
+import { sendWsData } from '../server/websocket'
+import { WebSocketMessageType } from '../../shared/WebSocketMessage'
+import { createProxyResponse } from '../utils/proxy-response'
+import type { ProxyRequest } from './ProxyRequest'
 
 export interface IncomingRequest {
   (req: IncomingMessage, res: ServerResponse, options: CreateProxyOptions): void
@@ -48,6 +53,17 @@ const inc = [
   ) {
     function response(proxyRes: IncomingMessage) {
       outgoing(req, res, proxyRes)
+
+      // log the response to the websocket
+      getDecodedIncomingMessageData(proxyRes)
+        .then((b) => b.toString())
+        .then((data) =>
+          sendWsData(
+            WebSocketMessageType.ProxyResponse,
+            createProxyResponse((req as ProxyRequest).uuid, proxyRes, data)
+          )
+        )
+
       proxyRes.pipe(res)
     }
 

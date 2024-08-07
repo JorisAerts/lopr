@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, shallowRef } from 'vue'
-import type { ProxyRequestInfo, ProxyResponseInfo } from '../../shared/Request'
+import type { ProxyRequestInfo } from '../../shared/Request'
 import { registerDataHandler } from '../utils/websocket'
 import type { WebSocketMessage } from '../../shared/WebSocketMessage'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
+import type { ProxyResponseInfo } from '../../shared/Response'
 
 export const STORE_NAME = 'REQ'
 

@@ -65,11 +65,11 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
         resolve()
       }))
 
-    // HTTPS-tunnel
+    // HTTPS-tunnel (let Node choose the port)
     const httpsServer = https //
       .createServer(
         { ...getRootCert(), ...defaultServerOptions },
-        forwardHttp as http.RequestListener<
+        forwardRequest as http.RequestListener<
           typeof ProxyRequest,
           typeof ServerResponse
         >
@@ -82,12 +82,13 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
     // HTTP Server (the actual proxy)
     const httpServer = http.createServer(
       defaultServerOptions,
-      forwardHttp as http.RequestListener<
+      forwardRequest as http.RequestListener<
         typeof ProxyRequest,
         typeof ServerResponse
       >
     )
 
+    // try the next port if the suggested one is unavailable (8080... 8081... 8082...)
     const onError = (e: Error & { code?: string }) => {
       if (e.code === 'EADDRINUSE') {
         logger.info(`Port ${httpPort} is in use, trying another one...`)
@@ -98,7 +99,8 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
       }
     }
 
-    function onListening() {
+    httpServer.on('error', onError)
+    httpServer.on('listening', () => {
       const address = `http://localhost:${httpPort}`
       defineSocketServer({ logger, server: httpServer })
       resolve({
@@ -107,17 +109,14 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
         url: new URL(address),
         server: httpServer,
       })
-    }
-
-    httpServer.on('error', onError)
-    httpServer.on('listening', onListening)
+    })
 
     httpServer.listen(httpPort)
 
-    // HTTP
-    function forwardHttp(req: ProxyRequest, res: ProxyResponse) {
+    function forwardRequest(req: ProxyRequest, res: ProxyResponse) {
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
+      // requests to the local webserver (the GUI or PAC)
       if (isLocalhost(req, httpPort)) {
         // intercept local requests
         if (req.url === '/pac') {
@@ -134,12 +133,10 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
         return
       }
 
-      // forward the request to the proxy
-      return forward(req, res)
-    }
+      //req.on('data', (d) => console.log(`${d}`))
 
-    function forward(req: ProxyRequest, res: ProxyResponse) {
-      incoming(req, res, options as CreateProxyOptions)
+      // forward the request to the proxy
+      return incoming(req, res, options as CreateProxyOptions)
     }
 
     // HTTPS (en.wikipedia.org/wiki/HTTP_tunnel)
@@ -156,10 +153,9 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
           const promise = pkiPromises[host] ?? generatePKI(host)
           promise.then(function () {
             const mediator = net.connect(httpsPort)
-            mediator.on('connect', () => {
-              //logger.debug('connected %s', req.url)
+            mediator.on('connect', () =>
               socket.write('HTTP/1.1 200 Connection established\r\n\r\n')
-            })
+            )
             socket.pipe(mediator).pipe(socket)
           })
         } else {

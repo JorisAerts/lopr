@@ -17,10 +17,3 @@ interface RawRequest {
 export interface ProxyRequestInfo extends RawRequest {
   //
 }
-
-export interface ProxyResponseInfo {
-  uuid?: UUID
-  headers: string[]
-  body: string
-  ts: Date
-}
