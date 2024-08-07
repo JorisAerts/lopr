@@ -18,14 +18,8 @@ const decompressors = Object.keys(decompress) as Decompressor[]
  * Returns a `(buffer:Buffer): Promise<Buffer>` that decodes the incoming compressed data,
  * which may be a sequence of compressions.
  */
-export const decodeIncomingMessageData = (
-  res: IncomingMessage
-):
-  | ((a: Uint8Array) => Uint8Array)
-  | ((a: Uint8Array) => Promise<Uint8Array>) => {
-  const encoding: Decompressor[] = splitCsv(
-    res.headers['content-encoding']?.toLowerCase()
-  )
+export const decodeIncomingMessageData = (res: IncomingMessage): ((a: Uint8Array) => Uint8Array) | ((a: Uint8Array) => Promise<Uint8Array>) => {
+  const encoding: Decompressor[] = splitCsv(res.headers['content-encoding']?.toLowerCase())
   return encoding.length && encoding.every((key) => decompressors.includes(key))
     ? encoding.reduce(
         (a, b) => {
@@ -37,5 +31,4 @@ export const decodeIncomingMessageData = (
     : identity
 }
 
-export const getDecodedIncomingMessageData = (res: IncomingMessage) =>
-  getIncomingMessageData(res).then(decodeIncomingMessageData(res))
+export const getDecodedIncomingMessageData = (res: IncomingMessage) => getIncomingMessageData(res).then(decodeIncomingMessageData(res))

@@ -14,10 +14,7 @@ export const VCard = defineComponent({
 
   setup(props, { slots, attrs }) {
     return () => (
-      <VSheet
-        {...attrs}
-        class={['v-card', { 'v-card--clickable': attrs.onClick }]}
-      >
+      <VSheet {...attrs} class={['v-card', { 'v-card--clickable': attrs.onClick }]}>
         {slots.default?.()}
       </VSheet>
     )

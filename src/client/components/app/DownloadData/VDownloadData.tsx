@@ -14,11 +14,7 @@ export const VDownloadData = defineComponent({
 
   setup(props, { slots }) {
     return () => (
-      <a
-        href={`data:${props.type};charset=${props.charset},${encodeURIComponent(props.data)}`}
-        download={props.filename}
-        title={props.tooltip}
-      >
+      <a href={`data:${props.type};charset=${props.charset},${encodeURIComponent(props.data)}`} download={props.filename} title={props.tooltip}>
         {slots.default?.()}
       </a>
     )

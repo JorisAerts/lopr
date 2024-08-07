@@ -21,13 +21,7 @@ import { ProxyResponse } from './ProxyResponse'
 export interface CreateProxyOptions {
   port: number
   mapHttpsReg: boolean | undefined | string | RegExp
-  map:
-    | ((
-        options: OutgoingOptions,
-        req: IncomingMessage,
-        res: ServerResponse | null
-      ) => OutgoingOptions)
-    | undefined
+  map: ((options: OutgoingOptions, req: IncomingMessage, res: ServerResponse | null) => OutgoingOptions) | undefined
 }
 
 export interface CommonOptions {
@@ -39,9 +33,7 @@ const defaultServerOptions = {
   ServerResponse: ProxyResponse satisfies typeof ServerResponse<ProxyRequest>,
 } as http.ServerOptions<typeof ProxyRequest, typeof ServerResponse>
 
-export function createProxy<Options extends Partial<CreateProxyOptions>>(
-  opt = {} as Options
-) {
+export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {} as Options) {
   const options = {
     port: 8080,
     mapHttpsReg: true,
@@ -67,26 +59,14 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
 
     // HTTPS-tunnel (let Node choose the port)
     const httpsServer = https //
-      .createServer(
-        { ...getRootCert(), ...defaultServerOptions },
-        forwardRequest as http.RequestListener<
-          typeof ProxyRequest,
-          typeof ServerResponse
-        >
-      )
+      .createServer({ ...getRootCert(), ...defaultServerOptions }, forwardRequest as http.RequestListener<typeof ProxyRequest, typeof ServerResponse>)
       .listen(() => {
         httpsPort = (httpsServer.address() as AddressInfo).port
         //logger.debug('listening https on: %s', httpsPort)
       })
 
     // HTTP Server (the actual proxy)
-    const httpServer = http.createServer(
-      defaultServerOptions,
-      forwardRequest as http.RequestListener<
-        typeof ProxyRequest,
-        typeof ServerResponse
-      >
-    )
+    const httpServer = http.createServer(defaultServerOptions, forwardRequest as http.RequestListener<typeof ProxyRequest, typeof ServerResponse>)
 
     // try the next port if the suggested one is unavailable (8080... 8081... 8082...)
     const onError = (e: Error & { code?: string }) => {
@@ -146,24 +126,17 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
       //logger.debug('connect %s', req.url)
       if (req.url?.match(/:443$/)) {
         const host = req.url.substring(0, req.url.length - 4)
-        if (
-          options.mapHttpsReg === true ||
-          (options.mapHttpsReg && host.match(options.mapHttpsReg))
-        ) {
+        if (options.mapHttpsReg === true || (options.mapHttpsReg && host.match(options.mapHttpsReg))) {
           const promise = pkiPromises[host] ?? generatePKI(host)
           promise.then(function () {
             const mediator = net.connect(httpsPort)
-            mediator.on('connect', () =>
-              socket.write('HTTP/1.1 200 Connection established\r\n\r\n')
-            )
+            mediator.on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
             socket.pipe(mediator).pipe(socket)
           })
         } else {
           const mediator = net //
             .connect(443, host)
-            .on('connect', () =>
-              socket.write('HTTP/1.1 200 Connection established\r\n\r\n')
-            )
+            .on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
           socket.pipe(mediator).pipe(socket)
         }
       }
@@ -174,8 +147,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
       // ignore local ws request (don't forward to the proxy)
-      if (!isLocalhost(req, httpPort))
-        wsIncoming(req, socket, options as CreateProxyOptions, httpServer, head)
+      if (!isLocalhost(req, httpPort)) wsIncoming(req, socket, options as CreateProxyOptions, httpServer, head)
     }
 
     httpServer.on('upgrade', upgrade)

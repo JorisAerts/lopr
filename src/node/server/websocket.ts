@@ -1,10 +1,7 @@
 import type WebSocket from 'ws'
 import { WebSocketServer } from 'ws'
 import type { WebSocketMessage } from '../../shared/WebSocketMessage'
-import {
-  parseWebSocketMessage,
-  WebSocketMessageType,
-} from '../../shared/WebSocketMessage'
+import { parseWebSocketMessage, WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { InstanceOptions } from '../utils/Options'
 import { WEBSOCKET_ROOT } from '../../shared/constants'
 
@@ -30,13 +27,9 @@ export const defineSocketServer = ({ logger, server }: InstanceOptions) => {
           logger.warn(`Could not find WebSocket handler for:`, data)
         }
       })
-      .on('error', (err: Error) => {})
-      .on('open', () => {
-        logger.info('Websocket connection opened.')
-      })
-      .on('close', (err: Error) => {
-        // logger.info('Websocket connection lost', err)
-      })
+      .on('error', (err: Error) => err && sendWsData(WebSocketMessageType.Error, err))
+      .on('open', () => logger.info('Websocket connection opened.'))
+      .on('close', (err: Error) => err && sendWsData(WebSocketMessageType.Error, err))
   })
 }
 
@@ -52,7 +45,4 @@ type ParsedDataHandler<Data = any> = (data: WebSocketMessage<Data>) => void
 
 const registry: Record<string, ParsedDataHandler> = {}
 
-export const registerDataHandler = <Data = any>(
-  type: WebSocketMessageType,
-  dataHandler: ParsedDataHandler<Data>
-) => (registry[type] = dataHandler)
+export const registerDataHandler = <Data = any>(type: WebSocketMessageType, dataHandler: ParsedDataHandler<Data>) => (registry[type] = dataHandler)

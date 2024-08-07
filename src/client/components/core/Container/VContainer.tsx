@@ -12,13 +12,7 @@ export const VContainer = defineComponent({
 
   setup(props, { slots, attrs }) {
     return () => (
-      <VSheet
-        class={[
-          'v-container',
-          { center: props.center, 'flex-column': props.vertical },
-        ]}
-        {...attrs}
-      >
+      <VSheet class={['v-container', { center: props.center, 'flex-column': props.vertical }]} {...attrs}>
         {slots.default?.()}
       </VSheet>
     )

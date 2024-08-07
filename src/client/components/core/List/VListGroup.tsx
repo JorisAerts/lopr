@@ -10,11 +10,7 @@ export const VListGroup = defineComponent({
 
     return () => (
       <div class={'v-list-group'} {...attrs}>
-        <div class={'v-list-group--activator'}>
-          {slots.activator?.({ onClick }) ?? (
-            <VListItem onClick={onClick}>&nbsp;</VListItem>
-          )}
-        </div>
+        <div class={'v-list-group--activator'}>{slots.activator?.({ onClick }) ?? <VListItem onClick={onClick}>&nbsp;</VListItem>}</div>
         <div class={'v-list-group--items'}>{slots.default?.()}</div>
       </div>
     )

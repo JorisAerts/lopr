@@ -13,11 +13,7 @@ export const Error404 = defineComponent({
 
   setup() {
     return () => (
-      <VContainer
-        vertical
-        center
-        class={['fill-height', 'gap-2', 'align-items-center']}
-      >
+      <VContainer vertical center class={['fill-height', 'gap-2', 'align-items-center']}>
         <span class={'align-center'}>404 — Not found</span>
       </VContainer>
     )

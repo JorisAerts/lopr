@@ -6,10 +6,7 @@ import { getContentType } from './content-type'
 
 const staticRoot = resolve(packageRoot, 'dist', 'client')
 
-const getStaticCandidates = (req: IncomingMessage) => [
-  path.resolve(`${staticRoot}/${req.url}`),
-  path.resolve(`${staticRoot}/${req.url}index.html`),
-]
+const getStaticCandidates = (req: IncomingMessage) => [path.resolve(`${staticRoot}/${req.url}`), path.resolve(`${staticRoot}/${req.url}index.html`)]
 
 const isStaticMatch = (file: string) => {
   try {

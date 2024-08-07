@@ -8,6 +8,7 @@ export const RequestStructure = defineComponent({
   name: 'request-structure',
 
   emits: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     'update:modelValue': (_: ProxyRequestInfo) => true,
   },
 
@@ -23,18 +24,7 @@ export const RequestStructure = defineComponent({
     return () => (
       <VList class={['fill-height', 'overflow-auto', 'mt-2']}>
         {requestStore.requests.map((req) => (
-          <VListItem
-            key={req.uuid}
-            onClick={() => handleSelect(req)}
-            class={[
-              'py-0',
-              'mx-1',
-              'px-1',
-              'overflow-ellipsis',
-              { selected: props.modelValue === req },
-            ]}
-            prependIcon={'InputCircle'}
-          >
+          <VListItem key={req.uuid} onClick={() => handleSelect(req)} class={['py-0', 'mx-1', 'px-1', 'overflow-ellipsis', { selected: props.modelValue === req }]} prependIcon={'InputCircle'}>
             <div class={['no-wrap', 'overflow-hidden', 'overflow-ellipsis']}>
               {req.method} — {req.url}
             </div>

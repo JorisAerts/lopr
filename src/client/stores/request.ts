@@ -13,23 +13,16 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   const idMap = shallowRef(new Map<string, ProxyResponseInfo>())
   const requests = ref([] as ProxyRequestInfo[])
 
-  registerDataHandler(
-    WebSocketMessageType.ProxyRequest,
-    ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
-      data.ts = new Date(data.ts)
-      requests.value.push(data)
-    }
-  )
-  registerDataHandler(
-    WebSocketMessageType.ProxyResponse,
-    ({ data }: WebSocketMessage<ProxyResponseInfo>) => {
-      data.ts = new Date(data.ts)
-      idMap.value.set(data.uuid, data)
-    }
-  )
+  registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
+    data.ts = new Date(data.ts)
+    requests.value.push(data)
+  })
+  registerDataHandler(WebSocketMessageType.ProxyResponse, ({ data }: WebSocketMessage<ProxyResponseInfo>) => {
+    data.ts = new Date(data.ts)
+    idMap.value.set(data.uuid, data)
+  })
 
-  const getResponse = (request: ProxyResponseInfo) =>
-    idMap.value.get(request.uuid)
+  const getResponse = (request: ProxyResponseInfo) => idMap.value.get(request.uuid)
 
   return { requests, map: idMap, getResponse }
 })

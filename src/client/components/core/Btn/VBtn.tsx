@@ -55,8 +55,7 @@ export const VBtn = defineComponent({
             {props.icon && (
               <VIcon
                 class={{
-                  'btn--prepend-icon':
-                    ((content as any)?.[0]?.children?.length ?? 0) > 0,
+                  'btn--prepend-icon': ((content as any)?.[0]?.children?.length ?? 0) > 0,
                 }}
                 name={props.icon}
                 color={props.iconColor}
@@ -64,14 +63,7 @@ export const VBtn = defineComponent({
               ></VIcon>
             )}
             {content}
-            {props.dropdown && (
-              <VIcon
-                class={['mr-n2']}
-                name={'KeyboardArrowDown'}
-                color={props.iconColor}
-                size={props.size}
-              />
-            )}
+            {props.dropdown && <VIcon class={['mr-n2']} name={'KeyboardArrowDown'} color={props.iconColor} size={props.size} />}
           </span>
         </button>
       )

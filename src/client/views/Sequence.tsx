@@ -1,15 +1,6 @@
 import type { PropType, Ref } from 'vue'
 import { computed, defineComponent, shallowRef } from 'vue'
-import {
-  RequestSequence,
-  VBtn,
-  VCard,
-  VContainer,
-  VSheet,
-  VSpacer,
-  VTable,
-  VTooltip,
-} from '../components'
+import { RequestSequence, VBtn, VCard, VContainer, VSheet, VSpacer, VTable, VTooltip } from '../components'
 import type { ProxyRequestInfo } from '../../shared/Request'
 
 export const Sequence = defineComponent({
@@ -25,9 +16,7 @@ export const Sequence = defineComponent({
   setup(props) {
     const current: Ref<ProxyRequestInfo | undefined> = shallowRef()
 
-    const width = computed(() =>
-      typeof props.width === 'number' ? `${props.width}px` : props.width
-    )
+    const width = computed(() => (typeof props.width === 'number' ? `${props.width}px` : props.width))
 
     return () => (
       <VContainer class={['fill-height', 'gap-2']}>
@@ -42,21 +31,10 @@ export const Sequence = defineComponent({
             <h3>Requests</h3>
             <VSpacer />
             <VTooltip text={'Sequence view'}>
-              <VBtn
-                icon={'Splitscreen'}
-                size={20}
-                class={['pa-1', 'mr-1']}
-                transparent
-              />
+              <VBtn icon={'Splitscreen'} size={20} class={['pa-1', 'mr-1']} transparent />
             </VTooltip>
             <VTooltip text={'Structure view'}>
-              <VBtn
-                icon={'Monitoring'}
-                size={20}
-                class={['pa-1']}
-                transparent
-                disabled
-              />
+              <VBtn icon={'Monitoring'} size={20} class={['pa-1']} transparent disabled />
             </VTooltip>
           </VSheet>
           <RequestSequence v-model={current.value} />
@@ -101,11 +79,7 @@ export const Sequence = defineComponent({
                   (h, i) =>
                     i % 2 === 0 && (
                       <tr>
-                        {i === 0 && (
-                          <th rowspan={current.value!.headers.length / 2}>
-                            Headers:
-                          </th>
-                        )}
+                        {i === 0 && <th rowspan={current.value!.headers.length / 2}>Headers:</th>}
                         <td>
                           <b>{h}</b>: {current.value!.headers[i + 1]}
                         </td>

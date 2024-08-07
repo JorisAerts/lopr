@@ -15,5 +15,4 @@ const typeMap = {
   '.ttf': 'font/ttf',
 }
 
-export const getContentType = (file: string) =>
-  typeMap[path.extname(file) as keyof typeof typeMap]
+export const getContentType = (file: string) => typeMap[path.extname(file) as keyof typeof typeMap]

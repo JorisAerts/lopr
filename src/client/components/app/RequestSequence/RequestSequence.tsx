@@ -8,6 +8,7 @@ export const RequestSequence = defineComponent({
   name: 'request-sequence',
 
   emits: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     'update:modelValue': (_: ProxyRequestInfo) => true,
   },
 

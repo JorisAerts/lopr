@@ -1,7 +1,4 @@
-import type {
-  WebSocketMessage,
-  WebSocketMessageType,
-} from '../../shared/WebSocketMessage'
+import type { WebSocketMessage, WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { parseWebSocketMessage } from '../../shared/WebSocketMessage'
 import { WEBSOCKET_ROOT } from '../../shared/constants'
 
@@ -14,10 +11,7 @@ type ParsedDataHandler<Data = any> = (data: WebSocketMessage<Data>) => void
 
 const registry: Record<string, ParsedDataHandler> = {}
 
-export const registerDataHandler = <Data = any>(
-  type: WebSocketMessageType,
-  dataHandler: ParsedDataHandler<Data>
-) => (registry[type] = dataHandler)
+export const registerDataHandler = <Data = any>(type: WebSocketMessageType, dataHandler: ParsedDataHandler<Data>) => (registry[type] = dataHandler)
 
 let socket = createSocket()
 

@@ -10,14 +10,11 @@ import { sendWsData } from '../server/websocket'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 
 export interface WSIncomingRequest {
-  (
-    req: IncomingMessage,
-    socket: Socket,
-    options: CreateProxyOptions,
-    server: http.Server | https.Server,
-    head: Buffer
-  ): void
+  (req: IncomingMessage, socket: Socket, options: CreateProxyOptions, server: http.Server | https.Server, head: Buffer): void
 }
+
+const NEWLINE = '\r\n'
+const newLine = (socket: Socket) => socket.write(NEWLINE)
 
 const inc = [
   /**
@@ -54,10 +51,7 @@ const inc = [
       proto: req.connection.asIndexedPairs?.().readableLength ? 'wss' : 'ws',
     }
     Object.keys(values).forEach(function (header) {
-      req.headers[`x-forwarded-${header}`] =
-        (req.headers[`x-forwarded-${header}`] || '') +
-        (req.headers[`x-forwarded-${header}`] ? ',' : '') +
-        values[header as keyof typeof values]
+      req.headers[`x-forwarded-${header}`] = (req.headers[`x-forwarded-${header}`] || '') + (req.headers[`x-forwarded-${header}`] ? ',' : '') + values[header as keyof typeof values]
     })
   },
 
@@ -67,12 +61,7 @@ const inc = [
   function (req: IncomingMessage, socket: Socket, options: CreateProxyOptions) {
     utils.setupSocket(socket)
 
-    const config = utils.setupOutgoing(
-      {},
-      req,
-      null,
-      options as CreateProxyOptions
-    )
+    const config = utils.setupOutgoing({}, req, null, options as CreateProxyOptions)
 
     const proxyReq = (isReqHttps(req) ? https : http).request(config)
 
@@ -81,9 +70,7 @@ const inc = [
         // WS tried to reconnect but the websocket isn't running yet
         return
       }
-      //console.error(`error in ${req.url}`)
       sendWsData(WebSocketMessageType.Error, { ws: true, err })
-      //console.error(err)
     }
 
     // Error Handler
@@ -92,25 +79,19 @@ const inc = [
     proxyReq.on('upgrade', function (proxyRes, proxySocket) {
       proxySocket.on('error', onError)
       utils.setupSocket(proxySocket)
-      socket.write('HTTP/1.1 101 Switching Protocols\r\n')
+      socket.write('HTTP/1.1 101 Switching Protocols')
+      newLine(socket)
       socket.write(
         `${Object.keys(proxyRes.headers)
-          .map(function (i) {
-            const v = proxyRes.headers[i]
-            return `${i}: ${v}`
-          })
-          .join('\r\n')}\r\n\r\n`
+          .map((i) => `${i}: ${proxyRes.headers[i]}`)
+          .join(NEWLINE)}`
       )
+      newLine(socket)
+      newLine(socket)
       socket.pipe(proxySocket).pipe(socket)
     })
     req.pipe(proxyReq)
   },
 ] as WSIncomingRequest[]
 
-export const wsIncoming = (
-  req: IncomingMessage,
-  socket: Socket,
-  options: CreateProxyOptions,
-  server: http.Server | https.Server,
-  head: Buffer
-) => inc.forEach((come) => come(req, socket, options, server, head))
+export const wsIncoming = (req: IncomingMessage, socket: Socket, options: CreateProxyOptions, server: http.Server | https.Server, head: Buffer) => inc.forEach((come) => come(req, socket, options, server, head))

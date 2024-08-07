@@ -1,4 +1,4 @@
-import type { PropType } from 'vue';
+import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 import { VSheet } from '../Sheet'
 import './VTabs.scss'

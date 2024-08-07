@@ -64,9 +64,7 @@ const generateRootCert = (): RootCertificateInfo => {
   cert.publicKey = keys.publicKey
   cert.serialNumber = Date.now().toString()
   cert.validity.notBefore = new Date()
-  cert.validity.notBefore.setFullYear(
-    cert.validity.notBefore.getFullYear() + -1
-  )
+  cert.validity.notBefore.setFullYear(cert.validity.notBefore.getFullYear() + -1)
 
   cert.validity.notAfter = new Date()
   cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
@@ -116,12 +114,7 @@ const generateRootCert = (): RootCertificateInfo => {
   }
 }
 
-const {
-  key: rootKey,
-  cert: rootCert,
-  forgeCert: forgeRootCert,
-  forgeKey: forgeRootKey,
-} = generateRootCert()
+const { key: rootKey, cert: rootCert, forgeCert: forgeRootCert, forgeKey: forgeRootKey } = generateRootCert()
 
 const createCertForHost = (hostname: string) => {
   const keys = pki.rsa.generateKeyPair(2048)
@@ -160,11 +153,7 @@ const createCertForHost = (hostname: string) => {
   })
 }
 
-function getOrWriteKeys(
-  hostname: string,
-  keyFiles: typeof ROOT_KEY_FILES,
-  { key, cert }: { key: () => string; cert: () => string }
-): CertificateInfo {
+function getOrWriteKeys(hostname: string, keyFiles: typeof ROOT_KEY_FILES, { key, cert }: { key: () => string; cert: () => string }): CertificateInfo {
   if (existsSync(keyFiles.cert) && existsSync(keyFiles.key)) {
     //console.info('reading keys')
     return {

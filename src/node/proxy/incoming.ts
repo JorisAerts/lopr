@@ -36,33 +36,21 @@ const inc = [
     Object.keys(values)
       .map((header) => `x-forwarded-${header}`)
       .forEach((header) => {
-        req.headers[header] =
-          (req.headers[header] || '') +
-          (req.headers[header] ? ',' : '') +
-          values[header as keyof typeof values]
+        req.headers[header] = (req.headers[header] || '') + (req.headers[header] ? ',' : '') + values[header as keyof typeof values]
       })
   },
 
   /**
    * Pipe to the outgoing pipeline
    */
-  function (
-    req: IncomingMessage,
-    res: ServerResponse,
-    options: CreateProxyOptions
-  ) {
+  function (req: IncomingMessage, res: ServerResponse, options: CreateProxyOptions) {
     function response(proxyRes: IncomingMessage) {
       outgoing(req, res, proxyRes)
 
       // log the response to the websocket
       getDecodedIncomingMessageData(proxyRes)
         .then((b) => b.toString())
-        .then((data) =>
-          sendWsData(
-            WebSocketMessageType.ProxyResponse,
-            createProxyResponse((req as ProxyRequest).uuid, proxyRes, data)
-          )
-        )
+        .then((data) => sendWsData(WebSocketMessageType.ProxyResponse, createProxyResponse((req as ProxyRequest).uuid, proxyRes, data)))
 
       proxyRes.pipe(res)
     }
@@ -75,18 +63,11 @@ const inc = [
 
     const requestOptions = setupOutgoing({}, req, res, options)
     if (requestOptions) {
-      const proxyReq = (isReqHttps(req) ? https : http).request(
-        requestOptions,
-        response
-      )
+      const proxyReq = (isReqHttps(req) ? https : http).request(requestOptions, response)
       proxyReq.on('error', onError)
       req.pipe(proxyReq)
     }
   },
 ] as IncomingRequest[]
 
-export const incoming = (
-  req: IncomingMessage,
-  res: ServerResponse,
-  options: CreateProxyOptions
-) => inc.forEach((come) => come(req, res, options))
+export const incoming = (req: IncomingMessage, res: ServerResponse, options: CreateProxyOptions) => inc.forEach((come) => come(req, res, options))

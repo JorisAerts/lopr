@@ -15,8 +15,7 @@ export const VTooltip = defineComponent({
     const dlg = ref<HTMLDialogElement>()
     const show = ref(false)
     let timer: ReturnType<typeof setTimeout> | undefined
-    const enter = () =>
-      (timer = setTimeout(() => (show.value = true), props.delay))
+    const enter = () => (timer = setTimeout(() => (show.value = true), props.delay))
 
     const leave = () => {
       clearTimeout(timer)
@@ -25,11 +24,7 @@ export const VTooltip = defineComponent({
     const style = computed(() =>
       root.value
         ? {
-            top: `${
-              (root.value?.offsetTop ?? 0) -
-              (dlg.value?.offsetHeight ?? 0) -
-              props.margin
-            }px`,
+            top: `${(root.value?.offsetTop ?? 0) - (dlg.value?.offsetHeight ?? 0) - props.margin}px`,
             left: `${root.value?.offsetLeft}px`,
           }
         : {
@@ -39,20 +34,10 @@ export const VTooltip = defineComponent({
     const tooltip = computed(() => slots.tooltip?.() ?? props.text)
     return () =>
       tooltip.value ? (
-        <div
-          class={'v-tooltip'}
-          onMouseenter={enter}
-          onMouseleave={leave}
-          ref={root}
-        >
+        <div class={'v-tooltip'} onMouseenter={enter} onMouseleave={leave} ref={root}>
           <Transition>
             {show.value && (
-              <dialog
-                ref={dlg}
-                open
-                class={['v-tooltip--contents']}
-                style={style.value}
-              >
+              <dialog ref={dlg} open class={['v-tooltip--contents']} style={style.value}>
                 {tooltip.value}
               </dialog>
             )}
