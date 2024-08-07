@@ -18,7 +18,7 @@ export const VBtn = defineComponent({
   props: {
     icon: { type: String as PropType<IconNames> },
     iconColor: { type: String },
-    size: { type: Number, default: 22 },
+    size: { type: Number, default: 16 },
     dropdown: { type: Boolean, default: false },
 
     color: { type: String },
@@ -56,7 +56,7 @@ export const VBtn = defineComponent({
                 }}
                 name={props.icon}
                 color={props.iconColor}
-                size={16}
+                size={props.size}
               ></VIcon>
             )}
             {content}
@@ -65,7 +65,7 @@ export const VBtn = defineComponent({
                 class={['mr-n2']}
                 name={'KeyboardArrowDown'}
                 color={props.iconColor}
-                size={props.size / 1.5}
+                size={props.size}
               />
             )}
           </span>

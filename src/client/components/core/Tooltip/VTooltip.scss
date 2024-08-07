@@ -1,0 +1,14 @@
+@use '../../../style/vars' as *;
+
+.v-tooltip {
+
+  &--contents {
+    border-radius: var(--border-radius);
+    position: absolute;
+    transition: none;
+    margin: 0;
+    font-size: 1rem;
+    padding: 0 $spacer * 2;
+  }
+
+}

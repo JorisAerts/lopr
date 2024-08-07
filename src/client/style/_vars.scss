@@ -1,4 +1,6 @@
 @use './sass-vars' as *;
+@use './transitions' as *;
+
 @forward './sass-vars';
 
 :root {
@@ -8,6 +10,7 @@
   // fonts
   --font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system, blinkmacsystemfont, roboto, "Helvetica Neue", sans-serif;
   --font-family-mono: ui-monospace, sfmono-regular, menlo, monaco, consolas, liberation mono, courier new, monospace;
+  --font-size: 1rem;
   --font-weight-bold: 400;
 
   // theme colors
@@ -32,6 +35,11 @@
 
   // animation
   --animation-duration: 1s;
+
+  // transition
+  --transition-duration: .32s;
+  --transition-timing-function: #{map-get(map-get($penner-transitions, "ease-out"), "quart")};
+  --transition: all var(--transition-duration) var(--transition-timing-function);
 
   // panel
   --panel-background: rgb(255 255 255 / 20%);

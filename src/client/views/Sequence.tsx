@@ -1,6 +1,15 @@
 import type { PropType, Ref } from 'vue'
 import { computed, defineComponent, shallowRef } from 'vue'
-import { RequestSequence, VCard, VContainer, VTable } from '../components'
+import {
+  RequestSequence,
+  VBtn,
+  VCard,
+  VContainer,
+  VSheet,
+  VSpacer,
+  VTable,
+  VTooltip,
+} from '../components'
 import type { ProxyRequestInfo } from '../../shared/Request'
 
 export const Sequence = defineComponent({
@@ -29,7 +38,26 @@ export const Sequence = defineComponent({
             'max-width': width.value,
           }}
         >
-          <h3 class={'px-3'}>Requests</h3>
+          <VSheet class={['d-flex', 'px-3']}>
+            <h3>Requests</h3>
+            <VSpacer />
+            <VTooltip text={'Sequence view'}>
+              <VBtn
+                icon={'Splitscreen'}
+                size={20}
+                class={['pa-1', 'mr-1']}
+                transparent
+              ></VBtn>
+            </VTooltip>
+            <VTooltip text={'Structure view'}>
+              <VBtn
+                icon={'Monitoring'}
+                size={20}
+                class={['pa-1']}
+                transparent
+              ></VBtn>
+            </VTooltip>
+          </VSheet>
           <RequestSequence v-model={current.value} />
         </VCard>
 
