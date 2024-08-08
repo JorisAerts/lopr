@@ -32,10 +32,10 @@ export const Sequence = defineComponent({
             <h3>Requests</h3>
             <VSpacer />
             <VTooltip text={'Sequence view'}>
-              <VBtn icon={'Splitscreen'} size={20} class={['pa-1', 'mr-1']} transparent />
+              <VBtn icon={'Reorder'} size={20} class={['pa-1', 'mr-1']} transparent />
             </VTooltip>
             <VTooltip text={'Structure view'}>
-              <VBtn icon={'Monitoring'} size={20} class={['pa-1']} transparent disabled />
+              <VBtn icon={'AccountTree'} size={20} class={['pa-1']} transparent disabled />
             </VTooltip>
           </VSheet>
           <RequestSequence v-model={current.value} />
