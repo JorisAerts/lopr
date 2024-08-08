@@ -21,16 +21,23 @@ export const VTooltip = defineComponent({
       clearTimeout(timer)
       show.value = false
     }
-    const style = computed(() =>
-      root.value
-        ? {
-            top: `${(root.value?.offsetTop ?? 0) - (dlg.value?.offsetHeight ?? 0) - props.margin}px`,
-            left: `${root.value?.offsetLeft}px`,
-          }
-        : {
-            display: 'none',
-          }
-    )
+    const style = computed(() => {
+      if (!root.value) return { display: 'none' }
+      const pos = {
+        x: root.value?.offsetLeft ?? 0,
+        y: root.value?.offsetTop ?? 0,
+        h: (root.value?.offsetHeight ?? 0) + props.margin,
+        w: root.value?.offsetWidth ?? 0,
+      }
+      const tooltip = {
+        h: (dlg.value?.offsetHeight ?? 0) + props.margin,
+        w: (dlg.value?.offsetWidth ?? 0) + props.margin,
+      }
+      return {
+        top: pos.y - tooltip.h < 0 ? `${pos.y + pos.h}px` : `${pos.y - tooltip.h}px`,
+        left: pos.x + tooltip.w > document.body.clientWidth ? `${pos.x - (tooltip.w - props.margin) + pos.w}px` : `${pos.x}px`,
+      }
+    })
     const tooltip = computed(() => slots.tooltip?.() ?? props.text)
     return () =>
       tooltip.value ? (
