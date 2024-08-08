@@ -29,14 +29,14 @@
 
 @each $type in (center, start, end, flex-start, flex-end, left, right, space-between, space-around, space-evenly, stretch) {
   .justify-#{$type} {
-    justify-content: $type;
+    justify-content: $type !important;
   }
 
   .align-#{$type} {
-    align-self: $type;
+    align-self: $type !important;
   }
 
   .align-items-#{$type} {
-    align-items: $type;
+    align-items: $type !important;
   }
 }
