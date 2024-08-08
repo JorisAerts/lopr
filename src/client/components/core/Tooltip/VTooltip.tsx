@@ -15,11 +15,14 @@ export const VTooltip = defineComponent({
     const dlg = ref<HTMLDialogElement>()
     const show = ref(false)
     let timer: ReturnType<typeof setTimeout> | undefined
-    const enter = () => (timer = setTimeout(() => (show.value = true), props.delay))
-
+    const enter = () => {
+      if (timer) clearTimeout(timer)
+      timer = setTimeout(() => (show.value = true), props.delay)
+    }
     const leave = () => {
       clearTimeout(timer)
       show.value = false
+      timer = undefined
     }
     const style = computed(() => {
       if (!root.value) return { display: 'none' }
