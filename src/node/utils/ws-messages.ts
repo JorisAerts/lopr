@@ -38,7 +38,7 @@ export const createErrorMessage = <Err>(err: Err) => {
   const data =
     typeof err === 'string' //
       ? { name: err, message: err }
-      : err instanceof Error //
+      : typeof err !== 'string' //
         ? { ...err }
         : { message: err }
   return {
