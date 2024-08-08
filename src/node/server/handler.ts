@@ -1,5 +1,8 @@
 import type { IncomingMessage, ServerResponse } from 'http'
 import * as http from 'node:http'
+import { sendWsData } from './websocket'
+import { WebSocketMessageType } from '../../shared/WebSocketMessage'
+import { createErrorMessage } from '../utils/ws-messages'
 
 export const handleRequest = (req: IncomingMessage, res: ServerResponse) => {
   console.log(`HTTP Request: ${req.method} ${req.url}`)
@@ -21,7 +24,7 @@ export const handleRequest = (req: IncomingMessage, res: ServerResponse) => {
 
   // Handle errors
   proxyReq.on('error', (err) => {
-    console.error('Error with proxy request:', err)
+    sendWsData(WebSocketMessageType.Error, createErrorMessage(err))
     res.writeHead(500)
     res.end('Error with proxy request')
   })

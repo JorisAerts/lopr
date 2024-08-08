@@ -4,6 +4,7 @@ import type { WebSocketMessage } from '../../shared/WebSocketMessage'
 import { parseWebSocketMessage, WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { InstanceOptions } from '../utils/Options'
 import { WEBSOCKET_ROOT } from '../../shared/constants'
+import { createErrorMessage } from '../utils/ws-messages'
 
 const instance = {
   wss: undefined as WebSocketServer | undefined,
@@ -27,9 +28,9 @@ export const defineSocketServer = ({ logger, server }: InstanceOptions) => {
           logger.warn(`Could not find WebSocket handler for:`, data)
         }
       })
-      .on('error', (err: Error) => err && sendWsData(WebSocketMessageType.Error, { err }))
+      .on('error', (err: Error) => err && sendWsData(WebSocketMessageType.Error, createErrorMessage(err)))
       .on('open', () => logger.info('Websocket connection opened.'))
-      .on('close', (err: Error) => err && sendWsData(WebSocketMessageType.Error, { err }))
+      .on('close', (err: Error) => err && sendWsData(WebSocketMessageType.Error, createErrorMessage(err)))
   })
 }
 

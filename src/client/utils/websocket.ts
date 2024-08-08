@@ -1,4 +1,4 @@
-import type { WebSocketMessage, WebSocketMessageType } from '../../shared/WebSocketMessage'
+import type { WebSocketMessage , WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { parseWebSocketMessage } from '../../shared/WebSocketMessage'
 import { WEBSOCKET_ROOT } from '../../shared/constants'
 
@@ -39,10 +39,9 @@ export const sendWsData = async (type: WebSocketMessageType, data: any) => {
 }
 
 // Connection opened
-socket.addEventListener('open', (event) => {
-  // socket.send('Hello Server!')
-})
+// socket.addEventListener('open', (event) => {})
 
 socket.addEventListener('error', (error) => {
   // console.error({ error })
+  // sendWsData(WebSocketMessageType.Error, createErrorMessage(error))
 })

@@ -8,6 +8,7 @@ import type { CreateProxyOptions } from './proxy'
 import { isLocalhost } from '../utils/is-localhost'
 import { sendWsData } from '../server/websocket'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
+import { createErrorMessage } from '../utils/ws-messages'
 
 export interface WSIncomingRequest {
   (req: IncomingMessage, socket: Socket, options: CreateProxyOptions, server: http.Server | https.Server, head: Buffer): void
@@ -75,15 +76,11 @@ const inc = [
     const proxyReq = (isReqHttps(req) ? https : http).request(config)
 
     function onError(err: Error & { code: string }) {
+      sendWsData(WebSocketMessageType.Error, createErrorMessage(err))
       if (isReqWebSocket(req) && isLocalhost(req) && err.code === 'ENOTFOUND') {
         // WS tried to reconnect but the websocket isn't running yet
         return
       }
-      sendWsData(WebSocketMessageType.Error, {
-        ts: new Date(),
-        ws: true,
-        err,
-      })
     }
 
     // Error Handler
