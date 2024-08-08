@@ -1,7 +1,8 @@
-import type { PropType } from 'vue'
-import { defineComponent, ref } from 'vue'
+import type { PropType, Ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { VTab, VTabItem, VTabItems, VTable, VTabs } from '../../core'
 import type { ProxyRequestInfo } from '../../../../shared/Request'
+import type { UUID } from '../../../../shared/UUID'
 
 export const RequestDetails = defineComponent({
   name: 'RequestDetails',
@@ -12,6 +13,17 @@ export const RequestDetails = defineComponent({
 
   setup(props) {
     const currentTab = ref(0)
+    const uuid: Ref<UUID | undefined> = ref()
+
+    watch(
+      props,
+      (newValue) => {
+        if (uuid.value !== newValue.modelValue?.uuid) currentTab.value = 0
+        uuid.value = newValue.modelValue?.uuid
+      },
+      { immediate: true }
+    )
+
     return () =>
       props.modelValue && (
         <>
