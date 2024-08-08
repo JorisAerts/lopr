@@ -29,9 +29,10 @@
   --border-size: 1px;
 
   // text
-  --text-color: #eee;
-  --link-color: var(--text-color);
-  --icon-color: var(--text-color);
+  --text-emphasis: 1;
+  --text-color: 238, 238, 238;
+  --link-color: rgba(var(--text-color), var(--text-emphasis));
+  --icon-color: rgba(var(--text-color), var(--text-emphasis));
 
   // animation
   --animation-duration: 1s;

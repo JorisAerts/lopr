@@ -23,7 +23,7 @@
   border-radius: var(--btn-rounding);
   outline: none;
   cursor: pointer;
-  color: rgb(var(--text-color));
+  color: rgba(var(--text-color), var(--text-emphasis));
 
   &__underlay {
     position: absolute;
@@ -55,6 +55,10 @@
     display: flex;
     align-items: center;
     font-weight: var(--btn-font-weight);
+  }
+
+  &--disabled {
+    --text-emphasis: .4;
   }
 
   &:not(.v-btn--disabled):hover {
