@@ -1,15 +1,22 @@
 import { defineComponent } from 'vue'
 import './VTab.scss'
+import { makeTabProps, useTabs } from './tabs'
 
 export const VTab = defineComponent({
   name: 'v-tab',
 
   props: {
+    ...makeTabProps(),
     name: { type: String },
-    active: { type: Boolean },
+    disabled: { type: Boolean, default: false },
   },
 
   setup(props) {
-    return () => <button class={['v-tab']}>{props.name}</button>
+    const { on } = useTabs(props)
+    return () => (
+      <button class={['v-tab']} {...on} disabled={props.disabled}>
+        {props.name}
+      </button>
+    )
   },
 })

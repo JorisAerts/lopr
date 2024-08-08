@@ -1,19 +1,21 @@
-import type { PropType } from 'vue'
+import type { VNode } from 'vue'
 import { defineComponent } from 'vue'
 import { VSheet } from '../Sheet'
-import './VTabs.scss'
+import './VTabItems.scss'
+import { makeTabItemsProps } from './tabs'
 
 export const VTabItems = defineComponent({
   name: 'v-tab-items',
 
   props: {
-    modelValue: {
-      type: [String, Number, Object] as PropType<any>,
-      default: false,
-    },
+    ...makeTabItemsProps(),
   },
 
   setup(props, { slots }) {
-    return () => <VSheet class={'v-tab-items'}></VSheet>
+    const currentWindow = (nodes: VNode[] | undefined) =>
+      nodes //
+        ?.find((node) => node.props?.modelValue === props.modelValue)
+
+    return () => <VSheet class={'v-tab-items'}>{currentWindow(slots.default?.())}</VSheet>
   },
 })
