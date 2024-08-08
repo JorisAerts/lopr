@@ -1,5 +1,5 @@
 import type { PropType } from 'vue'
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, Transition } from 'vue'
 import './VBadge.scss'
 
 export const VBadge = defineComponent({
@@ -38,11 +38,13 @@ export const VBadge = defineComponent({
     return () => (
       <div class={'v-badge'}>
         <div class={'v-badge--wrapper'}>{slots.default?.()}</div>
-        {show.value && (
-          <div class={['v-badge--badge', { 'v-badge--dot': !badgeText.value }]} style={badgeStyle.value}>
-            {badgeText.value}
-          </div>
-        )}
+        <Transition>
+          {show.value && (
+            <div class={['v-badge--badge', { 'v-badge--dot': !badgeText.value }]} style={badgeStyle.value}>
+              {badgeText.value}
+            </div>
+          )}
+        </Transition>
       </div>
     )
   },
