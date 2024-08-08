@@ -12,9 +12,9 @@ export const VTab = defineComponent({
   },
 
   setup(props) {
-    const { on } = useTabs(props)
+    const { on, classes } = useTabs(props)
     return () => (
-      <button class={['v-tab']} {...on} disabled={props.disabled}>
+      <button class={['v-tab', ...classes.value]} {...on} disabled={props.disabled}>
         {props.name}
       </button>
     )

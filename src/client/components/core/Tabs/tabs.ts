@@ -1,5 +1,5 @@
 import type { ExtractPropTypes, PropType, Ref } from 'vue'
-import { getCurrentInstance, inject, onUnmounted, provide, ref, watch } from 'vue'
+import { computed, getCurrentInstance, inject, onUnmounted, provide, ref, watch } from 'vue'
 
 export const TAB_SYMBOL = Symbol()
 
@@ -37,7 +37,7 @@ type TabProps<Type = unknown> = ExtractPropTypes<ReturnType<typeof makeTabProps<
 export const defineTabs = <Type>(props: TabsProps<Type>, autoEmit = true) => {
   const modelValue = ref(props.modelValue) as Ref<Type | undefined>
   watch(props, (newVal) => (modelValue.value = newVal.modelValue as Type))
-  
+
   const data: TabData<Type> = { modelValue }
   provide(TAB_SYMBOL, data)
   const instance = getCurrentInstance()
@@ -62,14 +62,16 @@ export const defineTabs = <Type>(props: TabsProps<Type>, autoEmit = true) => {
  */
 export const useTabs = <Type>(props: TabProps<Type>) => {
   const data: TabData<Type> = inject(TAB_SYMBOL) as TabData<Type>
-  if (!data) return {}
+  if (!data) throw Error('using useTabs outside of a tab-context caused problems.')
   const on = {
     onClick: (event: MouseEvent) => {
       event.preventDefault()
       data.modelValue.value = props.modelValue as Type
     },
   }
+  const classes: Ref<string[]> = computed(() => (data.modelValue.value === props.modelValue ? ['v-tab--selected'] : []))
   return {
+    classes,
     on,
   }
 }
