@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { ProxyRequestInfo } from '../../shared/Request'
 import { registerDataHandler } from '../utils/websocket'
 import type { WebSocketMessage } from '../../shared/WebSocketMessage'
@@ -18,5 +18,8 @@ export const useErrorLogStore = defineStore(STORE_NAME, () => {
     data.ts = new Date(data.ts)
     errors.value.push(data)
   })
-  return { errors }
+
+  const hasErrors = computed(() => errors.value.length > 0)
+
+  return { errors, hasErrors }
 })

@@ -2,11 +2,14 @@ import { defineComponent } from 'vue'
 import { VBadge, VBtn, VCard, VIcon, VSpacer, VTooltip } from '../../core'
 import { APP_NAME } from '../../../../shared/constants'
 import './VNavBar.scss'
+import { useErrorLogStore } from '../../../stores/errorlog'
 
 export const VNavBar = defineComponent({
   name: 'v-nav-bar',
 
   setup() {
+    const errorLogStore = useErrorLogStore()
+
     return () => (
       <VCard class={['v-nav-bar', 'pa-2', 'd-flex', 'gap-2', 'align-items-center']}>
         <h4 class={['d-flex', 'align-center']}>
@@ -15,7 +18,7 @@ export const VNavBar = defineComponent({
         </h4>
         <VSpacer />
         <VTooltip text={'Error log'}>
-          <VBadge modelValue={true} position={[1, -1]}>
+          <VBadge modelValue={errorLogStore.hasErrors} position={[1, -1]}>
             <VBtn icon={'Monitoring'} size={20} class={['pa-1']} transparent />
           </VBadge>
         </VTooltip>
