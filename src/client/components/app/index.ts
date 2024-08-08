@@ -1,4 +1,5 @@
 export * from './AppHeader'
 export * from './DownloadData'
 export * from './NavBar'
+export * from './RequestDetails'
 export * from './RequestSequence'

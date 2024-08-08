@@ -1,7 +1,8 @@
 import type { PropType, Ref } from 'vue'
 import { computed, defineComponent, shallowRef } from 'vue'
-import { RequestSequence, VBtn, VCard, VContainer, VSheet, VSpacer, VTable, VTooltip } from '../components'
+import { RequestSequence, VBtn, VCard, VContainer, VSheet, VSpacer, VTooltip } from '../components'
 import type { ProxyRequestInfo } from '../../shared/Request'
+import { RequestDetails } from '../components/app/RequestDetails/RequestDetails'
 
 export const Sequence = defineComponent({
   name: 'v-home-view',
@@ -41,54 +42,7 @@ export const Sequence = defineComponent({
         </VCard>
 
         <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
-          {current.value && (
-            <VTable class={'gap-2'}>
-              <thead>
-                <tr>
-                  <th style={{ width: '140px' }}>Name</th>
-                  <th>Value</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr>
-                  <th>URL:</th>
-                  <td>{current.value.url}</td>
-                </tr>
-
-                {current.value.ts != null && (
-                  <tr>
-                    <th>Time:</th>
-                    <td>{current.value.ts.toLocaleString()}</td>
-                  </tr>
-                )}
-
-                <tr>
-                  <th>Method:</th>
-                  <td>{current.value.method}</td>
-                </tr>
-
-                {current.value.statusCode != null && (
-                  <tr>
-                    <th>Status:</th>
-                    <td>{current.value.statusCode}</td>
-                  </tr>
-                )}
-
-                {current.value.headers.map(
-                  (h, i) =>
-                    i % 2 === 0 && (
-                      <tr>
-                        {i === 0 && <th rowspan={current.value!.headers.length / 2}>Headers:</th>}
-                        <td>
-                          <b>{h}</b>: {current.value!.headers[i + 1]}
-                        </td>
-                      </tr>
-                    )
-                )}
-              </tbody>
-            </VTable>
-          )}
+          <RequestDetails modelValue={current.value} />
         </VCard>
       </VContainer>
     )
