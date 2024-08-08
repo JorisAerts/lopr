@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { VBtn, VCard, VIcon, VSpacer, VTooltip } from '../../core'
+import { VBadge, VBtn, VCard, VIcon, VSpacer, VTooltip } from '../../core'
 import { APP_NAME } from '../../../../shared/constants'
 import './VNavBar.scss'
 
@@ -15,7 +15,9 @@ export const VNavBar = defineComponent({
         </h4>
         <VSpacer />
         <VTooltip text={'Error log'}>
-          <VBtn icon={'Monitoring'} size={20} class={['pa-1']} transparent />
+          <VBadge modelValue={true} position={[1, -1]}>
+            <VBtn icon={'Monitoring'} size={20} class={['pa-1']} transparent />
+          </VBadge>
         </VTooltip>
       </VCard>
     )
