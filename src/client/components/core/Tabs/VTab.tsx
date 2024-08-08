@@ -1,15 +1,15 @@
 import { defineComponent } from 'vue'
-import { VSheet } from '../Sheet'
-import './VTabs.scss'
+import './VTab.scss'
 
 export const VTab = defineComponent({
   name: 'v-tab',
 
   props: {
     name: { type: String },
+    active: { type: Boolean },
   },
 
-  setup() {
-    return () => <VSheet class={'v-tab'}></VSheet>
+  setup(props) {
+    return () => <button class={['v-tab']}>{props.name}</button>
   },
 })

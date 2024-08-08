@@ -1,13 +1,12 @@
 @use '../../../style/sass-vars' as *;
 
-:root {
-
-}
-
 .v-tabs {
 
-}
+  &--items {
+    display: flex;
+    gap: $spacer * 2;
 
-.v-tab {
+    align-items: stretch;
+  }
 
 }

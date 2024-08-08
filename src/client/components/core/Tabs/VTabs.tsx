@@ -10,15 +10,13 @@ export const VTabs = defineComponent({
   props: {
     modelValue: {
       type: [String, Number, Object] as PropType<any>,
-      default: false,
     },
   },
 
   setup(props, { slots }) {
     return () => (
       <VSheet class={'v-tabs'}>
-        <VContainer class={'v-tabs--items'}></VContainer>
-        {slots.default?.()}
+        <VContainer class={'v-tabs--items'}> {slots.default?.()}</VContainer>
       </VSheet>
     )
   },

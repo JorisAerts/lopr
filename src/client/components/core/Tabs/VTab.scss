@@ -1,0 +1,17 @@
+@use '../../../style/sass-vars' as *;
+
+.v-tab {
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--text-color);
+
+  flex-grow: 1;
+  text-align: center;
+  padding: $spacer * 2;
+
+  &:hover {
+    background: rgba(255, 255, 255, .1);
+  }
+
+}
