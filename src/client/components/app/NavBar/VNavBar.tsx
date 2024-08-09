@@ -3,26 +3,36 @@ import { VBadge, VBtn, VCard, VIcon, VSpacer, VTooltip } from '../../core'
 import { APP_NAME } from '../../../../shared/constants'
 import './VNavBar.scss'
 import { useErrorLogStore } from '../../../stores/errorlog'
+import { useRouter } from 'vue-router'
+import { RouteNames } from '../../../router/RouteNames'
 
 export const VNavBar = defineComponent({
   name: 'v-nav-bar',
 
   setup() {
+    const iconSize = 20
     const errorLogStore = useErrorLogStore()
+    const router = useRouter()
 
     return () => (
       <VCard class={['v-nav-bar', 'pa-2', 'd-flex', 'gap-2', 'align-items-center']}>
         <h4 class={['d-flex', 'align-center']}>
-          <VIcon name={'DeployedCode_Fill'} size={22} class={['mr-1']} />
+          <VIcon name={'DeployedCode_Fill'} size={iconSize} class={['mr-1']} />
           {APP_NAME}
         </h4>
         <VSpacer />
+        <VTooltip text={'Requests'}>
+          <VBtn icon={'Monitoring'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Sequence)} />
+        </VTooltip>
+        <VTooltip text={'Info'}>
+          <VBtn icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Sequence)} />
+        </VTooltip>
         <VTooltip text={'Preferences'}>
-          <VBtn icon={'Settings'} size={20} class={['pa-1']} transparent />
+          <VBtn icon={'Settings'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Preferences)} />
         </VTooltip>
         <VTooltip text={'Error log'}>
           <VBadge modelValue={errorLogStore.hasErrors} position={[4, -4]}>
-            <VBtn icon={'Warning'} size={20} class={['pa-1']} transparent />
+            <VBtn icon={'Warning'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.ErrorLog)} />
           </VBadge>
         </VTooltip>
       </VCard>

@@ -19,6 +19,22 @@ export const router = createRouter({
     },
 
     {
+      name: RouteNames.Preferences,
+      path: '/preferences',
+      components: {
+        default: () => import('../views/Preferences').then((c) => c.Sequence),
+      },
+    },
+
+    {
+      name: RouteNames.ErrorLog,
+      path: '/error-log',
+      components: {
+        default: () => import('../views/ErrorLog').then((c) => c.Sequence),
+      },
+    },
+
+    {
       name: RouteNames.Error404,
       path: '/:pathMatch(.*)*',
       components: {

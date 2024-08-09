@@ -5,7 +5,7 @@ import type { ProxyRequestInfo } from '../../shared/Request'
 import { RequestDetails } from '../components/app/RequestDetails/RequestDetails'
 
 export const Sequence = defineComponent({
-  name: 'v-home-view',
+  name: 'requests-monitor',
 
   props: {
     width: {

@@ -11,6 +11,10 @@
 @forward "./sass-vars";
 
 
+:root {
+  font-size: var(--font-size);
+}
+
 * {
   box-sizing: border-box;
   transition: var(--transition);
@@ -19,13 +23,13 @@
 
 html, body {
   background: var(--app-background);
-  color: rgba(var(--text-color), 1);
+  color: rgba(var(--text-color), var(--text-emphasis));
   font-family: var(--font-family), serif;
-  letter-spacing: 1px;
+  letter-spacing: var(--letter-spacing);
+  line-height: var(--line-height);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size);
   height: 100%;
-  line-height: 1.6;
-  font-weight: 200;
-  font-size: 15px;
 }
 
 body {

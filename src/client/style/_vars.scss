@@ -8,10 +8,13 @@
   --spacer: #{$spacer};
 
   // fonts
-  --font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system, blinkmacsystemfont, roboto, "Helvetica Neue", sans-serif;
-  --font-family-mono: ui-monospace, sfmono-regular, menlo, monaco, consolas, liberation mono, courier new, monospace;
-  --font-size: 1rem;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;;
+  --font-family-mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", ui-monospace, monospace;
+  --font-size: 12px;
+  --font-weight-normal: 200;
   --font-weight-bold: 600;
+  --letter-spacing: .75px;
+  --line-height: 1.6;
 
   // theme colors
   --primary-color: 49, 120, 198;

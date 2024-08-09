@@ -18,7 +18,7 @@ export const VTabs = defineComponent({
   setup(props, { slots }) {
     defineTabs(props)
     return () => (
-      <VSheet class={'v-tabs'}>
+      <VSheet class={['v-tabs', 'v-tabs--horizontal']}>
         <VContainer class={'v-tabs--items'}> {slots.default?.()}</VContainer>
       </VSheet>
     )
