@@ -3,6 +3,7 @@ import { computed, defineComponent, shallowRef } from 'vue'
 import { RequestSequence, VBtn, VCard, VContainer, VSheet, VSpacer, VTooltip } from '../components'
 import type { ProxyRequestInfo } from '../../shared/Request'
 import { RequestDetails } from '../components/app/RequestDetails/RequestDetails'
+import { useRequestStore } from '../stores/request'
 
 export const Sequence = defineComponent({
   name: 'requests-monitor',
@@ -15,6 +16,7 @@ export const Sequence = defineComponent({
   },
 
   setup(props) {
+    const requestStore = useRequestStore()
     const current: Ref<ProxyRequestInfo | undefined> = shallowRef()
     const width = computed(() => (typeof props.width === 'number' ? `${props.width}px` : props.width))
 
@@ -28,7 +30,9 @@ export const Sequence = defineComponent({
           }}
         >
           <VSheet class={['d-flex', 'px-3']}>
-            <h3>Requests</h3>
+            <h3>
+              Requests <sup>({requestStore.ids.length})</sup>
+            </h3>
             <VSpacer />
             <VTooltip text={'Sequence view'}>
               <VBtn icon={'Reorder'} size={20} class={['pa-1', 'mr-1']} transparent />
