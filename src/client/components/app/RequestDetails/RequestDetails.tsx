@@ -41,7 +41,7 @@ export const RequestDetails = defineComponent({
             <VTabItem modelValue={REQUEST_TAB_INDEX}>
               <RequestOverviewTable modelValue={props.modelValue} />
             </VTabItem>
-            <VTabItem modelValue={RESPONSE_TAB_INDEX}>{responseBody.value && <pre>{responseBody.value}</pre>}</VTabItem>
+            <VTabItem modelValue={RESPONSE_TAB_INDEX}>{responseBody.value && <pre class={['text-mono', 'py-2']}>{responseBody.value}</pre>}</VTabItem>
           </VTabItems>
         </>
       )
