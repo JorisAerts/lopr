@@ -12,7 +12,7 @@
     "cert/**/*"
   ],
   "scripts": {
-    "build:node": "tsc -p src/node --outDir dist --esModuleInterop | true && tsc-alias --dir dist",
+    "build:node": "(tsc -p src/node --outDir dist --esModuleInterop | true && tsc-alias --dir dist) && echo \"[✓] done.\"",
     "run:node": "node dist/node/index.js",
     "build": "yarn build:node && yarn build:client",
     "dev": "vite",
