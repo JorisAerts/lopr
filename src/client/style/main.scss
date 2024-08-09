@@ -21,6 +21,7 @@ html, body {
   background: var(--app-background);
   color: rgba(var(--text-color), 1);
   font-family: var(--font-family), serif;
+  letter-spacing: 1px;
   height: 100%;
   line-height: 1.6;
   font-weight: 200;
@@ -37,15 +38,21 @@ div#app {
 }
 
 
-a, a:visited, a:active, a:hover {
-  color: var(--link-color);
-  text-decoration: none;
-}
+a {
+  &, &:visited, &:active, &:hover {
+    color: var(--link-color);
+    text-decoration: none;
+  }
 
-a:hover {
-  text-shadow: 0 0 1px var(--link-color);
+  &:hover {
+    text-shadow: 0 0 1px var(--link-color);
+  }
 }
 
 b {
   font-weight: var(--font-weight-bold);
+}
+
+button {
+  cursor: pointer
 }
