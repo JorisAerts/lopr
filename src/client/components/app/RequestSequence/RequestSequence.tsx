@@ -1,5 +1,5 @@
-import type { PropType } from 'vue'
-import { defineComponent, TransitionGroup } from 'vue'
+import type { ComponentPublicInstance, PropType, VNode } from 'vue'
+import { defineComponent, onUpdated, ref, TransitionGroup } from 'vue'
 import { VList, VListItem } from '../../core'
 import { useRequestStore } from '../../../stores/request'
 import type { ProxyRequestInfo } from '../../../../shared/Request'
@@ -17,12 +17,18 @@ export const RequestSequence = defineComponent({
   },
 
   setup(props, { emit }) {
+    const list = ref<VNode & ComponentPublicInstance>()
     const requestStore = useRequestStore()
     const handleSelect = (item: ProxyRequestInfo) => {
       emit('update:modelValue', item)
     }
+    onUpdated(() => {
+      const el = list.value?.$el
+      if (!el || !el.$el) return
+      el.$el.lastChild.scrollIntoView()
+    })
     return () => (
-      <VList class={['fill-height', 'overflow-auto', 'mt-2']}>
+      <VList class={['fill-height', 'overflow-auto', 'mt-2']} ref={list}>
         <TransitionGroup>
           {requestStore.ids
             .map((uuid) => requestStore.getRequest(uuid))
