@@ -1,6 +1,6 @@
 import './VTabs.scss'
-import type { ComponentPublicInstance, PropType } from 'vue'
-import { defineComponent, nextTick, ref, watch } from 'vue'
+import type { ComponentPublicInstance, PropType} from 'vue';
+import { defineComponent, nextTick, onUpdated, ref, watch } from 'vue'
 import { VSheet } from '../Sheet'
 import { VContainer } from '../Container'
 import { defineTabs, makeTabsProps } from './tabs'
@@ -21,23 +21,21 @@ export const VTabs = defineComponent({
     const { modelValue, selectedClass } = defineTabs(props)
     const sliderDim = ref({ x: 0, y: 0, w: 0 })
 
-    watch(
-      modelValue,
-      () => {
-        nextTick().then(() => {
-          const el = root.value?.$el
-          if (!el) return
+    const updateSlider = () => {
+      const el = root.value?.$el
+      if (!el) return
 
-          const selectedEl = el.querySelector(`.v-tabs--items .${selectedClass}`)
-          if (!selectedEl) return
+      const selectedEl = el.querySelector(`.v-tabs--items .${selectedClass}`)
+      if (!selectedEl) return
 
-          sliderDim.value.x = selectedEl.offsetLeft
-          sliderDim.value.y = selectedEl.offsetTop + selectedEl.offsetHeight
-          sliderDim.value.w = selectedEl.offsetWidth
-        })
-      },
-      { immediate: true }
-    )
+      sliderDim.value.x = selectedEl.offsetLeft
+      sliderDim.value.y = selectedEl.offsetTop + selectedEl.offsetHeight
+      sliderDim.value.w = selectedEl.offsetWidth
+    }
+
+    watch(modelValue, () => nextTick().then(() => updateSlider), { immediate: true })
+    onUpdated(updateSlider)
+
     return () => (
       <VSheet class={['v-tabs', 'v-tabs--horizontal']} ref={root}>
         <VContainer class={'v-tabs--items'}> {slots.default?.()}</VContainer>
