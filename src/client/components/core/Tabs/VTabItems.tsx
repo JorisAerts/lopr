@@ -1,5 +1,5 @@
 import './VTabItems.scss'
-import type { VNode } from 'vue'
+import type { VNode } from 'vue';
 import { defineComponent, Transition } from 'vue'
 import { VSheet } from '../Sheet'
 import { makeTabItemsProps } from './tabs'

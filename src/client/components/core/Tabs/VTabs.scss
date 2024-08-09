@@ -1,6 +1,7 @@
 @use '../../../style/sass-vars' as *;
 
 .v-tabs {
+  position: relative;
 
   &--items {
     display: flex;

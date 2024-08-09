@@ -1,6 +1,7 @@
 import type { ExtractPropTypes, PropType, Ref } from 'vue'
 import { computed, getCurrentInstance, inject, onUnmounted, provide, ref, watch } from 'vue'
 
+const selectedTabClass = 'v-tab--selected'
 export const TAB_SYMBOL = Symbol()
 
 interface TabData<Type> {
@@ -53,7 +54,10 @@ export const defineTabs = <Type>(props: TabsProps<Type>, autoEmit = true) => {
       })
     )
   }
-  return { modelValue }
+  return {
+    modelValue,
+    selectedClass: selectedTabClass,
+  }
 }
 
 /**
@@ -69,7 +73,7 @@ export const useTabs = <Type>(props: TabProps<Type>) => {
       data.modelValue.value = props.modelValue as Type
     },
   }
-  const classes: Ref<string[]> = computed(() => (data.modelValue.value === props.modelValue ? ['v-tab--selected'] : []))
+  const classes: Ref<string[]> = computed(() => (data.modelValue.value === props.modelValue ? [selectedTabClass] : []))
   return {
     classes,
     on,

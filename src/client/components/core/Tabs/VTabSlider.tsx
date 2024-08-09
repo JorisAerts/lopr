@@ -1,12 +1,25 @@
-import './VTabs.scss'
+import './VTabSlider.scss'
 import { defineComponent } from 'vue'
-import { defineTabs } from './tabs'
 
 export const VTabSlider = defineComponent({
   name: 'v-tab-slider',
 
-  setup(props, { slots }) {
-    defineTabs(props)
-    return () => <div class={'v-tab-slider'}></div>
+  props: {
+    left: { type: Number, default: 0 },
+    top: { type: Number, default: 0 },
+    width: { type: Number, default: 0 },
+  },
+
+  setup(props) {
+    return () => (
+      <div
+        class={'v-tab-slider'}
+        style={{
+          top: `${props.top}px`,
+          left: `${props.left}px`,
+          width: `${props.width}px`,
+        }}
+      />
+    )
   },
 })
