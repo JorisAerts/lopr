@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { RouteNames } from './RouteNames'
-import { defineAsyncComponent } from 'vue'
 
 export const router = createRouter({
   history: createWebHashHistory(),
@@ -30,7 +29,7 @@ export const router = createRouter({
       name: RouteNames.Preferences,
       path: '/preferences',
       components: {
-        default: defineAsyncComponent(() => import('../views/Preferences').then((c) => c.Preferences)),
+        default: () => import('../views/Preferences').then((c) => c.Preferences),
       },
     },
 
@@ -38,7 +37,7 @@ export const router = createRouter({
       name: RouteNames.ErrorLog,
       path: '/error-log',
       components: {
-        default: defineAsyncComponent(() => import('../views/ErrorLog').then((c) => c.ErrorLog)),
+        default: () => import('../views/ErrorLog').then((c) => c.ErrorLog),
       },
     },
 
@@ -46,7 +45,7 @@ export const router = createRouter({
       name: RouteNames.Error404,
       path: '/:pathMatch(.*)*',
       components: {
-        default: defineAsyncComponent(() => import('../views/404').then((c) => c.Error404)),
+        default: () => import('../views/404').then((c) => c.Error404),
       },
     },
   ],
