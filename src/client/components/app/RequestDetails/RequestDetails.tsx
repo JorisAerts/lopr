@@ -23,7 +23,7 @@ export const RequestDetails = defineComponent({
     watch(
       props,
       (newValue) => {
-        //if (uuid.value !== newValue.modelValue?.uuid) currentTab.value = 0
+        if (uuid.value !== newValue.modelValue?.uuid) currentTab.value = 0
         uuid.value = newValue.modelValue?.uuid
       },
       { immediate: true }
@@ -34,7 +34,7 @@ export const RequestDetails = defineComponent({
         <>
           <VTabs v-model={currentTab.value} class={['mb-2']}>
             <VTab name={'Request'} modelValue={REQUEST_TAB_INDEX} />
-            <VTab name={'Response'} modelValue={RESPONSE_TAB_INDEX} />
+            {requestStore.getResponse(props.modelValue) && <VTab name={'Response'} modelValue={RESPONSE_TAB_INDEX} />}
           </VTabs>
 
           <VTabItems modelValue={currentTab.value}>
