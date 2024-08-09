@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { dirname, join } from 'path'
 import forge from 'node-forge'
-import { packageJson, packageRoot } from './package'
+import { packageRoot } from './package'
 import { tempDir } from './temp-dir'
 
 const { md, pki } = forge
@@ -73,13 +73,10 @@ const generateRootCert = (): RootCertificateInfo => {
     { shortName: 'C', value: 'BE' },
     { shortName: 'ST', value: 'OVL' },
     { shortName: 'L', value: 'Ghent' },
-    { shortName: 'O', value: packageJson.name },
-    { shortName: 'OU', value: packageJson.name },
+    { shortName: 'O', value: '' },
+    { shortName: 'OU', value: '' },
     { shortName: 'CN', value: 'localhost' },
-    {
-      name: 'emailAddress',
-      value: '3611758+JorisAerts@users.noreply.github.com',
-    },
+    { name: 'emailAddress', value: '' },
   ]
 
   cert.setSubject(attrs)
