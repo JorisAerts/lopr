@@ -28,13 +28,18 @@ export const RequestDetails = defineComponent({
       },
       { immediate: true }
     )
-    const responseBody = computed(() => (props.modelValue ? requestStore.getResponse(props.modelValue)?.body : undefined))
+    const response = computed(() =>
+      props.modelValue //
+        ? requestStore.getResponse(props.modelValue.uuid)
+        : undefined
+    )
+    const responseBody = computed(() => (props.modelValue ? response.value?.body : undefined))
     return () =>
       props.modelValue && (
         <>
           <VTabs v-model={currentTab.value} class={['mb-2']}>
             <VTab name={'Request'} modelValue={REQUEST_TAB_INDEX} />
-            {requestStore.getResponse(props.modelValue) && <VTab name={'Response'} modelValue={RESPONSE_TAB_INDEX} />}
+            {response.value && <VTab name={'Response'} modelValue={RESPONSE_TAB_INDEX} />}
           </VTabs>
 
           <VTabItems modelValue={currentTab.value}>

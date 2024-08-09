@@ -5,35 +5,52 @@ import { registerDataHandler } from '../utils/websocket'
 import type { WebSocketMessage } from '../../shared/WebSocketMessage'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { ProxyResponseInfo } from '../../shared/Response'
-import type { Unique } from '../../shared/UUID'
+import type { UUID } from '../../shared/UUID'
 
 export const STORE_NAME = 'Requests'
 
 export const useRequestStore = defineStore(STORE_NAME, () => {
   /**
+   * Contains all ids (chronologically sequential)
+   */
+  const ids = ref([] as UUID[])
+
+  /**
    * The request data sent from the client.
    * All requests are tagged with a unique UUID
    */
-  const requests = ref([] as ProxyRequestInfo[])
+  const requests = shallowRef(new Map<string, ProxyRequestInfo>())
   /**
    * A map of response data to the client, mapped to the UUID of the request
    */
-  const responces = shallowRef(new Map<string, ProxyResponseInfo>())
+  const responses = shallowRef(new Map<string, ProxyResponseInfo>())
   // methods
-  const getResponse = (request: Unique) => responces.value.get(request.uuid)
+  const getResponse = (uuid: UUID) => responses.value.get(uuid)
+  const getRequest = (uuid: UUID) => requests.value.get(uuid)
+
+  const registerUUID = (uuid: UUID) => {
+    if (!ids.value.includes(uuid)) ids.value.push(uuid)
+  }
+
+  /**
+   * Clear the store
+   */
   const clear = () => {
-    responces.value.clear()
-    requests.value.length = 0
+    ids.value.length = 0
+    responses.value.clear()
+    requests.value.clear()
   }
 
   // register the handlers (they will overwrite the previous ones)
   registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
     data.ts = new Date(data.ts)
-    requests.value.push(data)
+    requests.value.set(data.uuid, data)
+    registerUUID(data.uuid)
   })
   registerDataHandler(WebSocketMessageType.ProxyResponse, ({ data }: WebSocketMessage<ProxyResponseInfo>) => {
     data.ts = new Date(data.ts)
-    responces.value.set(data.uuid, data)
+    responses.value.set(data.uuid, data)
+    registerUUID(data.uuid)
   })
-  return { requests, responses: responces, getResponse, clear }
+  return { ids, requests, responses, getRequest, getResponse, clear }
 })

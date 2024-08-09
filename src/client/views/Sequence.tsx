@@ -16,7 +16,6 @@ export const Sequence = defineComponent({
 
   setup(props) {
     const current: Ref<ProxyRequestInfo | undefined> = shallowRef()
-
     const width = computed(() => (typeof props.width === 'number' ? `${props.width}px` : props.width))
 
     return () => (

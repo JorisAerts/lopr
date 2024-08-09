@@ -1,5 +1,5 @@
-import { defineComponent } from 'vue'
-import { VCard, VSheet } from '../components'
+import { defineComponent, TransitionGroup } from 'vue'
+import { VBtn, VCard, VSheet } from '../components'
 import { useErrorLogStore } from '../stores/errorlog'
 
 export const ErrorLog = defineComponent({
@@ -12,30 +12,34 @@ export const ErrorLog = defineComponent({
         <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
           <h2 class={'mb-4'}>Error log</h2>
           <VSheet class={['d-flex', 'flex-column', 'gap-2']}>
-            {errorLogStore.errors.map((err) => (
-              <VCard class={['pa-2', 'd-flex', 'flex-column']}>
-                {err.ts && (
-                  <div>
-                    <label>Timestamp</label>: {err.ts.toLocaleString()}
-                  </div>
-                )}
-                {err.err && (
-                  <>
-                    {err.err.name && (
+            <TransitionGroup>
+              {errorLogStore.errors.map((err, index) => (
+                <VCard class={['pa-2', 'd-flex']} key={err.key}>
+                  <VBtn class={['align-center', 'pa-1']} icon={'Delete'} size={22} transparent onClick={() => errorLogStore.errors.splice(index, 1)} />
+                  <VSheet class={['pa-2', 'd-flex', 'flex-column', 'flex-grow-0']}>
+                    {err.ts && (
                       <div>
-                        <label>Name</label>: {err.err.name}
+                        <label>Timestamp</label>: {err.ts.toLocaleString()}
                       </div>
                     )}
-                    {err.err.message && (
-                      <div>
-                        <label>Message</label>: {err.err.message}
-                      </div>
+                    {err.err && (
+                      <>
+                        {err.err.name && (
+                          <div>
+                            <label>Name</label>: {err.err.name}
+                          </div>
+                        )}
+                        {err.err.message && (
+                          <div>
+                            <label>Message</label>: {err.err.message}
+                          </div>
+                        )}
+                      </>
                     )}
-                  </>
-                )}
-                {}
-              </VCard>
-            ))}
+                  </VSheet>
+                </VCard>
+              ))}
+            </TransitionGroup>
           </VSheet>
         </VCard>
       </VSheet>

@@ -8,10 +8,13 @@ export const STORE_NAME = 'Error Log'
 
 type ErrorLog = {
   ts: Date
+  key: number
   err: Record<string, string>
 }
 
 export const useErrorLogStore = defineStore(STORE_NAME, () => {
+  let counter = 0
+
   /**
    * A bunch of errors coming from the client
    */
@@ -20,6 +23,7 @@ export const useErrorLogStore = defineStore(STORE_NAME, () => {
   // register the handlers (they will overwrite the previous ones)
   registerDataHandler(WebSocketMessageType.Error, ({ data }: WebSocketMessage<ErrorLog>) => {
     data.ts = new Date(data.ts)
+    data.key = ++counter
     errors.value.push(data)
   })
 

@@ -36,11 +36,12 @@ export const createProxyResponse = (uuid: UUID, res: IncomingMessage, data: unkn
 
 export const createErrorMessage = <Err>(err: Err) => {
   const data =
-    typeof err === 'string' //
+    typeof err === 'string' || err === 'number' //
       ? { name: err, message: err }
-      : typeof err !== 'string' //
+      : typeof err === 'object' //
         ? { ...err }
         : { message: err }
+
   return {
     ...timestamp(),
     err: data,
