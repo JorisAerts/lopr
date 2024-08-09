@@ -24,8 +24,8 @@ export const VNavBar = defineComponent({
         <VTooltip text={'Requests'}>
           <VBtn icon={'Monitoring'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Sequence)} />
         </VTooltip>
-        <VTooltip text={'Info'}>
-          <VBtn icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Sequence)} />
+        <VTooltip text={'Information'}>
+          <VBtn icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Information)} />
         </VTooltip>
         <VTooltip text={'Preferences'}>
           <VBtn icon={'Settings'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Preferences)} />

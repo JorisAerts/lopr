@@ -10,8 +10,6 @@ export const VCard = defineComponent({
     vertical: { type: Boolean, default: false },
   },
 
-  inheritAttrs: false,
-
   setup(props, { slots, attrs }) {
     return () => (
       <VSheet {...attrs} class={['v-card', { 'v-card--clickable': attrs.onClick }]}>

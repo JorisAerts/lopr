@@ -1,22 +1,16 @@
-import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 import { VCard, VSheet } from '../components'
 
-export const Preferences = defineComponent({
-  name: 'app-preferences',
+export const Information = defineComponent({
+  name: 'app-information',
 
-  props: {
-    width: {
-      type: [Number, String] as PropType<number | string>,
-      default: 320,
-    },
-  },
+  props: {},
 
   setup(props) {
     return () => (
       <VSheet class={['fill-height', 'gap-2']}>
         <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
-          <h2>Preferences</h2>
+          <h2>Information</h2>
         </VCard>
       </VSheet>
     )

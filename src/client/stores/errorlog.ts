@@ -6,8 +6,9 @@ import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 
 export const STORE_NAME = 'Error Log'
 
-type ErrorLog = Record<string, string> & {
+type ErrorLog = {
   ts: Date
+  err: Record<string, string>
 }
 
 export const useErrorLogStore = defineStore(STORE_NAME, () => {
