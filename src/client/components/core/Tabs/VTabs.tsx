@@ -1,7 +1,7 @@
+import './VTabs.scss'
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 import { VSheet } from '../Sheet'
-import './VTabs.scss'
 import { VContainer } from '../Container'
 import { defineTabs, makeTabsProps } from './tabs'
 

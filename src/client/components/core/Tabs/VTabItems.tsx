@@ -1,7 +1,7 @@
+import './VTabItems.scss'
 import type { VNode } from 'vue'
 import { defineComponent, Transition } from 'vue'
 import { VSheet } from '../Sheet'
-import './VTabItems.scss'
 import { makeTabItemsProps } from './tabs'
 import { VTabItem } from './VTabItem'
 

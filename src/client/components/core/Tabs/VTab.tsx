@@ -1,5 +1,5 @@
-import { defineComponent } from 'vue'
 import './VTab.scss'
+import { defineComponent } from 'vue'
 import { makeTabProps, useTabs } from './tabs'
 
 export const VTab = defineComponent({

@@ -1,6 +1,6 @@
+import './VTabItem.scss'
 import { defineComponent } from 'vue'
 import { VSheet } from '../Sheet'
-import './VTabs.scss'
 import { makeTabItemsProps } from './tabs'
 
 export const VTabItem = defineComponent({
