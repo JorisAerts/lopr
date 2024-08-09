@@ -5,6 +5,7 @@ import { registerDataHandler } from '../utils/websocket'
 import type { WebSocketMessage } from '../../shared/WebSocketMessage'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { ProxyResponseInfo } from '../../shared/Response'
+import type { Unique } from '../../shared/UUID'
 
 export const STORE_NAME = 'Requests'
 
@@ -19,7 +20,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
    */
   const responces = shallowRef(new Map<string, ProxyResponseInfo>())
   // methods
-  const getResponse = (request: ProxyResponseInfo) => responces.value.get(request.uuid)
+  const getResponse = (request: Unique) => responces.value.get(request.uuid)
   const clear = () => {
     responces.value.clear()
     requests.value.length = 0

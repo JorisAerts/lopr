@@ -18,7 +18,7 @@ export const VNavBar = defineComponent({
         </h4>
         <VSpacer />
         <VTooltip text={'Error log'}>
-          <VBadge modelValue={errorLogStore.hasErrors} position={[1, -1]}>
+          <VBadge modelValue={errorLogStore.hasErrors} position={[4, -4]}>
             <VBtn icon={'Warning'} size={20} class={['pa-1']} transparent />
           </VBadge>
         </VTooltip>

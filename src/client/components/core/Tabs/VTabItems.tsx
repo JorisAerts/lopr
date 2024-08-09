@@ -3,6 +3,7 @@ import { defineComponent, Transition } from 'vue'
 import { VSheet } from '../Sheet'
 import './VTabItems.scss'
 import { makeTabItemsProps } from './tabs'
+import { VTabItem } from './VTabItem'
 
 export const VTabItems = defineComponent({
   name: 'v-tab-items',
@@ -13,13 +14,13 @@ export const VTabItems = defineComponent({
   },
 
   setup(props, { slots }) {
-    const currentWindow = (nodes: VNode[] | undefined) =>
+    const renderContent = (nodes: VNode[] | undefined) =>
       nodes //
-        ?.find((node) => node.props?.modelValue === props.modelValue)
+        ?.filter((node) => node.type !== VTabItem || node.props?.modelValue === props.modelValue)
 
     return () => {
       const defaultSlots = slots.default?.()
-      const selectedSlot = currentWindow(defaultSlots)
+      const selectedSlot = renderContent(defaultSlots)
       return (
         <VSheet class={'v-tab-items'}>
           {props.transition ? ( //

@@ -1,8 +1,13 @@
 import type { PropType, Ref } from 'vue'
-import { defineComponent, ref, watch } from 'vue'
-import { VTab, VTabItem, VTabItems, VTable, VTabs } from '../../core'
+import { computed, defineComponent, ref, watch } from 'vue'
+import { VTab, VTabItem, VTabItems, VTabs } from '../../core'
 import type { ProxyRequestInfo } from '../../../../shared/Request'
 import type { UUID } from '../../../../shared/UUID'
+import { useRequestStore } from '../../../stores/request'
+import { RequestOverviewTable } from './RequestOverviewTable'
+
+const REQUEST_TAB_INDEX = 0
+const RESPONSE_TAB_INDEX = 1
 
 export const RequestDetails = defineComponent({
   name: 'RequestDetails',
@@ -14,73 +19,29 @@ export const RequestDetails = defineComponent({
   setup(props) {
     const currentTab = ref(0)
     const uuid: Ref<UUID | undefined> = ref()
-
+    const requestStore = useRequestStore()
     watch(
       props,
       (newValue) => {
-        if (uuid.value !== newValue.modelValue?.uuid) currentTab.value = 0
+        //if (uuid.value !== newValue.modelValue?.uuid) currentTab.value = 0
         uuid.value = newValue.modelValue?.uuid
       },
       { immediate: true }
     )
-
+    const responseBody = computed(() => (props.modelValue ? requestStore.getResponse(props.modelValue)?.body : undefined))
     return () =>
       props.modelValue && (
         <>
           <VTabs v-model={currentTab.value}>
-            <VTab name={'Request'} modelValue={0} />
-            <VTab name={'Response'} modelValue={1} />
+            <VTab name={'Request'} modelValue={REQUEST_TAB_INDEX} />
+            <VTab name={'Response'} modelValue={RESPONSE_TAB_INDEX} />
           </VTabs>
 
           <VTabItems modelValue={currentTab.value}>
-            <VTabItem modelValue={0}>
-              <VTable class={'gap-2'}>
-                <thead>
-                  <tr>
-                    <th style={{ width: '140px' }}>Name</th>
-                    <th>Value</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr>
-                    <th>URL:</th>
-                    <td>{props.modelValue.url}</td>
-                  </tr>
-
-                  {props.modelValue.ts != null && (
-                    <tr>
-                      <th>Time:</th>
-                      <td>{props.modelValue.ts.toLocaleString()}</td>
-                    </tr>
-                  )}
-
-                  <tr>
-                    <th>Method:</th>
-                    <td>{props.modelValue.method}</td>
-                  </tr>
-
-                  {props.modelValue.statusCode != null && (
-                    <tr>
-                      <th>Status:</th>
-                      <td>{props.modelValue.statusCode}</td>
-                    </tr>
-                  )}
-
-                  {props.modelValue.headers.map(
-                    (h, i) =>
-                      i % 2 === 0 && (
-                        <tr>
-                          {i === 0 && <th rowspan={props.modelValue!.headers.length / 2}>Headers:</th>}
-                          <td>
-                            <b>{h}</b>: {props.modelValue!.headers[i + 1]}
-                          </td>
-                        </tr>
-                      )
-                  )}
-                </tbody>
-              </VTable>
+            <VTabItem modelValue={REQUEST_TAB_INDEX}>
+              <RequestOverviewTable modelValue={props.modelValue} />
             </VTabItem>
+            <VTabItem modelValue={RESPONSE_TAB_INDEX}>{responseBody.value && <pre>{responseBody.value}</pre>}</VTabItem>
           </VTabItems>
         </>
       )
