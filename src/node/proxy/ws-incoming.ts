@@ -1,4 +1,3 @@
-import type { IncomingMessage } from 'http'
 import * as http from 'http'
 import * as https from 'https'
 import type { Socket } from 'net'
@@ -9,9 +8,10 @@ import { isLocalhost } from '../utils/is-localhost'
 import { sendWsData } from '../server/websocket'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { createErrorMessage } from '../utils/ws-messages'
+import type { ProxyRequest } from './ProxyRequest'
 
 export interface WSIncomingRequest {
-  (req: IncomingMessage, socket: Socket, options: CreateProxyOptions, server: http.Server | https.Server, head: Buffer): void
+  (req: ProxyRequest, socket: Socket, options: CreateProxyOptions, server: http.Server | https.Server, head: Buffer): void
 }
 
 const NEWLINE = '\r\n'
@@ -29,7 +29,7 @@ const inc = [
   /**
    * WebSocket requests must have the `GET` method and the `upgrade:websocket` header
    */
-  function (req: IncomingMessage, socket: Socket) {
+  function (req: ProxyRequest, socket: Socket) {
     if (req.method !== 'GET' || !req.headers.upgrade) {
       socket.destroy()
       return
@@ -43,7 +43,7 @@ const inc = [
   /**
    * Set the proper configuration for sockets, set no delay and set keep alive, also set the timeout to 0.
    */
-  function (req: IncomingMessage, socket: Socket) {
+  function (req: ProxyRequest, socket: Socket) {
     socket.setTimeout(0)
     socket.setNoDelay(true)
 
@@ -53,7 +53,7 @@ const inc = [
   /**
    * Sets `x-forwarded-*` headers if specified in config.
    */
-  function (req: IncomingMessage /*, socket: Socket, options: Option */) {
+  function (req: ProxyRequest /*, socket: Socket, options: Option */) {
     const values: ForwardHeaders = {
       for: req.connection.remoteAddress || req.socket.remoteAddress,
       port: req.connection.remotePort || req.socket.remotePort,
@@ -68,7 +68,7 @@ const inc = [
   /**
    * Does the actual proxying. Make the request and upgrade it send the Switching Protocols request and pipe the sockets.
    */
-  function (req: IncomingMessage, socket: Socket, options: CreateProxyOptions) {
+  function (req: ProxyRequest, socket: Socket, options: CreateProxyOptions) {
     utils.setupSocket(socket)
 
     const config = utils.setupOutgoing({}, req, null, options as CreateProxyOptions)
@@ -104,5 +104,5 @@ const inc = [
   },
 ] as WSIncomingRequest[]
 
-export const wsIncoming = (req: IncomingMessage, socket: Socket, options: CreateProxyOptions, server: http.Server | https.Server, head: Buffer) =>
+export const wsIncoming = (req: ProxyRequest, socket: Socket, options: CreateProxyOptions, server: http.Server | https.Server, head: Buffer) =>
   inc.forEach((come) => come(req, socket, options, server, head))
