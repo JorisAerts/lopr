@@ -5,7 +5,7 @@
 }
 
 .v-tab-slider {
-  transition: margin-top 0s, top 0s, left var(--transition-duration) var(--transition-timing-function);
+  transition: margin-top 0s, top 0s, left var(--transition-duration) var(--transition-timing-function), width var(--transition-duration) var(--transition-timing-function);
 
   position: absolute;
   min-height: 2px;
