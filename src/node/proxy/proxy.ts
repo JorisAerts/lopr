@@ -103,6 +103,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
           const pac = generatePac(`localhost:${httpPort}`)
           res.setHeader('content-type', 'text/javascript')
           res.end(pac)
+          return
         }
 
         // requests to this server (proxy UI)
