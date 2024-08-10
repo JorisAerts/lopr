@@ -1,0 +1,6 @@
+@use "./vars" as *;
+
+.bordered {
+  border: var(--border-size) solid var(--border-color);
+  border-radius: var(--border-radius);
+}

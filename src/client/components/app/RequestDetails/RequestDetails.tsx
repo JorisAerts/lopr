@@ -55,7 +55,7 @@ export const RequestDetails = defineComponent({
             )}
           </VTabs>
 
-          <VTabItems modelValue={currentTab.value} class={['flex-grow-0', 'overflow-auto']}>
+          <VTabItems modelValue={currentTab.value} class={['flex-grow-0', 'overflow-auto', 'fill-height']}>
             <VTabItem modelValue={REQUEST_TAB_INDEX}>
               <RequestOverviewTable modelValue={props.modelValue} />
             </VTabItem>
@@ -67,7 +67,9 @@ export const RequestDetails = defineComponent({
                 <HeadersTable modelValue={response.value?.headers} />
               </VTabItem>
             )}
-            <VTabItem modelValue={RESPONSE_BODY_TAB_INDEX}>{responseBody.value && <pre class={['text-mono']}>{responseBody.value}</pre>}</VTabItem>
+            <VTabItem modelValue={RESPONSE_BODY_TAB_INDEX} class={['fill-height']}>
+              {responseBody.value && <pre class={['text-mono', 'bordered', 'fill-height', 'pa-2', 'overflow-auto']}>{responseBody.value}</pre>}
+            </VTabItem>
           </VTabItems>
         </div>
       )
