@@ -6,9 +6,10 @@ import type { CreateProxyOptions } from './proxy'
 import { getIncomingMessageData } from '../utils/incoming-message'
 import { sendWsData } from '../server/websocket'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
-import { createErrorMessage, createProxyResponse } from '../utils/ws-messages'
+import { createProxyResponse } from '../utils/ws-messages'
 import type { ProxyRequest } from './ProxyRequest'
 import type { ProxyResponse } from './ProxyResponse'
+import { createErrorHandler } from '../../client/utils/logging'
 
 export interface IncomingRequest {
   (req: ProxyRequest, res: ProxyResponse, options: CreateProxyOptions): void
@@ -56,9 +57,7 @@ const inc = [
 
         proxyRes.pipe(res)
       })
-      proxyReq.on('error', (err) => {
-        sendWsData(WebSocketMessageType.Error, createErrorMessage(err))
-      })
+      proxyReq.on('error', createErrorHandler(proxyReq))
       req.pipe(proxyReq)
     }
   },

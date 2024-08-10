@@ -9,6 +9,7 @@ import { sendWsData } from '../server/websocket'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { createErrorMessage } from '../utils/ws-messages'
 import type { ProxyRequest } from './ProxyRequest'
+import { createErrorHandler } from '../../client/utils/logging'
 
 export interface WSIncomingRequest {
   (req: ProxyRequest, socket: Socket, options: CreateProxyOptions, server: http.Server | https.Server, head: Buffer): void
@@ -69,6 +70,8 @@ const inc = [
    * Does the actual proxying. Make the request and upgrade it send the Switching Protocols request and pipe the sockets.
    */
   function (req: ProxyRequest, socket: Socket, options: CreateProxyOptions) {
+    socket.on('error', createErrorHandler(socket))
+
     utils.setupSocket(socket)
 
     const config = utils.setupOutgoing({}, req, null, options as CreateProxyOptions)
@@ -83,9 +86,7 @@ const inc = [
       }
     }
 
-    // Error Handler
-    proxyReq.on('error', onError)
-
+    proxyReq.on('error', createErrorHandler(socket))
     proxyReq.on('upgrade', function (proxyRes, proxySocket) {
       proxySocket.on('error', onError)
       utils.setupSocket(proxySocket)

@@ -16,7 +16,8 @@ import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { isLocalhost } from '../utils/is-localhost'
 import { ProxyRequest } from './ProxyRequest'
 import { ProxyResponse } from './ProxyResponse'
-import { createProxyRequest } from '../utils/ws-messages'
+import { createErrorMessage, createProxyRequest } from '../utils/ws-messages'
+import { createErrorHandler } from '../../client/utils/logging'
 
 export interface CreateProxyOptions {
   port: number
@@ -64,9 +65,11 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
         httpsPort = (httpsServer.address() as AddressInfo).port
         //logger.debug('listening https on: %s', httpsPort)
       })
+    httpsServer.on('error', createErrorHandler(httpsServer))
 
     // HTTP Server (the actual proxy)
-    const httpServer = http.createServer(defaultServerOptions, forwardRequest as http.RequestListener<typeof ProxyRequest, typeof ServerResponse>)
+    const httpServer = http //
+      .createServer(defaultServerOptions, forwardRequest as http.RequestListener<typeof ProxyRequest, typeof ServerResponse>)
 
     // try the next port if the suggested one is unavailable (8080... 8081... 8082...)
     const onError = (e: Error & { code?: string }) => {
@@ -74,7 +77,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
         logger.info(`Port ${httpPort} is in use, trying another one...`)
         httpServer.listen(++httpPort)
       } else {
-        logger.error({ e })
+        sendWsData(WebSocketMessageType.Error, createErrorMessage(e))
         httpServer.removeListener('error', onError)
       }
     }
@@ -94,6 +97,9 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
     httpServer.listen(httpPort)
 
     function forwardRequest(req: ProxyRequest, res: ProxyResponse) {
+      req.on('error', createErrorHandler(req))
+      res.on('error', createErrorHandler(res))
+
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
       // requests to the local webserver (the GUI or PAC)
@@ -110,11 +116,8 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
         else {
           handleSelf(req, res)
         }
-
         return
       }
-
-      //req.on('data', (d) => console.log(`${d}`))
 
       // forward the request to the proxy
       return incoming(req, res, options as CreateProxyOptions)
@@ -132,12 +135,13 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
           promise.then(function () {
             const mediator = net.connect(httpsPort)
             mediator.on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
+            mediator.on('error', createErrorHandler(mediator))
             socket.pipe(mediator).pipe(socket)
           })
         } else {
-          const mediator = net //
-            .connect(443, host)
-            .on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
+          const mediator = net.connect(443, host)
+          mediator.on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
+          mediator.on('error', createErrorHandler(mediator))
           socket.pipe(mediator).pipe(socket)
         }
       }

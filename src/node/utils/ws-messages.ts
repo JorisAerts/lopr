@@ -34,7 +34,19 @@ export const createProxyResponse = (uuid: UUID, res: IncomingMessage, data: unkn
   }
 }
 
-export const createErrorMessage = <Err>(err: Err) => {
+const transformSrc = <Source>(src?: Source) => {
+  if (!src) return src
+  if (typeof src === 'object') {
+    if ('uuid' in src!) return `${src.uuid}`
+    if ('url' in src!) return `${src.url}`
+    const name = src?.constructor?.name
+    if (name) return name
+  } else {
+    return `${src}`
+  }
+}
+
+export const createErrorMessage = <Err, Source>(err: Err, src?: Source) => {
   const data =
     typeof err === 'string' || err === 'number' //
       ? { name: err, message: err }
@@ -44,6 +56,7 @@ export const createErrorMessage = <Err>(err: Err) => {
 
   return {
     ...timestamp(),
+    src: transformSrc(src),
     err: data,
   }
 }
