@@ -21,7 +21,6 @@
   transition: var(--transition);
 }
 
-
 html, body {
   background: var(--app-background);
   color: rgba(var(--text-color), var(--text-emphasis));
@@ -30,16 +29,18 @@ html, body {
   line-height: var(--line-height);
   font-weight: var(--font-weight-normal);
   font-size: var(--font-size);
+  width: 100%;
   height: 100%;
-}
-
-body {
-  padding: 1em;
   box-sizing: border-box;
 }
 
 div#app {
-  height: calc(100% - 2em);
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 

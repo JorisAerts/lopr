@@ -31,8 +31,10 @@ export const App = defineComponent({
     return () => (
       <div class={['d-flex', 'flex-column', 'fill-height']}>
         <VAppHeader />
-        <VNavBar class={['mb-2']} />
-        <RouterView />
+        <VNavBar class={['mb-2', 'flex-grow-0']} />
+        <div class={['flex-grow-1', 'overflow-y-auto']}>
+          <RouterView />
+        </div>
       </div>
     )
   },
