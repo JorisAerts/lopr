@@ -45,7 +45,7 @@ export const VTooltip = defineComponent({
     const tooltip = computed(() => slots.tooltip?.() ?? props.text)
     return () =>
       tooltip.value ? (
-        <div class={'v-tooltip'} onMouseenter={enter} onMouseleave={leave} ref={root}>
+        <div class={'v-tooltip'} ref={root}>
           <Transition>
             {show.value && (
               <dialog ref={dlg} open class={['v-tooltip--contents']} style={style.value}>
@@ -53,7 +53,9 @@ export const VTooltip = defineComponent({
               </dialog>
             )}
           </Transition>
-          {slots.default?.()}
+          <div onMouseenter={enter} onMouseleave={leave}>
+            {slots.default?.()}
+          </div>
         </div>
       ) : (
         slots.default?.()
