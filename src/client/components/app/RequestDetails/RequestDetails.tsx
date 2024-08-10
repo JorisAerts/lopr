@@ -6,7 +6,7 @@ import type { UUID } from '../../../../shared/UUID'
 import { useRequestStore } from '../../../stores/request'
 import { RequestOverviewTable } from './RequestOverviewTable'
 import { HeadersTable } from './HeadersTable'
-import { parseHeaders } from '../../../utils/request-utils'
+import { ResponseBody } from './ResponseBody'
 
 const REQUEST_TAB_INDEX = 0
 const REQUEST_HEADERS_INDEX = 1
@@ -30,17 +30,13 @@ export const RequestDetails = defineComponent({
         if (uuid.value !== newValue.modelValue?.uuid) currentTab.value = 0
         uuid.value = newValue.modelValue?.uuid
       },
-      { immediate: true }
+      { immediate: true },
     )
     const response = computed(() =>
       props.modelValue //
         ? requestStore.getResponse(props.modelValue.uuid)
-        : undefined
+        : undefined,
     )
-
-    const responseHeaders = computed(() => parseHeaders(response.value?.headers))
-
-    const responseBody = computed(() => (props.modelValue ? response.value?.body : undefined))
     return () =>
       props.modelValue && (
         <div class={['d-flex', 'flex-column', 'fill-height']}>
@@ -68,7 +64,7 @@ export const RequestDetails = defineComponent({
               </VTabItem>
             )}
             <VTabItem modelValue={RESPONSE_BODY_TAB_INDEX} class={['fill-height']}>
-              {responseBody.value && <pre class={['text-mono', 'bordered', 'fill-height', 'pa-2', 'overflow-auto']}>{responseBody.value}</pre>}
+              <ResponseBody modelValue={uuid.value} />
             </VTabItem>
           </VTabItems>
         </div>
