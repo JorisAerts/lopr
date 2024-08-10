@@ -1,0 +1,6 @@
+@each $type in (top, right, bottom, left) {
+  .sticky-#{$type} {
+    position: sticky;
+    $type: 0;
+  }
+}

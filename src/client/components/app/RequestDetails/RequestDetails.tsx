@@ -36,19 +36,19 @@ export const RequestDetails = defineComponent({
     const responseBody = computed(() => (props.modelValue ? response.value?.body : undefined))
     return () =>
       props.modelValue && (
-        <>
-          <VTabs v-model={currentTab.value} class={['mb-2']}>
+        <div class={['d-flex', 'flex-column', 'fill-height']}>
+          <VTabs v-model={currentTab.value} class={['mb-2', 'flex-grow-0']}>
             <VTab name={'Request'} modelValue={REQUEST_TAB_INDEX} />
             {response.value && <VTab name={'Response'} modelValue={RESPONSE_TAB_INDEX} />}
           </VTabs>
 
-          <VTabItems modelValue={currentTab.value}>
+          <VTabItems modelValue={currentTab.value} class={['flex-grow-0', 'overflow-auto']}>
             <VTabItem modelValue={REQUEST_TAB_INDEX}>
               <RequestOverviewTable modelValue={props.modelValue} />
             </VTabItem>
             <VTabItem modelValue={RESPONSE_TAB_INDEX}>{responseBody.value && <pre class={['text-mono']}>{responseBody.value}</pre>}</VTabItem>
           </VTabItems>
-        </>
+        </div>
       )
   },
 })
