@@ -16,3 +16,4 @@ const promise =
 export const gzip = promise('gunzip')
 export const deflate = promise('deflate')
 export const brotli = promise('brotliDecompress')
+export const zstd = (buffer: Uint8Array) => import('@mongodb-js/zstd').then(({ decompress }) => decompress(Buffer.from(buffer)))
