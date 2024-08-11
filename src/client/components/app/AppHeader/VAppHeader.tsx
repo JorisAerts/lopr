@@ -1,4 +1,3 @@
-import './VAppHeader.scss'
 import { computed, defineComponent, Teleport } from 'vue'
 import { APP_NAME } from '../../../../shared/constants'
 import { DeployedCode_Fill } from '../../../icons'

@@ -19,7 +19,7 @@ export const VIcon = defineComponent({
     return () => (
       <span class={'v-icon'} {...attrs}>
         <svg width={props.size} height={props.size} viewBox={`0 0 24 24`}>
-          <path d={props.name ? (icons[props.name] as IconNames) : props.path} fill={props.color} />
+          <path d={props.name ? (icons[props.name] as IconNames) : props.path} style={{ fill: props.color }} />
         </svg>
       </span>
     )
