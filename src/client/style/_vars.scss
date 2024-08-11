@@ -4,6 +4,10 @@
 @forward './sass-vars';
 
 :root {
+  --color-red: 255, 0, 0;
+  --color-green: 0, 255, 0;
+
+
   // spacer
   --spacer: #{$spacer};
 
