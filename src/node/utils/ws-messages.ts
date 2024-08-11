@@ -48,7 +48,7 @@ const transformSrc = <Source>(src?: Source) => {
 
 export const createErrorMessage = <Err, Source>(err: Err, src?: Source) => {
   const data =
-    typeof err === 'string' || err === 'number' //
+    typeof err === 'string' || typeof err === 'number' //
       ? { name: err, message: err }
       : typeof err === 'object' //
         ? { ...err }

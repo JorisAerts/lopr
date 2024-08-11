@@ -4,35 +4,46 @@ import type { WebSocketMessage } from '../../shared/WebSocketMessage'
 import { parseWebSocketMessage, WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { InstanceOptions } from '../utils/Options'
 import { WEBSOCKET_ROOT } from '../../shared/constants'
-import { createErrorMessage } from '../utils/ws-messages'
 import { createErrorHandler } from '../../client/utils/logging'
+import { createErrorMessage } from '../utils/ws-messages'
 
 const instance = {
   wss: undefined as WebSocketServer | undefined,
-  ws: undefined as WebSocket | undefined,
+  ws: [] as WebSocket[],
 }
 
+/**
+ * Send data to all sockets
+ */
 export const sendWsData = (type: WebSocketMessageType, data: any) => {
-  instance.ws?.send(JSON.stringify({ type, data } as WebSocketMessage))
+  instance.ws.forEach((ws) => ws.send(JSON.stringify({ type, data } as WebSocketMessage)))
 }
 
 export const defineSocketServer = ({ logger, server }: InstanceOptions) => {
   const wss = new WebSocketServer({ server, path: WEBSOCKET_ROOT })
-  instance.wss = wss //
-    .on('connection', function connection(ws) {
+  instance.wss = wss
+    .on('connection', function connection(ws, req) {
+      req.on('error', createErrorHandler(req))
+      instance.ws.push(
+        ws
+          .on('error', createErrorHandler(ws))
+          .on('open', () => logger.info('Websocket connection opened.'))
+          .on('close', (err) => {
+            const index = instance.ws.indexOf(ws)
+            if (index > -1) instance.ws.splice(index, 1)
+            else sendWsData(WebSocketMessageType.Error, createErrorMessage('Failed to remove Websocket instance', ws))
+            if (err) sendWsData(WebSocketMessageType.Error, createErrorMessage(err, ws))
+          })
+          .on('message', (msg: MessageEvent) => {
+            const data = parseWebSocketMessage(msg)
+            if (typeof data === 'object') {
+              registry[data.type]?.(data)
+            } else {
+              logger.warn(`Could not find WebSocket handler for:`, data)
+            }
+          })
+      )
       sendWsData(WebSocketMessageType.App, 'Connection Established')
-      instance.ws = ws
-        .on('message', (msg: MessageEvent) => {
-          const data = parseWebSocketMessage(msg)
-          if (typeof data === 'object') {
-            registry[data.type]?.(data)
-          } else {
-            logger.warn(`Could not find WebSocket handler for:`, data)
-          }
-        })
-        .on('error', createErrorHandler(ws))
-        .on('open', () => logger.info('Websocket connection opened.'))
-        .on('close', (err: Error) => err && sendWsData(WebSocketMessageType.Error, createErrorMessage(err)))
     })
     .on('error', createErrorHandler(wss))
 }
