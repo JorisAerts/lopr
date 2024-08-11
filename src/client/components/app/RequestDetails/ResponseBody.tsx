@@ -10,8 +10,11 @@ import { useRequest } from '../../../composables/request'
 const RX_IS_IMAGE = /^image\//
 
 const getImageData = (response: UseResponse) => {
-  const data = btoa(response.body.value)
-  return `data:${response.contentType};base64,${data}`
+  try {
+    return `data:${response.contentType};base64,${btoa(response.body.value)}`
+  } catch {
+    return undefined
+  }
 }
 
 const createBodyRenderer = (response: UseResponse) => {
@@ -29,9 +32,12 @@ const createBodyRenderer = (response: UseResponse) => {
   }
 
   if (RX_IS_IMAGE.test(type)) {
-    return () => response.body.value && <VSheet class={classes}>
-      <img src={getImageData(response)} alt="Content" />
-    </VSheet>
+    return () =>
+      response.body.value && (
+        <VSheet class={classes}>
+          <img src={getImageData(response)} alt="Content" />
+        </VSheet>
+      )
   }
 
   const request = useRequest({ modelValue: response.response.value?.uuid })
@@ -40,9 +46,14 @@ const createBodyRenderer = (response: UseResponse) => {
     if (!url) return type
     return url.substring(url.lastIndexOf('/') + 1, url.length)
   })
-  return () => response.body.value && <VSheet class={classes}>
-    <VDownloadData type={type} data={response.body.value} filename={filename.value}>Download: {filename.value}</VDownloadData>
-  </VSheet>
+  return () =>
+    response.body.value && (
+      <VSheet class={classes}>
+        <VDownloadData type={type} data={response.body.value} filename={filename.value}>
+          Download: {filename.value}
+        </VDownloadData>
+      </VSheet>
+    )
 }
 
 export const ResponseBody = defineComponent({

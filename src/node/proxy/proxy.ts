@@ -34,13 +34,15 @@ const defaultServerOptions = {
   ServerResponse: ProxyResponse satisfies typeof ServerResponse<ProxyRequest>,
 } as http.ServerOptions<typeof ProxyRequest, typeof ServerResponse>
 
+type InternalOptions<Options extends Partial<CreateProxyOptions>> = CreateProxyOptions & CommonOptions & Options
+
 export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {} as Options) {
   const options = {
     port: 8080,
     mapHttpsReg: true,
     ...opt,
     logger: createLogger(),
-  } as CreateProxyOptions & CommonOptions & Options
+  } as InternalOptions<Options>
 
   const { logger } = options
 
@@ -53,7 +55,6 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
     const generatePKI = (host: string) =>
       (pkiPromises[host] = new Promise((resolve) => {
         const cert = createCertForHost(host)
-        //logger.debug('add context for: %s', host)
         httpsServer.addContext(host, cert)
         resolve()
       }))
@@ -61,10 +62,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
     // HTTPS-tunnel (let Node choose the port)
     const httpsServer = https //
       .createServer({ ...getRootCert(), ...defaultServerOptions }, forwardRequest as http.RequestListener<typeof ProxyRequest, typeof ServerResponse>)
-      .listen(() => {
-        httpsPort = (httpsServer.address() as AddressInfo).port
-        //logger.debug('listening https on: %s', httpsPort)
-      })
+      .listen(() => (httpsPort = (httpsServer.address() as AddressInfo).port))
     httpsServer.on('error', createErrorHandler(httpsServer))
 
     // HTTP Server (the actual proxy)
