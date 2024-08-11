@@ -22,20 +22,7 @@ export const ErrorLog = defineComponent({
                         <label>Timestamp</label>: {err.ts.toLocaleString()}
                       </div>
                     )}
-                    {err.err && (
-                      <>
-                        {err.err.name && (
-                          <div>
-                            <label>Name</label>: {err.err.name}
-                          </div>
-                        )}
-                        {err.err.message && (
-                          <div>
-                            <label>Message</label>: {err.err.message}
-                          </div>
-                        )}
-                      </>
-                    )}
+                    {err.err && <pre class={['mt-2', 'text-mono']}>{JSON.stringify(err.err, null, 2)}</pre>}
                   </VSheet>
                 </VCard>
               ))}
