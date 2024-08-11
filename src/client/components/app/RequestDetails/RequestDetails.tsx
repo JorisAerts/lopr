@@ -13,6 +13,20 @@ const REQUEST_HEADERS_INDEX = 1
 const RESPONSE_BODY_TAB_INDEX = 2
 const RESPONSE_HEADERS_TAB_INDEX = 3
 
+type Tab = typeof REQUEST_TAB_INDEX | typeof REQUEST_HEADERS_INDEX | typeof RESPONSE_BODY_TAB_INDEX | typeof RESPONSE_HEADERS_TAB_INDEX
+
+const canDisplayTab = (uuid: UUID | undefined, tab: Tab) => {
+  if (!uuid) return false
+  switch (tab) {
+    case RESPONSE_BODY_TAB_INDEX:
+    case RESPONSE_HEADERS_TAB_INDEX: {
+      return !!useRequestStore().getResponse(uuid)
+    }
+    default:
+      return true
+  }
+}
+
 export const RequestDetails = defineComponent({
   name: 'RequestDetails',
 
@@ -21,21 +35,28 @@ export const RequestDetails = defineComponent({
   },
 
   setup(props) {
-    const currentTab = ref(0)
+    const currentTab = ref<Tab>(0)
     const uuid: Ref<UUID | undefined> = ref()
-    const requestStore = useRequestStore()
+    const { getResponse } = useRequestStore()
+
     watch(
       props,
       (newValue) => {
-        if (uuid.value !== newValue.modelValue?.uuid) currentTab.value = 0
+        if (
+          0 != currentTab.value &&
+          uuid.value !== newValue.modelValue?.uuid && //
+          !canDisplayTab(newValue.modelValue?.uuid, currentTab.value)
+        ) {
+          currentTab.value = 0
+        }
         uuid.value = newValue.modelValue?.uuid
       },
-      { immediate: true },
+      { immediate: true }
     )
     const response = computed(() =>
       props.modelValue //
-        ? requestStore.getResponse(props.modelValue.uuid)
-        : undefined,
+        ? getResponse(props.modelValue.uuid)
+        : undefined
     )
     return () =>
       props.modelValue && (
