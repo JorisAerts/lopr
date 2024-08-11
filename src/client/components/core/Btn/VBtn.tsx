@@ -1,8 +1,9 @@
-import type { PropType } from 'vue'
+import type { PropType, VNode } from 'vue'
 import { defineComponent } from 'vue'
 import type { IconNames } from '../Icon'
 import { VIcon } from '../Icon'
 import './VBtn.scss'
+import { VTooltip } from '../Tooltip'
 
 export enum EventTypes {
   Click = 'click',
@@ -26,12 +27,27 @@ export const VBtn = defineComponent({
     transparent: { type: Boolean, default: false },
 
     disabled: { type: Boolean, default: false },
+    tooltip: { type: String },
   },
 
   setup(props, { attrs, emit, slots }) {
+    const wrapTooltip = (contents: VNode) =>
+      slots.tooltip ? (
+        <VTooltip>
+          {{
+            tooltip: slots.tooltip,
+            default: () => contents,
+          }}
+        </VTooltip>
+      ) : props.tooltip ? (
+        <VTooltip text={props.tooltip}>{contents}</VTooltip>
+      ) : (
+        contents
+      )
+
     return () => {
       const content = slots.default?.()
-      return (
+      return wrapTooltip(
         <button
           class={{
             'v-btn': true,

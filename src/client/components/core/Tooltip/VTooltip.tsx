@@ -49,7 +49,7 @@ export const VTooltip = defineComponent({
           <Transition>
             {show.value && (
               <dialog ref={dlg} open class={['v-tooltip--contents']} style={style.value}>
-                {tooltip.value}
+                {slots.tooltip?.() ?? tooltip.value}
               </dialog>
             )}
           </Transition>
