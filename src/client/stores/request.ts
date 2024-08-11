@@ -6,6 +6,7 @@ import type { WebSocketMessage } from '../../shared/WebSocketMessage'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { ProxyResponseInfo } from '../../shared/Response'
 import type { UUID } from '../../shared/UUID'
+import { isRecording } from './app'
 
 export const STORE_NAME = 'Requests'
 
@@ -43,14 +44,18 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 
   // register the handlers (they will overwrite the previous ones)
   registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
+    if (!isRecording()) return
     data.ts = new Date(data.ts)
     requests.value.set(data.uuid, data)
     registerUUID(data.uuid)
   })
+
   registerDataHandler(WebSocketMessageType.ProxyResponse, ({ data }: WebSocketMessage<ProxyResponseInfo>) => {
+    if (!isRecording()) return
     data.ts = new Date(data.ts)
     responses.value.set(data.uuid, data)
     registerUUID(data.uuid)
   })
+
   return { ids, requests, responses, getRequest, getResponse, clear }
 })
