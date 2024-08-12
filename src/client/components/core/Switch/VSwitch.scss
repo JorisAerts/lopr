@@ -5,10 +5,11 @@
   --control-height: 1.25em;
   --control-width: calc(2.1 * var(--control-height));
   --slider-background: rgba(var(--text-color), 0.15);
+  --slider-background-on: rgba(var(--primary-color), 1);
   --slider-color: rgba(var(--text-color), .55);
 
   &--input:checked + .v-switch--backdrop {
-    --slider-background: rgba(var(--primary-color), 0.55);
+    --slider-background: var(--slider-background-on);
   }
 
   & {

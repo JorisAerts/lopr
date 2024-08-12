@@ -47,7 +47,7 @@
   // transition
   --transition-duration: .32s;
   --transition-timing-function: #{map-get(map-get($penner-transitions, "ease-out"), "quart")};
-  --transition: all var(--transition-duration) var(--transition-timing-function);
+  --transition: all var(--transition-duration) var(--transition-timing-function), font-size 0s;
 
   // panel
   --panel-background: rgb(255 255 255 / 20%);
