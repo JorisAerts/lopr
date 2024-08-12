@@ -24,10 +24,16 @@ export const ErrorLog = defineComponent({
                     )}
                     {err.src && (
                       <div>
-                        <label>Source</label>: {typeof err.src === 'string' ? err.src : JSON.stringify(err.src, null, 2)}
+                        <label>Source</label>: {typeof err.src === 'string' || typeof err.src === 'number' ? err.src : JSON.stringify(err.src, null, 2)}
                       </div>
                     )}
-                    {err.err && <pre class={['mt-2', 'text-mono']}>{JSON.stringify(err.err, null, 2)}</pre>}
+                    {err.err && (
+                      <pre class={['mt-2', 'text-mono']}>
+                        {Object.keys(err.err).length //
+                          ? JSON.stringify(err.err, null, 2)
+                          : undefined}
+                      </pre>
+                    )}
                   </VSheet>
                 </VCard>
               ))}
