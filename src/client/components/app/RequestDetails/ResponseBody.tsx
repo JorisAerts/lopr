@@ -1,5 +1,5 @@
 import type { PropType } from 'vue'
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import type { UUID } from '../../../../shared/UUID'
 import type { UseResponse } from '../../../composables/response'
 import { useResponse } from '../../../composables/response'
@@ -19,6 +19,7 @@ const getImageData = (response: UseResponse) => {
 
 const createBodyRenderer = (response: UseResponse) => {
   const classes = ['bordered', 'fill-height', 'pa-2', 'overflow-auto']
+  const wrap = ref(true)
 
   if (response.isEmpty.value) return () => <VSheet class={classes}>No response data</VSheet>
 
@@ -27,8 +28,26 @@ const createBodyRenderer = (response: UseResponse) => {
     case 'text/html':
     case 'text/json':
     case 'application/json':
+    case 'application/javascript':
+    case 'text/css':
     case 'text/plain':
-      return () => <pre class={['text-mono', ...classes]}>{response.body.value}</pre>
+      return () => (
+        <div class={classes}>
+          <div class={['mt-1', 'mb-2']}>
+            <label class={['d-flex', 'align-items-center']}>
+              <input type={'checkbox'} checked={wrap.value} onChange={(e) => (wrap.value = (e.target as HTMLInputElement).checked)} /> Wrap
+            </label>
+          </div>
+          <pre
+            class={['text-mono']}
+            style={{
+              whiteSpace: wrap.value ? 'wrap' : 'nowrap',
+            }}
+          >
+            {response.body.value}
+          </pre>
+        </div>
+      )
   }
 
   if (RX_IS_IMAGE.test(type)) {
