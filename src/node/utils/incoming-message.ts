@@ -3,11 +3,11 @@ import { identity } from './identity'
 import * as decompress from './decompress'
 import { splitCsv } from './string-utils'
 
-export const getIncomingMessageData = (res: IncomingMessage) =>
+export const getIncomingMessageData = (res: IncomingMessage): Promise<Uint8Array> =>
   new Promise((resolve) => {
     const buffer: number[] = []
     res.on('data', (d: Buffer) => buffer.push(...d))
-    res.on('end', () => resolve(Buffer.from(buffer)))
+    res.on('end', () => resolve(new Uint8Array(buffer)))
   }) as Promise<Uint8Array>
 
 // regex used for splitting the values
@@ -23,7 +23,7 @@ export const decodeIncomingMessageData = (res: IncomingMessage): ((a: Uint8Array
   return encoding.length && encoding.every((key) => decompressors.includes(key))
     ? encoding.reduce(
         (a, b) => {
-          const next: (a: Uint8Array) => Promise<Uint8Array> = decompress[b]
+          const next = decompress[b] as (a: Uint8Array) => Promise<Uint8Array>
           return (buffer: Uint8Array) => a(buffer).then(next)
         },
         (buffer: Uint8Array) => Promise.resolve(buffer)

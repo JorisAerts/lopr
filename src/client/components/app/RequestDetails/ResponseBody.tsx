@@ -7,7 +7,6 @@ import { VSheet } from '../../core'
 import { VDownloadData } from '../DownloadData'
 import { useRequest } from '../../../composables/request'
 import { useAppStore } from '../../../stores/app'
-import { encode as encodeBase64 } from '../../../../shared/base64'
 import { parseHeaders } from '../../../utils/request-utils'
 import type { ProxyResponseInfo } from '../../../../shared/Response'
 
@@ -15,9 +14,11 @@ const RX_IS_IMAGE = /^image\//
 
 const getImageData = (response: UseResponse) => {
   try {
-    return `data:${response.contentType.value};base64, ${encodeBase64(response.body.value)}`
+    const arr = Uint8Array.from(response.body.value, (c) => c.charCodeAt(0))
+    const blob = new Blob([arr], { type: response.contentType.value })
+    return URL.createObjectURL(blob)
   } catch (e) {
-    console.log({ e })
+    console.error({ e })
     return undefined
   }
 }

@@ -52,7 +52,7 @@ const inc = [
 
         // log the response to the websocket
         getDecodedIncomingMessageData(proxyRes)
-          .then((b) => b.toString())
+          .then((b) => Buffer.from(b).toString('utf8'))
           .then((data) => sendWsData(WebSocketMessageType.ProxyResponse, createProxyResponse((req as ProxyRequest).uuid, proxyRes, data)))
 
         proxyRes.pipe(res)
