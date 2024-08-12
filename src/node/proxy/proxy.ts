@@ -18,6 +18,8 @@ import { ProxyRequest } from './ProxyRequest'
 import { ProxyResponse } from './ProxyResponse'
 import { createErrorMessage, createProxyRequest } from '../utils/ws-messages'
 import { createErrorHandler } from '../../client/utils/logging'
+import { tempDir } from '../utils/temp-dir'
+import { join } from 'path'
 
 export interface CreateProxyOptions {
   port: number
@@ -52,10 +54,13 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
     let httpPort = options.port
     let httpsPort: number
 
-    const generatePKI = (host: string) =>
-      (pkiPromises[host] = new Promise((resolve) => {
+    const generateCertificate = (host: string) =>
+      (pkiPromises[host] ??= new Promise((resolve) => {
         const cert = createCertForHost(host)
         httpsServer.addContext(host, cert)
+
+        sendWsData(WebSocketMessageType.Certificate, join(tempDir(), 'cert', 'generated', `${host}.crt`))
+
         resolve()
       }))
 
@@ -129,7 +134,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
       if (req.url?.match(/:443$/)) {
         const host = req.url.substring(0, req.url.length - 4)
         if (options.mapHttpsReg === true || (options.mapHttpsReg && host.match(options.mapHttpsReg))) {
-          const promise = pkiPromises[host] ?? generatePKI(host)
+          const promise = pkiPromises[host] ?? generateCertificate(host)
           promise.then(function () {
             const mediator = net.connect(httpsPort)
             mediator.on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
