@@ -1,4 +1,4 @@
-import type { PropType } from 'vue'
+import type { PropType, Ref } from 'vue'
 import { computed, defineComponent } from 'vue'
 import type { UUID } from '../../../../shared/UUID'
 import type { UseResponse } from '../../../composables/response'
@@ -8,6 +8,8 @@ import { VDownloadData } from '../DownloadData'
 import { useRequest } from '../../../composables/request'
 import { useAppStore } from '../../../stores/app'
 import { encode as encodeBase64 } from '../../../../shared/base64'
+import { parseHeaders } from '../../../utils/request-utils'
+import type { ProxyResponseInfo } from '../../../../shared/Response'
 
 const RX_IS_IMAGE = /^image\//
 
@@ -17,6 +19,19 @@ const getImageData = (response: UseResponse) => {
   } catch (e) {
     console.log({ e })
     return undefined
+  }
+}
+
+const getContentFilename = (response: Ref<ProxyResponseInfo | undefined>) => {
+  if (!response.value) return
+  const contentDisposition = parseHeaders(response.value?.headers)?.['Content-Disposition'] as string
+  if (contentDisposition) {
+    const parts = contentDisposition.split(/\s*;\s*/)
+    for (const part of parts) {
+      if (part.startsWith('filename=')) {
+        return part.substring(9, part.length).trim()
+      }
+    }
   }
 }
 
@@ -53,21 +68,30 @@ const createBodyRenderer = (response: UseResponse) => {
       )
   }
 
+  const request = useRequest({ modelValue: response.response.value?.uuid })
+  const filename = computed(() => {
+    const contentFilename = getContentFilename(response.response)
+    if (contentFilename) {
+      return contentFilename
+    }
+
+    const url = request.request.value?.url
+    if (!url) return type
+    const filename = url.substring(url.lastIndexOf('/') + 1, url.length)
+
+    const paramPos = filename.indexOf('?')
+    return paramPos === -1 ? filename : filename.substring(0, paramPos)
+  })
+
   if (RX_IS_IMAGE.test(type)) {
     return () =>
       response.body.value && (
         <VSheet class={classes}>
-          <img src={getImageData(response)} alt="Content" />
+          <img src={getImageData(response)} alt={filename.value} />
         </VSheet>
       )
   }
 
-  const request = useRequest({ modelValue: response.response.value?.uuid })
-  const filename = computed(() => {
-    const url = request.request.value?.url
-    if (!url) return type
-    return url.substring(url.lastIndexOf('/') + 1, url.length)
-  })
   return () =>
     response.body.value && (
       <VSheet class={classes}>
