@@ -29,7 +29,7 @@
     height: var(--control-height);
     border-radius: calc(var(--control-height) / 2);
     background: var(--slider-background);
-    box-shadow: inset 0 0 2px rgba(0, 0, 0, .5);
+    //box-shadow: inset 0 0 2px rgba(0, 0, 0, .5);
   }
 
   &--input {
@@ -43,6 +43,8 @@
   &--slider {
 
     margin: 0 calc(.5 * var(--control-height));
+
+    box-shadow: 0 0 5px rgba(0, 0, 0, .5);
 
     position: absolute;
     border-radius: 50%;
