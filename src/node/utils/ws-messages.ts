@@ -47,12 +47,13 @@ const transformSrc = <Source>(src?: Source) => {
 }
 
 export const createErrorMessage = <Err, Source>(err: Err, src?: Source) => {
-  const data =
-    typeof err === 'string' || typeof err === 'number' //
+  const data = err
+    ? typeof err === 'string' || typeof err === 'number' //
       ? { name: err, message: err }
       : typeof err === 'object' //
         ? { ...err }
         : { message: err }
+    : undefined
 
   return {
     ...timestamp(),
