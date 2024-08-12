@@ -20,7 +20,7 @@ export const VNavBar = defineComponent({
           <VIcon name={'DeployedCode_Fill'} size={iconSize} class={['mr-1']} />
           {APP_NAME}
         </h4>
-        <AppControlsToolbar class={'ml-2'} />
+        <AppControlsToolbar class={'ml-4'} />
         <VSpacer />
         <VBtn tooltip={'Requests'} icon={'Monitoring'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Sequence)} />
         <VBtn tooltip={'Information'} icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Information)} />
