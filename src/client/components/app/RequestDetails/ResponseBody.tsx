@@ -7,13 +7,15 @@ import { VSheet } from '../../core'
 import { VDownloadData } from '../DownloadData'
 import { useRequest } from '../../../composables/request'
 import { useAppStore } from '../../../stores/app'
+import { encode as encodeBase64 } from '../../../../shared/base64'
 
 const RX_IS_IMAGE = /^image\//
 
 const getImageData = (response: UseResponse) => {
   try {
-    return `data:${response.contentType};base64,${btoa(response.body.value)}`
-  } catch {
+    return `data:${response.contentType.value};base64, ${encodeBase64(response.body.value)}`
+  } catch (e) {
+    console.log({ e })
     return undefined
   }
 }
