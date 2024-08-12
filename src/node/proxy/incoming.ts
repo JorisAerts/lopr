@@ -3,7 +3,7 @@ import * as http from 'http'
 import * as https from 'https'
 import { isReqHttps, setupOutgoing } from './utils'
 import type { CreateProxyOptions } from './proxy'
-import { getIncomingMessageData } from '../utils/incoming-message'
+import { getDecodedIncomingMessageData } from '../utils/incoming-message'
 import { sendWsData } from '../server/websocket'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { createProxyResponse } from '../utils/ws-messages'
@@ -51,7 +51,7 @@ const inc = [
         outgoing(req, res, proxyRes)
 
         // log the response to the websocket
-        getIncomingMessageData(proxyRes)
+        getDecodedIncomingMessageData(proxyRes)
           .then((b) => b.toString())
           .then((data) => sendWsData(WebSocketMessageType.ProxyResponse, createProxyResponse((req as ProxyRequest).uuid, proxyRes, data)))
 
