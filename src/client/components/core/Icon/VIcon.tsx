@@ -11,7 +11,7 @@ export const VIcon = defineComponent({
   props: {
     name: { type: String as PropType<IconNames> },
     path: { type: String as PropType<string> },
-    size: { type: Number as PropType<number>, default: 18 },
+    size: { type: [Number, String] as PropType<number | string>, default: 18 },
     color: { type: String },
   },
 
