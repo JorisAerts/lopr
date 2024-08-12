@@ -9,6 +9,7 @@ export const STORE_NAME = 'Error Log'
 type ErrorLog = {
   ts: Date
   key: number
+  src: unknown
   err: Record<string, string>
 }
 
