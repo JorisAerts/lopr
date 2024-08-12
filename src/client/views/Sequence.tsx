@@ -1,9 +1,10 @@
 import type { PropType, Ref } from 'vue'
-import { computed, defineComponent, shallowRef } from 'vue'
+import { computed, defineComponent, ref, shallowRef } from 'vue'
 import { RequestSequence, VBtn, VCard, VContainer, VSheet, VSpacer, VTooltip } from '../components'
 import type { ProxyRequestInfo } from '../../shared/Request'
 import { RequestDetails } from '../components/app/RequestDetails/RequestDetails'
 import { useRequestStore } from '../stores/request'
+import { RequestStructure } from '../components/app/RequestSequence/RequestStructure'
 
 export const Sequence = defineComponent({
   name: 'requests-monitor',
@@ -20,6 +21,8 @@ export const Sequence = defineComponent({
     const current: Ref<ProxyRequestInfo | undefined> = shallowRef()
     const width = computed(() => (typeof props.width === 'number' ? `${props.width}px` : props.width))
 
+    const requestViewType = ref(0)
+
     return () => (
       <VContainer class={['fill-height', 'gap-2']}>
         <VCard
@@ -35,13 +38,17 @@ export const Sequence = defineComponent({
             </h3>
             <VSpacer />
             <VTooltip text={'Sequence view'}>
-              <VBtn icon={'Reorder'} size={20} class={['pa-1', 'mr-1']} transparent />
+              <VBtn icon={'Reorder'} size={20} class={['pa-1', 'mr-1']} transparent onClick={() => (requestViewType.value = 0)} />
             </VTooltip>
             <VTooltip text={'Structure view'}>
-              <VBtn icon={'AccountTree'} size={20} class={['pa-1']} transparent disabled />
+              <VBtn icon={'AccountTree'} size={20} class={['pa-1']} transparent onClick={() => (requestViewType.value = 1)} />
             </VTooltip>
           </VSheet>
-          <RequestSequence v-model={current.value} />
+          {requestViewType.value === 0 ? ( //
+            <RequestSequence v-model={current.value} />
+          ) : (
+            <RequestStructure v-model={current.value} />
+          )}
         </VCard>
 
         <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
