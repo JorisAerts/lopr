@@ -1,5 +1,5 @@
 import type { ComponentInstance, VNode } from 'vue'
-import { defineComponent, Transition } from 'vue'
+import { defineComponent } from 'vue'
 import { VBadge, VBtn, VCard, VIcon, VSpacer, VTooltip } from '../../core'
 import { APP_NAME } from '../../../../shared/constants'
 import './VNavBar.scss'
@@ -22,7 +22,7 @@ export const VNavBar = defineComponent({
         </h4>
         <RouterView name="controls" class={'ml-4'}>
           {{
-            default: ({ Component }: { Component: VNode & ComponentInstance<any> }) => <Transition>{Component && <Component />}</Transition>,
+            default: ({ Component }: { Component: VNode & ComponentInstance<any> }) => Component && <Component />,
           }}
         </RouterView>
         <VSpacer />

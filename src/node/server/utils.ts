@@ -1,4 +1,3 @@
-// https://github.com/nodejitsu/node-http-proxy
 import type * as net from 'node:net'
 import type { IncomingMessage, RequestOptions, ServerResponse } from 'http'
 import type * as tls from 'node:tls'

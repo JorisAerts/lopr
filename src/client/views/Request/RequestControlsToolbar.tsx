@@ -1,11 +1,10 @@
-import './AppControlsToolbar.scss'
 import { defineComponent } from 'vue'
 import { VBtn, VSwitch, VToolbar, VTooltip } from '../../components/core'
 import { useAppStore } from '../../stores/app'
 import { useRequestStore } from '../../stores/request'
 
-export const AppControlsToolbar = defineComponent({
-  name: 'AppControlsToolbar',
+export const RequestControlsToolbar = defineComponent({
+  name: 'ControlsToolbar',
 
   setup() {
     const appStore = useAppStore()

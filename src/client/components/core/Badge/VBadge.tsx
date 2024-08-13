@@ -7,7 +7,7 @@ export const VBadge = defineComponent({
 
   props: {
     modelValue: { type: [Number, String, Boolean], default: false },
-    size: { type: Number, default: 8 },
+    size: { type: Number, default: 6 },
     position: { type: [Number, Array] as PropType<number | (undefined | number)[]>, default: 0 },
     color: { type: String },
   },

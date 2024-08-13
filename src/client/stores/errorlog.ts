@@ -30,5 +30,7 @@ export const useErrorLogStore = defineStore(STORE_NAME, () => {
 
   const hasErrors = computed(() => errors.value.length > 0)
 
-  return { errors, hasErrors }
+  const clear = () => (errors.value = [])
+
+  return { errors, hasErrors, clear }
 })

@@ -4,6 +4,7 @@ import { VAppHeader, VNavBar } from '../../app'
 import { useErrorLogStore } from '../../../stores/errorlog'
 import { useRequestStore } from '../../../stores/request'
 import { useCertificateStore } from '../../../stores/certificates'
+import { VSheet } from '../Sheet'
 
 export const App = defineComponent({
   name: 'v-app',
@@ -31,13 +32,13 @@ export const App = defineComponent({
 
     // the application entry point
     return () => (
-      <div class={['d-flex', 'flex-column', 'fill-height']}>
+      <VSheet class={['d-flex', 'flex-column', 'fill-height']}>
         <VAppHeader />
         <VNavBar class={['mb-2', 'flex-grow-0']} />
-        <div class={['flex-grow-1', 'overflow-y-auto']}>
+        <VSheet class={['flex-grow-1', 'overflow-y-auto']}>
           <RouterView />
-        </div>
-      </div>
+        </VSheet>
+      </VSheet>
     )
   },
 })

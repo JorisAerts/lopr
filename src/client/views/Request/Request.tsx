@@ -4,7 +4,7 @@ import { RequestDetails, RequestSequence, RequestStructure, VBtn, VCard, VContai
 import { useRequestStore } from '../../stores/request'
 import type { UUID } from '../../../shared/UUID'
 
-export const Sequence = defineComponent({
+export const Request = defineComponent({
   name: 'requests-monitor',
 
   props: {

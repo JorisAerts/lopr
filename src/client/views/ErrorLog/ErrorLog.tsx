@@ -1,6 +1,6 @@
 import { defineComponent, TransitionGroup } from 'vue'
-import { VBtn, VCard, VSheet } from '../components'
-import { useErrorLogStore } from '../stores/errorlog'
+import { VBtn, VCard, VSheet } from '../../components'
+import { useErrorLogStore } from '../../stores/errorlog'
 
 export const ErrorLog = defineComponent({
   name: 'error-log',
