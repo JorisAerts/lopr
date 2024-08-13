@@ -44,12 +44,15 @@ export const RequestStructure = defineComponent({
         'update:expanded',
         (() => {
           if (contains(key)) return removeKey(sel, key)
-          const result = [key] as string[]
+          const result = new Set<string>([key])
+          // auto-expand single item nodes
           let current = value
-          while (current && current.items?.length === 0 && current.nodes && Object.keys(current.nodes).length === 1) {
+          while (current && (!current.items || current.items?.length === 0) && current.nodes && Object.keys(current.nodes).length === 1) {
+            result.add(current.key)
             current = current.nodes[Object.keys(current.nodes)[0] as keyof typeof current.nodes]!
           }
-          return sel.concat(result)
+          result.add(current.key)
+          return sel.concat([...result])
         })()
       )
     }
