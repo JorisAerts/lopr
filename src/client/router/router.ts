@@ -15,6 +15,7 @@ export const router = createRouter({
       path: '/requests',
       components: {
         default: () => import('../views/Sequence').then((c) => c.Sequence),
+        controls: () => import('../views/Sequence').then((c) => c.AppControlsToolbar),
       },
     },
 

@@ -1,8 +1,8 @@
 import type { PropType, Ref } from 'vue'
 import { computed, defineComponent, ref } from 'vue'
-import { RequestDetails, RequestSequence, RequestStructure, VBtn, VCard, VContainer, VSheet, VSpacer } from '../components'
-import { useRequestStore } from '../stores/request'
-import type { UUID } from '../../shared/UUID'
+import { RequestDetails, RequestSequence, RequestStructure, VBtn, VCard, VContainer, VSheet, VSpacer } from '../../components'
+import { useRequestStore } from '../../stores/request'
+import type { UUID } from '../../../shared/UUID'
 
 export const Sequence = defineComponent({
   name: 'requests-monitor',

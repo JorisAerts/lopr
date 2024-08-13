@@ -3,9 +3,8 @@ import { VBadge, VBtn, VCard, VIcon, VSpacer, VTooltip } from '../../core'
 import { APP_NAME } from '../../../../shared/constants'
 import './VNavBar.scss'
 import { useErrorLogStore } from '../../../stores/errorlog'
-import { useRouter } from 'vue-router'
+import { RouterView, useRouter } from 'vue-router'
 import { RouteNames } from '../../../router/RouteNames'
-import { AppControlsToolbar } from './AppControlsToolbar'
 
 export const VNavBar = defineComponent({
   name: 'v-nav-bar',
@@ -20,7 +19,7 @@ export const VNavBar = defineComponent({
           <VIcon name={'DeployedCode_Fill'} size={iconSize} class={['mr-1']} />
           {APP_NAME}
         </h4>
-        <AppControlsToolbar class={'ml-4'} />
+        <RouterView name="controls" class={'ml-4'} />
         <VSpacer />
         <VBtn tooltip={'Requests'} icon={'Monitoring'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Requests)} />
         <VBtn tooltip={'Information'} icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Information)} />

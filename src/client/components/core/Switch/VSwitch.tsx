@@ -31,7 +31,7 @@ export const VSwitch = defineComponent({
       emit('change', newValue ? props.value : undefined)
     }
     return () => (
-      <div class={['v-switch', 'py-4']} onClick={onClick}>
+      <div class={['v-switch']} onClick={onClick}>
         {slots.default?.()}
         <input class={['v-switch--input']} name={props.name} type="checkbox" value={value.value} checked={checked.value} />
         <div class={['v-switch--backdrop']}></div>
