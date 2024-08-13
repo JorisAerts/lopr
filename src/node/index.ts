@@ -1,8 +1,8 @@
 import process from 'node:process'
-import type { CreateProxyOptions } from './proxy'
-import { createProxy } from './proxy'
+import type { CreateProxyOptions } from './server'
+import { createProxy } from './server'
 import { openBrowser } from './utils/open-browser'
-import { displayServerInfo } from './proxy/server-info'
+import { displayServerInfo } from './server/server-info'
 import { processCliParams } from './cli'
 
 // allow unsage SSL certificates

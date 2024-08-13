@@ -1,4 +1,4 @@
-import { clearScreen } from '../logger'
+import { clearScreen } from '../utils/logger'
 import type { Server } from 'http'
 import { APP_NAME } from '../../shared/constants'
 import { packageJson } from '../utils/package'

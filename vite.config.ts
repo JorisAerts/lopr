@@ -12,6 +12,12 @@ export default defineConfig({
 
   build: {
     outDir: './dist/client',
+
+    rollupOptions: {
+      output: {
+        chunkFileNames: 'assets/[hash].js',
+      },
+    },
   },
 
   resolve: {

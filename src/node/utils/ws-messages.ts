@@ -2,8 +2,8 @@ import type { IncomingMessage } from 'http'
 import type { UUID } from '../../shared/UUID'
 import type { ProxyResponseInfo } from '../../shared/Response'
 import type { ProxyRequestInfo } from '../../shared/Request'
-import { extractProtocol } from '../proxy/utils'
-import type { ProxyRequest } from '../proxy/ProxyRequest'
+import { extractProtocol } from '../server/utils'
+import type { ProxyRequest } from '../server/ProxyRequest'
 import type { Timestamped } from '../../shared/Timestamped'
 
 // add a timestamp to the messages

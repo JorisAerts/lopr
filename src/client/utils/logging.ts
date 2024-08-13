@@ -1,4 +1,4 @@
-import { sendWsData } from '../../node/proxy/websocket'
+import { sendWsData } from '../../node/server/websocket'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { createErrorMessage } from '../../node/utils/ws-messages'
 
