@@ -102,7 +102,7 @@ export const RequestStructure = defineComponent({
                   <VListItem
                     key={value}
                     onClick={() => handleSelect(value)}
-                    prependIcon={'FiberManualRecord'}
+                    prependIcon={'Public'}
                     class={[
                       'py-0',
                       'no-wrap',
