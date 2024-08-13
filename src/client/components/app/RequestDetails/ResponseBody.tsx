@@ -88,7 +88,14 @@ const createBodyRenderer = (response: UseResponse) => {
     return () =>
       response.body.value && (
         <VSheet class={classes}>
-          <img src={getImageData(response)} alt={filename.value} />
+          <img
+            src={getImageData(response)}
+            alt={filename.value}
+            style={{
+              'max-width': '100%',
+              'max-height': '100%',
+            }}
+          />
         </VSheet>
       )
   }
