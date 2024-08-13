@@ -1,4 +1,4 @@
-import type { IncomingMessage, ServerResponse } from 'http'
+import type { IncomingMessage, Server, ServerResponse } from 'http'
 import * as http from 'http'
 import * as https from 'https'
 import * as net from 'net'
@@ -38,7 +38,14 @@ const defaultServerOptions = {
 
 type InternalOptions<Options extends Partial<CreateProxyOptions>> = CreateProxyOptions & CommonOptions & Options
 
-export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {} as Options) {
+export interface CreateProxy {
+  address: string
+  url: URL
+  server: Server
+  logger: Logger
+}
+
+export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {} as Options): Promise<CreateProxy> {
   const options = {
     port: 8080,
     mapHttpsReg: true,
