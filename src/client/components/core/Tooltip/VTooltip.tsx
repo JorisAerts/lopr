@@ -1,4 +1,5 @@
 import { computed, defineComponent, ref, Transition } from 'vue'
+import { VCard } from '../Card'
 import './VTooltip.scss'
 
 export const VTooltip = defineComponent({
@@ -42,14 +43,14 @@ export const VTooltip = defineComponent({
         left: `${tooltip.w === 0 ? 0 : pos.x + tooltip.w + props.margin > document.body.clientWidth ? pos.x + pos.w - tooltip.w : pos.x}px`,
       }
     })
-    const tooltip = computed(() => slots.tooltip?.() ?? props.text)
+    const tooltip = computed(() => slots.tooltip?.() ?? <VCard class={['v-tooltip--contents']}>{props.text}</VCard>)
     return () =>
       tooltip.value ? (
         <div class={'v-tooltip'} ref={root}>
           <Transition>
             {show.value && (
-              <dialog ref={dlg} open class={['v-tooltip--contents']} style={style.value}>
-                {slots.tooltip?.() ?? tooltip.value}
+              <dialog ref={dlg} open class={['v-tooltip--popup']} style={style.value}>
+                {tooltip.value}
               </dialog>
             )}
           </Transition>
