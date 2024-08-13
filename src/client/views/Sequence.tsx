@@ -1,6 +1,6 @@
 import type { PropType, Ref } from 'vue'
 import { computed, defineComponent, ref } from 'vue'
-import { RequestDetails, RequestSequence, RequestStructure, VBtn, VCard, VContainer, VSheet, VSpacer, VTooltip } from '../components'
+import { RequestDetails, RequestSequence, RequestStructure, VBtn, VCard, VContainer, VSheet, VSpacer } from '../components'
 import { useRequestStore } from '../stores/request'
 import type { UUID } from '../../shared/UUID'
 
@@ -33,12 +33,8 @@ export const Sequence = defineComponent({
               Requests <sup>({requestStore.ids.length})</sup>
             </h3>
             <VSpacer />
-            <VTooltip text={'Sequence view'}>
-              <VBtn icon={'Reorder'} size={20} class={['pa-1', 'mr-1']} transparent onClick={() => (requestViewType.value = 0)} />
-            </VTooltip>
-            <VTooltip text={'Structure view'}>
-              <VBtn icon={'AccountTree'} size={20} class={['pa-1']} transparent onClick={() => (requestViewType.value = 1)} />
-            </VTooltip>
+            <VBtn tooltip={'Sequence view'} icon={'Reorder'} size={20} class={['pa-1', 'mr-1']} transparent onClick={() => (requestViewType.value = 0)} />
+            <VBtn tooltip={'Structure view'} icon={'AccountTree'} size={20} class={['pa-1']} transparent onClick={() => (requestViewType.value = 1)} />
           </VSheet>
           {requestViewType.value === 0 ? ( //
             <RequestSequence v-model={current.value} />

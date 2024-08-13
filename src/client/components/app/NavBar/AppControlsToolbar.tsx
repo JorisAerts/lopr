@@ -11,7 +11,7 @@ export const AppControlsToolbar = defineComponent({
     const appStore = useAppStore()
     const requestStore = useRequestStore()
     return () => (
-      <VSheet class={['v-app-controls-toolbar']}>
+      <VSheet class={['v-app-controls-toolbar', 'gap-2']}>
         <VTooltip text={'Play/Pause'}>
           <VSwitch v-model:checked={appStore.recording} onIcon={'PlayArrow_Fill'} offIcon={'Pause_Fill'} />
         </VTooltip>
