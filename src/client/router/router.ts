@@ -7,12 +7,12 @@ export const router = createRouter({
     {
       name: RouteNames.Home,
       path: '/',
-      redirect: RouteNames.Sequence,
+      redirect: RouteNames.Requests,
     },
 
     {
-      name: RouteNames.Sequence,
-      path: '/sequence',
+      name: RouteNames.Requests,
+      path: '/requests',
       components: {
         default: () => import('../views/Sequence').then((c) => c.Sequence),
       },

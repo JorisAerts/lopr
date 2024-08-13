@@ -22,7 +22,7 @@ export const VNavBar = defineComponent({
         </h4>
         <AppControlsToolbar class={'ml-4'} />
         <VSpacer />
-        <VBtn tooltip={'Requests'} icon={'Monitoring'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Sequence)} />
+        <VBtn tooltip={'Requests'} icon={'Monitoring'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Requests)} />
         <VBtn tooltip={'Information'} icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Information)} />
         <VBtn tooltip={'Preferences'} icon={'Settings'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Preferences)} />
         <VTooltip text={'Error log'}>
