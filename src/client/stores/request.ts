@@ -36,6 +36,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   const getResponse = (uuid: UUID) => responses.value.get(uuid)
   const getRequest = (uuid: UUID) => requests.value.get(uuid)
   const isNew = (uuid: UUID) => recent.value.includes(uuid)
+  let timeOut: NodeJS.Timeout
 
   const registerUUID = (uuid: UUID) => {
     if (!ids.value.includes(uuid)) ids.value.push(uuid)
@@ -43,6 +44,8 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     recent.value.unshift(uuid)
     // LRU
     if (recent.value.length > MAX_RECENT_ITEMS) recent.value.length = MAX_RECENT_ITEMS
+    clearTimeout(timeOut)
+    timeOut = setTimeout(() => (recent.value.length = 0), 1000)
   }
 
   /**

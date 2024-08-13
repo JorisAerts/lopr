@@ -108,6 +108,7 @@ export const RequestStructure = defineComponent({
                       'no-wrap',
                       'overflow-ellipsis',
                       {
+                        'is-new': requestStore.isNew(value),
                         selected: props.modelValue === value,
                       },
                     ]}
