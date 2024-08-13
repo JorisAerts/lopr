@@ -37,7 +37,7 @@ export const VTooltip = defineComponent({
         h: dlg.value?.offsetHeight ?? 0,
         w: dlg.value?.offsetWidth ?? 0,
       }
-      const above = pos.y - tooltip.h - props.margin
+      const above = pos.y - tooltip.h - props.margin - 5 // -5, because you don't want to stick it to the top either
       return {
         top: `${tooltip.h === 0 ? 0 : above < 0 ? pos.y + pos.h + props.margin : above}px`,
         left: `${tooltip.w === 0 ? 0 : pos.x + tooltip.w + props.margin > document.body.clientWidth ? pos.x + pos.w - tooltip.w : pos.x}px`,
@@ -47,13 +47,11 @@ export const VTooltip = defineComponent({
     return () =>
       tooltip.value ? (
         <div class={'v-tooltip'} ref={root}>
-          <Transition>
-            {show.value && (
-              <dialog ref={dlg} open class={['v-tooltip--popup']} style={style.value}>
-                {tooltip.value}
-              </dialog>
-            )}
-          </Transition>
+          {show.value && (
+            <dialog ref={dlg} open class={['v-tooltip--popup']} style={style.value}>
+              <Transition>{tooltip.value}</Transition>
+            </dialog>
+          )}
           <div onMouseenter={enter} onMouseleave={leave}>
             {slots.default?.()}
           </div>

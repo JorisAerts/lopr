@@ -1,4 +1,5 @@
 @use '../../../style/vars' as *;
+@use '../../../style/sass-vars' as *;
 
 :root {
   --tooltip-background: rgba(var(--app-background-color), 1);
@@ -6,6 +7,8 @@
 }
 
 .v-tooltip {
+
+  padding: $spacer 0;
 
   &--popup {
     z-index: 1000;
