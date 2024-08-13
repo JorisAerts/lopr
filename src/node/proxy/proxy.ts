@@ -135,6 +135,9 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
 
     // HTTPS (en.wikipedia.org/wiki/HTTP_tunnel)
     httpServer.on('connect', function (req, socket) {
+      req.on('error', createErrorHandler(req))
+      socket.on('error', createErrorHandler(socket))
+
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
       //logger.debug('connect %s', req.url)
