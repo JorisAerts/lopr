@@ -10,11 +10,18 @@ import { isRecording } from './app'
 
 export const STORE_NAME = 'Requests'
 
+const MAX_RECENT_ITEMS = 100
+
 export const useRequestStore = defineStore(STORE_NAME, () => {
   /**
    * Contains all ids (chronologically sequential)
    */
   const ids = ref([] as UUID[])
+
+  /**
+   * Recently added UUIDS
+   */
+  const recent = ref([] as UUID[])
 
   /**
    * The request data sent from the client.
@@ -28,9 +35,14 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   // methods
   const getResponse = (uuid: UUID) => responses.value.get(uuid)
   const getRequest = (uuid: UUID) => requests.value.get(uuid)
+  const isNew = (uuid: UUID) => recent.value.includes(uuid)
 
   const registerUUID = (uuid: UUID) => {
     if (!ids.value.includes(uuid)) ids.value.push(uuid)
+
+    recent.value.unshift(uuid)
+    // LRU
+    if (recent.value.length > MAX_RECENT_ITEMS) recent.value.length = MAX_RECENT_ITEMS
   }
 
   /**
@@ -57,5 +69,5 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     registerUUID(data.uuid)
   })
 
-  return { ids, requests, responses, getRequest, getResponse, clear }
+  return { ids, requests, responses, getRequest, getResponse, isNew, clear }
 })

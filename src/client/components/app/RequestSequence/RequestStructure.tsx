@@ -151,10 +151,6 @@ export const RequestStructure = defineComponent({
       return struct
     })
 
-    return () => (
-      <VList class={['request-structure', 'fill-height', 'overflow-auto', 'mt-2']} style={{ '--parent-padding': '0px' }}>
-        {renderTree(structure.value)}
-      </VList>
-    )
+    return () => <VList class={['request-structure', 'fill-height', 'overflow-auto', 'mt-2']}>{renderTree(structure.value)}</VList>
   },
 })
