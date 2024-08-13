@@ -1,4 +1,5 @@
-import { defineComponent } from 'vue'
+import type { ComponentInstance, VNode } from 'vue'
+import { defineComponent, Transition } from 'vue'
 import { VBadge, VBtn, VCard, VIcon, VSpacer, VTooltip } from '../../core'
 import { APP_NAME } from '../../../../shared/constants'
 import './VNavBar.scss'
@@ -19,7 +20,11 @@ export const VNavBar = defineComponent({
           <VIcon name={'DeployedCode_Fill'} size={iconSize} class={['mr-1']} />
           {APP_NAME}
         </h4>
-        <RouterView name="controls" class={'ml-4'} />
+        <RouterView name="controls" class={'ml-4'}>
+          {{
+            default: ({ Component }: { Component: VNode & ComponentInstance<any> }) => <Transition>{Component && <Component />}</Transition>,
+          }}
+        </RouterView>
         <VSpacer />
         <VBtn tooltip={'Requests'} icon={'Monitoring'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Requests)} />
         <VBtn tooltip={'Information'} icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Information)} />

@@ -11,6 +11,7 @@ import { isRecording } from './app'
 export const STORE_NAME = 'Requests'
 
 const MAX_RECENT_ITEMS = 100
+const CLEAR_RECENT_TIMEOUT = 500
 
 export const useRequestStore = defineStore(STORE_NAME, () => {
   /**
@@ -38,14 +39,16 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   const isNew = (uuid: UUID) => recent.value.includes(uuid)
   let timeOut: NodeJS.Timeout
 
-  const registerUUID = (uuid: UUID) => {
-    if (!ids.value.includes(uuid)) ids.value.push(uuid)
-
+  const pushRecentUUID = (uuid: UUID) => {
     recent.value.unshift(uuid)
-    // LRU
-    if (recent.value.length > MAX_RECENT_ITEMS) recent.value.length = MAX_RECENT_ITEMS
     clearTimeout(timeOut)
-    timeOut = setTimeout(() => (recent.value.length = 0), 1000)
+    timeOut = setTimeout(() => (recent.value = []), CLEAR_RECENT_TIMEOUT)
+  }
+
+  const registerUUID = (uuid: UUID) => {
+    if (ids.value.includes(uuid)) return
+    ids.value.push(uuid)
+    pushRecentUUID(uuid)
   }
 
   /**
