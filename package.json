@@ -40,7 +40,6 @@
     "eslint": "9.9.0",
     "eslint-plugin-vue": "9.27.0",
     "globals": "15.9.0",
-    "longjohn": "^0.2.12",
     "pinia": "2.2.1",
     "postcss": "^8.4.41",
     "prettier": "3.3.3",
