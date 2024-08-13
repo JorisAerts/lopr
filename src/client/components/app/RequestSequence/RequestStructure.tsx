@@ -102,7 +102,7 @@ export const RequestStructure = defineComponent({
                   <VListItem
                     key={value}
                     onClick={() => handleSelect(value)}
-                    prependIcon={'FiberManualRecord'}
+                    prependIcon={'Public'}
                     class={[
                       'py-0',
                       'no-wrap',
@@ -151,10 +151,6 @@ export const RequestStructure = defineComponent({
       return struct
     })
 
-    return () => (
-      <VList class={['request-structure', 'fill-height', 'overflow-auto', 'mt-2']} style={{ '--parent-padding': '0px' }}>
-        {renderTree(structure.value)}
-      </VList>
-    )
+    return () => <VList class={['request-structure', 'fill-height', 'overflow-auto', 'mt-2']}>{renderTree(structure.value)}</VList>
   },
 })

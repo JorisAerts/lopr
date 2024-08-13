@@ -37,7 +37,7 @@ export const RequestSequence = defineComponent({
                   <VListItem
                     key={req.uuid}
                     onClick={() => handleSelect(req)}
-                    prependIcon={'InputCircle'}
+                    prependIcon={'Public'}
                     class={[
                       'py-0',
                       'mx-1',

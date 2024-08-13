@@ -9,7 +9,7 @@ import { processCliParams } from './cli'
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
 // stacktraces
-import('longjohn')
+// import('longjohn')
 
 const cliOptions = processCliParams()
 const options: Partial<CreateProxyOptions> = {
