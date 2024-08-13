@@ -72,13 +72,13 @@
   }
 }
 
-@for $i from 0 through 12 {
+@for $i from 1 through 12 {
   .ma-n#{$i} {
     margin: -$i * $spacer !important;
   }
 }
 
-@for $i from 0 through 12 {
+@for $i from 1 through 12 {
   .mx-n#{$i} {
     margin-left: -$i * $spacer !important;
     margin-right: -$i * $spacer !important;
@@ -90,7 +90,7 @@
   }
 }
 
-@for $i from 0 through 12 {
+@for $i from 1 through 12 {
   .mt-n#{$i} {
     margin-top: -$i * $spacer !important;
   }

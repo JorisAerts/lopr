@@ -1,16 +1,19 @@
-import type { PropType } from 'vue'
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { VTable } from '../../core'
-import type { ProxyRequestInfo } from '../../../../shared/Request'
+import { useRequestStore } from '../../../stores/request'
+import { makeUUIDProps, useUUID } from '../../../composables/uuid'
 
 export const RequestOverviewTable = defineComponent({
   name: 'RequestOverviewTable',
 
   props: {
-    modelValue: { type: Object as PropType<ProxyRequestInfo> },
+    ...makeUUIDProps(),
   },
 
   setup(props) {
+    const uuid = useUUID(props)
+    const requestStore = useRequestStore()
+    const request = computed(() => (uuid.value ? requestStore.getRequest(uuid.value) : undefined))
     return () =>
       props.modelValue && (
         <VTable class={'gap-2'}>
@@ -24,35 +27,35 @@ export const RequestOverviewTable = defineComponent({
           <tbody>
             <tr>
               <th>URL:</th>
-              <td>{props.modelValue.url}</td>
+              <td>{request.value?.url}</td>
             </tr>
 
-            {props.modelValue.ts != null && (
+            {request.value?.ts != null && (
               <tr>
                 <th>Time:</th>
-                <td>{props.modelValue.ts.toLocaleString()}</td>
+                <td>{request.value.ts.toLocaleString()}</td>
               </tr>
             )}
 
             <tr>
               <th>Method:</th>
-              <td>{props.modelValue.method}</td>
+              <td>{request.value?.method}</td>
             </tr>
 
-            {props.modelValue.statusCode != null && (
+            {request.value?.statusCode != null && (
               <tr>
                 <th>Status:</th>
-                <td>{props.modelValue.statusCode}</td>
+                <td>{request.value?.statusCode}</td>
               </tr>
             )}
 
-            {props.modelValue.headers.map(
+            {request.value?.headers.map(
               (h, i) =>
                 i % 2 === 0 && (
                   <tr>
-                    {i === 0 && <th rowspan={props.modelValue!.headers.length / 2}>Headers:</th>}
+                    {i === 0 && <th rowspan={request.value!.headers.length / 2}>Headers:</th>}
                     <td>
-                      <b>{h}</b>: {props.modelValue!.headers[i + 1]}
+                      <b>{h}</b>: {request.value!.headers[i + 1]}
                     </td>
                   </tr>
                 )

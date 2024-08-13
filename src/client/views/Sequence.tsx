@@ -1,27 +1,23 @@
 import type { PropType, Ref } from 'vue'
-import { computed, defineComponent, ref, shallowRef } from 'vue'
-import { RequestSequence, VBtn, VCard, VContainer, VSheet, VSpacer, VTooltip } from '../components'
-import type { ProxyRequestInfo } from '../../shared/Request'
-import { RequestDetails } from '../components/app/RequestDetails/RequestDetails'
+import { computed, defineComponent, ref } from 'vue'
+import { RequestDetails, RequestSequence, RequestStructure, VBtn, VCard, VContainer, VSheet, VSpacer, VTooltip } from '../components'
 import { useRequestStore } from '../stores/request'
-import { RequestStructure } from '../components/app/RequestSequence/RequestStructure'
+import type { UUID } from '../../shared/UUID'
 
 export const Sequence = defineComponent({
   name: 'requests-monitor',
 
   props: {
-    width: {
-      type: [Number, String] as PropType<number | string>,
-      default: 320,
-    },
+    width: { type: [Number, String] as PropType<number | string>, default: 320 },
   },
 
   setup(props) {
     const requestStore = useRequestStore()
-    const current: Ref<ProxyRequestInfo | undefined> = shallowRef()
+    const current: Ref<UUID | undefined> = ref()
     const width = computed(() => (typeof props.width === 'number' ? `${props.width}px` : props.width))
 
     const requestViewType = ref(0)
+    const expanded = ref<string[]>([])
 
     return () => (
       <VContainer class={['fill-height', 'gap-2']}>
@@ -47,7 +43,7 @@ export const Sequence = defineComponent({
           {requestViewType.value === 0 ? ( //
             <RequestSequence v-model={current.value} />
           ) : (
-            <RequestStructure v-model={current.value} />
+            <RequestStructure v-model={current.value} v-model:expanded={expanded.value} />
           )}
         </VCard>
 

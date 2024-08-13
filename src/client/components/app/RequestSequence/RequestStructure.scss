@@ -1,0 +1,10 @@
+.request-structure {
+
+  /**
+   * When an item is expanded, it's icon needs to be expanded too
+   */
+  &-group--open > .v-list-group--activator .v-list-item--prepend-icon {
+    transform: rotate(90deg);
+  }
+
+}

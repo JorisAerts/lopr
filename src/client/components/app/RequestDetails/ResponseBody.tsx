@@ -1,6 +1,5 @@
-import type { PropType, Ref } from 'vue'
+import type { Ref } from 'vue'
 import { computed, defineComponent } from 'vue'
-import type { UUID } from '../../../../shared/UUID'
 import type { UseResponse } from '../../../composables/response'
 import { useResponse } from '../../../composables/response'
 import { VSheet } from '../../core'
@@ -9,6 +8,7 @@ import { useRequest } from '../../../composables/request'
 import { useAppStore } from '../../../stores/app'
 import { parseHeaders } from '../../../utils/request-utils'
 import type { ProxyResponseInfo } from '../../../../shared/Response'
+import { makeUUIDProps } from '../../../composables/uuid'
 
 const RX_IS_IMAGE = /^image\//
 
@@ -107,7 +107,7 @@ export const ResponseBody = defineComponent({
   name: 'ResponseBody',
 
   props: {
-    modelValue: { type: String as PropType<UUID> },
+    ...makeUUIDProps(),
   },
 
   setup(props) {
