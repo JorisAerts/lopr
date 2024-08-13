@@ -1,3 +1,5 @@
+@use "../../../style/vars" as *;
+
 .request-structure {
 
   /**
@@ -7,4 +9,20 @@
     transform: rotate(90deg);
   }
 
+  .v-list-item--new {
+    animation: new-list-item-blink;
+    animation-duration: var(--animation-duration);
+    animation-iteration-count: 1;
+  }
+
+
+}
+
+@keyframes new-list-item-blink {
+  from {
+    background: rgb(var(--primary-color));
+  }
+  to {
+    background-color: inherit;
+  }
 }
