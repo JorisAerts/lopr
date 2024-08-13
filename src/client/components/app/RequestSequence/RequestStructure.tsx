@@ -145,7 +145,6 @@ export const RequestStructure = defineComponent({
           return `${key}${key ? '/' : ''}${p}`
         }, '')
       })
-      console.log({ struct })
       return struct
     })
 

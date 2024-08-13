@@ -16,7 +16,7 @@ export const Sequence = defineComponent({
     const current: Ref<UUID | undefined> = ref()
     const width = computed(() => (typeof props.width === 'number' ? `${props.width}px` : props.width))
 
-    const requestViewType = ref(0)
+    const requestViewType = ref(1)
     const expanded = ref<string[]>([])
 
     return () => (
