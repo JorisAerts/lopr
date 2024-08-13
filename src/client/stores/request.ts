@@ -53,8 +53,12 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
    */
   const clear = () => {
     ids.value.length = 0
+    recent.value.length = 0
+
     responses.value.clear()
     requests.value.clear()
+
+    clearTimeout(timeOut)
   }
 
   // register the handlers (they will overwrite the previous ones)
