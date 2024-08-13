@@ -17,6 +17,7 @@ const removeKey = (arr: string[], key: string) => {
 
 interface StructNode {
   key: string
+  isNew: boolean
   nodes?: { [Name: string]: StructNode }
   items?: UUID[]
 }
@@ -81,6 +82,7 @@ export const RequestStructure = defineComponent({
                     'request-structure-group',
                     {
                       'request-structure-group--open': isOpen,
+                      'v-list-group--new': value.isNew,
                     },
                   ]}
                 >
@@ -122,11 +124,12 @@ export const RequestStructure = defineComponent({
       ) : null
 
     const structure = computed(() => {
-      const struct: StructNode = { key: '' }
+      const struct: StructNode = { key: '', isNew: false }
       requestStore.ids.forEach((uuid) => {
         const request = requestStore.getRequest(uuid)
         if (!request) return
 
+        const isNew = requestStore.isNew(uuid)
         const url = request.url
         const indexOf = url.indexOf('://')
         const parts = (indexOf > -1 ? url.substring(indexOf + 3) : url) //
@@ -138,6 +141,7 @@ export const RequestStructure = defineComponent({
         let current: StructNode = struct
         parts.reduce((key, p, i) => {
           current.key = key
+          current.isNew = isNew
           if (i === parts.length - 1) {
             current.items ??= []
             current.items.push(uuid)
