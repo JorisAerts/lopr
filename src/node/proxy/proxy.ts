@@ -162,6 +162,9 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
 
     // Websockets
     function upgrade(req: ProxyRequest, socket: net.Socket, head: Buffer) {
+      req.on('error', createErrorHandler(req))
+      socket.on('error', createErrorHandler(socket))
+
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
       // ignore local ws request (don't forward to the proxy)
