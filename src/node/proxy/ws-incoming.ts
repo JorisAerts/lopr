@@ -106,4 +106,4 @@ const inc = [
 ] as WSIncomingRequest[]
 
 export const wsIncoming = (req: ProxyRequest, socket: Socket, options: CreateProxyOptions, server: http.Server | https.Server, head: Buffer) =>
-  inc.forEach((come) => come(req, socket, options, server, head))
+  inc.forEach((incomingFn) => incomingFn(req, socket, options, server, head))

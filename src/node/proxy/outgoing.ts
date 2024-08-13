@@ -46,4 +46,4 @@ const response = [
   },
 ] as OutgoingRequest[]
 
-export const outgoing = (req: ProxyRequest, res: ProxyResponse, proxyRes: IncomingMessage) => response.forEach((come) => come(req, res, proxyRes))
+export const outgoing = (req: ProxyRequest, res: ProxyResponse, proxyRes: IncomingMessage) => response.forEach((outgoingFn) => outgoingFn(req, res, proxyRes))

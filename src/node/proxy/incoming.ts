@@ -63,4 +63,4 @@ const inc = [
   },
 ] as IncomingRequest[]
 
-export const incoming = (req: ProxyRequest, res: ProxyResponse, options: CreateProxyOptions) => inc.forEach((come) => come(req, res, options))
+export const incoming = (req: ProxyRequest, res: ProxyResponse, options: CreateProxyOptions) => inc.forEach((incomingFn) => incomingFn(req, res, options))
