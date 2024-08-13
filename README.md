@@ -1,4 +1,4 @@
-# Proxy Server
+# Reverse Proxy
 
 A JavaScript proxy server implementation
 
