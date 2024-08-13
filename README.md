@@ -1,6 +1,6 @@
 # Reverse Proxy
 
-A JavaScript proxy server implementation
+A JavaScript reverse proxy implementation
 
 To build the proxy server:
 
