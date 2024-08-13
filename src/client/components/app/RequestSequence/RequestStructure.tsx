@@ -16,6 +16,7 @@ const removeKey = (arr: string[], key: string) => {
 }
 
 interface StructNode {
+  key: string
   nodes?: { [Name: string]: StructNode }
   items?: UUID[]
 }
@@ -54,13 +55,14 @@ export const RequestStructure = defineComponent({
     }
     const handleSelect = (uuid: UUID) => {
       emit('update:modelValue', uuid)
-    } // recursively render the tree
-    const renderTree = (struct: StructNode, prefix = '') =>
+    }
+    // recursively render the tree
+    const renderTree = (struct: StructNode) =>
       struct ? (
         <TransitionGroup>
           {struct.nodes &&
             Object.entries(struct.nodes).map(([name, value]) => {
-              const key = `${prefix}/${name}`
+              const key = value.key
               const hasItems = !!value.items || !!value.nodes
               const isOpen = contains(key)
               const onClick = () => (hasItems ? handleFolding(key, value) : undefined)
@@ -81,7 +83,7 @@ export const RequestStructure = defineComponent({
                 >
                   {{
                     activator: item,
-                    default: () => (isOpen ? renderTree(value, prefix.length ? key : name) : null),
+                    default: () => (isOpen ? renderTree(value) : null),
                   }}
                 </VListGroup>
               ) : (
@@ -107,7 +109,7 @@ export const RequestStructure = defineComponent({
                       },
                     ]}
                   >
-                    {request.method} {request.url.substring(prefix.length + 1) || '/'}
+                    {request.method} {request.url.substring(struct.key.length + 1) || '/'}
                   </VListItem>
                 )
               )
@@ -116,7 +118,7 @@ export const RequestStructure = defineComponent({
       ) : null
 
     const structure = computed(() => {
-      const struct: StructNode = {}
+      const struct: StructNode = { key: '' }
       requestStore.ids.forEach((uuid) => {
         const request = requestStore.getRequest(uuid)
         if (!request) return
@@ -129,18 +131,21 @@ export const RequestStructure = defineComponent({
         if (indexOf > -1) parts[0] = (indexOf > -1 ? url.substring(0, indexOf + 3) : '') + parts[0]
         if (parts.length === 1) parts.push('/')
 
-        let s: Record<string, unknown> | any = struct
-        parts.forEach((p, i) => {
+        let current: StructNode = struct
+        parts.reduce((key, p, i) => {
+          current.key = key
           if (i === parts.length - 1) {
-            s.items ??= []
-            s.items.push(uuid)
+            current.items ??= []
+            current.items.push(uuid)
           } else {
-            s.nodes ??= {}
-            s.nodes[p] ??= Object.create(null)
-            s = s.nodes[p]
+            current.nodes ??= {}
+            current.nodes[p] ??= Object.create(null)
+            current = current.nodes[p]
           }
-        })
+          return `${key}${key ? '/' : ''}${p}`
+        }, '')
       })
+      console.log({ struct })
       return struct
     })
 
