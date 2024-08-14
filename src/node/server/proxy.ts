@@ -66,7 +66,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
       if (hosts.has(host)) return
       const cert = createCertForHost(host)
       httpsServer.addContext(host, cert)
-      sendWsData(WebSocketMessageType.Certificate, join(tempDir(), 'cert', 'generated', `${host}.crt`))
+      sendWsData(WebSocketMessageType.Certificate, [join(tempDir(), 'cert', 'generated', `${host}.crt`)])
       hosts.add(host)
     }
 
