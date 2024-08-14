@@ -39,6 +39,7 @@
   --text-emphasis: 1;
   --text-color: 238, 238, 238;
   --link-color: rgba(var(--text-color), var(--text-emphasis));
+  --link-hover-color: rgba(var(--primary-color), var(--text-emphasis));
   --icon-color: rgba(var(--text-color), var(--text-emphasis));
 
   // animation

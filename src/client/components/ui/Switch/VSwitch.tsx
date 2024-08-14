@@ -45,8 +45,8 @@ export const VSwitch = defineComponent({
           ]}
         >
           {checked.value //
-            ? (slots.on?.() ?? (props.onIcon && <VIcon name={props.onIcon} size={'1em'} />) ?? undefined)
-            : (slots.off?.() ?? (props.offIcon && <VIcon name={props.offIcon} size={'1em'} />) ?? undefined)}
+            ? (slots.on?.() ?? (props.onIcon && <VIcon name={props.onIcon} size={'1em'} class={'d-flex'} />) ?? undefined)
+            : (slots.off?.() ?? (props.offIcon && <VIcon name={props.offIcon} size={'1em'} class={'d-flex'} />) ?? undefined)}
         </div>
       </div>
     )
