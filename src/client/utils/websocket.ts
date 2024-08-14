@@ -15,8 +15,13 @@ export const registerDataHandler = <Data = any>(type: WebSocketMessageType, data
 
 let socket = createSocket()
 
+const retryCreate = () => setTimeout(() => (socket = createSocket()), 1000)
+
 function createSocket() {
   const newSocket = new WebSocket(url)
+  newSocket.onerror = () => {
+    console.info('WebSocket error.')
+  }
   newSocket.onmessage = (msg: MessageEvent) => {
     const data = parseWebSocketMessage(msg)
     if (typeof data === 'object') {
@@ -26,10 +31,8 @@ function createSocket() {
     }
   }
   newSocket.onclose = () => {
-    console.info('Websocket connection lost, trying to reconnect')
-    setTimeout(() => {
-      socket = createSocket()
-    }, 1000)
+    console.info('WebSocket connection lost, trying to reconnect')
+    retryCreate()
   }
   return newSocket
 }

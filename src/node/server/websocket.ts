@@ -27,11 +27,11 @@ export const defineSocketServer = ({ logger, server }: InstanceOptions) => {
       instance.ws.push(
         ws
           .on('error', createErrorHandler(ws))
-          .on('open', () => logger.info('Websocket connection opened.'))
+          .on('open', () => logger.info('WebSocket connection opened.'))
           .on('close', (err) => {
             const index = instance.ws.indexOf(ws)
             if (index > -1) instance.ws.splice(index, 1)
-            else sendWsData(WebSocketMessageType.Error, createErrorMessage('Failed to remove Websocket instance', ws))
+            else sendWsData(WebSocketMessageType.Error, createErrorMessage('Failed to remove WebSocket instance', ws))
             if (err) sendWsData(WebSocketMessageType.Error, createErrorMessage(err, ws))
           })
           .on('message', (msg: MessageEvent) => {

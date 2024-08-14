@@ -158,7 +158,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
       }
     })
 
-    // Websockets
+    // WebSockets
     function upgrade(req: ProxyRequest, socket: net.Socket, head: Buffer) {
       req.on('error', createErrorHandler(req))
       socket.on('error', createErrorHandler(socket))
