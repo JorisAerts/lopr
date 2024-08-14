@@ -47,12 +47,11 @@ const inc = [
   function (req: ProxyRequest, socket: Socket) {
     socket.setTimeout(0)
     socket.setNoDelay(true)
-
     socket.setKeepAlive(true, 0)
   },
 
   /**
-   * Sets `x-forwarded-*` headers if specified in config.
+   * Set `x-forwarded-` headers.
    */
   function (req: ProxyRequest /*, socket: Socket, options: Option */) {
     const values: ForwardHeaders = {
@@ -67,7 +66,8 @@ const inc = [
   },
 
   /**
-   * Does the actual proxying. Make the request and upgrade it send the Switching Protocols request and pipe the sockets.
+   * Does the actual proxying.
+   * Make the request and upgrade it send the Switching Protocols request and pipe the sockets.
    */
   function (req: ProxyRequest, socket: Socket, options: CreateProxyOptions) {
     socket.on('error', createErrorHandler(socket))

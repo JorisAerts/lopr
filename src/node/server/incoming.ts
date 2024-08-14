@@ -17,7 +17,7 @@ export interface IncomingRequest {
 
 const inc = [
   /**
-   * Sets `content-length` to '0' if request is of DELETE type.
+   * Sets `content-length` to '0' if request method is DELETE.
    */
   function (req: ProxyRequest) {
     if (req.method === 'DELETE' && !req.headers['content-length']) {
@@ -26,7 +26,7 @@ const inc = [
   },
 
   /**
-   * Sets `x-forwarded-*` headers if specified in config.
+   * Sets `x-forwarded-...` headers.
    */
   function (req: ProxyRequest) {
     const values = {

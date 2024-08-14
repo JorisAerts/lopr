@@ -8,7 +8,8 @@ export interface OutgoingRequest {
 
 const response = [
   /**
-   * If is a HTTP 1.0 request, remove chunk headers
+   * If it's an HTTP 1.0 request, remove transfer encoding.
+   * HTTP 1.0 has no chunks.
    */
   function (req: ProxyRequest, res: ProxyResponse, proxyRes: IncomingMessage) {
     if (req.httpVersion === '1.0') {
@@ -17,7 +18,8 @@ const response = [
   },
 
   /**
-   * If is a HTTP 1.0 request, set the correct connection header or if connection header not present, then use `keep-alive`
+   * If it's an HTTP 1.0 request, set the correct connection header,
+   * or if connection header not present, then use `keep-alive`
    */
   function (req: ProxyRequest, res: ProxyResponse, proxyRes: IncomingMessage) {
     if (req.httpVersion === '1.0') {
@@ -28,7 +30,7 @@ const response = [
   },
 
   /**
-   * Copy headers from ProxyResponse to response set each header in response object.
+   * Copy the headers from the Response to ProxyResponse.
    */
   function (req: ProxyRequest, res: ProxyResponse, proxyRes: IncomingMessage) {
     Object.keys(proxyRes.headers)
@@ -39,7 +41,7 @@ const response = [
   },
 
   /**
-   * Set the statusCode from the ProxyResponse
+   * Set the status code from the ProxyResponse
    */
   function (req: ProxyRequest, res: ProxyResponse, proxyRes: IncomingMessage) {
     res.writeHead(proxyRes.statusCode ?? 200, proxyRes.statusMessage)

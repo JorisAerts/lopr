@@ -146,6 +146,7 @@ export const RequestStructure = defineComponent({
             current.items ??= []
             current.items.push(uuid)
           } else {
+            if (i === 1) p = p
             current.nodes ??= {}
             current.nodes[p] ??= Object.create(null)
             current = current.nodes[p]

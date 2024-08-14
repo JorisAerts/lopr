@@ -133,14 +133,12 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
       return incoming(req, res, options as CreateProxyOptions)
     }
 
-    // HTTPS (en.wikipedia.org/wiki/HTTP_tunnel)
     httpServer.on('connect', function (req, socket) {
       req.on('error', createErrorHandler(req))
       socket.on('error', createErrorHandler(socket))
 
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
-      //logger.debug('connect %s', req.url)
       if (req.url?.match(/:443$/)) {
         const host = req.url.substring(0, req.url.length - 4)
         if (options.mapHttpsReg === true || (options.mapHttpsReg && host.match(options.mapHttpsReg))) {
