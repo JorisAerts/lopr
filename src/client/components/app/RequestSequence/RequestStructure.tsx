@@ -1,6 +1,6 @@
 import './RequestStructure.scss'
 import type { PropType } from 'vue'
-import { computed, defineComponent, TransitionGroup, withModifiers } from 'vue'
+import { defineComponent, TransitionGroup, withModifiers } from 'vue'
 import { VList, VListGroup, VListItem } from '../../ui'
 import { useRequestStore } from '../../../stores/request'
 import type { UUID } from '../../../../shared/UUID'
@@ -82,7 +82,7 @@ export const RequestStructure = defineComponent({
                     'request-structure-group',
                     {
                       'request-structure-group--open': isOpen,
-                      'v-list-group--new': value.isNew,
+                      'v-list-group--new': requestStore.isNew(key),
                     },
                   ]}
                 >
@@ -123,40 +123,6 @@ export const RequestStructure = defineComponent({
         </TransitionGroup>
       ) : null
 
-    const structure = computed(() => {
-      const struct: StructNode = { key: '', isNew: false }
-      requestStore.ids.forEach((uuid) => {
-        const request = requestStore.getRequest(uuid)
-        if (!request) return
-
-        const isNew = requestStore.isNew(uuid)
-        const url = request.url
-        const indexOf = url.indexOf('://')
-        const parts = (indexOf > -1 ? url.substring(indexOf + 3) : url) //
-          .split('/')
-
-        if (indexOf > -1) parts[0] = (indexOf > -1 ? url.substring(0, indexOf + 3) : '') + parts[0]
-        if (parts.length === 1) parts.push('/')
-
-        let current: StructNode = struct
-        parts.reduce((key, p, i) => {
-          current.key = key
-          current.isNew = isNew
-          if (i === parts.length - 1) {
-            current.items ??= []
-            current.items.push(uuid)
-          } else {
-            if (i === 1) p = p
-            current.nodes ??= {}
-            current.nodes[p] ??= Object.create(null)
-            current = current.nodes[p]
-          }
-          return `${key}${key ? '/' : ''}${p}`
-        }, '')
-      })
-      return struct
-    })
-
-    return () => <VList class={['request-structure', 'fill-height', 'overflow-auto', 'mt-2']}>{renderTree(structure.value)}</VList>
+    return () => <VList class={['request-structure', 'fill-height', 'overflow-auto', 'mt-2']}>{renderTree(requestStore.structure)}</VList>
   },
 })

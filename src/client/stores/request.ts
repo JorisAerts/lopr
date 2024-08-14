@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, shallowRef } from 'vue'
+import { ref, shallowRef, triggerRef } from 'vue'
 import type { ProxyRequestInfo } from '../../shared/Request'
 import { registerDataHandler } from '../utils/websocket'
 import type { WebSocketMessage } from '../../shared/WebSocketMessage'
@@ -10,8 +10,14 @@ import { isRecording } from './app'
 
 export const STORE_NAME = 'Requests'
 
-const MAX_RECENT_ITEMS = 100
 const CLEAR_RECENT_TIMEOUT = 500
+
+export interface StructNode {
+  key: string
+  isNew: boolean
+  nodes?: { [Name: string]: StructNode }
+  items?: UUID[]
+}
 
 export const useRequestStore = defineStore(STORE_NAME, () => {
   /**
@@ -22,7 +28,9 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   /**
    * Recently added UUIDS
    */
-  const recent = ref([] as UUID[])
+  const recent = ref(new Set<UUID | string>([]))
+
+  const struct = ref({ key: '', isNew: false })
 
   /**
    * The request data sent from the client.
@@ -36,19 +44,49 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   // methods
   const getResponse = (uuid: UUID) => responses.value.get(uuid)
   const getRequest = (uuid: UUID) => requests.value.get(uuid)
-  const isNew = (uuid: UUID) => recent.value.includes(uuid)
+  const isNew = (uuid: UUID | string) => recent.value.has(uuid)
   let timeOut: NodeJS.Timeout
 
-  const pushRecentUUID = (uuid: UUID) => {
-    recent.value.unshift(uuid)
+  const pushRecentUUID = (uuid: UUID | string) => {
+    recent.value.add(uuid)
     clearTimeout(timeOut)
-    timeOut = setTimeout(() => (recent.value = []), CLEAR_RECENT_TIMEOUT)
+    timeOut = setTimeout(() => recent.value.clear(), CLEAR_RECENT_TIMEOUT)
+  }
+
+  const addToStruct = (uuid: UUID) => {
+    const request = getRequest(uuid)
+    if (!request) return
+
+    const url = request.url
+    const indexOf = url.indexOf('://')
+    const parts = (indexOf > -1 ? url.substring(indexOf + 3) : url) //
+      .split('/')
+
+    if (indexOf > -1) parts[0] = (indexOf > -1 ? url.substring(0, indexOf + 3) : '') + parts[0]
+    if (parts.length === 1) parts.push('/')
+
+    let current: StructNode = struct.value
+    parts.reduce((key, p, i) => {
+      pushRecentUUID((current.key = key))
+      if (i === parts.length - 1) {
+        current.items ??= []
+        current.items.push(uuid)
+      } else {
+        current.nodes ??= {}
+        current.nodes![p] ??= Object.create(null)
+        current = current.nodes![p]
+      }
+      return `${key}${key ? '/' : ''}${p}`
+    }, '')
+
+    triggerRef(struct)
   }
 
   const registerUUID = (uuid: UUID) => {
     if (ids.value.includes(uuid)) return
     ids.value.push(uuid)
     pushRecentUUID(uuid)
+    addToStruct(uuid)
   }
 
   /**
@@ -56,10 +94,12 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
    */
   const clear = () => {
     ids.value.length = 0
-    recent.value.length = 0
+    recent.value.clear()
 
     responses.value.clear()
     requests.value.clear()
+
+    struct.value = { key: '', isNew: false }
 
     clearTimeout(timeOut)
   }
@@ -79,5 +119,5 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     registerUUID(data.uuid)
   })
 
-  return { ids, requests, responses, getRequest, getResponse, isNew, clear }
+  return { ids, requests, responses, getRequest, getResponse, isNew, clear, structure: struct, recent }
 })
