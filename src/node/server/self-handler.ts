@@ -3,6 +3,9 @@ import { packageRoot } from '../utils/package'
 import path, { resolve } from 'path'
 import { readFileSync, statSync } from 'fs'
 import { getContentType } from './content-type'
+import { sendWsData } from './websocket'
+import { WebSocketMessageType } from '../../shared/WebSocketMessage'
+import { createErrorMessage } from '../utils/ws-messages'
 
 const staticRoot = resolve(packageRoot, 'dist', 'client')
 
@@ -32,6 +35,6 @@ export const handleSelf = (req: IncomingMessage, res: ServerResponse) => {
     if (contentType) res.setHeader('Content-Type', contentType)
     res.end(data)
   } catch (e) {
-    console.error(e)
+    sendWsData(WebSocketMessageType.Error, createErrorMessage(e))
   }
 }
