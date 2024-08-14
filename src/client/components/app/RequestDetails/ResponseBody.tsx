@@ -62,7 +62,7 @@ const createBodyRenderer = (response: UseResponse) => {
           <pre
             class={['text-mono']}
             style={{
-              whiteSpace: appStore.wrapResponseData ? 'wrap' : 'nowrap',
+              whiteSpace: appStore.wrapResponseData ? 'pre-wrap' : 'pre',
             }}
           >
             {response.body.value}
