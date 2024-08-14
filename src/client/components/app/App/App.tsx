@@ -1,10 +1,11 @@
 import { defineComponent, onUnmounted } from 'vue'
 import { RouterView } from 'vue-router'
-import { VAppHeader, VNavBar } from '../../app'
+import { VSheet } from '../../ui'
+import { VAppHeader } from '../AppHeader'
+import { VNavBar } from '../NavBar'
 import { useErrorLogStore } from '../../../stores/errorlog'
 import { useRequestStore } from '../../../stores/request'
 import { useCertificateStore } from '../../../stores/certificates'
-import { VSheet } from '../Sheet'
 
 export const App = defineComponent({
   name: 'v-app',

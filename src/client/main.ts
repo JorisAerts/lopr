@@ -1,5 +1,5 @@
 import './style/main.scss'
-import './components/core/Transition'
+import './components/ui/Transition'
 
 import { app } from './app'
 

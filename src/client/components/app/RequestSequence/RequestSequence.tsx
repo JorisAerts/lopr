@@ -1,6 +1,6 @@
 import type { ComponentPublicInstance, VNode } from 'vue'
 import { defineComponent, ref, TransitionGroup, watch } from 'vue'
-import { VList, VListItem } from '../../core'
+import { VList, VListItem } from '../../ui'
 import { useRequestStore } from '../../../stores/request'
 import type { ProxyRequestInfo } from '../../../../shared/Request'
 import { makeUUIDEvents, makeUUIDProps } from '../../../composables/uuid'

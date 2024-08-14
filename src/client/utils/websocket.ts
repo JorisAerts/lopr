@@ -1,4 +1,4 @@
-import type { WebSocketMessage , WebSocketMessageType } from '../../shared/WebSocketMessage'
+import type { WebSocketMessage, WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { parseWebSocketMessage } from '../../shared/WebSocketMessage'
 import { WEBSOCKET_ROOT } from '../../shared/constants'
 

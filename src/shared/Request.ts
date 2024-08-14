@@ -12,5 +12,4 @@ interface RawRequest extends Unique, Timestamped {
   contentLength: number
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ProxyRequestInfo extends RawRequest {}

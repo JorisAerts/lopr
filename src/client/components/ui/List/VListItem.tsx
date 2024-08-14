@@ -22,7 +22,8 @@ export const VListItem = defineComponent({
   },
 
   setup(props, { attrs, slots, emit }) {
-    const renderIcon = (name: IconNames | boolean | undefined, className: string) => (name === false ? undefined : <VIcon class={className} color={'white'} name={name === true ? undefined : name} size={20} />)
+    const renderIcon = (name: IconNames | boolean | undefined, className: string) =>
+      name === false ? undefined : <VIcon class={className} color={'white'} name={name === true ? undefined : name} size={20} />
 
     return () => (
       <div class={'v-list-item'} {...attrs} onClick={(e: MouseEvent) => emit('click', e)}>

@@ -1,5 +1,5 @@
 import { computed, defineComponent, ref, watch } from 'vue'
-import { VTab, VTabItem, VTabItems, VTabs } from '../../core'
+import { VTab, VTabItem, VTabItems, VTabs } from '../../ui'
 import type { UUID } from '../../../../shared/UUID'
 import { useRequestStore } from '../../../stores/request'
 import { RequestOverviewTable } from './RequestOverviewTable'

@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
-import { VTable } from '../../core'
+import { VTable } from '../../ui'
 
 export const HeadersTable = defineComponent({
   name: 'HeadersTable',

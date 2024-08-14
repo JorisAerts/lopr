@@ -50,7 +50,7 @@
     border-radius: 50%;
     background: var(--slider-color);
     color: var(--slider-text-color);
-    
+
     transform: translateX(calc(var(--control-height) / -2));
     transform-origin: center center;
     transition-property: left, right;

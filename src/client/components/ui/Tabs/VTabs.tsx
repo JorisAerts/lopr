@@ -1,5 +1,5 @@
 import './VTabs.scss'
-import type { ComponentPublicInstance, PropType} from 'vue';
+import type { ComponentPublicInstance, PropType } from 'vue'
 import { defineComponent, nextTick, onUpdated, ref, watch } from 'vue'
 import { VSheet } from '../Sheet'
 import { VContainer } from '../Container'

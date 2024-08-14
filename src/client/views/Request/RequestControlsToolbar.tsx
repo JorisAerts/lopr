@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { VBtn, VSwitch, VToolbar, VTooltip } from '../../components/core'
+import { VBtn, VSwitch, VToolbar, VTooltip } from '../../components/ui'
 import { useAppStore } from '../../stores/app'
 import { useRequestStore } from '../../stores/request'
 

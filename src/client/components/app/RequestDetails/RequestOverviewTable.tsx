@@ -1,5 +1,5 @@
 import { computed, defineComponent } from 'vue'
-import { VTable } from '../../core'
+import { VTable } from '../../ui'
 import { useRequestStore } from '../../../stores/request'
 import { makeUUIDProps, useUUID } from '../../../composables/uuid'
 

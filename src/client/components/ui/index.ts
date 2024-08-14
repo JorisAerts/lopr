@@ -1,4 +1,3 @@
-export * from './App'
 export * from './Badge'
 export * from './Btn'
 export * from './Card'

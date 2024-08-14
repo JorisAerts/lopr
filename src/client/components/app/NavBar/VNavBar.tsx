@@ -1,6 +1,6 @@
 import type { ComponentInstance, VNode } from 'vue'
 import { defineComponent } from 'vue'
-import { VBadge, VBtn, VCard, VIcon, VSpacer, VTooltip } from '../../core'
+import { VBadge, VBtn, VCard, VIcon, VSpacer, VTooltip } from '../../ui'
 import { APP_NAME } from '../../../../shared/constants'
 import './VNavBar.scss'
 import { useErrorLogStore } from '../../../stores/errorlog'
