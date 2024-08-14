@@ -5,6 +5,7 @@ import type { ProxyRequestInfo } from '../../shared/Request'
 import { extractProtocol } from '../server/utils'
 import type { ProxyRequest } from '../server/ProxyRequest'
 import type { Timestamped } from '../../shared/Timestamped'
+import type * as http from 'node:http'
 
 // add a timestamp to the messages
 const timestamp = (): Timestamped => ({ ts: new Date() })
@@ -27,9 +28,19 @@ export const createProxyRequest = (req: ProxyRequest): ProxyRequestInfo => {
 export const createProxyResponse = (uuid: UUID, res: IncomingMessage, data: unknown): ProxyResponseInfo => {
   return {
     ...timestamp(),
-    uuid: uuid,
+    uuid,
     headers: res.rawHeaders,
     contentLength: res.readableLength,
+    body: data,
+  }
+}
+
+export const createLocalProxyResponse = (uuid: UUID, headers: http.OutgoingHttpHeaders, data?: string): ProxyResponseInfo => {
+  return {
+    ...timestamp(),
+    uuid,
+    headers: Object.entries(headers).flatMap(([k, v]) => (Array.isArray(v) ? [k, v.join(', ')] : [k, `${v}`])),
+    contentLength: data?.length ?? 0,
     body: data,
   }
 }

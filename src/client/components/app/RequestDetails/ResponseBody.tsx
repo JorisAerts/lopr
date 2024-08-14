@@ -48,6 +48,8 @@ const createBodyRenderer = (response: UseResponse) => {
     case 'text/json':
     case 'application/json':
     case 'application/javascript':
+    case 'application/typescript':
+    case 'text/javascript':
     case 'text/css':
     case 'text/plain':
       return () => (

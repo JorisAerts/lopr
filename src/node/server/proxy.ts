@@ -20,6 +20,7 @@ import { createErrorMessage, createProxyRequest } from '../utils/ws-messages'
 import { createErrorHandler } from '../../client/utils/logging'
 import { tempDir } from '../utils/temp-dir'
 import { join } from 'path'
+import { captureResponse } from '../utils/captureResponse'
 
 export interface CreateProxyOptions {
   port: number
@@ -114,10 +115,13 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
 
       // requests to the local webserver (the GUI or PAC)
       if (isLocalhost(req, httpPort)) {
+        // capture the output and send it to the websocket
+        res = captureResponse(res)
+
         // intercept local requests
         if (req.url === '/pac') {
           const pac = generatePac(`localhost:${httpPort}`)
-          res.setHeader('content-type', 'text/javascript')
+          res.setHeader('Content-Type', 'application/javascript')
           res.end(pac)
           return
         }
