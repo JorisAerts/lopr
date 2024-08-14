@@ -58,19 +58,17 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
 
   return new Promise((resolve) => {
     // one host on https Server
-    const pkiPromises = {} as Record<string, Promise<void>>
+    const hosts = new Set<string>()
     let httpPort = options.port
     let httpsPort: number
 
-    const generateCertificate = (host: string) =>
-      (pkiPromises[host] ??= new Promise((resolve) => {
-        const cert = createCertForHost(host)
-        httpsServer.addContext(host, cert)
-
-        sendWsData(WebSocketMessageType.Certificate, join(tempDir(), 'cert', 'generated', `${host}.crt`))
-
-        resolve()
-      }))
+    const generateCertificate = (host: string) => {
+      if (hosts.has(host)) return
+      const cert = createCertForHost(host)
+      httpsServer.addContext(host, cert)
+      sendWsData(WebSocketMessageType.Certificate, join(tempDir(), 'cert', 'generated', `${host}.crt`))
+      hosts.add(host)
+    }
 
     // HTTPS-tunnel (let Node choose the port)
     const httpsServer = https //
@@ -146,13 +144,11 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
       if (req.url?.match(/:443$/)) {
         const host = req.url.substring(0, req.url.length - 4)
         if (options.mapHttpsReg === true || (options.mapHttpsReg && host.match(options.mapHttpsReg))) {
-          const promise = pkiPromises[host] ?? generateCertificate(host)
-          promise.then(function () {
-            const mediator = net.connect(httpsPort)
-            mediator.on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
-            mediator.on('error', createErrorHandler(mediator))
-            socket.pipe(mediator).pipe(socket)
-          })
+          generateCertificate(host)
+          const mediator = net.connect(httpsPort)
+          mediator.on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
+          mediator.on('error', createErrorHandler(mediator))
+          socket.pipe(mediator).pipe(socket)
         } else {
           const mediator = net.connect(443, host)
           mediator.on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
