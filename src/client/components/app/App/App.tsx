@@ -3,9 +3,7 @@ import { RouterView } from 'vue-router'
 import { VSheet } from '../../ui'
 import { VAppHeader } from '../AppHeader'
 import { VNavBar } from '../NavBar'
-import { useErrorLogStore } from '../../../stores/errorlog'
 import { useRequestStore } from '../../../stores/request'
-import { useCertificateStore } from '../../../stores/certificates'
 
 export const App = defineComponent({
   name: 'v-app',
@@ -15,10 +13,7 @@ export const App = defineComponent({
   },
 
   setup(props) {
-    // init stores that automagically will register web socket handlers
     const requestStore = useRequestStore()
-    useErrorLogStore()
-    useCertificateStore()
 
     if (props.beSure) {
       const beSure = (event: BeforeUnloadEvent) => {

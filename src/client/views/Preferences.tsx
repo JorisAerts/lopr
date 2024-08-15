@@ -19,7 +19,7 @@ export const Preferences = defineComponent({
           <VCard class={['pa-3']}>
             <h3 class={'mb-2'}>Reverse Proxy</h3>
             <VTooltip text={'SSL Certificates will be spoofed, \nso that the transmitted data can be inspected.'}>
-              <VCheckbox label={'Enable SSL Proxying'} v-model={preferencesStore.sslProxy} />
+              <VCheckbox label={'Enable SSL Proxying'} v-model={preferencesStore.proxySSL} />
             </VTooltip>
           </VCard>
         </VCard>

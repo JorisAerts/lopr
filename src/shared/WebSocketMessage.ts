@@ -13,9 +13,10 @@ export interface WebSocketMessage<Data = unknown> {
 }
 
 export const parseWebSocketMessage = <Data = any>(data: MessageEvent) => {
+  const str = data instanceof MessageEvent ? (data.data.toString?.() ?? data) : ((data as any).toString?.() ?? data)
   try {
-    return JSON.parse(data.data) as WebSocketMessage<Data>
-  } catch (e) {
-    return data.data as string
+    return JSON.parse(str) as WebSocketMessage<Data>
+  } catch {
+    return str
   }
 }

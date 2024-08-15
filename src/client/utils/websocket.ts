@@ -37,8 +37,16 @@ function createSocket() {
   return newSocket
 }
 
-export const sendWsData = async (type: WebSocketMessageType, data: any) => {
-  socket.send(JSON.stringify({ type, data } as WebSocketMessage))
+export const sendWsData = (type: WebSocketMessageType, data: any) => {
+  if (socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type, data } as WebSocketMessage))
+  } else {
+    const prevOpen = socket.onopen
+    socket.onopen = (e: Event) => {
+      prevOpen?.call(socket, e)
+      sendWsData(type, data)
+    }
+  }
 }
 
 // Connection opened

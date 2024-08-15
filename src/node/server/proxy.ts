@@ -24,7 +24,7 @@ import { captureResponse } from '../utils/captureResponse'
 
 export interface CreateProxyOptions {
   port: number
-  mapHttpsReg: boolean | undefined | string | RegExp
+  proxySSL: boolean | undefined | string | RegExp
   map: ((options: OutgoingOptions, req: IncomingMessage, res: ServerResponse | null) => OutgoingOptions) | undefined
 }
 
@@ -49,12 +49,15 @@ export interface CreateProxy {
 export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {} as Options): Promise<CreateProxy> {
   const options = {
     port: 8080,
-    mapHttpsReg: true,
+    proxySSL: false,
     ...opt,
     logger: createLogger(),
   } as InternalOptions<Options>
 
   const { logger } = options
+
+  // handle preference-changes
+  registerDataHandler(WebSocketMessageType.Preferences, ({ data }) => Object.assign(options, data))
 
   return new Promise((resolve) => {
     // one host on https Server
@@ -98,10 +101,6 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
         logger,
         server: httpServer,
         onConnect: () => sendWsData(WebSocketMessageType.Preferences, options),
-      })
-
-      registerDataHandler(WebSocketMessageType.Preferences, (data) => {
-        console.log({ data })
       })
 
       resolve({
@@ -152,7 +151,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
 
       if (req.url?.match(/:443$/)) {
         const host = req.url.substring(0, req.url.length - 4)
-        if (options.mapHttpsReg === true || (options.mapHttpsReg && host.match(options.mapHttpsReg))) {
+        if (options.proxySSL === true || (options.proxySSL && host.match(options.proxySSL))) {
           generateCertificate(host)
           const mediator = net.connect(httpsPort)
           mediator.on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
