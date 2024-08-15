@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { Ref } from 'vue'
 import { computed, reactive, watch } from 'vue'
-import { useLocalStorage } from '../composables/local'
+import { useLocalStorage } from '../composables/localStorage'
 import { registerDataHandler, sendWsData } from '../utils/websocket'
 import { type WebSocketMessage, WebSocketMessageType } from '../../shared/WebSocketMessage'
 
