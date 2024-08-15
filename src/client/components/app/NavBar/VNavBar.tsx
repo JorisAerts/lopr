@@ -14,6 +14,13 @@ export const VNavBar = defineComponent({
     const iconSize = 20
     const errorLogStore = useErrorLogStore()
     const router = useRouter()
+    const pushRoute = (name: RouteNames) => () => {
+      try {
+        router.push(name)
+      } catch (error) {
+        console.warn(error)
+      }
+    }
     return () => (
       <VCard class={['v-nav-bar', 'pa-2', 'd-flex', 'gap-2', 'align-items-center']}>
         <h4 class={['d-flex', 'align-items-center']}>
@@ -26,12 +33,12 @@ export const VNavBar = defineComponent({
           }}
         </RouterView>
         <VSpacer />
-        <VBtn tooltip={'Requests'} icon={'Monitoring'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Requests)} />
-        <VBtn tooltip={'Information'} icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Information)} />
-        <VBtn tooltip={'Preferences'} icon={'Settings'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.Preferences)} />
+        <VBtn tooltip={'Requests'} icon={'Monitoring'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.Requests)} />
+        <VBtn tooltip={'Information'} icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.Information)} />
+        <VBtn tooltip={'Preferences'} icon={'Settings'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.Preferences)} />
         <VTooltip text={'Error log'}>
           <VBadge modelValue={errorLogStore.hasErrors} position={[4, -4]}>
-            <VBtn icon={'Warning'} size={iconSize} class={['pa-1']} transparent onClick={() => router.push(RouteNames.ErrorLog)} />
+            <VBtn icon={'Warning'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.ErrorLog)} />
           </VBadge>
         </VTooltip>
       </VCard>

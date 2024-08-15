@@ -49,7 +49,7 @@ export interface CreateProxy {
 export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {} as Options): Promise<CreateProxy> {
   const options = {
     port: 8080,
-    proxySSL: false,
+    proxySSL: true,
     ...opt,
     logger: createLogger(),
   } as InternalOptions<Options>
