@@ -1,7 +1,5 @@
 import { ref, watch } from 'vue'
 
-export const STORE_NAME = 'Local Storage'
-
 const prefix = `js-proxy.`
 
 const getJSON = (key: string, defaultValue = undefined) => {
