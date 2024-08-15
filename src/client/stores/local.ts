@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia'
-import { packageJson } from '../../node/utils/package'
 import { computed } from 'vue'
 
 export const STORE_NAME = 'Local Storage'
 
-const prefix = `${packageJson.name}.`
+const prefix = `js-proxy.`
 
 const getJSON = (key: string, defaultValue = undefined) => {
   const value = localStorage.getItem(`${prefix}prefs`)
