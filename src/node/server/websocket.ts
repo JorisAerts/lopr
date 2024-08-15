@@ -19,7 +19,7 @@ export const sendWsData = (type: WebSocketMessageType, data: any) => {
   instance.ws.forEach((ws) => ws.send(JSON.stringify({ type, data } as WebSocketMessage)))
 }
 
-export const defineSocketServer = ({ logger, server }: InstanceOptions) => {
+export const defineSocketServer = ({ logger, server, onConnect }: InstanceOptions & { onConnect?: (...args: any[]) => any }) => {
   const wss = new WebSocketServer({ server, path: WEBSOCKET_ROOT })
   instance.wss = wss
     .on('connection', function connection(ws, req) {
@@ -27,7 +27,9 @@ export const defineSocketServer = ({ logger, server }: InstanceOptions) => {
       instance.ws.push(
         ws
           .on('error', createErrorHandler(ws))
-          .on('open', () => logger.info('WebSocket connection opened.'))
+          .on('open', () => {
+            logger.info('WebSocket connection opened.')
+          })
           .on('close', (err) => {
             const index = instance.ws.indexOf(ws)
             if (index > -1) instance.ws.splice(index, 1)
@@ -44,6 +46,7 @@ export const defineSocketServer = ({ logger, server }: InstanceOptions) => {
           })
       )
       sendWsData(WebSocketMessageType.App, 'Connection Established')
+      onConnect?.()
     })
     .on('error', createErrorHandler(wss))
 }

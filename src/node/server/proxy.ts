@@ -9,7 +9,7 @@ import type { OutgoingOptions } from './utils'
 import type { Logger } from '../utils/logger'
 import { createLogger } from '../utils/logger'
 import { createCertForHost, getRootCert } from '../utils/cert-utils'
-import { defineSocketServer, sendWsData } from './websocket'
+import { defineSocketServer, registerDataHandler, sendWsData } from './websocket'
 import { generatePac } from './pac'
 import { handleSelf } from './self-handler'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
@@ -94,7 +94,16 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
     httpServer.on('error', onError)
     httpServer.on('listening', () => {
       const address = `http://localhost:${httpPort}`
-      defineSocketServer({ logger, server: httpServer })
+      defineSocketServer({
+        logger,
+        server: httpServer,
+        onConnect: () => sendWsData(WebSocketMessageType.Preferences, options),
+      })
+
+      registerDataHandler(WebSocketMessageType.Preferences, (data) => {
+        console.log({ data })
+      })
+
       resolve({
         logger,
         address,
