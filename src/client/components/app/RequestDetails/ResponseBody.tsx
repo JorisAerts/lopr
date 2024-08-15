@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import { computed, defineComponent } from 'vue'
 import type { UseResponse } from '../../../composables/response'
 import { useResponse } from '../../../composables/response'
-import { VSheet } from '../../ui'
+import { VCheckbox, VSheet } from '../../ui'
 import { VDownloadData } from '../DownloadData'
 import { useRequest } from '../../../composables/request'
 import { useAppStore } from '../../../stores/app'
@@ -55,9 +55,7 @@ const createBodyRenderer = (response: UseResponse) => {
       return () => (
         <div class={classes}>
           <div class={['mt-1', 'mb-2']}>
-            <label class={['d-flex', 'align-items-center']}>
-              <input type={'checkbox'} checked={appStore.wrapResponseData} onChange={(e) => (appStore.wrapResponseData = (e.target as HTMLInputElement).checked)} /> Wrap
-            </label>
+            <VCheckbox label={'Wrap'} v-model={appStore.wrapResponseData} />
           </div>
           <pre
             class={['text-mono']}
