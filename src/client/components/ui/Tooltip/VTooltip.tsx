@@ -43,7 +43,16 @@ export const VTooltip = defineComponent({
         left: `${tooltip.w === 0 ? 0 : pos.x + tooltip.w + props.margin > document.body.clientWidth ? pos.x + pos.w - tooltip.w : pos.x}px`,
       }
     })
-    const tooltip = computed(() => slots.tooltip?.() ?? <VCard class={['v-tooltip--contents']}>{props.text}</VCard>)
+    const tooltip = computed(
+      () =>
+        slots.tooltip?.() ?? (
+          <VCard class={['v-tooltip--contents']}>
+            {props.text?.split('\n').flatMap((line, i, arr) => {
+              return [line, i < arr.length - 1 ? <br /> : undefined]
+            })}
+          </VCard>
+        )
+    )
     return () =>
       tooltip.value ? (
         <div class={'v-tooltip'} ref={root}>

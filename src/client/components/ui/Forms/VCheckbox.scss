@@ -1,0 +1,15 @@
+@use "../../../style/sass-vars" as *;
+
+.v-checkbox {
+
+  &--input {
+    vertical-align: middle;
+    margin: 0;
+  }
+
+  &--label {
+    margin-left: $spacer;
+    vertical-align: middle;
+  }
+
+}

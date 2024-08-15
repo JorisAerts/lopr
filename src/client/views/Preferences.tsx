@@ -1,22 +1,24 @@
-import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
-import { VCard, VSheet } from '../components'
+import { VCard, VCheckbox, VSheet, VTooltip } from '../components'
 
 export const Preferences = defineComponent({
   name: 'app-preferences',
 
-  props: {
-    width: {
-      type: [Number, String] as PropType<number | string>,
-      default: 320,
-    },
-  },
-
-  setup(props) {
+  setup() {
     return () => (
-      <VSheet class={['fill-height', 'gap-2']}>
-        <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
-          <h2>Preferences</h2>
+      <VSheet class={['fill-height']}>
+        <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'd-flex', 'flex-column', 'pa-3', 'gap-2']}>
+          <h2 class={'mb-2'}>Preferences</h2>
+          <VCard class={['pa-3']}>
+            <h3 class={'mb-2'}>Appearance</h3>
+            <VCheckbox label={'Dark Mode'} modelValue={true} disabled />
+          </VCard>
+          <VCard class={['pa-3']}>
+            <h3 class={'mb-2'}>Reverse Proxy</h3>
+            <VTooltip text={'SSL Certificates will be spoofed, \nso that the transmitted data can be inspected.'}>
+              <VCheckbox label={'Enable SSL Proxying'} />
+            </VTooltip>
+          </VCard>
         </VCard>
       </VSheet>
     )
