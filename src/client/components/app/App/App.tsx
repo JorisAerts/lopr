@@ -16,14 +16,15 @@ export const App = defineComponent({
 
   setup(props) {
     // init stores that automagically will register web socket handlers
+    const requestStore = useRequestStore()
     useErrorLogStore()
-    useRequestStore()
     useCertificateStore()
 
     if (props.beSure) {
       const beSure = (event: BeforeUnloadEvent) => {
-        const question = 'Refresh will clear all data.\nTherefore, are you sure?'
+        if (requestStore.empty) return
         event.preventDefault()
+        const question = 'Refresh will clear all data.\nTherefore, are you sure?'
         event.returnValue = question
         return question
       }

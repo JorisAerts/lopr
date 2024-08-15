@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, shallowRef, triggerRef } from 'vue'
+import { computed, ref, shallowRef, triggerRef } from 'vue'
 import type { ProxyRequestInfo } from '../../shared/Request'
 import { registerDataHandler } from '../utils/websocket'
 import type { WebSocketMessage } from '../../shared/WebSocketMessage'
@@ -89,6 +89,8 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     addToStruct(uuid)
   }
 
+  const empty = computed(() => ids.value.length === 0)
+
   /**
    * Clear the store
    */
@@ -119,5 +121,5 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     registerUUID(data.uuid)
   })
 
-  return { ids, requests, responses, getRequest, getResponse, isNew, clear, structure: struct, recent }
+  return { ids, requests, responses, getRequest, getResponse, isNew, clear, structure: struct, recent, empty }
 })
