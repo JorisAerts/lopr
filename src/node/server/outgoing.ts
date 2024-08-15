@@ -8,7 +8,6 @@ export interface OutgoingRequest {
 
 const response = [
   /**
-   * If it's an HTTP 1.0 request, remove transfer encoding.
    * HTTP 1.0 has no chunks.
    */
   function (req: ProxyRequest, res: ProxyResponse, proxyRes: IncomingMessage) {

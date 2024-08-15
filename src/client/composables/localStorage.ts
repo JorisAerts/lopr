@@ -3,7 +3,7 @@ import { ref, watch } from 'vue'
 const prefix = `js-proxy.`
 
 const getJSON = (key: string, defaultValue = undefined) => {
-  const value = localStorage.getItem(`${prefix}prefs`)
+  const value = localStorage.getItem(`${prefix}${key}`)
   return null == value ? defaultValue : JSON.parse(value)
 }
 
