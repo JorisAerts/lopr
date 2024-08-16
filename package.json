@@ -12,8 +12,6 @@
     "cert/**/*"
   ],
   "scripts": {
-    "build:node:tsc": "(tsc -p src/node --outDir dist --esModuleInterop | true && tsc-alias --dir dist) && echo \"[✓] done.\"",
-    "run:node:tsc": "node dist/server/index.js",
     "build:node": "vite build --config vite.config.node.ts",
     "run:node": "node dist/index.js",
     "build": "yarn build:node && yarn build:client",
@@ -48,7 +46,6 @@
     "sass": "1.77.8",
     "stylelint": "^16.8.2",
     "stylelint-config-standard-scss": "^13.1.0",
-    "tsc-alias": "^1.8.10",
     "type-fest": "^4.24.0",
     "typescript": "^5.5.4",
     "typescript-eslint": "8.1.0",
