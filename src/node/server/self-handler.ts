@@ -1,7 +1,7 @@
 import type { IncomingMessage } from 'http'
 import { packageRoot } from '../utils/package'
 import path, { resolve } from 'path'
-import { readFileSync, statSync } from 'fs'
+import { existsSync, readFileSync, statSync } from 'fs'
 import { getContentType } from './content-type'
 import { sendWsData } from './websocket'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
@@ -11,7 +11,11 @@ import type { ProxyRequest } from './ProxyRequest'
 
 const staticRoot = resolve(packageRoot, 'dist', 'client')
 
-const getStaticCandidates = (req: IncomingMessage) => [path.resolve(`${staticRoot}/${req.url}`), path.resolve(`${staticRoot}/${req.url}index.html`)]
+const getStaticCandidates = (req: IncomingMessage) => [
+  //
+  path.resolve(`${staticRoot}/${req.url}`),
+  path.resolve(`${staticRoot}/${req.url}index.html`),
+]
 
 const isStaticMatch = (file: string) => {
   try {
@@ -26,8 +30,10 @@ export const handleSelf = (req: ProxyRequest, res: ProxyResponse) => {
     let file = getStaticCandidates(req).find(isStaticMatch)
 
     if (!file) {
-      // handle404(req, res)
       file = path.resolve(`${staticRoot}/index.html`)
+      if (!existsSync(file)) {
+        return res.end('ERROR: Unable to locate the root index.html file.')
+      }
     }
 
     const data = `${readFileSync(file)}`
