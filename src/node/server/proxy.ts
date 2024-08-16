@@ -143,6 +143,14 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
       return incoming(req, res, options as CreateProxyOptions)
     }
 
+    const getHttpsMediator = (host: string) => {
+      if (options.proxySSL === true || (options.proxySSL && host.match(options.proxySSL))) {
+        generateCertificate(host)
+        return net.connect(httpsPort)
+      }
+      return net.connect(443, host)
+    }
+
     httpServer.on('connect', function (req, socket) {
       req.on('error', createErrorHandler(req))
       socket.on('error', createErrorHandler(socket))
@@ -151,18 +159,10 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
 
       if (req.url?.match(/:443$/)) {
         const host = req.url.substring(0, req.url.length - 4)
-        if (options.proxySSL === true || (options.proxySSL && host.match(options.proxySSL))) {
-          generateCertificate(host)
-          const mediator = net.connect(httpsPort)
-          mediator.on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
-          mediator.on('error', createErrorHandler(mediator))
-          socket.pipe(mediator).pipe(socket)
-        } else {
-          const mediator = net.connect(443, host)
-          mediator.on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
-          mediator.on('error', createErrorHandler(mediator))
-          socket.pipe(mediator).pipe(socket)
-        }
+        const mediator = getHttpsMediator(host)
+        mediator.on('connect', () => socket.write('HTTP/1.1 200 Connection established\r\n\r\n'))
+        mediator.on('error', createErrorHandler(mediator))
+        socket.pipe(mediator).pipe(socket)
       }
     })
 
