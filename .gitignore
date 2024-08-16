@@ -139,7 +139,7 @@ dist
 .vscode-test
 
 # Vite.js temporary generated config files
-vite.config.ts.timestamp*
+vite.config.*ts.timestamp*
 
 # Generated certificates
 cert/generated/**

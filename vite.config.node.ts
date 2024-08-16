@@ -1,9 +1,10 @@
 import { resolve } from 'path'
+import type { ConfigEnv, LibraryOptions } from 'vite'
 import { defineConfig } from 'vite'
 import { packageJson } from './src/node/utils/package'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig((env: ConfigEnv) => ({
   esbuild: {
     minifySyntax: true,
     minifyIdentifiers: true,
@@ -11,7 +12,7 @@ export default defineConfig({
   build: {
     outDir: './dist',
     ssr: true,
-    sourcemap: true,
+    sourcemap: env.mode === 'development',
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, 'src/node/index.ts'),
@@ -19,7 +20,7 @@ export default defineConfig({
       // the proper extensions will be added
       fileName: packageJson.name,
       formats: ['es'],
-    },
+    } as LibraryOptions,
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
@@ -28,4 +29,4 @@ export default defineConfig({
       },
     },
   },
-})
+}))
