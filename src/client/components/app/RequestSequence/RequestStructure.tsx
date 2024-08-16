@@ -39,11 +39,16 @@ export const RequestStructure = defineComponent({
   setup(props, { emit }) {
     const requestStore = useRequestStore()
     const contains = (key: string) => props.expanded.includes(key)
-    const handleFolding = (key: string, value: StructNode) => {
+    const handleFolding = (evt: Event | MouseEvent, key: string, value: StructNode) => {
       const sel = props.expanded
       emit(
         'update:expanded',
         (() => {
+          //if (('metaKey' in evt && evt.metaKey) || ('ctrlKey' in evt && evt.ctrlKey)) {
+          //if (props.expanded.length) return []
+          //return Object.keys(requestStore.structure.nodes ?? {})
+          //}
+          
           if (contains(key)) return removeKey(sel, key)
           const result = new Set<string>([key])
           // auto-expand single item nodes
@@ -69,7 +74,7 @@ export const RequestStructure = defineComponent({
               const key = value.key
               const hasItems = !!value.items || !!value.nodes
               const isOpen = contains(key)
-              const onClick = () => (hasItems ? handleFolding(key, value) : undefined)
+              const onClick = (evt: Event) => (hasItems ? handleFolding(evt, key, value) : undefined)
               const item = () => (
                 <VListItem key={key} class={['py-0', 'no-wrap', 'overflow-ellipsis']} onClick={withModifiers(onClick, ['prevent'])} prependIcon={hasItems ? 'KeyboardArrowRight' : undefined}>
                   {name}

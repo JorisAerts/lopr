@@ -30,7 +30,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
    */
   const recent = ref(new Set<UUID | string>([]))
 
-  const struct = ref({ key: '', isNew: false })
+  const struct = ref<StructNode>({ key: '', isNew: false })
 
   /**
    * The request data sent from the client.
