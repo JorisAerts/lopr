@@ -3,14 +3,24 @@
   "version": "0.1.0",
   "license": "MIT",
   "packageManager": "yarn@4.4.0",
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
+  "type": "module",
   "author": {
     "name": "Joris Aerts",
     "url": "https://github.com/JorisAerts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JorisAerts/js-proxy.git"
   },
   "files": [
     "dist/**/*",
     "cert/**/*"
   ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "scripts": {
     "build:node": "vite build --config vite.config.node.ts",
     "run:node": "node dist/index.js",
@@ -19,10 +29,6 @@
     "build:client": "vite build",
     "preview": "vite preview"
   },
-  "private": true,
-  "main": "dist/index.js",
-  "bin": "dist/index.js",
-  "type": "module",
   "dependencies": {
     "@mongodb-js/zstd": "^1.2.0",
     "node-forge": "^1.3.1",
