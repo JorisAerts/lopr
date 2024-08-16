@@ -1,3 +1,4 @@
+import './ResponseBody.scss'
 import type { Ref } from 'vue'
 import { computed, defineComponent } from 'vue'
 import type { UseResponse } from '../../../composables/response'
@@ -37,7 +38,7 @@ const getContentFilename = (response: Ref<ProxyResponseInfo | undefined>) => {
 }
 
 const createBodyRenderer = (response: UseResponse) => {
-  const classes = ['bordered', 'fill-height', 'pa-2', 'overflow-auto']
+  const classes = ['response-body', 'bordered', 'fill-height', 'pa-2', 'overflow-auto']
   const appStore = useAppStore()
 
   if (response.isEmpty.value) return () => <VSheet class={classes}>No response data</VSheet>
@@ -87,7 +88,7 @@ const createBodyRenderer = (response: UseResponse) => {
   if (RX_IS_IMAGE.test(type)) {
     return () =>
       response.body.value && (
-        <VSheet class={classes}>
+        <VSheet class={[/* 'response-body--checkered', */ ...classes]}>
           <img
             src={getImageData(response)}
             alt={filename.value}
