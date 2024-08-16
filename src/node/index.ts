@@ -4,6 +4,8 @@ import { openBrowser } from './utils/open-browser'
 import { displayServerInfo } from './server/server-info'
 import { processCliParams } from './cli'
 
+export { createProxy }
+
 // allow unsage SSL certificates
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 

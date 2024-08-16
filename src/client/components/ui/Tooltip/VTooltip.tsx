@@ -28,13 +28,6 @@ export const VTooltip = defineComponent({
     const style = computed(() => {
       if (!root.value) return { display: 'none' }
       const bb = root.value?.getBoundingClientRect()
-      console.log({
-        scroll: [root.value?.offsetLeft, root.value?.scrollTop],
-        offset: [root.value?.offsetLeft ?? 0, root.value?.offsetTop],
-        client: [root.value?.clientLeft ?? 0, root.value?.clientTop],
-
-        bb,
-      })
       const pos = { x: bb.x, y: bb.y, h: bb.width, w: bb.height }
       const tooltip = {
         h: dlg.value?.offsetHeight ?? 0,
