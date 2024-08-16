@@ -57,7 +57,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     const request = getRequest(uuid)
     if (!request) return
 
-    const url = request.url
+    const url = request.urlNormal ?? request.url
     const indexOf = url.indexOf('://')
     const parts = (indexOf > -1 ? url.substring(indexOf + 3) : url) //
       .split('/')
