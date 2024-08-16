@@ -1,6 +1,17 @@
 {
   "name": "carlos",
   "version": "0.1.0",
+  "description": "A reverse proxy server with a GUI",
+  "keywords": [
+    "reverse proxy",
+    "proxy",
+    "server",
+    "web",
+    "ssl",
+    "http",
+    "https",
+    "monitoring"
+  ],
   "license": "MIT",
   "packageManager": "yarn@4.4.0",
   "main": "dist/index.js",
