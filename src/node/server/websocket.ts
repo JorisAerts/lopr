@@ -4,7 +4,7 @@ import type { WebSocketMessage } from '../../shared/WebSocketMessage'
 import { parseWebSocketMessage, WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { InstanceOptions } from '../utils/Options'
 import { WEBSOCKET_ROOT } from '../../shared/constants'
-import { createErrorHandler } from '../../client/utils/logging'
+import { createErrorHandler, createErrorHandlerFor } from '../../client/utils/logging'
 import { createErrorMessage } from '../utils/ws-messages'
 
 const instance = {
@@ -23,7 +23,8 @@ export const defineSocketServer = ({ logger, server, onConnect }: InstanceOption
   const wss = new WebSocketServer({ server, path: WEBSOCKET_ROOT })
   instance.wss = wss
     .on('connection', function connection(ws, req) {
-      req.on('error', createErrorHandler(req))
+      createErrorHandlerFor(ws, req)
+
       instance.ws.push(
         ws
           .on('error', createErrorHandler(ws))

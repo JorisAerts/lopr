@@ -13,5 +13,14 @@ const warn: LogType = <ErrorType, SourceObject>(message: ErrorType, source?: Sou
 
 export const createErrorHandler = <ErrorType, Parent>(source?: Parent) =>
   function (err: ErrorType) {
-    sendWsData(WebSocketMessageType.Error, createErrorMessage(error, source))
+    sendWsData(WebSocketMessageType.Error, createErrorMessage(err, source))
   }
+
+export const createErrorHandlerFor = (...args: { on: (...args: any[]) => unknown }[]) => {
+  args.forEach(
+    (
+      arg //
+    ) => arg.on('error', createErrorHandler(arg))
+  )
+  return args?.[0]
+}

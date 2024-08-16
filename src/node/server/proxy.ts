@@ -17,7 +17,7 @@ import { isLocalhost } from '../utils/is-localhost'
 import { ProxyRequest } from './ProxyRequest'
 import { ProxyResponse } from './ProxyResponse'
 import { createErrorMessage, createProxyRequest } from '../utils/ws-messages'
-import { createErrorHandler } from '../../client/utils/logging'
+import { createErrorHandler, createErrorHandlerFor } from '../../client/utils/logging'
 import { tempDir } from '../utils/temp-dir'
 import { join } from 'path'
 import { captureResponse } from '../utils/captureResponse'
@@ -77,7 +77,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
     const httpsServer = https //
       .createServer({ ...getRootCert(), ...defaultServerOptions }, forwardRequest as http.RequestListener<typeof ProxyRequest, typeof ServerResponse>)
       .listen(() => (httpsPort = (httpsServer.address() as AddressInfo).port))
-    httpsServer.on('error', createErrorHandler(httpsServer))
+    createErrorHandlerFor(httpsServer)
 
     // HTTP Server (the actual proxy)
     const httpServer = http //
@@ -114,8 +114,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
     httpServer.listen(httpPort)
 
     function forwardRequest(req: ProxyRequest, res: ProxyResponse) {
-      req.on('error', createErrorHandler(req))
-      res.on('error', createErrorHandler(res))
+      createErrorHandlerFor(req, res)
 
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
@@ -152,8 +151,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
     }
 
     httpServer.on('connect', function (req, socket) {
-      req.on('error', createErrorHandler(req))
-      socket.on('error', createErrorHandler(socket))
+      createErrorHandlerFor(req, socket)
 
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
@@ -168,8 +166,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
 
     // WebSockets
     function upgrade(req: ProxyRequest, socket: net.Socket, head: Buffer) {
-      req.on('error', createErrorHandler(req))
-      socket.on('error', createErrorHandler(socket))
+      createErrorHandlerFor(req, socket)
 
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
