@@ -27,12 +27,15 @@ export const VTooltip = defineComponent({
     }
     const style = computed(() => {
       if (!root.value) return { display: 'none' }
-      const pos = {
-        x: root.value?.offsetLeft ?? 0,
-        y: root.value?.offsetTop ?? 0,
-        h: root.value?.offsetHeight ?? 0,
-        w: root.value?.offsetWidth ?? 0,
-      }
+      const bb = root.value?.getBoundingClientRect()
+      console.log({
+        scroll: [root.value?.offsetLeft, root.value?.scrollTop],
+        offset: [root.value?.offsetLeft ?? 0, root.value?.offsetTop],
+        client: [root.value?.clientLeft ?? 0, root.value?.clientTop],
+
+        bb,
+      })
+      const pos = { x: bb.x, y: bb.y, h: bb.width, w: bb.height }
       const tooltip = {
         h: dlg.value?.offsetHeight ?? 0,
         w: dlg.value?.offsetWidth ?? 0,
@@ -55,13 +58,13 @@ export const VTooltip = defineComponent({
     )
     return () =>
       tooltip.value ? (
-        <div class={'v-tooltip'} ref={root}>
+        <div class={'v-tooltip'}>
           {show.value && (
             <dialog ref={dlg} open class={['v-tooltip--popup']} style={style.value}>
               <Transition>{tooltip.value}</Transition>
             </dialog>
           )}
-          <div onMouseenter={enter} onMouseleave={leave}>
+          <div onMouseenter={enter} onMouseleave={leave} ref={root}>
             {slots.default?.()}
           </div>
         </div>

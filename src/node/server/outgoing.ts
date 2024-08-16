@@ -34,9 +34,7 @@ const response = [
   function (req: ProxyRequest, res: ProxyResponse, proxyRes: IncomingMessage) {
     Object.keys(proxyRes.headers)
       .filter((key) => proxyRes.headers[key])
-      .forEach(function (key) {
-        res.setHeader(key, proxyRes.headers[key as keyof typeof proxyRes.headers]!)
-      })
+      .forEach((key) => res.setHeader(key, proxyRes.headers[key as keyof typeof proxyRes.headers]!))
   },
 
   /**

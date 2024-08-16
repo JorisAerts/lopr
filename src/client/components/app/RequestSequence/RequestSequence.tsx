@@ -1,6 +1,6 @@
 import type { ComponentPublicInstance, VNode } from 'vue'
 import { defineComponent, ref, TransitionGroup, watch } from 'vue'
-import { VList, VListItem } from '../../ui'
+import { VList, VListItem, VSheet } from '../../ui'
 import { useRequestStore } from '../../../stores/request'
 import type { ProxyRequestInfo } from '../../../../shared/Request'
 import { makeUUIDEvents, makeUUIDProps } from '../../../composables/uuid'
@@ -41,15 +41,16 @@ export const RequestSequence = defineComponent({
                     class={[
                       'py-0',
                       'mx-1',
-                      'overflow-ellipsis',
+                      //'overflow-ellipsis',
                       {
                         selected: props.modelValue === req.uuid,
                       },
                     ]}
+                    tooltip={`${req.method} — ${req.url}`}
                   >
-                    <div class={['no-wrap', 'overflow-hidden', 'overflow-ellipsis']} title={`${req.method} — ${req.url}`}>
+                    <VSheet class={['no-wrap', 'overflow-hidden', 'overflow-ellipsis']}>
                       {req.method} — {req.url}
-                    </div>
+                    </VSheet>
                   </VListItem>
                 )
             )}

@@ -36,9 +36,7 @@ const inc = [
     }
     Object.keys(values)
       .map((header) => `x-forwarded-${header}`)
-      .forEach((header) => {
-        req.headers[header] = (req.headers[header] || '') + (req.headers[header] ? ',' : '') + values[header as keyof typeof values]
-      })
+      .forEach((header) => (req.headers[header] = (req.headers[header] || '') + (req.headers[header] ? ',' : '') + values[header as keyof typeof values]))
   },
 
   /**

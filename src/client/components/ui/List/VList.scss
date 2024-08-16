@@ -5,6 +5,7 @@
   --list-padding: calc(2 * #{$spacer});
 }
 
+// tree indentation
 .v-list {
   --parent-padding: 0px;
 
@@ -26,13 +27,17 @@
 }
 
 .v-list-item {
-  display: flex;
-  align-items: center;
   cursor: default;
   padding: var(--list-padding);
   padding-inline-start: var(--list-ident-padding);
 
   border-radius: var(--border-radius);
+
+  &--content {
+    display: flex;
+    align-items: center;
+  }
+
 
   &--prepend {
     flex-grow: 0;

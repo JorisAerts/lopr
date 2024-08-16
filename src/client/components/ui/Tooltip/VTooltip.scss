@@ -8,6 +8,8 @@
 
 .v-tooltip {
 
+  display: contents;
+  vertical-align: middle;
   padding: $spacer 0;
 
   &--popup {
