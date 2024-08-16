@@ -22,7 +22,7 @@ export const displayServerInfo = ({ logger, server }: InstanceOptions) => {
   logger.info()
   logger.info(`  ${tui.title(title)}`)
   logger.info()
-  logger.info(`  ${tui.tooltip(`Temp-folder: ${tmp}`)}`)
+  logger.info(`  ${tui.tooltip(`Temp-folder: ${tui.link(tmp)}`)}`)
   logger.info(`  ${tui.tooltip(`GUI & Proxy Server: ${tui.link(getAddress(server))}`)}`)
   logger.info(`  ${tui.tooltip(`Use ${tui.tip('--open')} to automatically open your browser.`)}`)
 

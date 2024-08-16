@@ -1,7 +1,7 @@
 import pc from 'picocolors'
 
 const primaryColor = pc.green
-const secondaryColor = pc.green
+const secondaryColor = pc.blue
 const disabledColor = pc.dim
 
 export const title = (text: string) => pc.underline(pc.bold(primaryColor(text)))
