@@ -2818,6 +2818,8 @@ __metadata:
     vue: "npm:3.4.38"
     vue-router: "npm:4.4.3"
     ws: "npm:^8.18.0"
+  bin:
+    js-proxy: dist/index.js
   languageName: unknown
   linkType: soft
 
