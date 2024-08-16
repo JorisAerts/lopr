@@ -1,4 +1,4 @@
-export const APP_NAME = 'JS Proxy'
+export const APP_NAME = 'Carlos'
 
 export const WEBSOCKET_ROOT = '/ws'
 
