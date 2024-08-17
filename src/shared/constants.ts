@@ -1,4 +1,4 @@
-export const APP_NAME = 'rvpro'
+export const APP_NAME = 'js-proxy'
 
 export const WEBSOCKET_ROOT = '/ws'
 

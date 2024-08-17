@@ -1,5 +1,5 @@
 {
-  "name": "rvpro",
+  "name": "@jorisaerts/js-proxy",
   "version": "0.1.0",
   "description": "A reverse proxy server with a GUI",
   "keywords": [
