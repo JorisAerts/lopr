@@ -126,6 +126,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
         // intercept local requests
         if (req.url === '/pac') {
           const pac = generatePac(`localhost:${httpPort}`)
+          res.setHeader('Content-Length', pac.length)
           res.setHeader('Content-Type', 'application/javascript')
           res.end(pac)
           return
