@@ -8,6 +8,7 @@ import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { createErrorMessage } from '../utils/ws-messages'
 import type { ProxyResponse } from './ProxyResponse'
 import type { ProxyRequest } from './ProxyRequest'
+import { HTTP_HEADER_CONTENT_TYPE } from '../../shared/constants'
 
 const staticRoot = resolve(packageRoot, 'dist', 'client')
 
@@ -40,7 +41,7 @@ export const handleSelf = (req: ProxyRequest, res: ProxyResponse) => {
     const contentType = getContentType(file)
 
     //res.writeHead(200)
-    if (contentType) res.setHeader('Content-Type', contentType)
+    if (contentType) res.setHeader(HTTP_HEADER_CONTENT_TYPE, contentType)
     res.end(data)
   } catch (e) {
     sendWsData(WebSocketMessageType.Error, createErrorMessage(e))

@@ -21,6 +21,7 @@ import { createErrorHandler, createErrorHandlerFor } from '../../client/utils/lo
 import { tempDir } from '../utils/temp-dir'
 import { join } from 'path'
 import { captureResponse } from '../utils/captureResponse'
+import { HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE } from '../../shared/constants'
 
 export interface CreateProxyOptions {
   port: number
@@ -126,8 +127,8 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
         // intercept local requests
         if (req.url === '/pac') {
           const pac = generatePac(`localhost:${httpPort}`)
-          res.setHeader('Content-Length', pac.length)
-          res.setHeader('Content-Type', 'application/javascript')
+          res.setHeader(HTTP_HEADER_CONTENT_LENGTH, pac.length)
+          res.setHeader(HTTP_HEADER_CONTENT_TYPE, 'application/javascript')
           res.end(pac)
           return
         }
@@ -151,7 +152,7 @@ export function createProxy<Options extends Partial<CreateProxyOptions>>(opt = {
       return net.connect(443, host)
     }
 
-    httpServer.on('connect', function (req, socket) {
+    httpServer.on('connect', function(req, socket) {
       createErrorHandlerFor(req, socket)
 
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))

@@ -1,18 +1,26 @@
-import { computed, defineComponent, ref, watch } from 'vue'
+import { defineComponent, reactive, ref, watch } from 'vue'
 import { VTab, VTabItem, VTabItems, VTabs } from '../../ui'
 import type { UUID } from '../../../../shared/UUID'
-import { useRequestStore } from '../../../stores/request'
 import { RequestOverviewTable } from './RequestOverviewTable'
 import { HeadersTable } from './HeadersTable'
 import { ResponseBody } from './ResponseBody'
+import { CookiesTable } from './CookiesTable'
 import { makeUUIDProps, useUUID } from '../../../composables/uuid'
+import { useRequest } from '../../../composables/request'
+import { useResponse } from '../../../composables/response'
 
 const REQUEST_TAB_INDEX = 0
 const REQUEST_HEADERS_INDEX = 1
-const RESPONSE_BODY_TAB_INDEX = 2
+const REQUEST_COOKIES_INDEX = 2
 const RESPONSE_HEADERS_TAB_INDEX = 3
+const RESPONSE_BODY_TAB_INDEX = 4
 
-type Tab = typeof REQUEST_TAB_INDEX | typeof REQUEST_HEADERS_INDEX | typeof RESPONSE_BODY_TAB_INDEX | typeof RESPONSE_HEADERS_TAB_INDEX
+type Tab =
+  | typeof REQUEST_TAB_INDEX
+  | typeof REQUEST_HEADERS_INDEX
+  | typeof REQUEST_COOKIES_INDEX
+  | typeof RESPONSE_HEADERS_TAB_INDEX
+  | typeof RESPONSE_BODY_TAB_INDEX
 
 export const RequestDetails = defineComponent({
   name: 'RequestDetails',
@@ -24,13 +32,21 @@ export const RequestDetails = defineComponent({
   setup(props) {
     const currentTab = ref<Tab>(0)
     const uuid = useUUID(props)
-    const { getResponse, getRequest } = useRequestStore()
+    const request = reactive(useRequest(uuid))
+    const response = reactive(useResponse(uuid))
     const canDisplayTab = (uuid: UUID | undefined, tab: Tab) => {
-      if (!uuid) return false
+      const refUUID = ref(uuid)
+      const request = reactive(useRequest(refUUID))
+      const response = reactive(useResponse(refUUID))
       switch (tab) {
-        case RESPONSE_BODY_TAB_INDEX:
+        case REQUEST_HEADERS_INDEX:
+          return request.hasHeaders
+        case REQUEST_COOKIES_INDEX:
+          return request.hasCookies
         case RESPONSE_HEADERS_TAB_INDEX:
-          return !!getResponse(uuid)
+          return response.hasHeaders
+        case RESPONSE_BODY_TAB_INDEX:
+          return response.hasBody
         default:
           return true
       }
@@ -38,21 +54,9 @@ export const RequestDetails = defineComponent({
     watch(
       uuid,
       (newValue) => {
-        if (0 != currentTab.value && !canDisplayTab(newValue, currentTab.value)) {
-          currentTab.value = 0
-        }
+        if (0 != currentTab.value && !canDisplayTab(newValue, currentTab.value)) currentTab.value = 0
       },
-      { immediate: true }
-    )
-    const response = computed(() =>
-      uuid.value //
-        ? getResponse(uuid.value)
-        : undefined
-    )
-    const request = computed(() =>
-      uuid.value //
-        ? getRequest(uuid.value)
-        : undefined
+      { immediate: true },
     )
     return () =>
       uuid.value && (
@@ -60,7 +64,8 @@ export const RequestDetails = defineComponent({
           <VTabs v-model={currentTab.value} class={['mb-2', 'flex-grow-0']}>
             <VTab name={'Overview'} modelValue={REQUEST_TAB_INDEX} />
             <VTab name={'Request Headers'} modelValue={REQUEST_HEADERS_INDEX} />
-            {response.value && (
+            {request.hasCookies && <VTab name={'Request Cookies'} modelValue={REQUEST_COOKIES_INDEX} />}
+            {response && (
               <>
                 <VTab name={'Response Headers'} modelValue={RESPONSE_HEADERS_TAB_INDEX} />
                 <VTab name={'Response Body'} modelValue={RESPONSE_BODY_TAB_INDEX} />
@@ -73,11 +78,16 @@ export const RequestDetails = defineComponent({
               <RequestOverviewTable modelValue={uuid.value} />
             </VTabItem>
             <VTabItem modelValue={REQUEST_HEADERS_INDEX}>
-              <HeadersTable modelValue={request.value?.headers} />
+              <HeadersTable modelValue={request.headersRaw} />
             </VTabItem>
-            {!!response.value?.headers?.length && (
+            {request.hasCookies && (
+              <VTabItem modelValue={REQUEST_COOKIES_INDEX}>
+                <CookiesTable modelValue={uuid.value} />
+              </VTabItem>
+            )}
+            {response.hasHeaders && (
               <VTabItem modelValue={RESPONSE_HEADERS_TAB_INDEX}>
-                <HeadersTable modelValue={response.value?.headers} />
+                <HeadersTable modelValue={response.headersRaw} />
               </VTabItem>
             )}
             <VTabItem modelValue={RESPONSE_BODY_TAB_INDEX} class={['fill-height']}>
