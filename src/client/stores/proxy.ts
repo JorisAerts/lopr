@@ -1,10 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { UrlMatch } from '../composables/url-match'
 
 export const STORE_NAME = 'Proxy'
 
 interface BreakPoint {
-  url: URL
+  req: boolean
+  res: boolean
+  match: UrlMatch
 }
 
 export const useProxyStore = defineStore(STORE_NAME, () => {
