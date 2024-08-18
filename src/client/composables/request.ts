@@ -7,16 +7,15 @@ import type { UUIDModelProps } from './uuid'
 import { useUUID } from './uuid'
 import type { UUID } from '../../shared/UUID'
 
-
 /**
  * Utility methods for handling the request
  */
 const useRequestByRef = (uuid: Ref<UUID | undefined>) => {
   const requestStore = useRequestStore()
   const request = computed(() => uuid.value && requestStore.getRequest(uuid.value))
-  const headersRaw = computed(() => (request.value?.headers))
+  const headersRaw = computed(() => request.value?.headers)
   const headers = computed<Record<string, string>>(() => parseHeaders(headersRaw.value))
-  const hasHeaders = computed(() => !!headersRaw.value)
+  const hasHeaders = computed<boolean>(() => !!headersRaw.value)
   const contentType = computed(() => headers.value?.[HTTP_HEADER_CONTENT_TYPE].split(';')[0].trim())
   const contentEncoding = computed(() => headers.value?.[HTTP_HEADER_CONTENT_ENCODING])
   const contentLength = computed(() => {
@@ -24,15 +23,17 @@ const useRequestByRef = (uuid: Ref<UUID | undefined>) => {
     return isNaN(contentLength) ? undefined : contentLength
   })
   const isEmpty = computed(() => contentLength.value === 0)
-  const hasCookies = computed(() => Object.keys(headers.value).includes(HTTP_HEADER_COOKIE))
+  const hasCookies = computed<boolean>(() => Object.keys(headers.value).includes(HTTP_HEADER_COOKIE))
   const cookiesRaw = computed(() => headers.value?.[HTTP_HEADER_COOKIE])
-  const cookies = computed(() => cookiesRaw.value?.split(';').reduce((a: Record<string, string>, b) => {
-      const [key, value] = b.split('=')
-      a[key.trim()] = decodeURI(value)
-      return a
-    }, {}) ?? {} as Record<string, string>,
+  const cookies = computed(
+    () =>
+      cookiesRaw.value?.split(';').reduce((a: Record<string, string>, b) => {
+        const [key, value] = b.split('=')
+        a[key.trim()] = decodeURI(value)
+        return a
+      }, {}) ?? ({} as Record<string, string>)
   )
-  return { request, hasHeaders, headersRaw, headers, contentType, contentEncoding, contentLength, hasCookies, cookies, cookiesRaw, isEmpty }
+  return { uuid, request, hasHeaders, headersRaw, headers, contentType, contentEncoding, contentLength, hasCookies, cookies, cookiesRaw, isEmpty }
 }
 
 /**

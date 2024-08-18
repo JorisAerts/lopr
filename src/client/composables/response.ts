@@ -7,7 +7,6 @@ import type { UUIDModelProps } from './uuid'
 import { useUUID } from './uuid'
 import type { UUID } from '../../shared/UUID'
 
-
 /**
  * Utility methods for handling the response
  */
@@ -26,7 +25,7 @@ const useResponseByRef = (uuid: Ref<UUID | undefined>) => {
     return isNaN(contentLength) ? undefined : contentLength
   })
   const isEmpty = computed(() => !hasBody.value || contentLength.value === 0)
-  return { response, hasBody, body, hasHeaders, headersRaw, headers, contentType, contentEncoding, contentLength, isEmpty }
+  return { uuid, response, hasBody, body, hasHeaders, headersRaw, headers, contentType, contentEncoding, contentLength, isEmpty }
 }
 
 /**
@@ -35,6 +34,5 @@ const useResponseByRef = (uuid: Ref<UUID | undefined>) => {
 export const useResponse = (uuid: UUIDModelProps | Ref<UUID | undefined>) => {
   return useResponseByRef(!isRef(uuid) ? useUUID(uuid) : uuid)
 }
-
 
 export type UseResponse = ReturnType<typeof useResponse>

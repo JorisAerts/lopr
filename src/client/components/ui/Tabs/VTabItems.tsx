@@ -1,32 +1,26 @@
 import './VTabItems.scss'
-import type { VNode } from 'vue'
-import { defineComponent, Transition } from 'vue'
+import { defineComponent, provide, toRef, Transition } from 'vue'
 import { VSheet } from '../Sheet'
-import { makeTabItemsProps } from './tabs'
-import { VTabItem } from './VTabItem'
+import { makeTabItemsProps, TAB_SYMBOL } from './tabs'
 
 export const VTabItems = defineComponent({
   name: 'v-tab-items',
 
   props: {
     ...makeTabItemsProps(),
-    transition: { type: Boolean, default: true },
+    transition: { type: Boolean, default: false },
   },
 
   setup(props, { slots }) {
-    const renderContent = (nodes: VNode[] | undefined) =>
-      nodes //
-        ?.filter((node) => node.type !== VTabItem || node.props?.modelValue === props.modelValue)
-
+    const modelValue = toRef(props, 'modelValue')
+    provide(TAB_SYMBOL, modelValue)
     return () => {
-      const defaultSlots = slots.default?.()
-      const selectedSlot = renderContent(defaultSlots)
       return (
         <VSheet class={'v-tab-items'}>
           {props.transition ? ( //
-            <Transition duration={0.25}>{selectedSlot}</Transition>
+            <Transition duration={0.25}>{slots.default?.()}</Transition>
           ) : (
-            selectedSlot
+            slots.default?.()
           )}
         </VSheet>
       )

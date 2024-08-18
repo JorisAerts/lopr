@@ -1,7 +1,7 @@
 import './VTabItem.scss'
-import { defineComponent } from 'vue'
+import { defineComponent, inject, readonly, ref } from 'vue'
 import { VSheet } from '../Sheet'
-import { makeTabItemsProps } from './tabs'
+import { makeTabItemsProps, TAB_SYMBOL } from './tabs'
 
 export const VTabItem = defineComponent({
   name: 'v-tab-item',
@@ -11,6 +11,8 @@ export const VTabItem = defineComponent({
   },
 
   setup(props, { slots }) {
-    return () => <VSheet class={'v-tab-item'}>{slots.default?.()}</VSheet>
+    const defaultValue = readonly(ref<number | undefined>(undefined))
+    const parentModelValue = inject(TAB_SYMBOL, defaultValue)
+    return () => parentModelValue.value == props.modelValue && <VSheet class={'v-tab-item'}>{slots.default?.()}</VSheet>
   },
 })

@@ -10,7 +10,14 @@
 
   flex-grow: 1;
   text-align: center;
-  padding: $spacer * 2;
+  padding: $spacer * 3 $spacer * 2;
+
+  border-radius: var(--border-radius);
+
+  &--selected {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 
   &:hover {
     background: rgba(255, 255, 255, .1);

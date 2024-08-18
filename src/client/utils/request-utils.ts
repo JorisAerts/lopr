@@ -10,7 +10,12 @@ export const parseHeaders = <Headers extends string[], Result extends ParsedHead
   const result = {} as Record<string, unknown>
   headers.forEach((h, i) => {
     if (i % 2 === 0) {
-      result[h.trim()] = headers[i + 1]?.trim()
+      const key = h.trim()
+      const value = headers[i + 1]?.trim()
+      if (value != undefined) {
+        result[key] = key in result ? [result[key], value] : value
+      }
+      result[key] = value
     }
   })
   return result as Result

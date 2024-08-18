@@ -38,7 +38,7 @@ export const VTabs = defineComponent({
 
     return () => (
       <VSheet class={['v-tabs', 'v-tabs--horizontal']} ref={root}>
-        <VContainer class={'v-tabs--items'}> {slots.default?.()}</VContainer>
+        <VContainer class={'v-tabs--items'}>{slots.default?.()}</VContainer>
         {slots.slider?.(sliderDim.value) ?? <VTabSlider top={sliderDim.value.y} left={sliderDim.value.x} width={sliderDim.value.w} />}
       </VSheet>
     )
