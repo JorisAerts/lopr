@@ -13,9 +13,8 @@ import { HTTP_HEADER_COOKIE } from '../../../../shared/constants'
 
 const REQUEST_TAB_INDEX = 0
 const REQUEST_HEADERS_INDEX = 1
-const REQUEST_COOKIES_INDEX = 2
-const RESPONSE_HEADERS_TAB_INDEX = 3
-const RESPONSE_BODY_TAB_INDEX = 4
+const RESPONSE_HEADERS_TAB_INDEX = 2
+const RESPONSE_BODY_TAB_INDEX = 3
 
 export const RequestDetails = defineComponent({
   name: 'RequestDetails',
@@ -46,8 +45,6 @@ export const RequestDetails = defineComponent({
             [`header:${HTTP_HEADER_COOKIE}`]: () => <CookiesTable modelValue={uuid.value} />,
           }}
         </HeadersTable>
-      ) : id === REQUEST_COOKIES_INDEX ? (
-        <CookiesTable modelValue={uuid.value} />
       ) : id === RESPONSE_HEADERS_TAB_INDEX ? (
         <HeadersTable modelValue={response.headersRaw} />
       ) : id === RESPONSE_BODY_TAB_INDEX ? (
