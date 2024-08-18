@@ -9,7 +9,7 @@ export const HeadersTable = defineComponent({
     modelValue: { type: Array as PropType<string[]> },
   },
 
-  setup(props) {
+  setup(props, { slots }) {
     return () =>
       props.modelValue && (
         <VTable class={'gap-2'}>
@@ -26,7 +26,7 @@ export const HeadersTable = defineComponent({
                 i % 2 === 0 && (
                   <tr>
                     <th>{h}</th>
-                    <td>{props.modelValue![i + 1]}</td>
+                    <td>{slots[`header:${h}`]?.(props.modelValue![i + 1]) ?? props.modelValue![i + 1]}</td>
                   </tr>
                 )
             )}

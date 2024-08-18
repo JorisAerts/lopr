@@ -9,6 +9,7 @@ import { CookiesTable } from './CookiesTable'
 import { makeUUIDProps, useUUID } from '../../../composables/uuid'
 import { useRequest } from '../../../composables/request'
 import { useResponse } from '../../../composables/response'
+import { HTTP_HEADER_COOKIE } from '../../../../shared/constants'
 
 const REQUEST_TAB_INDEX = 0
 const REQUEST_HEADERS_INDEX = 1
@@ -40,7 +41,11 @@ export const RequestDetails = defineComponent({
       id === REQUEST_TAB_INDEX ? (
         <RequestOverviewTable modelValue={uuid.value} />
       ) : id === REQUEST_HEADERS_INDEX ? (
-        <HeadersTable modelValue={request.headersRaw} />
+        <HeadersTable modelValue={request.headersRaw}>
+          {{
+            [`header:${HTTP_HEADER_COOKIE}`]: () => <CookiesTable modelValue={uuid.value} />,
+          }}
+        </HeadersTable>
       ) : id === REQUEST_COOKIES_INDEX ? (
         <CookiesTable modelValue={uuid.value} />
       ) : id === RESPONSE_HEADERS_TAB_INDEX ? (

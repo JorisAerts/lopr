@@ -8,25 +8,22 @@ import type { UUID } from '../../../../shared/UUID'
 
 const REQUEST_TAB_INDEX = 0
 const REQUEST_HEADERS_INDEX = 1
-const REQUEST_COOKIES_INDEX = 2
-const RESPONSE_HEADERS_TAB_INDEX = 3
-const RESPONSE_BODY_TAB_INDEX = 4
+const RESPONSE_HEADERS_TAB_INDEX = 2
+const RESPONSE_BODY_TAB_INDEX = 3
 
 const TABS = Object.freeze([
   ['Overview', (request: UseRequest) => !!request.request.value] as const,
   ['Request Headers', (request: UseRequest) => request.hasHeaders.value] as const,
-  ['Request Cookies', (request: UseRequest) => request.hasCookies.value] as const,
   ['Response Headers', (response: UseResponse) => response.hasHeaders.value] as const,
   ['Response Body', (response: UseResponse) => response.hasBody.value] as const,
 ] as const)
 
-export type Tab = typeof REQUEST_TAB_INDEX | typeof REQUEST_HEADERS_INDEX | typeof REQUEST_COOKIES_INDEX | typeof RESPONSE_HEADERS_TAB_INDEX | typeof RESPONSE_BODY_TAB_INDEX
+export type Tab = typeof REQUEST_TAB_INDEX | typeof REQUEST_HEADERS_INDEX | typeof RESPONSE_HEADERS_TAB_INDEX | typeof RESPONSE_BODY_TAB_INDEX
 
 const canDisplayTabByReqRes = (req: UseRequest, res: UseResponse, tab: Tab): boolean => {
   switch (tab) {
     // request
     case REQUEST_HEADERS_INDEX:
-    case REQUEST_COOKIES_INDEX:
       return TABS[tab][1](req)
     // response
     case RESPONSE_HEADERS_TAB_INDEX:
