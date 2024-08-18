@@ -25,6 +25,10 @@
     }
   }
 
+  > tbody > tr:not([style*="display: none"]):nth-child(odd) {
+    //background: rgba(255, 255, 255, .04);
+  }
+
   td, th {
     padding: calc(var(--spacer) * 0) calc(var(--spacer) * 2);
   }

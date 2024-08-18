@@ -51,6 +51,6 @@
   --transition: all var(--transition-duration) var(--transition-timing-function), font-size 0s;
 
   // panel
-  --panel-background: rgb(255 255 255 / 20%);
+  --panel-background: rgba(255, 255, 255, 20%);
   --panel-border: var(--border-size) solid var(--border-color);
 }
