@@ -38,7 +38,7 @@ function getRootKeyFiles(): RootKeyFiles {
 }
 
 export const generatedKeyFiles = (host: string): RootKeyFiles => {
-  const root = join(tempDir(), 'cert', 'generated', host)
+  const root = join(tempDir(), 'cert', host)
   return {
     key: `${root}.key`,
     cert: `${root}.crt`,
