@@ -1,4 +1,4 @@
-import { URI } from '../../shared/URI'
+import { URI } from './URI'
 
 type WildcardAsterix = '*'
 type WildcardQuestion = '?'
@@ -26,7 +26,7 @@ const createRx = (val: string, begin = '^', end = '$') =>
       .replace(RX_QUESTIONMARK, '.{1}')}${end}`
   )
 
-export const isMatch = (a: URI | URL | string, b: UrlMatch, prop?: keyof URI | keyof UrlMatch): boolean => {
+const isMatchProps = (a: URI | URL | string, b: UrlMatch, prop?: keyof URI | keyof UrlMatch): boolean => {
   const uri = a instanceof URI ? a : new URI(a)
   if (!uri.port) {
     if (uri.protocol === 'http') uri.port = 80
@@ -34,7 +34,7 @@ export const isMatch = (a: URI | URL | string, b: UrlMatch, prop?: keyof URI | k
   }
   if (prop === undefined) {
     const keys = Object.keys(b) as (keyof URI)[]
-    return !keys.length || keys.every((key) => isMatch(uri, b, key))
+    return !keys.length || keys.every((key) => isMatchProps(uri, b, key))
   }
 
   switch (prop) {
@@ -48,7 +48,7 @@ export const isMatch = (a: URI | URL | string, b: UrlMatch, prop?: keyof URI | k
 
     // check against the query-string instead
     case 'parameters':
-      return isMatch(uri, b, 'query')
+      return isMatchProps(uri, b, 'query')
     case 'query': {
       const matchVal = b.query as string
       if (matchVal === '*') return true
@@ -63,3 +63,8 @@ export const isMatch = (a: URI | URL | string, b: UrlMatch, prop?: keyof URI | k
     }
   }
 }
+
+/**
+ * Test if a given URL/URI/string matches the given "URL matcher"
+ */
+export const isMatch = (a: URI | URL | string, b: UrlMatch) => isMatchProps(a instanceof URI ? a : new URI(a), b)
