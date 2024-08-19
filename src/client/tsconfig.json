@@ -6,6 +6,7 @@
     "sourceMap": true,
     "lib": [
       "DOM",
+      "DOM.Iterable",
       "ESNext"
     ],
     // JSX
