@@ -85,7 +85,7 @@ const parseCredentials = (uri: URI, str: string) => {
 
 const parseDomainAndPort = (uri: URI, str: string) => {
   const match = str.match(RX_DOMAIN_PORT)
-  if (!(match && uri.protocol)) return str
+  if (!match) return str
   uri.domain = match[1]
   if (match[3]) {
     uri.port = parseInt(match[3])
@@ -136,7 +136,7 @@ export class URI {
     return url
   }
 
-  public static current() {
-    return new URI(`${window.location}`)
+  public static parse(url: string) {
+    return new URI(url)
   }
 }
