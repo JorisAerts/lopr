@@ -7,12 +7,8 @@ import type { UUID } from '../../../../shared/UUID'
 import { makeUUIDEvents, makeUUIDProps } from '../../../composables/uuid'
 
 const removeKey = (arr: string[], key: string) => {
-  const result = [...arr]
-  const pos = result.indexOf(key)
-  if (pos > -1) {
-    result.splice(pos, 1)
-  }
-  return result
+  const pos = arr.indexOf(key)
+  return pos > -1 ? arr.toSpliced(pos, 1) : [...arr]
 }
 
 interface StructNode {
@@ -48,7 +44,7 @@ export const RequestStructure = defineComponent({
           //if (props.expanded.length) return []
           //return Object.keys(requestStore.structure.nodes ?? {})
           //}
-          
+
           if (contains(key)) return removeKey(sel, key)
           const result = new Set<string>([key])
           // auto-expand single item nodes

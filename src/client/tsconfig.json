@@ -4,6 +4,10 @@
     "baseUrl": ".",
     "outDir": "../../dist/client",
     "sourceMap": true,
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
     // JSX
     "jsx": "preserve",
     "jsxImportSource": "vue"
