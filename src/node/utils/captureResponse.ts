@@ -3,8 +3,12 @@ import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { createLocalProxyResponse } from './ws-messages'
 import type { ProxyResponse } from '../server/ProxyResponse'
 import type http from 'node:http'
+import type { ServerOptions } from '../server/ServerOptions'
+import { cacheDir } from './temp-dir'
+import { mkdirSync, writeFileSync } from 'fs'
+import { join } from 'path'
 
-export const captureResponse = (res: ProxyResponse) => {
+export const captureResponse = (res: ProxyResponse, options: ServerOptions) => {
   // Variables to capture response data
   let responseBody = ''
   let responseHeaders = Object.create(null) as http.OutgoingHttpHeaders
@@ -41,6 +45,10 @@ export const captureResponse = (res: ProxyResponse) => {
       responseBody += chunk // Append final chunk to the response body
     }
     originalEnd.call(res, chunk, encoding, callback) // Call original `end` method
+
+    const cache = cacheDir(options)
+    mkdirSync(cache, { recursive: true })
+    writeFileSync(join(cache, res.uuid), responseBody)
 
     // send the response to the websocket
     sendWsData(WebSocketMessageType.ProxyResponse, createLocalProxyResponse(res.uuid, { ...responseHeaders }, responseBody))
