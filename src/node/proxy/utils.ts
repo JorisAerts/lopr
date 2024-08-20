@@ -1,6 +1,6 @@
 import type tls from 'node:tls'
 import type { IncomingMessage, RequestOptions, ServerResponse } from 'http'
-import type { CreateProxyOptions } from '../server'
+import type { ServerOptions } from '../server'
 
 export type OutgoingOptions = tls.ConnectionOptions & RequestOptions
 
@@ -26,7 +26,7 @@ const extractURLFromRequest = (req: IncomingMessage) => {
   return new URL(RX_PROTOCOL.test(req.url!) ? req.url! : `${extractProtocol(req)}://${req.headers.host /*?? req.client.servername*/}${req.url ?? ''}`)
 }
 
-export const setupOutgoingRequestOptions = (outgoing: Partial<OutgoingOptions>, req: IncomingMessage, res: ServerResponse | null, options: CreateProxyOptions): OutgoingOptions => {
+export const setupOutgoingRequestOptions = (outgoing: Partial<OutgoingOptions>, req: IncomingMessage, res: ServerResponse | null, options: ServerOptions): OutgoingOptions => {
   const urlObj = extractURLFromRequest(req)
   const isHttps = isReqHttps(req)
   const headers = req.headers
@@ -37,7 +37,7 @@ export const setupOutgoingRequestOptions = (outgoing: Partial<OutgoingOptions>, 
   outgoing.rejectUnauthorized = false
   outgoing.headers = headers
   if (options.map) {
-    outgoing = (options.map as Exclude<CreateProxyOptions['map'], undefined>)(outgoing, req, res)
+    outgoing = (options.map as Exclude<ServerOptions['map'], undefined>)(outgoing, req, res)
   }
   return outgoing
 }

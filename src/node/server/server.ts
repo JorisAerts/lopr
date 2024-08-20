@@ -147,7 +147,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
       }
 
       // forward the request to the proxy
-      return forwardRequest(req, res, options as CreateProxyOptions)
+      return forwardRequest(req, res, options)
     }
 
     const getHttpsMediator = (host: string) => {
@@ -178,13 +178,13 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
         socket.pipe(mediator).pipe(socket)
       }
     })
-
+ 
     // WebSockets
     httpServer.on('upgrade', (req: ProxyRequest, socket: net.Socket, head: Buffer) => {
       createErrorHandlerFor(req, socket)
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
       // ignore local ws request (don't forward to the proxy (for now...))
-      if (!isLocalhost(req, options.port)) forwardWebSocket(req, socket, options as CreateProxyOptions, httpServer, head)
+      if (!isLocalhost(req, options.port)) forwardWebSocket(req, socket, options, httpServer, head)
     })
   })
 }

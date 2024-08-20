@@ -12,7 +12,7 @@ import { isReqHttps, setupOutgoingRequestOptions } from '../utils'
 import { cacheDir } from '../../utils/temp-dir'
 import { mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
-import type { ServerOptions } from '../../server/ServerOptions'
+import type { ServerOptions } from '../../server'
 
 /**
  * Pipe to the outgoing pipeline, create the request to the ultimate destination
@@ -25,12 +25,14 @@ export const proxyRequest = (req: ProxyRequest, res: ProxyResponse, options: Ser
 
       // log the response to the websocket
       getDecodedIncomingMessageData(proxyRes)
-        .then((b) => Buffer.from(b).toString('utf8'))
+        .then((b) => Buffer.from(b))
         .then((data) => {
-          // write the file
-          const cache = cacheDir(options)
-          mkdirSync(cache, { recursive: true })
-          writeFileSync(join(cache, res.uuid), data)
+          if (data.length) {
+            // write the file
+            const cache = cacheDir(options)
+            mkdirSync(cache, { recursive: true })
+            writeFileSync(join(cache, res.uuid), data)
+          }
 
           sendWsData(WebSocketMessageType.ProxyResponse, createProxyResponse((req as ProxyRequest).uuid, proxyRes, data))
         })

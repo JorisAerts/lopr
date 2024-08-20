@@ -1,6 +1,6 @@
 import type { ProxyRequest } from '../../server/ProxyRequest'
 import type { Socket } from 'node:net'
-import type { CreateProxyOptions } from '../../server'
+import type { ServerOptions } from '../../server'
 import { createErrorHandler } from '../../../client/utils/logging'
 import * as utils from '../utils'
 import { isReqHttps, isReqWebSocket } from '../utils'
@@ -18,12 +18,12 @@ import { setupSocket } from './setup-socket'
  * Does the actual proxying.
  * Make the request and upgrade it send the Switching Protocols request and pipe the sockets.
  */
-export const proxyRequest = (req: ProxyRequest, socket: Socket, options: CreateProxyOptions) => {
+export const proxyRequest = (req: ProxyRequest, socket: Socket, options: ServerOptions) => {
   socket.on('error', createErrorHandler(socket))
 
   setupSocket(null, socket)
 
-  const config = utils.setupOutgoingRequestOptions({}, req, null, options as CreateProxyOptions)
+  const config = utils.setupOutgoingRequestOptions({}, req, null, options as ServerOptions)
   const proxyReq = (isReqHttps(req) ? https : http).request(config)
   proxyReq.on('error', createErrorHandler(socket))
   proxyReq.on('upgrade', function (proxyRes, proxySocket) {
