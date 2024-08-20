@@ -6,6 +6,7 @@ import { existsSync, rmSync, statSync } from 'fs'
 import { access, constants, readFile } from 'fs/promises'
 import type { ProxyRequestInfo } from '../../shared/Request'
 import type { ProxyResponseInfo } from '../../shared/Response'
+import * as fs from 'node:fs'
 
 export const useCache = (options: ServerOptions) => {
   /**
@@ -47,6 +48,13 @@ export const useCache = (options: ServerOptions) => {
       return cacheDir(options)
     },
   }
+}
+
+export const getCachedData = (options: ServerOptions, uuid: UUID) => {
+  const cache = cacheDir(options)
+  const path = join(cache, uuid)
+  if (!statSync(path, { throwIfNoEntry: false })!.isFile()) return Promise.resolve('')
+  return access(path, fs.constants.R_OK).then(() => readFile(path))
 }
 
 export const clearCache = (options: ServerOptions) => {

@@ -24,6 +24,7 @@ import process from 'node:process'
 import { newLine } from '../proxy/socket/newline'
 import type { CreateProxyOptions, ServerOptions } from './ServerOptions'
 import { clearCache } from './cache'
+import { handleApi } from '../local/api-handler'
 
 export const DEFAULT_PORT = 8080
 
@@ -139,6 +140,15 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
           return
         }
 
+        if (req.url?.startsWith('/api/') && handleApi(req, res, options)) {
+          return
+        }
+
+        // intercept local requests
+        if (req.url === '/api') {
+          return
+        }
+
         // requests to this server (proxy UI)
         else {
           handleStatic(req, resCaptured)
@@ -178,7 +188,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
         socket.pipe(mediator).pipe(socket)
       }
     })
- 
+
     // WebSockets
     httpServer.on('upgrade', (req: ProxyRequest, socket: net.Socket, head: Buffer) => {
       createErrorHandlerFor(req, socket)
