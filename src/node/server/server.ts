@@ -1,6 +1,5 @@
 import type { IncomingMessage, Server, ServerResponse } from 'http'
 import * as http from 'http'
-import type { OutgoingOptions } from '../proxy/utils'
 import type { Logger } from '../utils/logger'
 import { clearScreen, createLogger } from '../utils/logger'
 import * as https from 'https'
@@ -23,16 +22,7 @@ import { captureResponse } from '../utils/captureResponse'
 import { HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE } from '../../shared/constants'
 import process from 'node:process'
 import { newLine } from '../proxy/socket/newline'
-
-export interface CreateProxyOptions {
-  port: number
-  proxySSL: boolean | undefined | string | RegExp
-  map: ((options: OutgoingOptions, req: IncomingMessage, res: ServerResponse | null) => OutgoingOptions) | undefined
-}
-
-export interface CommonOptions {
-  logger: Logger
-}
+import type { CreateProxyOptions, ServerOptions } from './ServerOptions'
 
 export const DEFAULT_PORT = 8080
 
@@ -41,23 +31,26 @@ const defaultServerOptions = {
   ServerResponse: ProxyResponse satisfies typeof ServerResponse<ProxyRequest>,
 } as http.ServerOptions<typeof ProxyRequest, typeof ServerResponse>
 
-type InternalOptions<Options extends Partial<CreateProxyOptions>> = CreateProxyOptions & CommonOptions & Options
-
-export interface CreateProxy {
+/**
+ * The resulting type of the createProxyServer({...}) function
+ */
+export interface CreateProxyServer {
   address: string
   url: URL
   server: Server
   logger: Logger
 }
 
-export function createProxyServer<Options extends Partial<CreateProxyOptions>>(opt = {} as Options): Promise<CreateProxy> {
+export function createProxyServer<Options extends Partial<CreateProxyOptions>>(opt = {} as Options): Promise<CreateProxyServer> {
   // the options object
   const options = {
     port: DEFAULT_PORT,
     proxySSL: true,
     ...opt,
+
+    cache: {},
     logger: createLogger(),
-  } as InternalOptions<Options>
+  } as ServerOptions<Options>
 
   const { logger } = options
 
@@ -77,7 +70,6 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
   return new Promise((resolve) => {
     // one host on https Server
     const hosts = new Set<string>()
-    let httpPort = options.port
     let httpsPort: number
 
     const generateCertificate = (host: string) => {
@@ -101,8 +93,8 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
     // try the next port if the suggested one is unavailable (8080... 8081... 8082...)
     const onError = (e: Error & { code?: string }) => {
       if (e.code === 'EADDRINUSE') {
-        logger.info(`Port ${httpPort} is in use, trying another one...`)
-        httpServer.listen(++httpPort)
+        logger.info(`Port ${options.port} is in use, trying another one...`)
+        httpServer.listen(++options.port)
       } else {
         sendWsData(WebSocketMessageType.Error, createErrorMessage(e))
         httpServer.removeListener('error', onError)
@@ -120,12 +112,12 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
         server: httpServer,
         onConnect: () => sendWsData(WebSocketMessageType.Preferences, options),
       })
-      const address = `http://localhost:${httpPort}`
+      const address = `http://localhost:${options.port}`
       resolve({ logger, address, url: new URL(address), server: httpServer })
     })
 
     // A good time to start listening
-    httpServer.listen(httpPort)
+    httpServer.listen(options.port)
 
     // forward the requests to their ultimate destination, coming from both HTTP and HTTPS
     function handleRequest(req: ProxyRequest, res: ProxyResponse) {
@@ -133,13 +125,13 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
       // requests to the local webserver (the GUI or PAC)
-      if (isLocalhost(req, httpPort) && (res = captureResponse(res))) {
+      if (isLocalhost(req, options.port) && (res = captureResponse(res))) {
         // capture the output and send it to the websocket
         const resCaptured = captureResponse(res)
 
         // intercept local requests
         if (req.url === '/pac') {
-          const pac = generatePAC(`localhost:${httpPort}`)
+          const pac = generatePAC(`localhost:${options.port}`)
           resCaptured.setHeader(HTTP_HEADER_CONTENT_LENGTH, pac.length)
           resCaptured.setHeader(HTTP_HEADER_CONTENT_TYPE, 'application/javascript')
           resCaptured.end(pac)
@@ -191,7 +183,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
       createErrorHandlerFor(req, socket)
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
       // ignore local ws request (don't forward to the proxy (for now...))
-      if (!isLocalhost(req, httpPort)) forwardWebSocket(req, socket, options as CreateProxyOptions, httpServer, head)
+      if (!isLocalhost(req, options.port)) forwardWebSocket(req, socket, options as CreateProxyOptions, httpServer, head)
     })
   })
 }
