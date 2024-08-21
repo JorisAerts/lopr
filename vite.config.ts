@@ -28,6 +28,10 @@ export default defineConfig({
 
   server: {
     proxy: {
+      '/api': {
+        target: `http://${DEFAULT_HOST}:${DEFAULT_PORT}`,
+        changeOrigin: true,
+      },
       [WEBSOCKET_ROOT]: {
         target: `ws://${DEFAULT_HOST}:${DEFAULT_PORT}`,
         ws: true,
