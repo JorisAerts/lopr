@@ -40,6 +40,7 @@ const createBodyRenderer = (response: UseResponse) => {
     case 'application/x-typescript':
     case 'application/javascript':
     case 'application/x-javascript':
+    case 'application/x-ns-proxy-autoconfig':
     case 'text/javascript':
     case 'text/css':
     case 'text/plain':
@@ -79,15 +80,17 @@ const createBodyRenderer = (response: UseResponse) => {
     case 'image/svg':
     case 'image/svg+xml':
       return () => (
-        <VSheet class={[/* 'response-body--checkered', */ ...classes]}>
-          <img
-            src={`data:${type};base64, ${btoa(response.body.value)}`}
-            alt={filename.value}
-            style={{
-              'max-width': '100%',
-              'max-height': '100%',
-            }}
-          />
+        <VSheet class={['response-body--checkered', ...classes]}>
+          {response.body.value && (
+            <img
+              src={`data:${type};base64, ${btoa(response.body.value)}`}
+              alt={filename.value}
+              style={{
+                'max-width': '100%',
+                'max-height': '100%',
+              }}
+            />
+          )}
         </VSheet>
       )
   }
@@ -95,7 +98,7 @@ const createBodyRenderer = (response: UseResponse) => {
   if (RX_IS_IMAGE.test(type)) {
     return () =>
       response.hasBody.value && (
-        <VSheet class={[/* 'response-body--checkered', */ ...classes]}>
+        <VSheet class={['response-body--checkered', ...classes]}>
           <img
             src={`./api/data?uuid=${response.uuid.value}`}
             alt={filename.value}

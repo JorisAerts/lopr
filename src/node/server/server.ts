@@ -135,7 +135,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
         if (req.url === '/pac') {
           const pac = generatePAC(`localhost:${options.port}`)
           resCaptured.setHeader(HTTP_HEADER_CONTENT_LENGTH, pac.length)
-          resCaptured.setHeader(HTTP_HEADER_CONTENT_TYPE, 'application/javascript')
+          resCaptured.setHeader(HTTP_HEADER_CONTENT_TYPE, 'application/x-ns-proxy-autoconfig')
           resCaptured.end(pac)
           return
         }

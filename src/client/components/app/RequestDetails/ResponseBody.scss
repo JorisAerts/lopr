@@ -1,7 +1,14 @@
 .response-body {
 
   &--checkered {
-    background-image: linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%);
+    --checkered-light: rgba(255, 255, 255, .25);
+    --checkered-dark: rgba(0, 0, 0, .25);
+    background-image: conic-gradient(
+                    var(--checkered-light) 90deg,
+                    var(--checkered-dark) 90deg 180deg,
+                    var(--checkered-light) 180deg 270deg,
+                    var(--checkered-dark) 270deg
+    );
     background-size: 20px 20px;
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
   }
