@@ -57,7 +57,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 
   const addToStruct = (uuid: UUID, isRecent = true) => {
     const request = getRequest(uuid)
-    if (!request) return
+    if (!request?.url) return
 
     const url = request.urlNormal ?? request.url
     const indexOf = url.indexOf('://')
@@ -69,7 +69,8 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 
     let current: StructNode = struct.value
     parts.reduce((key, p, i) => {
-      if (isRecent) pushRecentUUID((current.key = key))
+      current.key = key
+      if (isRecent) pushRecentUUID(key)
       if (i === parts.length - 1) {
         current.items ??= []
         current.items.push(uuid)

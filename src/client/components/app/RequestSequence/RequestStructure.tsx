@@ -117,7 +117,7 @@ export const RequestStructure = defineComponent({
                     ]}
                     tooltip={`${request.method} ${request.url}`}
                   >
-                    {request.method} {request.url.substring((struct.key?.length ?? 0) + 1) || '/'}
+                    {request.method} {request.url.substring(struct.key?.length + 1) || '/'}
                   </VListItem>
                 )
               )
