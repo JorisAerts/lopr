@@ -1,6 +1,6 @@
-import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 import { VCheckbox, VSheet, VToolbar } from '../../ui'
+import { makeMimeTypeProps } from './mime-type'
 
 export const MonotypeView = defineComponent({
   name: 'MonotypeView',
@@ -11,7 +11,7 @@ export const MonotypeView = defineComponent({
   },
 
   props: {
-    data: { type: [String, Object, Buffer] as PropType<any | undefined> },
+    ...makeMimeTypeProps(),
     wrap: { type: Boolean, default: false },
   },
 
