@@ -55,7 +55,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     timeOut = setTimeout(() => recent.value.clear(), CLEAR_RECENT_TIMEOUT)
   }
 
-  const addToStruct = (uuid: UUID) => {
+  const addToStruct = (uuid: UUID, isRecent = true) => {
     const request = getRequest(uuid)
     if (!request) return
 
@@ -69,7 +69,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 
     let current: StructNode = struct.value
     parts.reduce((key, p, i) => {
-      pushRecentUUID((current.key = key))
+      if (isRecent) pushRecentUUID((current.key = key))
       if (i === parts.length - 1) {
         current.items ??= []
         current.items.push(uuid)
@@ -87,7 +87,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   const registerUUID = (uuid: UUID, isRecent = true) => {
     if (ids.value.includes(uuid)) return
     ids.value.push(uuid)
-    addToStruct(uuid)
+    addToStruct(uuid, isRecent)
     if (isRecent) pushRecentUUID(uuid)
   }
 
@@ -118,7 +118,6 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
         if (item.response) responses.value.set(uuid, item.response)
         registerUUID(uuid, false)
       })
-      console.log({ struct: struct.value })
     })
 
   // register the handlers (they will overwrite the previous ones)
