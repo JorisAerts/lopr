@@ -140,12 +140,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
           return
         }
 
-        if (req.url?.startsWith('/api/') && handleApi(req, res, options)) {
-          return
-        }
-
-        // intercept local requests
-        if (req.url === '/api') {
+        if (handleApi(req, res, options)) {
           return
         }
 
