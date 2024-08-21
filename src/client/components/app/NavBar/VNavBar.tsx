@@ -1,4 +1,3 @@
-import './VNavBar.scss'
 import type { ComponentInstance, VNode } from 'vue'
 import { defineComponent } from 'vue'
 import { VBadge, VBtn, VCard, VIcon, VSpacer, VTooltip } from '../../ui'

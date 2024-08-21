@@ -4,7 +4,6 @@ import { computed, defineComponent } from 'vue'
 import type { UseResponse } from '../../../composables/response'
 import { useResponse } from '../../../composables/response'
 import { VCheckbox, VSheet } from '../../ui'
-import { VDownloadData } from '../DownloadData'
 import { useRequest } from '../../../composables/request'
 import { useAppStore } from '../../../stores/app'
 import { parseHeaders } from '../../../utils/request-utils'
@@ -95,9 +94,9 @@ const createBodyRenderer = (response: UseResponse) => {
   return () =>
     response.hasBody.value && (
       <VSheet class={classes}>
-        <VDownloadData type={type} data={response.body.value} filename={filename.value}>
+        <a href={`./api/data?uuid=${response.uuid.value}`} download={filename.value}>
           Download: {filename.value}
-        </VDownloadData>
+        </a>
       </VSheet>
     )
 }

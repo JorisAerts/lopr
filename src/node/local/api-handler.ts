@@ -17,6 +17,7 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
     if (url.pathname === '/api/data' && url.query.uuid) {
       getCachedData(options, `${url.query.uuid}` as UUID)
         .then((data) => {
+          res.setHeader('Content-Length', data.length)
           res.end(data)
         })
         .catch((err) => {
