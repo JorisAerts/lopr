@@ -17,8 +17,8 @@ export const RequestSequence = defineComponent({
   },
 
   setup(props, { emit }) {
-    const list = ref<VNode & ComponentPublicInstance>()
     const requestStore = useRequestStore()
+    const list = ref<VNode & ComponentPublicInstance>()
     const handleSelect = (item: ProxyRequestInfo) => {
       emit('update:modelValue', item.uuid)
     }
@@ -30,7 +30,9 @@ export const RequestSequence = defineComponent({
       <VList class={['fill-height', 'overflow-auto', 'mt-2']} ref={list}>
         <TransitionGroup>
           {requestStore.ids
-            .map((uuid) => requestStore.getRequest(uuid))
+            .map((uuid) => {
+              return requestStore.getRequest(uuid)
+            })
             .map(
               (req) =>
                 req && (

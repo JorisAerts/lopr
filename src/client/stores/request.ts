@@ -99,7 +99,6 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   const clear = () => {
     ids.value.length = 0
     recent.value.clear()
-
     responses.value.clear()
     requests.value.clear()
 
@@ -108,19 +107,19 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     clearTimeout(timeOut)
   }
 
-  const refresh = () => {
+  const refresh = () =>
     axios.get('/api/state').then((response) => {
       clear()
       const data = response.data as ProxyState
 
       ;(Object.keys(data) as (keyof typeof data)[]).forEach((uuid) => {
         const item = data[uuid]
-        pushRecentUUID(uuid)
         if (item.request) requests.value.set(uuid, item.request)
         if (item.response) responses.value.set(uuid, item.response)
+        registerUUID(uuid, false)
       })
+      console.log({ struct: struct.value })
     })
-  }
 
   // register the handlers (they will overwrite the previous ones)
   registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
