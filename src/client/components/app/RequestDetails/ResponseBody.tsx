@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { computed, defineComponent } from 'vue'
 import type { UseResponse } from '../../../composables/response'
 import { useResponse } from '../../../composables/response'
-import { VCheckbox, VSheet } from '../../ui'
+import { VCheckbox, VSheet, VToolbar } from '../../ui'
 import { useRequest } from '../../../composables/request'
 import { useAppStore } from '../../../stores/app'
 import { parseHeaders } from '../../../utils/request-utils'
@@ -45,10 +45,10 @@ const createBodyRenderer = (response: UseResponse) => {
     case 'text/css':
     case 'text/plain':
       return () => (
-        <div class={classes}>
-          <div class={['mt-1', 'mb-2']}>
+        <VSheet class={classes}>
+          <VToolbar class={['mt-1', 'mb-2']}>
             <VCheckbox label={'Wrap'} v-model={appStore.wrapResponseData} />
-          </div>
+          </VToolbar>
           <pre
             class={['text-mono']}
             style={{
@@ -57,7 +57,7 @@ const createBodyRenderer = (response: UseResponse) => {
           >
             {response.body.value}
           </pre>
-        </div>
+        </VSheet>
       )
   }
 
@@ -75,6 +75,25 @@ const createBodyRenderer = (response: UseResponse) => {
     const paramPos = filename.indexOf('?')
     return paramPos === -1 ? filename : filename.substring(0, paramPos)
   })
+
+  switch (type) {
+    case 'image/svg':
+    case 'image/svg+xml':
+      return () => (
+        <VSheet class={[/* 'response-body--checkered', */ ...classes]}>
+          {response.body.value && (
+            <img
+              src={`data:${type};base64, ${btoa(response.body.value)}`}
+              alt={filename.value}
+              style={{
+                'max-width': '100%',
+                'max-height': '100%',
+              }}
+            />
+          )}
+        </VSheet>
+      )
+  }
 
   if (RX_IS_IMAGE.test(type)) {
     return () =>
