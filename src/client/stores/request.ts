@@ -32,7 +32,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
    */
   const recent = ref(new Set<UUID | string>([]))
 
-  const struct = ref<StructNode>({ key: '', isNew: false })
+  const structure = ref<StructNode>({ key: '', isNew: false })
 
   /**
    * The request data sent from the client.
@@ -67,7 +67,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     if (indexOf > -1) parts[0] = (indexOf > -1 ? url.substring(0, indexOf + 3) : '') + parts[0]
     if (parts.length === 1) parts.push('/')
 
-    let current: StructNode = struct.value
+    let current: StructNode = structure.value
     parts.reduce((key, p, i) => {
       current.key = key
       if (isRecent) pushRecentUUID(key)
@@ -82,7 +82,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
       return `${key}${key ? '/' : ''}${p}`
     }, '')
 
-    triggerRef(struct)
+    triggerRef(structure)
   }
 
   const registerUUID = (uuid: UUID, isRecent = true) => {
@@ -92,7 +92,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     if (isRecent) pushRecentUUID(uuid)
   }
 
-  const empty = computed(() => ids.value.length === 0)
+  const isEmpty = computed(() => ids.value.length === 0)
 
   const clearState = () => {
     ids.value.length = 0
@@ -100,7 +100,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     responses.value.clear()
     requests.value.clear()
 
-    struct.value = { key: '', isNew: false }
+    structure.value = { key: '', isNew: false }
 
     clearTimeout(timeOut)
   }
@@ -110,18 +110,25 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
    */
   const clear = () => axios.get('/api/state?clear').then(clearState)
 
-  const refresh = () =>
-    axios.get('/api/state').then((response) => {
-      clearState()
-      const data = response.data as ProxyState
-
-      ;(Object.keys(data) as (keyof typeof data)[]).forEach((uuid) => {
-        const item = data[uuid]
-        if (item.request) requests.value.set(uuid, item.request)
-        if (item.response) responses.value.set(uuid, item.response)
-        registerUUID(uuid, false)
+  /**
+   * If no state is provided, it's requested from the server
+   */
+  const refresh = (data?: ProxyState) => {
+    if (!data)
+      return axios.get('/api/state').then((response) => {
+        refresh(response.data as ProxyState)
       })
+
+    clearState()
+    ;(Object.keys(data) as (keyof typeof data)[]).forEach((uuid) => {
+      const item = data[uuid]
+      if (item.request) requests.value.set(uuid, item.request)
+      if (item.response) responses.value.set(uuid, item.response)
+      registerUUID(uuid, false)
     })
+  }
+
+  const isValidUUID = (uuid?: string) => uuid && ids.value.includes(uuid as UUID)
 
   // register the handlers (they will overwrite the previous ones)
   registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
@@ -138,7 +145,22 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     registerUUID(data.uuid)
   })
 
+  // initially fetch the state from the server
   refresh()
 
-  return { ids, requests, responses, getRequest, getResponse, isNew, clear, refresh, structure: struct, recent, empty }
+  return {
+    ids,
+    requests,
+    responses,
+    getRequest,
+    getResponse,
+    isNew,
+    structure,
+    recent,
+    isEmpty,
+    isValidUUID,
+
+    clear,
+    refresh,
+  }
 })
