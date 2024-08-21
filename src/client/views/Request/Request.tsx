@@ -1,5 +1,5 @@
 import type { PropType, Ref } from 'vue'
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { RequestDetails, RequestSequence, RequestStructure, VBtn, VCard, VContainer, VSheet, VSpacer } from '../../components'
 import { useRequestStore } from '../../stores/request'
 import type { UUID } from '../../../shared/UUID'
@@ -18,6 +18,8 @@ export const Request = defineComponent({
 
     const requestViewType = ref(1)
     const expanded = ref<string[]>([])
+
+    watch(requestStore.ids, (newVal) => !newVal.length && (current.value = undefined))
 
     return () => (
       <VContainer class={['fill-height', 'gap-2']}>
