@@ -22,8 +22,8 @@ const useResponseByRef = (uuid: Ref<UUID | undefined>) => {
   const body = computed(() => {
     if (hasBody.value && !bodyData.value) {
       fetch(`/api/data?uuid=${uuid.value}`)
-        .then((res) => res.json() as UUIDModelProps)
-        .then((data) => (bodyData.value = data))
+        .then((res) => res.text())
+        .then((data) => (data ? (bodyData.value = data) : ''))
     }
     return bodyData.value
   })
