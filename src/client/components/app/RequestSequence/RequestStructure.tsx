@@ -1,6 +1,6 @@
 import './RequestStructure.scss'
 import type { PropType } from 'vue'
-import { defineComponent, TransitionGroup, withModifiers } from 'vue'
+import { defineComponent, withModifiers } from 'vue'
 import { VList, VListGroup, VListItem } from '../../ui'
 import { useRequestStore } from '../../../stores/request'
 import type { UUID } from '../../../../shared/UUID'
@@ -64,7 +64,7 @@ export const RequestStructure = defineComponent({
     // recursively render the tree
     const renderTree = (struct: StructNode) =>
       struct ? (
-        <TransitionGroup>
+        <>
           {struct.nodes &&
             Object.entries(struct.nodes).map(([name, value]) => {
               const key = value.key
@@ -122,7 +122,7 @@ export const RequestStructure = defineComponent({
                 )
               )
             })}
-        </TransitionGroup>
+        </>
       ) : null
 
     return () => <VList class={['request-structure', 'fill-height', 'overflow-auto', 'mt-2']}>{renderTree(requestStore.structure)}</VList>
