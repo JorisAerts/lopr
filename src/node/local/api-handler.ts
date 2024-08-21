@@ -33,8 +33,10 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
         return true
       }
 
+      const data = JSON.stringify(options.cache.state)
       res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify(options.cache.state))
+      res.setHeader('Content-Length', data.length)
+      res.end(data)
       return true
     }
 
