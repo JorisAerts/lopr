@@ -80,7 +80,7 @@ const createBodyRenderer = (response: UseResponse) => {
     case 'image/svg':
     case 'image/svg+xml':
       return () => (
-        <VSheet class={[/* 'response-body--checkered', */ ...classes]}>
+        <VSheet class={['response-body--checkered', ...classes]}>
           {response.body.value && (
             <img
               src={`data:${type};base64, ${btoa(response.body.value)}`}
@@ -98,7 +98,7 @@ const createBodyRenderer = (response: UseResponse) => {
   if (RX_IS_IMAGE.test(type)) {
     return () =>
       response.hasBody.value && (
-        <VSheet class={[/* 'response-body--checkered', */ ...classes]}>
+        <VSheet class={['response-body--checkered', ...classes]}>
           <img
             src={`./api/data?uuid=${response.uuid.value}`}
             alt={filename.value}
