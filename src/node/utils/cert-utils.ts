@@ -28,13 +28,18 @@ interface RootKeyFiles {
 const ROOT_KEY_FILES: RootKeyFiles = getRootKeyFiles()
 
 function getRootKeyFiles(): RootKeyFiles {
+  const tmpCert = join(tempDir(), 'cert', 'root', 'rootCA.key')
+  const tmpKey = join(tempDir(), 'cert', 'root', 'rootCA.crt')
+  // if there's a root certificate in the temp folder, use that one
+  if (existsSync(tmpCert) && existsSync(tmpKey)) return { key: tmpKey, cert: tmpCert }
+
   const key = join(rootDir, 'root', 'rootCA.key')
   const cert = join(rootDir, 'root', 'rootCA.crt')
+  // return the certificate from the package
   if (existsSync(key) && existsSync(cert)) return { key, cert }
-  return {
-    key: join(tempDir(), 'cert', 'root', 'rootCA.key'),
-    cert: join(tempDir(), 'cert', 'root', 'rootCA.crt'),
-  }
+
+  // fallback to temp (shouldn't happen)
+  return { key: tmpKey, cert: tmpCert }
 }
 
 export const generatedKeyFiles = (host: string): RootKeyFiles => {
