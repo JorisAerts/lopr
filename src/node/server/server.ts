@@ -141,14 +141,13 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
           return
         }
 
-        if (handleApi(req, res, options)) {
+        if (handleApi(req, resCaptured, options)) {
           return
         }
-
         // requests to this server (proxy UI)
-        else {
-          handleStatic(req, resCaptured)
-        }
+        else handleStatic(req, resCaptured)
+
+        // everything is handled, so get out of here
         return
       }
 
