@@ -2,9 +2,6 @@ import { handleResponse } from '../response'
 import * as http from 'http'
 import * as https from 'https'
 import { getDecodedIncomingMessageData } from '../../utils/incoming-message'
-import { sendWsData } from '../../local'
-import { WebSocketMessageType } from '../../../shared/WebSocketMessage'
-import { createProxyResponse } from '../../utils/ws-messages'
 import type { ProxyRequest } from '../../server/ProxyRequest'
 import type { ProxyResponse } from '../../server/ProxyResponse'
 import { createErrorHandler } from '../../../client/utils/logging'
@@ -13,6 +10,7 @@ import { cacheDir } from '../../utils/temp-dir'
 import { mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import type { ServerOptions } from '../../server'
+import { createProxyResponse } from '../../utils/ws-messages'
 
 /**
  * Pipe to the outgoing pipeline, create the request to the ultimate destination
@@ -34,7 +32,7 @@ export const proxyRequest = (req: ProxyRequest, res: ProxyResponse, options: Ser
             writeFileSync(join(cache, res.uuid), data)
           }
 
-          sendWsData(WebSocketMessageType.ProxyResponse, createProxyResponse((req as ProxyRequest).uuid, proxyRes, data))
+          options.cache.addResponse(createProxyResponse((req as ProxyRequest).uuid, proxyRes, data))
         })
 
       proxyRes.pipe(res)

@@ -47,7 +47,7 @@ export const createLocalProxyResponse = (uuid: UUID, headers: http.OutgoingHttpH
     uuid,
     headers: Object.entries(headers).flatMap(([k, v]) => (Array.isArray(v) ? [k, v.join(', ')] : [k, `${v}`])),
     contentLength: data?.length ?? 0,
-    body: data,
+    body: data ? 1 : undefined,
   }
 }
 

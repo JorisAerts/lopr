@@ -7,6 +7,8 @@ import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { ProxyResponseInfo } from '../../shared/Response'
 import type { UUID } from '../../shared/UUID'
 import { isRecording } from './app'
+import axios from 'axios'
+import type { ProxyState } from '../../shared/ProxyState'
 
 export const STORE_NAME = 'Requests'
 
@@ -53,7 +55,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     timeOut = setTimeout(() => recent.value.clear(), CLEAR_RECENT_TIMEOUT)
   }
 
-  const addToStruct = (uuid: UUID) => {
+  const addToStruct = (uuid: UUID, isRecent = true) => {
     const request = getRequest(uuid)
     if (!request) return
 
@@ -67,7 +69,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 
     let current: StructNode = struct.value
     parts.reduce((key, p, i) => {
-      pushRecentUUID((current.key = key))
+      if (isRecent) pushRecentUUID((current.key = key))
       if (i === parts.length - 1) {
         current.items ??= []
         current.items.push(uuid)
@@ -82,22 +84,18 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     triggerRef(struct)
   }
 
-  const registerUUID = (uuid: UUID) => {
+  const registerUUID = (uuid: UUID, isRecent = true) => {
     if (ids.value.includes(uuid)) return
     ids.value.push(uuid)
-    pushRecentUUID(uuid)
-    addToStruct(uuid)
+    addToStruct(uuid, isRecent)
+    if (isRecent) pushRecentUUID(uuid)
   }
 
   const empty = computed(() => ids.value.length === 0)
 
-  /**
-   * Clear the store
-   */
-  const clear = () => {
+  const clearState = () => {
     ids.value.length = 0
     recent.value.clear()
-
     responses.value.clear()
     requests.value.clear()
 
@@ -105,6 +103,24 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 
     clearTimeout(timeOut)
   }
+
+  /**
+   * Clear the store (front- and backend)
+   */
+  const clear = () => axios.get('/api/state?clear').then(clearState)
+
+  const refresh = () =>
+    axios.get('/api/state').then((response) => {
+      clearState()
+      const data = response.data as ProxyState
+
+      ;(Object.keys(data) as (keyof typeof data)[]).forEach((uuid) => {
+        const item = data[uuid]
+        if (item.request) requests.value.set(uuid, item.request)
+        if (item.response) responses.value.set(uuid, item.response)
+        registerUUID(uuid, false)
+      })
+    })
 
   // register the handlers (they will overwrite the previous ones)
   registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
@@ -121,5 +137,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     registerUUID(data.uuid)
   })
 
-  return { ids, requests, responses, getRequest, getResponse, isNew, clear, structure: struct, recent, empty }
+  refresh()
+
+  return { ids, requests, responses, getRequest, getResponse, isNew, clear, refresh, structure: struct, recent, empty }
 })

@@ -3,7 +3,7 @@ import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { createErrorMessage } from '../utils/ws-messages'
 import type { ProxyResponse } from '../server/ProxyResponse'
 import type { ProxyRequest } from '../server/ProxyRequest'
-import { getCachedData } from '../server/cache'
+import { clearCache, getCachedData } from '../server/cache'
 import type { ServerOptions } from '../server'
 import { parse as parseUrl } from 'url'
 import type { UUID } from '../../shared/UUID'
@@ -24,6 +24,17 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
           res.statusCode = 404
           res.write(err).toString()
         })
+      return true
+    } else if (url.pathname === '/api/state') {
+      if (url.query.clear !== undefined) {
+        options.cache.clear()
+        clearCache(options)
+        res.end()
+        return true
+      }
+
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify(options.cache.state))
       return true
     }
 
