@@ -9,6 +9,7 @@ import type { ProxyResponseInfo } from '../../shared/Response'
 import * as fs from 'node:fs'
 import { sendWsData } from '../local'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
+import type { ProxyState } from '../../shared/ProxyState'
 
 export const useCache = () => {
   /**
@@ -52,13 +53,12 @@ export const useCache = () => {
     addResponse,
     clear,
     get state() {
-      return [...uuids].reduce(
-        (ret, b) => {
-          ret[b] = { request: requests.get(b), response: responses.get(b) }
-          return ret
-        },
-        {} as Record<string, any>
-      )
+      return [...uuids].reduce((ret, b) => {
+        const request = requests.get(b)
+        const response = responses.get(b)
+        if (request || response) ret[b] = { request, response }
+        return ret
+      }, {} as ProxyState)
     },
   }
 }
