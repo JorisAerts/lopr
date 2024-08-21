@@ -44,10 +44,11 @@ export const captureResponse = (res: ProxyResponse, options: ServerOptions) => {
     }
     originalEnd.call(res, chunk, encoding, callback) // Call original `end` method
 
-    const cache = cacheDir(options)
-    mkdirSync(cache, { recursive: true })
-    writeFileSync(join(cache, res.uuid), responseBody)
-
+    if (responseBody.length) {
+      const cache = cacheDir(options)
+      mkdirSync(cache, { recursive: true })
+      writeFileSync(join(cache, res.uuid), responseBody)
+    }
     // send the response to the websocket
     options.cache.addResponse(createLocalProxyResponse(res.uuid, { ...responseHeaders }, responseBody))
   } as any
