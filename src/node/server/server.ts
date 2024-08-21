@@ -23,7 +23,7 @@ import { HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE } from '../../shar
 import process from 'node:process'
 import { newLine } from '../proxy/socket/newline'
 import type { CreateProxyOptions, ServerOptions } from './ServerOptions'
-import { clearCache } from './cache'
+import { clearCache, useCache } from './cache'
 import { handleApi } from '../local/api-handler'
 
 export const DEFAULT_PORT = 8080
@@ -43,14 +43,14 @@ export interface CreateProxyServer {
   logger: Logger
 }
 
-export function createProxyServer<Options extends Partial<CreateProxyOptions>>(opt = {} as Options): Promise<CreateProxyServer> {
+export function createProxyServer<Options extends Partial<CreateProxyOptions>>(userConfig = {} as Options): Promise<CreateProxyServer> {
   // the options object
   const options = {
     port: DEFAULT_PORT,
     proxySSL: true,
-    ...opt,
+    ...userConfig,
 
-    cache: {},
+    cache: useCache(),
     logger: createLogger(),
   } as ServerOptions<Options>
 

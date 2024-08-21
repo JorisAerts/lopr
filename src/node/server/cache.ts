@@ -3,16 +3,21 @@ import type { ServerOptions } from './ServerOptions'
 import { cacheDir } from '../utils/temp-dir'
 import { join } from 'path'
 import { existsSync, rmSync, statSync } from 'fs'
-import { access, constants, readFile } from 'fs/promises'
+import { access, readFile } from 'fs/promises'
 import type { ProxyRequestInfo } from '../../shared/Request'
 import type { ProxyResponseInfo } from '../../shared/Response'
 import * as fs from 'node:fs'
+import { sendWsData } from '../local'
+import { WebSocketMessageType } from '../../shared/WebSocketMessage'
+import { createProxyRequest, createProxyResponse } from '../utils/ws-messages'
+import type { ProxyRequest } from './ProxyRequest'
+import type { IncomingMessage } from 'http'
 
-export const useCache = (options: ServerOptions) => {
+export const useCache = () => {
   /**
    * Contains all ids (chronologically sequential)
    */
-  const uuids = [] as UUID[]
+  const uuids = new Set<UUID>()
   /**
    * The request data sent from the client.
    * All requests are tagged with a unique UUID
@@ -23,32 +28,34 @@ export const useCache = (options: ServerOptions) => {
    */
   const responses = new Map<string, ProxyResponseInfo>()
 
-  const getIds = (): UUID[] => uuids
-
+  /**
+   * Clear cache
+   */
   const clear = () => {
-    //
+    uuids.clear()
+    responses.clear()
+    requests.clear()
+    // TODO: clearCache(options)
   }
 
-  const getCacheFile = (uuid: UUID) => {
-    const tmpCacheDir = cacheDir(options)
-    const file = join(tmpCacheDir, uuid)
-    return access(file, constants.R_OK).then(() => file) //
+  const addRequest = (req: ProxyRequest) => {
+    const info = createProxyRequest(req)
+    uuids.add(req.uuid)
+    requests.set(req.uuid, info)
+    sendWsData(WebSocketMessageType.ProxyRequest, info)
   }
 
-  const getResponseData = (uuid: UUID) =>
-    getCacheFile(uuid) //
-      .then((file) => readFile(file))
-
-  return {
-    getIds,
-    getCacheFile,
-    getResponseData,
-
-    get cacheDir() {
-      return cacheDir(options)
-    },
+  const addResponse = (uuid: UUID, res: IncomingMessage, data: Buffer) => {
+    const info = createProxyResponse(uuid, res, data)
+    uuids.add(uuid)
+    responses.set(uuid, info)
+    sendWsData(WebSocketMessageType.ProxyResponse, info)
   }
+
+  return { addRequest, addResponse, clear }
 }
+
+export type UseCache = ReturnType<typeof useCache>
 
 export const getCachedData = (options: ServerOptions, uuid: UUID) => {
   const cache = cacheDir(options)
