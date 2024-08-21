@@ -9,9 +9,6 @@ import type { ProxyResponseInfo } from '../../shared/Response'
 import * as fs from 'node:fs'
 import { sendWsData } from '../local'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
-import { createProxyRequest, createProxyResponse } from '../utils/ws-messages'
-import type { ProxyRequest } from './ProxyRequest'
-import type { IncomingMessage } from 'http'
 
 export const useCache = () => {
   /**
@@ -38,17 +35,15 @@ export const useCache = () => {
     // TODO: clearCache(options)
   }
 
-  const addRequest = (req: ProxyRequest) => {
-    const info = createProxyRequest(req)
-    uuids.add(req.uuid)
-    requests.set(req.uuid, info)
+  const addRequest = (info: ProxyRequestInfo) => {
+    uuids.add(info.uuid)
+    requests.set(info.uuid, info)
     sendWsData(WebSocketMessageType.ProxyRequest, info)
   }
 
-  const addResponse = (uuid: UUID, res: IncomingMessage, data: Buffer) => {
-    const info = createProxyResponse(uuid, res, data)
-    uuids.add(uuid)
-    responses.set(uuid, info)
+  const addResponse = (info: ProxyResponseInfo) => {
+    uuids.add(info.uuid)
+    responses.set(info.uuid, info)
     sendWsData(WebSocketMessageType.ProxyResponse, info)
   }
 

@@ -125,7 +125,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
     // forward the requests to their ultimate destination, coming from both HTTP and HTTPS
     function handleRequest(req: ProxyRequest, res: ProxyResponse) {
       createErrorHandlerFor(req, res)
-      sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
+      options.cache.addRequest(createProxyRequest(req))
 
       // requests to the local webserver (the GUI or PAC)
       if (isLocalhost(req, options.port)) {
@@ -171,7 +171,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
     // so we can monitor the data again, before it's encrypted and decrypted at the other side.
     httpServer.on('connect', (req, socket) => {
       createErrorHandlerFor(req, socket)
-      sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
+      options.cache.addRequest(createProxyRequest(req))
       if (req.url?.match(/:443$/)) {
         const host = req.url.substring(0, req.url.length - 4)
         const mediator = getHttpsMediator(host)
@@ -188,7 +188,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
     // WebSockets
     httpServer.on('upgrade', (req: ProxyRequest, socket: net.Socket, head: Buffer) => {
       createErrorHandlerFor(req, socket)
-      sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
+      options.cache.addRequest(createProxyRequest(req))
       // ignore local ws request (don't forward to the proxy (for now...))
       if (!isLocalhost(req, options.port)) forwardWebSocket(req, socket, options, httpServer, head)
     })

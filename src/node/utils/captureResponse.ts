@@ -1,5 +1,3 @@
-import { sendWsData } from '../local/websocket'
-import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import { createLocalProxyResponse } from './ws-messages'
 import type { ProxyResponse } from '../server/ProxyResponse'
 import type http from 'node:http'
@@ -51,7 +49,7 @@ export const captureResponse = (res: ProxyResponse, options: ServerOptions) => {
     writeFileSync(join(cache, res.uuid), responseBody)
 
     // send the response to the websocket
-    sendWsData(WebSocketMessageType.ProxyResponse, createLocalProxyResponse(res.uuid, { ...responseHeaders }, responseBody))
+    options.cache.addResponse(createLocalProxyResponse(res.uuid, { ...responseHeaders }, responseBody))
   } as any
 
   return res
