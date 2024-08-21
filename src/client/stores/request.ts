@@ -93,10 +93,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 
   const empty = computed(() => ids.value.length === 0)
 
-  /**
-   * Clear the store
-   */
-  const clear = () => {
+  const clearState = () => {
     ids.value.length = 0
     recent.value.clear()
     responses.value.clear()
@@ -107,9 +104,14 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     clearTimeout(timeOut)
   }
 
+  /**
+   * Clear the store (front- and backend)
+   */
+  const clear = () => axios.get('/api/state?clear').then(clearState)
+
   const refresh = () =>
     axios.get('/api/state').then((response) => {
-      clear()
+      clearState()
       const data = response.data as ProxyState
 
       ;(Object.keys(data) as (keyof typeof data)[]).forEach((uuid) => {
