@@ -50,9 +50,10 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
     proxySSL: true,
     ...userConfig,
 
+    breakpoints: [],
     cache: useCache(),
     logger: createLogger(),
-  } as ServerOptions<Options>
+  } as ServerOptions
 
   const { logger } = options
 

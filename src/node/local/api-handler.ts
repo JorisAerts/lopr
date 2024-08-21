@@ -25,6 +25,10 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
           res.write(err).toString()
         })
       return true
+    } else if (url.pathname === '/api/state') {
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify(options.cache.state))
+      return true
     }
 
     return false

@@ -24,4 +24,4 @@ export interface CommonOptions {
 /**
  * Accumulation of all props
  */
-export type ServerOptions<Options extends Partial<CreateProxyOptions> = {}> = CreateProxyOptions & CommonOptions & Options
+export type ServerOptions = CreateProxyOptions & CommonOptions

@@ -52,7 +52,20 @@ export const useCache = () => {
     sendWsData(WebSocketMessageType.ProxyResponse, info)
   }
 
-  return { addRequest, addResponse, clear }
+  return {
+    addRequest,
+    addResponse,
+    clear,
+    get state() {
+      return [...uuids].reduce(
+        (ret, b) => {
+          ret[b] = { request: requests.get(b), response: responses.get(b) }
+          return ret
+        },
+        {} as Record<string, any>
+      )
+    },
+  }
 }
 
 export type UseCache = ReturnType<typeof useCache>
