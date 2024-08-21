@@ -5,7 +5,7 @@ export const STORE_NAME = 'Application'
 
 export const useAppStore = defineStore(STORE_NAME, () => {
   const recording = ref(true)
-  const wrapResponseData = ref(true)
+  const wrapResponseData = ref(false)
 
   return { recording, wrapResponseData }
 })

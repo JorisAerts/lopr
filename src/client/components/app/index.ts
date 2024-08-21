@@ -1,6 +1,7 @@
 export * from './App'
 export * from './AppHeader'
 export * from './DownloadData'
+export * from './MimeTypeDataView'
 export * from './NavBar'
 export * from './PlayPauseButton'
 export * from './RequestDetails'
