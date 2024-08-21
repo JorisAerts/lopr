@@ -1,11 +1,12 @@
 import { useRequestStore } from '../stores/request'
 import { parseHeaders } from '../utils/request-utils'
 import type { Ref } from 'vue'
-import { computed, isRef } from 'vue'
+import { computed, isRef, ref, watch } from 'vue'
 import { HTTP_HEADER_CONTENT_ENCODING, HTTP_HEADER_CONTENT_TYPE } from '../../shared/constants'
 import type { UUIDModelProps } from './uuid'
 import { useUUID } from './uuid'
 import type { UUID } from '../../shared/UUID'
+import axios from 'axios'
 
 /**
  * Utility methods for handling the response
@@ -16,9 +17,18 @@ const useResponseByRef = (uuid: Ref<UUID | undefined>) => {
   const headersRaw = computed(() => response.value?.headers)
   const headers = computed<Record<string, string>>(() => parseHeaders(headersRaw.value))
   const hasHeaders = computed(() => !!headersRaw.value)
-  const body = computed(() => response.value?.body as string)
-  const hasBody = computed(() => !!body.value)
-  const contentType = computed(() => headers.value?.[HTTP_HEADER_CONTENT_TYPE].split(';')[0].trim())
+  const bodyData = ref()
+  watch(uuid, () => (bodyData.value = undefined))
+  const hasBody = computed(() => (response.value?.contentLength ?? 0) > 0)
+  const body = computed(() => {
+    if (hasBody.value && !bodyData.value) {
+      axios //
+        .get(`/api/data?uuid=${uuid.value}`, { transformResponse: (res) => res })
+        .then((data) => (bodyData.value = data.data))
+    }
+    return bodyData.value
+  })
+  const contentType = computed(() => (headers.value?.[HTTP_HEADER_CONTENT_TYPE] ?? headers.value?.[HTTP_HEADER_CONTENT_TYPE.toLowerCase()])?.split(';')[0].trim())
   const contentEncoding = computed(() => headers.value?.[HTTP_HEADER_CONTENT_ENCODING])
   const contentLength = computed(() => {
     const contentLength = +headers.value?.['Content-Length']

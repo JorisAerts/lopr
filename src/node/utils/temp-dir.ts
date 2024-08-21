@@ -2,7 +2,7 @@ import { existsSync, mkdirSync } from 'fs'
 import { join } from 'path'
 import os from 'os'
 import { packageJson } from './package'
-import type { ServerOptions } from './Options'
+import type { ServerOptions } from '../server/ServerOptions'
 
 const tmp = join(os.tmpdir(), `${packageJson.name!}`)
 if (!existsSync(tmp)) mkdirSync(tmp, { recursive: true })
@@ -12,4 +12,4 @@ if (!existsSync(tmp)) mkdirSync(tmp, { recursive: true })
  */
 export const tempDir = () => tmp
 
-export const cacheDir = (options: ServerOptions) => tmp
+export const cacheDir = (options: ServerOptions) => join(tempDir(), 'cache', `${options.port}`)

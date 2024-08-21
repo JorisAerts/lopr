@@ -31,13 +31,13 @@ export const createProxyRequest = (req: ProxyRequest): ProxyRequestInfo => {
   }
 }
 
-export const createProxyResponse = (uuid: UUID, res: IncomingMessage, data: unknown): ProxyResponseInfo => {
+export const createProxyResponse = (uuid: UUID, res: IncomingMessage, data: Buffer): ProxyResponseInfo => {
   return {
     ...timestamp(),
     uuid,
     headers: res.rawHeaders,
-    contentLength: res.readableLength,
-    body: data,
+    contentLength: data.length,
+    body: data ? 1 : undefined,
   }
 }
 

@@ -23,6 +23,8 @@ import { HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE } from '../../shar
 import process from 'node:process'
 import { newLine } from '../proxy/socket/newline'
 import type { CreateProxyOptions, ServerOptions } from './ServerOptions'
+import { clearCache } from './cache'
+import { handleApi } from '../local/api-handler'
 
 export const DEFAULT_PORT = 8080
 
@@ -56,7 +58,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
 
   // make sure the system goes to sleep with a clear mind
   process.on('SIGINT', () => {
-    // TODO: clear cache and such... (when the state is on the backend)
+    clearCache(options)
     clearScreen()
     logger.info('bye.\n')
     process.exit(process.exitCode)
@@ -125,9 +127,9 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
 
       // requests to the local webserver (the GUI or PAC)
-      if (isLocalhost(req, options.port) && (res = captureResponse(res))) {
+      if (isLocalhost(req, options.port)) {
         // capture the output and send it to the websocket
-        const resCaptured = captureResponse(res)
+        const resCaptured = captureResponse(res, options)
 
         // intercept local requests
         if (req.url === '/pac') {
@@ -135,6 +137,10 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
           resCaptured.setHeader(HTTP_HEADER_CONTENT_LENGTH, pac.length)
           resCaptured.setHeader(HTTP_HEADER_CONTENT_TYPE, 'application/javascript')
           resCaptured.end(pac)
+          return
+        }
+
+        if (handleApi(req, res, options)) {
           return
         }
 
@@ -146,7 +152,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
       }
 
       // forward the request to the proxy
-      return forwardRequest(req, res, options as CreateProxyOptions)
+      return forwardRequest(req, res, options)
     }
 
     const getHttpsMediator = (host: string) => {
@@ -183,7 +189,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(o
       createErrorHandlerFor(req, socket)
       sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
       // ignore local ws request (don't forward to the proxy (for now...))
-      if (!isLocalhost(req, options.port)) forwardWebSocket(req, socket, options as CreateProxyOptions, httpServer, head)
+      if (!isLocalhost(req, options.port)) forwardWebSocket(req, socket, options, httpServer, head)
     })
   })
 }

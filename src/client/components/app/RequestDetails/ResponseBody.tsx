@@ -13,17 +13,6 @@ import { makeUUIDProps } from '../../../composables/uuid'
 
 const RX_IS_IMAGE = /^image\//
 
-const getImageData = (response: UseResponse) => {
-  try {
-    const arr = Uint8Array.from(response.body.value, (c) => c.charCodeAt(0))
-    const blob = new Blob([arr], { type: response.contentType.value })
-    return URL.createObjectURL(blob)
-  } catch (e) {
-    console.error({ e })
-    return undefined
-  }
-}
-
 const getContentFilename = (response: Ref<ProxyResponseInfo | undefined>) => {
   if (!response.value) return
   const contentDisposition = parseHeaders(response.value?.headers)?.['Content-Disposition'] as string
@@ -89,10 +78,10 @@ const createBodyRenderer = (response: UseResponse) => {
 
   if (RX_IS_IMAGE.test(type)) {
     return () =>
-      response.body.value && (
+      response.hasBody.value && (
         <VSheet class={[/* 'response-body--checkered', */ ...classes]}>
           <img
-            src={getImageData(response)}
+            src={`./api/data?uuid=${response.uuid.value}`}
             alt={filename.value}
             style={{
               'max-width': '100%',
@@ -104,7 +93,7 @@ const createBodyRenderer = (response: UseResponse) => {
   }
 
   return () =>
-    response.body.value && (
+    response.hasBody.value && (
       <VSheet class={classes}>
         <VDownloadData type={type} data={response.body.value} filename={filename.value}>
           Download: {filename.value}
