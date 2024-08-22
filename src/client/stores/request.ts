@@ -7,7 +7,7 @@ import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { ProxyResponseInfo } from '../../shared/Response'
 import type { UUID } from '../../shared/UUID'
 import { isRecording } from './app'
-import type { ProxyState } from '../../shared/ProxyState'
+import type { ProxyRequestHistory } from '../../shared/ProxyRequestHistory'
 
 export const STORE_NAME = 'Requests'
 
@@ -112,10 +112,10 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   /**
    * If no state is provided, it's requested from the server
    */
-  const refresh = (data?: ProxyState): Promise<ProxyState> => {
+  const refresh = (data?: ProxyRequestHistory): Promise<ProxyRequestHistory> => {
     if (!data)
       return fetch('/api/state')
-        .then((res) => res.json() as unknown as ProxyState)
+        .then((res) => res.json() as unknown as ProxyRequestHistory)
         .then((proxyState) => refresh(proxyState))
 
     clearState()

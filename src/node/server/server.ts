@@ -55,6 +55,12 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
     logger: createLogger(),
   } as ServerOptions
 
+  // internal state, such as cache, breakpoints, ...
+  const state = {
+    config: options,
+    cache: useCache(),
+  }
+
   const { logger } = options
 
   // make sure the system goes to sleep with a clear mind

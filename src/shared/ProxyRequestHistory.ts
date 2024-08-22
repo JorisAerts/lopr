@@ -7,6 +7,6 @@ export type ProxyStateItem = {
   response: ProxyResponseInfo | undefined
 }
 
-export type ProxyState = {
+export type ProxyRequestHistory = {
   [K: UUID]: ProxyStateItem
 }

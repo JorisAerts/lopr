@@ -9,7 +9,7 @@ import type { ProxyResponseInfo } from '../../shared/Response'
 import * as fs from 'node:fs'
 import { sendWsData } from '../local'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
-import type { ProxyState } from '../../shared/ProxyState'
+import type { ProxyRequestHistory } from '../../shared/ProxyRequestHistory'
 
 export const useCache = () => {
   /**
@@ -58,7 +58,7 @@ export const useCache = () => {
         const response = responses.get(b)
         if (request || response) ret[b] = { request, response }
         return ret
-      }, {} as ProxyState)
+      }, {} as ProxyRequestHistory)
     },
   }
 }

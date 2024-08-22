@@ -5,6 +5,7 @@ export enum WebSocketMessageType {
   ProxyResponse,
   Certificate,
   Preferences,
+  State,
 }
 
 export interface WebSocketMessage<Data = unknown> {
