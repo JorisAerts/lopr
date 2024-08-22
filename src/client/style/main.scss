@@ -22,6 +22,7 @@
 * {
   box-sizing: border-box;
   transition: var(--transition);
+  transition-property: var(--transition-properties);
 }
 
 html, body {

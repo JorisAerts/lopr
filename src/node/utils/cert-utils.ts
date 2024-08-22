@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs'
 import { dirname, join } from 'path'
 import forge from 'node-forge'
 import { packageRoot } from './package'
@@ -42,8 +42,12 @@ function getRootKeyFiles(): RootKeyFiles {
   return { key: tmpKey, cert: tmpCert }
 }
 
+export const certificatesDir = () => join(tempDir(), 'cert')
+
+export const listCertificates = () => readdirSync(certificatesDir()).filter((f) => f.endsWith('.crt'))
+
 export const generatedKeyFiles = (host: string): RootKeyFiles => {
-  const root = join(tempDir(), 'cert', host)
+  const root = join(certificatesDir(), host)
   return {
     key: `${root}.key`,
     cert: `${root}.crt`,

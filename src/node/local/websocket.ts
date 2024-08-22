@@ -7,6 +7,7 @@ import { WEBSOCKET_ROOT } from '../../shared/constants'
 import { createErrorHandler, createErrorHandlerFor } from '../../client/utils/logging'
 import { createErrorMessage } from '../utils/ws-messages'
 import type { ProxyState } from '../../shared/ProxyState'
+import { listCertificates } from '../utils/cert-utils'
 
 const instance = {
   wss: undefined as WebSocketServer | undefined,
@@ -47,7 +48,20 @@ export const defineSocketServer = ({ logger, server, onConnect, state }: Instanc
             }
           })
       )
+
+      // send "Connection Established", just for fun
       sendWsData(WebSocketMessageType.App, 'Connection Established')
+      // send the current server state (is it recording?, breakpoints, ...)
+      sendWsData(WebSocketMessageType.State, {
+        ...state,
+        // don't send the cache and the options
+        cache: undefined,
+        config: undefined,
+      })
+
+      // send generated Certificates
+      sendWsData(WebSocketMessageType.Certificate, listCertificates())
+
       onConnect?.()
     })
     .on('error', createErrorHandler(wss))

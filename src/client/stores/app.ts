@@ -19,7 +19,7 @@ export const useAppStore = defineStore(STORE_NAME, () => {
 
   // received state from the server
   registerDataHandler(WebSocketMessageType.State, ({ data }: { data: ProxyState }) => {
-    if (data.recording) recording.value = data.recording
+    if (data.recording !== undefined) recording.value = data.recording
   })
 
   return { recording, wrapResponseData }

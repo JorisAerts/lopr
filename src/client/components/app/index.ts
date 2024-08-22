@@ -1,5 +1,6 @@
 export * from './App'
 export * from './AppHeader'
+export * from './Breakpoints'
 export * from './DownloadData'
 export * from './MimeTypeDataView'
 export * from './NavBar'
