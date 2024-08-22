@@ -58,6 +58,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
   // internal state, such as cache, breakpoints, ...
   const state = {
     config: options,
+    recording: true,
     cache: useCache(),
   }
 
@@ -73,6 +74,12 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
 
   // handle preference-changes
   registerDataHandler(WebSocketMessageType.Preferences, ({ data }) => Object.assign(options, data))
+
+  registerDataHandler(WebSocketMessageType.State, ({ data }) => {
+    Object.assign(state, data)
+
+    console.log('recording', state.recording)
+  })
 
   // this ginormous method returns a promise,
   // that — as mentioned below — will resolve once the server is up.
@@ -120,6 +127,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
         logger,
         server: httpServer,
         onConnect: () => sendWsData(WebSocketMessageType.Preferences, options),
+        state,
       })
       const address = `http://localhost:${options.port}`
       resolve({ logger, address, url: new URL(address), server: httpServer })
@@ -131,12 +139,12 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
     // forward the requests to their ultimate destination, coming from both HTTP and HTTPS
     function handleRequest(req: ProxyRequest, res: ProxyResponse) {
       createErrorHandlerFor(req, res)
-      options.cache.addRequest(createProxyRequest(req))
+      options.cache.addRequest(createProxyRequest(req), state)
 
       // requests to the local webserver (the GUI or PAC)
       if (isLocalhost(req, options.port)) {
         // capture the output and send it to the websocket
-        const resCaptured = captureResponse(res, options)
+        const resCaptured = captureResponse(res, options, state)
 
         // intercept local requests
         if (req.url === '/pac') {
@@ -158,7 +166,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
       }
 
       // forward the request to the proxy
-      return forwardRequest(req, res, options)
+      return forwardRequest(req, res, options, state)
     }
 
     const getHttpsMediator = (host: string) => {
@@ -176,7 +184,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
     // so we can monitor the data again, before it's encrypted and decrypted at the other side.
     httpServer.on('connect', (req, socket) => {
       createErrorHandlerFor(req, socket)
-      options.cache.addRequest(createProxyRequest(req))
+      options.cache.addRequest(createProxyRequest(req), state)
       if (req.url?.match(/:443$/)) {
         const host = req.url.substring(0, req.url.length - 4)
         const mediator = getHttpsMediator(host)
@@ -193,7 +201,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
     // WebSockets
     httpServer.on('upgrade', (req: ProxyRequest, socket: net.Socket, head: Buffer) => {
       createErrorHandlerFor(req, socket)
-      options.cache.addRequest(createProxyRequest(req))
+      options.cache.addRequest(createProxyRequest(req), state)
       // ignore local ws request (don't forward to the proxy (for now...))
       if (!isLocalhost(req, options.port)) forwardWebSocket(req, socket, options, httpServer, head)
     })

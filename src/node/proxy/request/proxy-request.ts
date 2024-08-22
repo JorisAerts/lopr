@@ -11,11 +11,12 @@ import { mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import type { ServerOptions } from '../../server'
 import { createProxyResponse } from '../../utils/ws-messages'
+import type { ProxyState } from '../../../shared/ProxyState'
 
 /**
  * Pipe to the outgoing pipeline, create the request to the ultimate destination
  */
-export const proxyRequest = (req: ProxyRequest, res: ProxyResponse, options: ServerOptions) => {
+export const proxyRequest = (req: ProxyRequest, res: ProxyResponse, options: ServerOptions, state: ProxyState) => {
   const requestOptions = setupOutgoingRequestOptions({}, req, res, options)
   if (requestOptions) {
     const proxyReq = (isReqHttps(req) ? https : http).request(requestOptions, (proxyRes) => {
@@ -32,7 +33,7 @@ export const proxyRequest = (req: ProxyRequest, res: ProxyResponse, options: Ser
             writeFileSync(join(cache, res.uuid), data)
           }
 
-          options.cache.addResponse(createProxyResponse((req as ProxyRequest).uuid, proxyRes, data))
+          options.cache.addResponse(createProxyResponse((req as ProxyRequest).uuid, proxyRes, data), state)
         })
 
       proxyRes.pipe(res)

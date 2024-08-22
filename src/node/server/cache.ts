@@ -10,6 +10,7 @@ import * as fs from 'node:fs'
 import { sendWsData } from '../local'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { ProxyRequestHistory } from '../../shared/ProxyRequestHistory'
+import type { ProxyState } from '../../shared/ProxyState'
 
 export const useCache = () => {
   /**
@@ -36,13 +37,15 @@ export const useCache = () => {
     // TODO: clearCache(options)
   }
 
-  const addRequest = (info: ProxyRequestInfo) => {
+  const addRequest = (info: ProxyRequestInfo, state: ProxyState) => {
+    if (!state.recording) return
     uuids.add(info.uuid)
     requests.set(info.uuid, info)
     sendWsData(WebSocketMessageType.ProxyRequest, info)
   }
 
-  const addResponse = (info: ProxyResponseInfo) => {
+  const addResponse = (info: ProxyResponseInfo, state: ProxyState) => {
+    if (!state.recording) return
     uuids.add(info.uuid)
     responses.set(info.uuid, info)
     sendWsData(WebSocketMessageType.ProxyResponse, info)

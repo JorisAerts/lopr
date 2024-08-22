@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 import { registerDataHandler, sendWsData } from '../utils/websocket'
 import { WebSocketMessageType } from '../../shared/WebSocketMessage'
-import type { ProxyRequestHistory } from '../../shared/ProxyRequestHistory'
+import type { ProxyState } from '../../shared/ProxyState'
 
 export const STORE_NAME = 'Application'
 
@@ -18,8 +18,8 @@ export const useAppStore = defineStore(STORE_NAME, () => {
   })
 
   // received state from the server
-  registerDataHandler(WebSocketMessageType.State, ({ data }: { data: ProxyRequestHistory }) => {
-    //if(data.recording)
+  registerDataHandler(WebSocketMessageType.State, ({ data }: { data: ProxyState }) => {
+    if (data.recording) recording.value = data.recording
   })
 
   return { recording, wrapResponseData }
