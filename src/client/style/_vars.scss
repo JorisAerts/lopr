@@ -46,7 +46,7 @@
   --animation-duration: 1s;
 
   // transition
-  --transition-duration: .32s;
+  --transition-duration: .24s;
   --transition-timing-function: #{map-get(map-get($penner-transitions, "ease-out"), "quart")};
   --transition-properties: color, background, background-color, left, right, top, bottom, margin, padding;
   --transition: all var(--transition-duration) var(--transition-timing-function), font-size 0s;

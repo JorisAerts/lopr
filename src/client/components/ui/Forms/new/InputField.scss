@@ -1,0 +1,59 @@
+@use "../../../../style/sass-vars" as *;
+@use "../../../../style/vars" as *;
+@use "./disable-autofill" as *;
+
+
+.v-input-field {
+
+  --control-emphasis-opacity: .4;
+
+  display: flex;
+  margin: 0 0 4 * $spacer 0;
+  padding: 2*$spacer 2*$spacer;
+  border: var(--border-size) solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--app-background);
+
+  @include remove-autofill-background {
+    font-family: var(--font-family), sans-serif !important;
+    font-size: var(--font-size-root) !important;
+  }
+
+  &:hover, &:active {
+    --control-emphasis-opacity: .6;
+  }
+
+  input {
+    flex-grow: 1;
+
+    border: none;
+    color: rgba(var(--text-color), var(--text-emphasis));
+    background: transparent;
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+
+    &:focus, &:active, &:hover {
+      outline: none;
+    }
+  }
+
+  .clearable {
+
+    --opacity: 1;
+    cursor: pointer;
+
+    &--disabled {
+      cursor: inherit;
+      --opacity: .01;
+    }
+
+    &--icon {
+      opacity: var(--opacity);
+    }
+  }
+
+  svg path {
+    fill: currentColor;
+  }
+
+}

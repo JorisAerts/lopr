@@ -1,6 +1,8 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 import type { UrlMatch } from '../../../../shared/url-match'
+import { VForm, VSheet } from '../../ui'
+import TextField from '../../ui/Forms/new/TextField'
 
 export const VUrlFilter = defineComponent({
   name: 'VUrlFilter',
@@ -15,6 +17,12 @@ export const VUrlFilter = defineComponent({
   },
 
   setup(props) {
-    return () => (props ? {} : null)
+    return () => (
+      <VSheet>
+        <VForm>
+          <TextField label={'Protocol'}></TextField>
+        </VForm>
+      </VSheet>
+    )
   },
 })
