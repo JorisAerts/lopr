@@ -45,12 +45,12 @@ const createBodyRenderer = (response: UseResponse) => {
     case 'text/css':
     case 'text/plain':
       return () => (
-        <VSheet class={classes}>
-          <VToolbar class={['mt-1', 'mb-2']}>
+        <VSheet class={[...classes, 'd-flex', 'flex-column']}>
+          <VToolbar class={['mt-1', 'mb-2', 'flex-grow-0']}>
             <VCheckbox label={'Wrap'} v-model={appStore.wrapResponseData} />
           </VToolbar>
           <pre
-            class={['text-mono']}
+            class={['text-mono', 'overflow-auto']}
             style={{
               whiteSpace: appStore.wrapResponseData ? 'pre-wrap' : 'pre',
             }}
