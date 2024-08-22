@@ -1,5 +1,5 @@
-import type { WebSocketMessage, WebSocketMessageType } from '../../shared/WebSocketMessage'
-import { parseWebSocketMessage } from '../../shared/WebSocketMessage'
+import type { WebSocketMessage, WebSocketMessageType } from '../../shared/WebSocketMessage';
+import { parseWebSocketMessageEvent } from '../../shared/WebSocketMessage'
 import { WEBSOCKET_ROOT } from '../../shared/constants'
 
 const url = new URL(location.toString())
@@ -22,8 +22,8 @@ function createSocket() {
   newSocket.onerror = () => {
     console.info('WebSocket error.')
   }
-  newSocket.onmessage = (msg: MessageEvent) => {
-    const data = parseWebSocketMessage(msg)
+  newSocket.onmessage = (event: MessageEvent) => {
+    const data = parseWebSocketMessageEvent(event)
     if (typeof data === 'object') {
       registry[data.type]?.(data)
     } else {

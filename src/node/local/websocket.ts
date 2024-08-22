@@ -1,6 +1,6 @@
 import type WebSocket from 'ws'
 import { WebSocketServer } from 'ws'
-import type { WebSocketMessage } from '../../shared/WebSocketMessage'
+import type { WebSocketMessage} from '../../shared/WebSocketMessage';
 import { parseWebSocketMessage, WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { InstanceOptions } from '../utils/Options'
 import { WEBSOCKET_ROOT } from '../../shared/constants'
@@ -39,8 +39,8 @@ export const defineSocketServer = ({ logger, server, onConnect, state }: Instanc
             else sendWsData(WebSocketMessageType.Error, createErrorMessage('Failed to remove WebSocket instance', ws))
             if (err) sendWsData(WebSocketMessageType.Error, createErrorMessage(err, ws))
           })
-          .on('message', (msg: MessageEvent) => {
-            const data = parseWebSocketMessage(msg)
+          .on('message', (event: MessageEvent) => {
+            const data = parseWebSocketMessage(event)
             if (typeof data === 'object') {
               registry[data.type]?.(data, state)
             } else {
