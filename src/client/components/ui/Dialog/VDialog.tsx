@@ -2,7 +2,7 @@ import { defineComponent, onMounted, ref, Teleport, watch } from 'vue'
 import { addDOMListener } from '../../../utils/addDOMListener'
 import { VWindowOverlay } from '../WindowOverlay'
 
-export default defineComponent({
+export const VDialog = defineComponent({
   name: 'v-dialog',
 
   emits: ['update:modelValue'],
@@ -11,7 +11,7 @@ export default defineComponent({
     modelValue: { type: Boolean, default: false },
     transparent: { type: Boolean, default: false },
     centered: { type: Boolean, default: true },
-    contentTarget: { type: [String, Object], default: () => '.v-app' },
+    contentTarget: { type: [String, Object], default: () => 'body' },
 
     clickOutsideToClose: { type: Boolean, default: false },
   },

@@ -1,3 +1,4 @@
+@use '../../../style/sass-vars' as *;
 @use '../../../style/vars' as *;
 
 .v-switch {
@@ -20,6 +21,8 @@
     height: var(--control-height);
 
     cursor: pointer;
+
+    margin: auto $spacer;
   }
 
   &--backdrop {
