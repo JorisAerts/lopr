@@ -6,7 +6,6 @@ import { HTTP_HEADER_CONTENT_ENCODING, HTTP_HEADER_CONTENT_TYPE } from '../../sh
 import type { UUIDModelProps } from './uuid'
 import { useUUID } from './uuid'
 import type { UUID } from '../../shared/UUID'
-import axios from 'axios'
 
 /**
  * Utility methods for handling the response
@@ -22,9 +21,9 @@ const useResponseByRef = (uuid: Ref<UUID | undefined>) => {
   const hasBody = computed(() => (response.value?.contentLength ?? 0) > 0)
   const body = computed(() => {
     if (hasBody.value && !bodyData.value) {
-      axios //
-        .get(`/api/data?uuid=${uuid.value}`, { transformResponse: (res) => res })
-        .then((data) => (bodyData.value = data.data))
+      fetch(`/api/data?uuid=${uuid.value}`)
+        .then((res) => res.text())
+        .then((data) => (data ? (bodyData.value = data) : ''))
     }
     return bodyData.value
   })

@@ -7,8 +7,7 @@ import { WebSocketMessageType } from '../../shared/WebSocketMessage'
 import type { ProxyResponseInfo } from '../../shared/Response'
 import type { UUID } from '../../shared/UUID'
 import { isRecording } from './app'
-import axios from 'axios'
-import type { ProxyState } from '../../shared/ProxyState'
+import type { ProxyRequestHistory } from '../../shared/ProxyRequestHistory'
 
 export const STORE_NAME = 'Requests'
 
@@ -108,16 +107,16 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   /**
    * Clear the store (front- and backend)
    */
-  const clear = () => axios.get('/api/state?clear').then(clearState)
+  const clear = () => fetch('/api/state?clear').then(clearState)
 
   /**
    * If no state is provided, it's requested from the server
    */
-  const refresh = (data?: ProxyState) => {
+  const refresh = (data?: ProxyRequestHistory): Promise<ProxyRequestHistory> => {
     if (!data)
-      return axios.get('/api/state').then((response) => {
-        refresh(response.data as ProxyState)
-      })
+      return fetch('/api/state')
+        .then((res) => res.json() as unknown as ProxyRequestHistory)
+        .then((proxyState) => refresh(proxyState))
 
     clearState()
     ;(Object.keys(data) as (keyof typeof data)[]).forEach((uuid) => {
@@ -126,6 +125,8 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
       if (item.response) responses.value.set(uuid, item.response)
       registerUUID(uuid, false)
     })
+
+    return Promise.resolve(data)
   }
 
   const isValidUUID = (uuid?: string) => uuid && ids.value.includes(uuid as UUID)

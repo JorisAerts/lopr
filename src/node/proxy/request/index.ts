@@ -4,8 +4,9 @@ import type { ProxyResponse } from '../../server/ProxyResponse'
 import { handleDelete } from './handle-delete'
 import { handleXForward } from './handle-x-forward'
 import { proxyRequest } from './proxy-request'
+import type { ProxyState } from '../../../shared/ProxyState'
 
-export const forwardRequest = (req: ProxyRequest, res: ProxyResponse, options: ServerOptions) =>
+export const forwardRequest = (req: ProxyRequest, res: ProxyResponse, options: ServerOptions, state: ProxyState) =>
   [
     // prepping...
     handleDelete,
@@ -13,4 +14,4 @@ export const forwardRequest = (req: ProxyRequest, res: ProxyResponse, options: S
     // finally... proxying!
     proxyRequest,
     //
-  ].forEach((incomingFn) => incomingFn(req, res, options))
+  ].forEach((incomingFn) => incomingFn(req, res, options, state))

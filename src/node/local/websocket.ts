@@ -6,6 +6,7 @@ import type { InstanceOptions } from '../utils/Options'
 import { WEBSOCKET_ROOT } from '../../shared/constants'
 import { createErrorHandler, createErrorHandlerFor } from '../../client/utils/logging'
 import { createErrorMessage } from '../utils/ws-messages'
+import type { ProxyState } from '../../shared/ProxyState'
 
 const instance = {
   wss: undefined as WebSocketServer | undefined,
@@ -19,7 +20,7 @@ export const sendWsData = (type: WebSocketMessageType, data: any) => {
   instance.ws.forEach((ws) => ws.send(JSON.stringify({ type, data } as WebSocketMessage)))
 }
 
-export const defineSocketServer = ({ logger, server, onConnect }: InstanceOptions & { onConnect?: (...args: any[]) => any }) => {
+export const defineSocketServer = ({ logger, server, onConnect, state }: InstanceOptions & { onConnect?: (...args: any[]) => any; state: ProxyState }) => {
   const wss = new WebSocketServer({ server, path: WEBSOCKET_ROOT })
   instance.wss = wss
     .on('connection', function connection(ws, req) {
@@ -40,7 +41,7 @@ export const defineSocketServer = ({ logger, server, onConnect }: InstanceOption
           .on('message', (msg: MessageEvent) => {
             const data = parseWebSocketMessage(msg)
             if (typeof data === 'object') {
-              registry[data.type]?.(data)
+              registry[data.type]?.(data, state)
             } else {
               logger.warn(`Could not find WebSocket handler for:`, data)
             }
@@ -60,7 +61,7 @@ export const useWebSocket = () => {
   return instance.ws!
 }
 
-type ParsedDataHandler<Data = any> = (data: WebSocketMessage<Data>) => void
+type ParsedDataHandler<Data = any> = (data: WebSocketMessage<Data>, state: ProxyState) => void
 
 const registry: Record<string, ParsedDataHandler> = {}
 

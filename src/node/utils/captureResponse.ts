@@ -5,8 +5,9 @@ import type { ServerOptions } from '../server/ServerOptions'
 import { cacheDir } from './temp-dir'
 import { mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
+import type { ProxyState } from '../../shared/ProxyState'
 
-export const captureResponse = (res: ProxyResponse, options: ServerOptions) => {
+export const captureResponse = (res: ProxyResponse, options: ServerOptions, state: ProxyState) => {
   // Variables to capture response data
   let responseBody = ''
   let responseHeaders = Object.create(null) as http.OutgoingHttpHeaders
@@ -50,7 +51,7 @@ export const captureResponse = (res: ProxyResponse, options: ServerOptions) => {
       writeFileSync(join(cache, res.uuid), responseBody)
     }
     // send the response to the websocket
-    options.cache.addResponse(createLocalProxyResponse(res.uuid, { ...responseHeaders }, responseBody))
+    options.cache.addResponse(createLocalProxyResponse(res.uuid, { ...responseHeaders }, responseBody), state)
   } as any
 
   return res
