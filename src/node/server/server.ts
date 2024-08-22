@@ -74,12 +74,8 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
 
   // handle preference-changes
   registerDataHandler(WebSocketMessageType.Preferences, ({ data }) => Object.assign(options, data))
-
-  registerDataHandler(WebSocketMessageType.State, ({ data }) => {
-    Object.assign(state, data)
-
-    console.log('recording', state.recording)
-  })
+  // handle state changes (recording, breakpoints, ...)
+  registerDataHandler(WebSocketMessageType.State, ({ data }) => Object.assign(state, data))
 
   // this ginormous method returns a promise,
   // that — as mentioned below — will resolve once the server is up.
