@@ -1,5 +1,6 @@
 import { defineComponent } from 'vue'
 import { VCard, VSheet } from '../../ui'
+import { VUrlFilter } from '../UrlFilter'
 
 export const VBreakpoints = defineComponent({
   name: 'VBreakpoints',
@@ -8,9 +9,7 @@ export const VBreakpoints = defineComponent({
     return () => (
       <VSheet>
         <VCard class={['pa-2']}>
-          <ul>
-            <li>not yet...</li>
-          </ul>
+          <VUrlFilter />
         </VCard>
       </VSheet>
     )
