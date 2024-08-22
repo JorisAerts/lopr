@@ -48,6 +48,12 @@ export const defineSocketServer = ({ logger, server, onConnect, state }: Instanc
           })
       )
       sendWsData(WebSocketMessageType.App, 'Connection Established')
+      sendWsData(WebSocketMessageType.State, {
+        ...state,
+        // don't send the cache and the options
+        cache: undefined,
+        config: undefined,
+      })
       onConnect?.()
     })
     .on('error', createErrorHandler(wss))

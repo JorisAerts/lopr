@@ -6,6 +6,7 @@ import { useRequestStore } from './stores/request'
 import { usePreferencesStore } from './stores/preferences'
 import { useErrorLogStore } from './stores/errorlog'
 import { useCertificateStore } from './stores/certificates'
+import { useAppStore } from './stores/app'
 
 // split the ui in another chunk
 const App = defineAsyncComponent(() => import('./components/app/App').then((c) => c.App))
@@ -16,6 +17,7 @@ app.use(router)
 
 // init stores that automagically will register web socket handlers
 // should be extracted
+useAppStore()
 useRequestStore()
 usePreferencesStore()
 useErrorLogStore()
