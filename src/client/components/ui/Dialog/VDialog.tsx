@@ -2,6 +2,14 @@ import { defineComponent, onMounted, ref, Teleport, watch } from 'vue'
 import { addDOMListener } from '../../../utils/addDOMListener'
 import { VWindowOverlay } from '../WindowOverlay'
 
+export interface VDialogActivatorEventHandlers {
+  onClick<Args extends any[]>(...args: Args): any
+}
+
+export interface VDialogActivatorProps {
+  props: VDialogActivatorEventHandlers
+}
+
 export const VDialog = defineComponent({
   name: 'v-dialog',
 
@@ -41,7 +49,7 @@ export const VDialog = defineComponent({
 
     return () => (
       <>
-        <>{slots.activator?.({ props: { onClick: activate } })}</>
+        <>{slots.activator?.({ props: { onClick: activate } } as VDialogActivatorProps)}</>
         <>
           {modelValue.value === true && (
             <Teleport to={props.contentTarget}>

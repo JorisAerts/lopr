@@ -1,1 +1,1 @@
-export * from './PlayPauseButton'
+export * from './VPlayPauseButton'

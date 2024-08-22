@@ -1,8 +1,8 @@
 import { defineComponent } from 'vue'
 import { VCard, VSheet } from '../../ui'
 
-export const Breakpoints = defineComponent({
-  name: 'Breakpoints',
+export const VBreakpoints = defineComponent({
+  name: 'VBreakpoints',
 
   setup(props, { slots }) {
     return () => (
