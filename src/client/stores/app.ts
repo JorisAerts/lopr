@@ -8,7 +8,7 @@ export const STORE_NAME = 'Application'
 
 export const useAppStore = defineStore(STORE_NAME, () => {
   const recording = ref(true)
-  const wrapResponseData = ref(true)
+  const wrapResponseData = ref(false)
 
   // send state to the server
   watch([recording], () => {
