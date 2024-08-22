@@ -31,7 +31,7 @@ export const ErrorLog = defineComponent({
                       {err.err && (
                         <pre class={['mt-2', 'text-mono']}>
                           {Object.keys(err.err).length //
-                            ? JSON.stringify(err.err, null, 2)
+                            ? JSON.stringify(err.err, null, 2).replace(/\\n/g, '\n')
                             : undefined}
                         </pre>
                       )}
