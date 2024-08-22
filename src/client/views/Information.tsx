@@ -25,7 +25,7 @@ export const Information = defineComponent({
               <TransitionGroup>
                 {certificates.value.map(({ file, cert }) => (
                   <VCard class={['pa-2', 'd-flex', 'align-items-center']} key={file} style={{ width: 'calc(20% - 8px)' }}>
-                    <VIcon name={'ShieldLock'} class={'mr-1'} size={33} style={{ float: 'left' }} />
+                    <VIcon name={'ShieldLock'} class={'mr-2'} size={33} style={{ float: 'left' }} />
                     <VTooltip text={cert}>
                       <a href={file} target={'cert'}>
                         <span style={{ 'word-wrap': 'break-word' }}>{cert}</span>
