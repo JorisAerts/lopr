@@ -1,0 +1,65 @@
+{
+  "name": "js-proxy-ui",
+  "version": "0.1.0",
+  "description": "A reverse proxy server with a GUI",
+  "keywords": [
+    "reverse proxy",
+    "proxy",
+    "server",
+    "web",
+    "node",
+    "ssl",
+    "http",
+    "https",
+    "monitoring"
+  ],
+  "license": "MIT",
+  "packageManager": "yarn@4.4.0",
+  "main": "dist/index.js",
+  "type": "module",
+  "author": {
+    "name": "Joris Aerts",
+    "url": "https://github.com/JorisAerts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JorisAerts/js-proxy.git"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest --typecheck"
+  },
+  "dependencies": {
+    "js-proxy-shared": "workspace:*",
+    "vue": "^3.4.38"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/node": "^22.5.0",
+    "@vitejs/plugin-vue": "^5.1.2",
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
+    "eslint": "^9.9.0",
+    "eslint-plugin-vue": "^9.27.0",
+    "globals": "^15.9.0",
+    "postcss": "^8.4.41",
+    "prettier": "^3.3.3",
+    "sass": "^1.77.8",
+    "stylelint": "^16.8.2",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "type-fest": "^4.25.0",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.2.0",
+    "vite": "^5.4.2",
+    "vite-plugin-vue-devtools": "^7.3.8",
+    "vitest": "^2.0.5"
+  },
+  "resolutions": {
+    "postcss": "^8.4.41"
+  }
+}
