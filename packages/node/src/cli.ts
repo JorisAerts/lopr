@@ -32,7 +32,7 @@ export const processCliParams = (): Partial<CLIOptions> => {
 
 const displayHelp = (logger: Logger) => {
   logger.info(`  press '${tui.tip(`h`)}' for help (this)`)
-  logger.info(`  press '${tui.tip(`o`)}' to open the browser`)
+  logger.info(`  press '${tui.tip(`o`)}' to open in browser`)
   logger.info(`  press '${tui.tip(`q`)}' to quit`)
   logger.info()
 }
