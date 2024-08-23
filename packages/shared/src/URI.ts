@@ -115,7 +115,7 @@ export class URI {
   }
 
   public get query() {
-    return serializeParams(this.params)
+    return serializeParams(this.params).replace(/%20/g, '+')
   }
 
   public toString(withQuery = true, withHash = true) {

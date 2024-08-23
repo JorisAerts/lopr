@@ -4,6 +4,14 @@ import type { UrlMatch } from 'js-proxy-shared/url-match'
 import { VForm, VSheet, VTextField } from 'js-proxy-ui'
 import { URI } from 'js-proxy-shared/URI'
 
+const defaultValue = {
+  protocol: '*',
+  domain: '*',
+  port: '*',
+  path: '*',
+  query: '*',
+} as UrlMatch
+
 export const VUrlFilter = defineComponent({
   name: 'VUrlFilter',
 
@@ -17,15 +25,9 @@ export const VUrlFilter = defineComponent({
   },
 
   setup(props, { emit }) {
-    const model = ref<UrlMatch | undefined>({
-      protocol: '',
-      domain: '',
-      port: '',
-      path: '',
-      query: '',
-    } as UrlMatch)
+    const model = ref<UrlMatch | undefined>({ ...defaultValue } as UrlMatch)
 
-    const modelValue = toRef(props, 'modelValue')
+    const modelValue = toRef(props, 'modelValue', undefined)
     watch(
       modelValue,
       () => {
@@ -33,15 +35,9 @@ export const VUrlFilter = defineComponent({
           case 'string':
             return (model.value = new URI(modelValue.value))
           case 'object':
-            return (model.value = structuredClone(modelValue.value as UrlMatch))
+            return (model.value = { ...modelValue.value })
           default:
-            return (model.value = {
-              protocol: '',
-              domain: '',
-              port: '',
-              path: '',
-              query: '',
-            })
+            return (model.value = { ...defaultValue })
         }
       },
       { immediate: true }
@@ -49,17 +45,21 @@ export const VUrlFilter = defineComponent({
     const handleSubmit = () => emit('update:modelValue', model.value)
     const handlePaste = (e: ClipboardEvent) => {
       e.preventDefault()
-      const pasta = URI.parse(e.clipboardData?.getData('text') ?? '')
-      emit(
-        'update:modelValue',
-        (model.value = {
-          protocol: `${pasta.protocol}://`,
-          domain: pasta.domain,
-          port: `${pasta.port}`,
-          path: pasta.path,
-          query: pasta.query,
-        })
-      )
+      const data = e.clipboardData?.getData('text') ?? ''
+      try {
+        const pasta = URI.parse(data)
+        model.value = {
+          protocol: pasta.protocol ? `${pasta.protocol}://` : '*',
+          domain: pasta.domain || '*',
+          port: pasta.port != null ? `${pasta.port}` : '*',
+          path: pasta.path || '*',
+          query: pasta.query || '*',
+        }
+      } catch {
+        model.value = {}
+      } finally {
+        emit('update:modelValue', model.value)
+      }
     }
 
     return () => (
