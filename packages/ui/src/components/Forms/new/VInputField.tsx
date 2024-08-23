@@ -1,11 +1,10 @@
-import './InputField.scss'
-
+import './VInputField.scss'
 import { defineComponent, onMounted, ref } from 'vue'
-import LabelWrapper from './LabelWrapper'
+import { VLabelWrapper } from './VLabelWrapper'
 import { makeInputFieldProps, makeInputFieldTypeProps } from './fields'
 import { VIcon } from '../../Icon'
 
-export default defineComponent({
+export const VInputField = defineComponent({
   name: 'v-input-field',
 
   emits: ['update:modelValue'],
@@ -26,7 +25,7 @@ export default defineComponent({
     })
 
     return () => (
-      <LabelWrapper modelValue={props.label}>
+      <VLabelWrapper modelValue={props.label}>
         <div class={['v-input-field']} {...attrs} onMousedown={focus}>
           {props.icon && <VIcon class={'v-input-field--icon'} name={props.icon} size={16} />}
           <input
@@ -54,7 +53,7 @@ export default defineComponent({
             />
           )}
         </div>
-      </LabelWrapper>
+      </VLabelWrapper>
     )
   },
 })

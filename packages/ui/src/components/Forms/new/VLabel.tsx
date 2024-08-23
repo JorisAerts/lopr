@@ -1,9 +1,8 @@
-import './Label.scss'
-
+import './VLabel.scss'
 import type { VNode } from 'vue'
 import { defineComponent } from 'vue'
 
-const Label = defineComponent({
+export const VLabel = defineComponent({
   name: 'v-label',
 
   props: {
@@ -20,7 +19,5 @@ const Label = defineComponent({
   },
 })
 
-export default Label
-
 type LabelProps = { label: string | undefined }
-export const wrapLabel = (props: LabelProps, contents: VNode[] | VNode) => (props.label ? <Label modelValue={props.label}>{contents}</Label> : contents)
+export const wrapLabel = (props: LabelProps, contents: VNode[] | VNode) => (props.label ? <VLabel modelValue={props.label}>{contents}</VLabel> : contents)

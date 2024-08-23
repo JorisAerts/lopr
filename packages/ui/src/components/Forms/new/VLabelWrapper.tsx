@@ -1,16 +1,15 @@
-import './Label.scss'
-
+import './VLabel.scss'
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
-import Label from './Label'
+import { VLabel } from './VLabel'
 
-export default defineComponent(
+export const VLabelWrapper = defineComponent(
   (props, { slots, attrs }) =>
     () =>
       props.modelValue ? (
-        <Label modelValue={props.modelValue} {...attrs}>
+        <VLabel modelValue={props.modelValue} {...attrs}>
           {slots.default?.()}
-        </Label>
+        </VLabel>
       ) : (
         slots.default?.()
       ),

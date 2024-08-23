@@ -1,11 +1,10 @@
-import './InputField.scss'
-
+import './VInputField.scss'
 import { defineComponent, mergeProps } from 'vue'
 import { makeInputFieldProps } from './fields'
-import InputField from './InputField'
+import { VInputField } from './VInputField'
 
-export default defineComponent({
-  name: 'v-email-field',
+export const VNumberField = defineComponent({
+  name: 'v-number-field',
 
   props: {
     ...makeInputFieldProps(),
@@ -13,9 +12,9 @@ export default defineComponent({
 
   setup(props, { slots, attrs }) {
     return () => (
-      <InputField {...mergeProps(attrs, props)} type="email">
+      <VInputField {...mergeProps(attrs, props)} type="number">
         {{ ...slots }}
-      </InputField>
+      </VInputField>
     )
   },
 })

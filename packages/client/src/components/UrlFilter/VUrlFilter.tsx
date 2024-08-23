@@ -1,8 +1,7 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 import type { UrlMatch } from 'js-proxy-shared/url-match'
-import { VForm, VSheet } from 'js-proxy-ui/components'
-import TextField from '../../../../../ui/src/components/Forms/new/TextField'
+import { VForm, VSheet, VTextField } from 'js-proxy-ui/components'
 
 export const VUrlFilter = defineComponent({
   name: 'VUrlFilter',
@@ -20,7 +19,7 @@ export const VUrlFilter = defineComponent({
     return () => (
       <VSheet>
         <VForm>
-          <TextField label={'Protocol'}></TextField>
+          <VTextField label={'Protocol'}></VTextField>
         </VForm>
       </VSheet>
     )

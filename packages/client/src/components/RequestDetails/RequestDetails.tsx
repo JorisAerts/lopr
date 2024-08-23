@@ -6,9 +6,9 @@ import { RequestOverviewTable } from './RequestOverviewTable'
 import { HeadersTable } from './HeadersTable'
 import { ResponseBody } from './ResponseBody'
 import { CookiesTable } from './CookiesTable'
-import { makeUUIDProps, useUUID } from '../../../composables/uuid'
-import { useRequest } from '../../../composables/request'
-import { useResponse } from '../../../composables/response'
+import { makeUUIDProps, useUUID } from '../../composables/uuid'
+import { useRequest } from '../../composables/request'
+import { useResponse } from '../../composables/response'
 import { HTTP_HEADER_COOKIE } from 'js-proxy-shared/constants'
 
 const REQUEST_TAB_INDEX = 0

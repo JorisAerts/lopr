@@ -1,10 +1,9 @@
-import './InputField.scss'
-
+import './VInputField.scss'
 import { defineComponent, mergeProps } from 'vue'
 import { makeInputFieldProps } from './fields'
-import InputField from './InputField'
+import { VInputField } from './VInputField'
 
-export default defineComponent({
+export const VTextField = defineComponent({
   name: 'v-text-field',
 
   props: {
@@ -13,9 +12,9 @@ export default defineComponent({
 
   setup(props, { slots, attrs }) {
     return () => (
-      <InputField {...mergeProps(attrs, props)} type="text">
+      <VInputField {...mergeProps(attrs, props)} type="text">
         {{ ...slots }}
-      </InputField>
+      </VInputField>
     )
   },
 })

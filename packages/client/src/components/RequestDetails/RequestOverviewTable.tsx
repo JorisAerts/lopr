@@ -1,7 +1,7 @@
 import { computed, defineComponent } from 'vue'
 import { VTable } from 'js-proxy-ui/components'
-import { useRequestStore } from '../../../stores/request'
-import { makeUUIDProps, useUUID } from '../../../composables/uuid'
+import { useRequestStore } from '../../stores/request'
+import { makeUUIDProps, useUUID } from '../../composables/uuid'
 
 export const RequestOverviewTable = defineComponent({
   name: 'RequestOverviewTable',
