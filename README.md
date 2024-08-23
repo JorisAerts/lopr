@@ -13,5 +13,5 @@ yarn build
 To run the proxy server:
 
 ```shell
-yarn run:node
+yarn serve
 ```
