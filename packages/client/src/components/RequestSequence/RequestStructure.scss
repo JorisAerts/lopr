@@ -10,6 +10,10 @@
     transform: rotate(90deg);
   }
 
+  .v-list-item {
+    white-space: nowrap;
+  }
+
   .v-list-group--new > .v-list-group--activator > .v-list-item,
   .v-list-item--new {
     animation: new-list-item-blink;
