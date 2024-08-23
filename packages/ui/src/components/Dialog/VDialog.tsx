@@ -1,5 +1,5 @@
 import { defineComponent, onMounted, ref, Teleport, watch } from 'vue'
-import { addDOMListener } from '../../utils/addDOMListener'
+import { addDOMListener } from '../../utils'
 import { VWindowOverlay } from '../WindowOverlay'
 
 export interface VDialogActivatorEventHandlers {
