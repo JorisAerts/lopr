@@ -2991,7 +2991,6 @@ __metadata:
     eslint: "npm:^9.9.0"
     eslint-plugin-vue: "npm:^9.27.0"
     globals: "npm:^15.9.0"
-    js-proxy-shared: "workspace:*"
     postcss: "npm:^8.4.41"
     prettier: "npm:^3.3.3"
     sass: "npm:^1.77.8"
@@ -3004,6 +3003,8 @@ __metadata:
     vite-plugin-vue-devtools: "npm:^7.3.8"
     vitest: "npm:^2.0.5"
     vue: "npm:^3.4.38"
+  peerDependencies:
+    vue: ">= 3.4 < 4"
   languageName: unknown
   linkType: soft
 
