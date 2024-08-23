@@ -34,12 +34,9 @@
     ".": "./dist/index.js"
   },
   "scripts": {
-    "build:node": "vite build --config vite.config.node.ts",
-    "run:node": "node dist/index.js",
-    "build": "yarn build:node && yarn build:client",
-    "dev": "vite",
-    "build:client": "vite build",
-    "preview": "vite preview",
+    "build:client": "cd ../client && yarn build && cp -R ./dist ../node/dist/client",
+    "build": "vite build && yarn build:client",
+    "run": "node dist/index.js",
     "test": "vitest --typecheck"
   },
   "dependencies": {

@@ -11,7 +11,7 @@ export default defineConfig({
   base: './',
 
   build: {
-    outDir: './dist/client',
+    outDir: './dist',
 
     rollupOptions: {
       output: {

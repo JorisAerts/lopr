@@ -15,7 +15,6 @@
     "./packages/*"
   ],
   "license": "MIT",
-  "packageManager": "yarn@4.4.0",
   "main": "dist/index.js",
   "type": "module",
   "author": {
@@ -25,13 +24,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/JorisAerts/js-proxy.git"
-  },
-  "files": [
-    "dist/**/*",
-    "cert/**/*"
-  ],
-  "exports": {
-    ".": "./dist/index.js"
   },
   "scripts": {
     "build:node": "vite build --config vite.config.node.ts",
@@ -55,5 +47,6 @@
     "stylelint-config-standard-scss": "^13.1.0",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.2.0"
-  }
+  },
+  "packageManager": "yarn@4.4.0"
 }
