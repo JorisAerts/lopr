@@ -1,0 +1,15 @@
+@use '../../style/sass-vars' as *;
+
+:root {
+  --tab-slider-color: var(--primary-color);
+}
+
+.v-tab-slider {
+  transition: all var(--transition-duration) var(--transition-timing-function), margin-top 0s, top 0s, width 0s;
+
+  position: absolute;
+  min-height: 2px;
+  background: rgb(var(--tab-slider-color));
+
+  margin-top: calc(-2px);
+}

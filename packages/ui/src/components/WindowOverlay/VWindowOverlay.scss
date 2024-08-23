@@ -1,0 +1,55 @@
+@use "../../style/main" as *;
+
+:root {
+  --window-overlay-content-margin: calc(100% * (1 / 11)) auto auto auto;
+}
+
+/*
+ Make the backdrop fade-in
+ */
+@keyframes window-overlay-intro {
+  0%, 20% {
+    backdrop-filter: blur(0px);
+  }
+}
+
+.v-window-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  align-items: center;
+
+  background: rgba(255, 255, 255, 0);
+
+  & * {
+    transition: var(--transition-root);
+  }
+
+  &--blurred {
+    backdrop-filter: blur(4px);
+    animation: window-overlay-intro;
+    animation-timing-function: ease-in;
+    animation-duration: .25s;
+  }
+
+  &--centered {
+    display: flex;
+    align-content: center;
+
+    > * {
+      margin: var(--window-overlay-content-margin);
+    }
+  }
+
+  &--transparent {
+    backdrop-filter: none !important;
+    background: none;
+  }
+}
