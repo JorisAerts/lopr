@@ -64,13 +64,15 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
 
   const { logger } = options
 
-  // make sure the system goes to sleep with a clear mind
-  process.on('SIGINT', () => {
+  const exit = () => {
     clearCache(options)
     clearScreen()
     logger.info('bye.\n')
-    process.exit(process.exitCode)
-  })
+  }
+
+  // make sure the system goes to sleep with a clear mind
+  process.on('exit', exit)
+  process.on('SIGINT', () => process.exit(process.exitCode))
 
   // handle preference-changes
   registerDataHandler(WebSocketMessageType.Preferences, ({ data }) => Object.assign(options, data))
