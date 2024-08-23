@@ -20,14 +20,15 @@ export const VUrlFilter = defineComponent({
     const modelValue = toRef(props, 'modelValue')
     watch(modelValue, () => (model.value = structuredClone(modelValue.value)), { immediate: true })
     const handleSubmit = () => emit('update:modelValue', model.value)
+    const handlePaste = (e: ClipboardEvent) => console.log((e.target as HTMLInputElement).value)
     return () => (
       <VSheet>
         <VForm onSubmit={handleSubmit}>
-          <VTextField label={'Protocol'}></VTextField>
-          <VTextField label={'Host'}></VTextField>
-          <VTextField label={'Port'}></VTextField>
-          <VTextField label={'Path'}></VTextField>
-          <VTextField label={'Query'}></VTextField>
+          <VTextField label={'Protocol'} onPaste={handlePaste}></VTextField>
+          <VTextField label={'Host'} onPaste={handlePaste}></VTextField>
+          <VTextField label={'Port'} onPaste={handlePaste}></VTextField>
+          <VTextField label={'Path'} onPaste={handlePaste}></VTextField>
+          <VTextField label={'Query'} onPaste={handlePaste}></VTextField>
         </VForm>
       </VSheet>
     )
