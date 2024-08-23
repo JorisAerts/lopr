@@ -1,7 +1,6 @@
 import { resolve } from 'path'
 import type { ConfigEnv, LibraryOptions } from 'vite'
 import { defineConfig } from 'vite'
-import { packageJson } from './packages/node/src/utils/package'
 
 // https://vitejs.dev/config/
 export default defineConfig((env: ConfigEnv) => ({
@@ -15,10 +14,10 @@ export default defineConfig((env: ConfigEnv) => ({
     sourcemap: env.mode === 'development',
     lib: {
       // Could also be a dictionary or array of multiple entry points
-      entry: resolve(__dirname, 'src/node/index.ts'),
-      name: packageJson.name,
+      entry: resolve(__dirname, './src/index.ts'),
+      name: 'js-proxy-shared',
       // the proper extensions will be added
-      fileName: packageJson.name,
+      fileName: 'js-proxy-shared',
       formats: ['es'],
     } as LibraryOptions,
     rollupOptions: {

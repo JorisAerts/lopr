@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import type { ConfigEnv, LibraryOptions } from 'vite'
 import { defineConfig } from 'vite'
-import { packageJson } from './packages/node/src/utils/package'
+import { packageJson } from './src/utils/package'
 
 // https://vitejs.dev/config/
 export default defineConfig((env: ConfigEnv) => ({
@@ -9,13 +9,17 @@ export default defineConfig((env: ConfigEnv) => ({
     minifySyntax: true,
     minifyIdentifiers: true,
   },
+  optimizeDeps: {
+    include: ['js-proxy-shared'],
+  },
   build: {
+    minify: true,
     outDir: './dist',
     ssr: true,
     sourcemap: env.mode === 'development',
     lib: {
       // Could also be a dictionary or array of multiple entry points
-      entry: resolve(__dirname, 'src/node/index.ts'),
+      entry: resolve(__dirname, './src/index.ts'),
       name: packageJson.name,
       // the proper extensions will be added
       fileName: packageJson.name,
