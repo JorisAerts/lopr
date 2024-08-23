@@ -1,6 +1,6 @@
 import { computed, defineComponent } from 'vue'
 import { MonotypeView } from './MonotypeView'
-import { useAppStore } from '../../../stores/app'
+import { useAppStore } from '../../stores/app'
 import { makeFilenameProps, makeMimeTypeProps } from './mime-type'
 import { VSheet } from '../../ui'
 
