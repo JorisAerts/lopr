@@ -142,4 +142,4 @@ dist
 vite.config.*ts.timestamp*
 
 # Generated certificates
-cert/generated/**
+packages/node/cert/generated/**

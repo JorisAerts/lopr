@@ -1,0 +1,5 @@
+@use "vars" as *;
+
+.text-mono {
+  font-family: var(--font-family-mono), monospace;
+}
