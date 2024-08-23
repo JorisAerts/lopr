@@ -45,6 +45,8 @@ export const handleREPL = ({ logger, url }: CreateProxyServer) =>
     }
 
     switch (cmd) {
+      case '':
+        return
       case 'o':
         return openBrowser(url)
       case 'q':
