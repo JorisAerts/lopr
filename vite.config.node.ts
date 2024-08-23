@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import type { ConfigEnv, LibraryOptions } from 'vite'
 import { defineConfig } from 'vite'
-import { packageJson } from './src/node/src/utils/package'
+import { packageJson } from './packages/node/src/utils/package'
 
 // https://vitejs.dev/config/
 export default defineConfig((env: ConfigEnv) => ({

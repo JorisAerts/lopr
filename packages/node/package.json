@@ -1,5 +1,5 @@
 {
-  "name": "js-proxy-shared",
+  "name": "@jorisaerts/js-proxy",
   "version": "0.1.0",
   "description": "A reverse proxy server with a GUI",
   "keywords": [
@@ -27,22 +27,42 @@
     "url": "https://github.com/JorisAerts/js-proxy.git"
   },
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "cert/**/*"
   ],
   "exports": {
     ".": "./dist/index.js"
   },
-  "scripts": {},
+  "scripts": {
+    "build:node": "vite build --config vite.config.node.ts",
+    "run:node": "node dist/index.js",
+    "build": "yarn build:node && yarn build:client",
+    "dev": "vite",
+    "build:client": "vite build",
+    "preview": "vite preview",
+    "test": "vitest --typecheck"
+  },
   "dependencies": {
+    "@mongodb-js/zstd": "1.2.0",
+    "js-proxy-shared": "workspace:*",
+    "node-forge": "1.3.1",
+    "picocolors": "1.0.1",
+    "uuid": "10.0.0",
+    "ws": "8.18.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "@types/node": "^22.5.0",
+    "@types/node-forge": "^1.3.11",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.5.12",
     "eslint": "^9.9.0",
     "globals": "^15.9.0",
     "prettier": "^3.3.3",
     "type-fest": "^4.25.0",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.2.0"
+    "typescript-eslint": "^8.2.0",
+    "vite": "^5.4.2",
+    "vitest": "^2.0.5"
   }
 }

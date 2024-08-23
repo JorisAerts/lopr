@@ -9,6 +9,9 @@ export default defineConfig((env: ConfigEnv) => ({
     minifySyntax: true,
     minifyIdentifiers: true,
   },
+  optimizeDeps: {
+    include: ['js-proxy-shared'],
+  },
   build: {
     outDir: './dist',
     ssr: true,
