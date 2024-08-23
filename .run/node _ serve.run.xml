@@ -1,18 +1,18 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="run:node" type="js.build_tools.npm" nameIsGenerated="true">
-    <package-json value="$PROJECT_DIR$/package.json" />
+  <configuration default="false" name="node &gt; serve" type="js.build_tools.npm" nameIsGenerated="true">
+    <package-json value="$PROJECT_DIR$/packages/node/package.json" />
     <command value="run" />
     <scripts>
-      <script value="run:node" />
+      <script value="serve" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
     <method v="2">
       <option name="NpmBeforeRunTask" enabled="true">
-        <package-json value="$PROJECT_DIR$/package.json" />
+        <package-json value="$PROJECT_DIR$/packages/node/package.json" />
         <command value="run" />
         <scripts>
-          <script value="build:node" />
+          <script value="build" />
         </scripts>
         <arguments value="--mode=development" />
         <node-interpreter value="project" />
