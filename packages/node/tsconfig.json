@@ -9,6 +9,7 @@
     "sourceMap": true
   },
   "include": [
-    "."
+    "vite.config.*",
+    "./src/*"
   ]
 }
