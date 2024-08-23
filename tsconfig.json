@@ -118,7 +118,7 @@
     /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "src/**/*",
+    "packages/**/*",
     "env.d.ts",
     "vite.config.*"
   ],
