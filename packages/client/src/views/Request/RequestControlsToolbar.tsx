@@ -18,11 +18,11 @@ export const RequestControlsToolbar = defineComponent({
         <VDialog clickOutsideToClose>
           {{
             activator: ({ props }: { props: Record<string, unknown> }) => (
-              <VBtn tooltip="VBreakpoints" class={['align-center', 'pa-1']} icon={'Dangerous_Fill'} size={20} transparent {...props} />
+              <VBtn tooltip="Breakpoints" class={['align-center', 'pa-1']} icon={'Dangerous_Fill'} size={20} transparent {...props} />
             ),
             default: () => (
               <VCard class={['pa-2']}>
-                <h3>VBreakpoints</h3>
+                <h3>Breakpoints</h3>
                 <VBreakpoints class={['mt-2']} />
               </VCard>
             ),
