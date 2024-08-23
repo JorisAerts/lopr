@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { Breakpoints, VBtn, VCard, VDialog, VSwitch, VToolbar, VTooltip } from '../../components'
+import { VBreakpoints, VBtn, VCard, VDialog, VSwitch, VToolbar, VTooltip } from '../../components'
 import { useAppStore } from '../../stores/app'
 import { useRequestStore } from '../../stores/request'
 
@@ -17,12 +17,12 @@ export const RequestControlsToolbar = defineComponent({
         <VDialog clickOutsideToClose>
           {{
             activator: ({ props }: { props: Record<string, unknown> }) => (
-              <VBtn tooltip="Breakpoints" class={['align-center', 'pa-1']} icon={'Dangerous_Fill'} size={20} transparent {...props} />
+              <VBtn tooltip="VBreakpoints" class={['align-center', 'pa-1']} icon={'Dangerous_Fill'} size={20} transparent {...props} />
             ),
             default: () => (
               <VCard class={['pa-2']}>
-                <h3>Breakpoints</h3>
-                <Breakpoints class={['mt-2']} />
+                <h3>VBreakpoints</h3>
+                <VBreakpoints class={['mt-2']} />
               </VCard>
             ),
           }}

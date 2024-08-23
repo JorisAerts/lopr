@@ -67,9 +67,11 @@ export const createErrorMessage = <Err, Source>(err: Err, src?: Source) => {
   const data = err
     ? typeof err === 'string' || typeof err === 'number' //
       ? { name: err, message: err }
-      : typeof err === 'object' //
-        ? { ...err }
-        : { message: err }
+      : err instanceof Error
+        ? { name: err.name, message: err.message, stacktrace: err.stack?.replace(/\\n/, '\n') }
+        : typeof err === 'object' //
+          ? { ...err }
+          : { message: err }
     : undefined
 
   return {

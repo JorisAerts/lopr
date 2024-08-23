@@ -1,1 +1,1 @@
-export * from './Breakpoints'
+export * from './VBreakpoints'

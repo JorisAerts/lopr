@@ -1,10 +1,11 @@
 import type { ComponentInstance, VNode } from 'vue'
 import { defineComponent } from 'vue'
-import { VBadge, VBtn, VCard, VIcon, VSpacer, VTooltip } from '../../ui'
+import { VBadge, VBtn, VCard, VDialog, type VDialogActivatorProps, VIcon, VSpacer, VTooltip } from '../../ui'
 import { APP_NAME } from '../../../../shared/constants'
 import { useErrorLogStore } from '../../../stores/errorlog'
 import { RouterView, useRouter } from 'vue-router'
 import { RouteNames } from '../../../router/RouteNames'
+import { AppPreferences } from '../AppPreferences'
 
 export const VNavBar = defineComponent({
   name: 'v-nav-bar',
@@ -15,7 +16,7 @@ export const VNavBar = defineComponent({
     const router = useRouter()
     const pushRoute = (name: RouteNames) => () => {
       try {
-        router.push(name)
+        return router.push(name)
       } catch (error) {
         console.warn(error)
       }
@@ -34,7 +35,12 @@ export const VNavBar = defineComponent({
         <VSpacer />
         <VBtn tooltip={'Requests'} icon={'Monitoring'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.Requests)} />
         <VBtn tooltip={'Information'} icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.Information)} />
-        <VBtn tooltip={'Preferences'} icon={'Settings'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.Preferences)} />
+        <VDialog clickOutsideToClose>
+          {{
+            activator: ({ props }: VDialogActivatorProps) => <VBtn tooltip={'Preferences'} icon={'Settings'} size={iconSize} class={['pa-1']} transparent {...props} />,
+            default: () => <AppPreferences />,
+          }}
+        </VDialog>
         <VTooltip text={'Error log'}>
           <VBadge modelValue={errorLogStore.hasErrors} position={[4, -4]}>
             <VBtn icon={'Warning'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.ErrorLog)} />

@@ -2,7 +2,7 @@ import { computed, defineComponent } from 'vue'
 import type { IconNames } from '../../ui'
 import { VBtn, VIcon, VTooltip } from '../../ui'
 
-export const PlayPauseButton = defineComponent({
+export const VPlayPauseButton = defineComponent({
   name: 'PlayPauseButton',
 
   emits: {

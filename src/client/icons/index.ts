@@ -1,4 +1,5 @@
 export * from './account_tree'
+export * from './cancel'
 export * from './chevron_left'
 export * from './chevron_right'
 export * from './code'

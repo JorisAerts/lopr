@@ -28,13 +28,6 @@ export const router = createRouter({
         default: () => views().then((c) => c.Information),
       },
     },
-    {
-      name: RouteNames.Preferences,
-      path: '/preferences',
-      components: {
-        default: () => views().then((c) => c.Preferences),
-      },
-    },
 
     {
       name: RouteNames.ErrorLog,

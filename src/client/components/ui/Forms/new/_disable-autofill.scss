@@ -1,0 +1,37 @@
+/**
+ * Remove special styling in browsers for login fields
+ */
+@mixin autofill-input-style() {
+  input {
+    &:autofill,
+    &:-webkit-autofill,
+    &:-internal-autofill-selected {
+      &,
+      &:hover,
+      &:focus,
+      &:active {
+        background: none !important;
+        background-image: none !important;
+        background-color: rgb(var(--v-theme-surface)) !important;
+        -webkit-box-shadow: none;
+        transition: all 0s 50000s;
+        color: red !important;
+        @content
+      }
+    }
+  }
+}
+
+@mixin remove-autofill-background($selector:false) {
+  @if $selector {
+    .#{$selector} {
+      @include autofill-input-style {
+        @content
+      }
+    }
+  } @else {
+    @include autofill-input-style {
+      @content
+    }
+  }
+}
