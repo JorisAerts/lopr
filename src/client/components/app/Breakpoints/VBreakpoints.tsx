@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { VCard, VSheet } from '../../ui'
+import { VSheet } from '../../ui'
 import { VUrlFilter } from '../UrlFilter'
 
 export const VBreakpoints = defineComponent({
@@ -7,10 +7,8 @@ export const VBreakpoints = defineComponent({
 
   setup(props, { slots }) {
     return () => (
-      <VSheet>
-        <VCard class={['pa-2']}>
-          <VUrlFilter />
-        </VCard>
+      <VSheet style={{ 'min-width': 'calc(100vw / 3)' }}>
+        <VUrlFilter />
       </VSheet>
     )
   },
