@@ -1,9 +1,8 @@
 import './VIcon.scss'
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
-import * as icons from '../../../../client/src/icons'
-
-export type IconNames = keyof typeof icons
+import type { IconNames } from '../../icons/IconNames'
+import * as icons from '../../icons'
 
 export const VIcon = defineComponent({
   name: 'v-icon',

@@ -18,7 +18,6 @@
     animation-timing-function: #{map-get(map-get($penner-transitions, "ease-in"), "quart")}; // var(--transition-timing-function);
   }
 
-
 }
 
 @keyframes new-list-item-blink {
