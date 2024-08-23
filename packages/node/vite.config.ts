@@ -13,6 +13,7 @@ export default defineConfig((env: ConfigEnv) => ({
     include: ['js-proxy-shared'],
   },
   build: {
+    minify: true,
     outDir: './dist',
     ssr: true,
     sourcemap: env.mode === 'development',
