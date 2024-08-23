@@ -1,0 +1,13 @@
+@use "../../../style/sass-vars" as *;
+
+.v-label {
+
+  display: flex;
+  flex-direction: column;
+
+  & > span {
+    font-weight: 600;
+    margin-bottom: 2 * $spacer;
+  }
+
+}

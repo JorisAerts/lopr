@@ -1,0 +1,41 @@
+import { computed, defineComponent } from 'vue'
+import type { IconNames } from 'js-proxy-ui/components'
+import { VBtn, VIcon, VTooltip } from 'js-proxy-ui/components'
+
+export const VPlayPauseButton = defineComponent({
+  name: 'PlayPauseButton',
+
+  emits: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    'update:recording': (value: boolean) => true,
+  },
+
+  props: {
+    recording: { type: Boolean, default: false },
+    size: { type: Number, default: 22 },
+  },
+
+  setup(props, { emit }) {
+    const icon = computed<IconNames>(() => (props.recording ? 'Pause_Fill' : 'PlayArrow_Fill'))
+    return () => (
+      <VTooltip text={props.recording ? 'Pause recording' : 'Start recording'}>
+        <VBtn icon={icon.value} size={props.size} class={['pa-2']} transparent onClick={() => emit('update:recording', !props.recording)}>
+          {{
+            icon: () => (
+              <VIcon
+                class={[{ 'btn--prepend-icon': false }]}
+                name={icon.value}
+                color={`rgb(var(--text-color))`}
+                size={props.size * 0.6}
+                style={{
+                  border: '1px solid rgb(var(--text-color))',
+                  'border-radius': '50%',
+                }}
+              ></VIcon>
+            ),
+          }}
+        </VBtn>
+      </VTooltip>
+    )
+  },
+})

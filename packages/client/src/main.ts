@@ -1,5 +1,5 @@
-import './style/main.scss'
-import './components/ui/Transition'
+import 'js-proxy-ui/style'
+import 'js-proxy-ui/components/Transition'
 
 import { app } from './app'
 

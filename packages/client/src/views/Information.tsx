@@ -1,5 +1,5 @@
 import { computed, defineComponent, TransitionGroup } from 'vue'
-import { VCard, VIcon, VSheet, VTooltip } from '../components'
+import { VCard, VIcon, VSheet, VTooltip } from 'js-proxy-ui'
 import { useCertificateStore } from '../stores/certificates'
 
 export const Information = defineComponent({

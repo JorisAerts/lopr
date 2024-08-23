@@ -1,5 +1,5 @@
 {
-  "name": "js-proxy-client",
+  "name": "js-proxy-ui",
   "version": "0.1.0",
   "description": "A reverse proxy server with a GUI",
   "keywords": [
@@ -28,24 +28,28 @@
   "files": [
     "dist/**/*"
   ],
-  "exports": {
-    ".": "./dist/index.js"
-  },
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
     "test": "vitest --typecheck"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./components": "./src/components/index.ts",
+    "./components/*": "./src/components/*/index.ts",
+    "./style/main.scss": "./src/style/main.scss",
+    "./style": "./src/style/index.ts",
+    "./style/*": {
+      "sass": "./src/style/*.scss"
+    },
+    "./*": "./src/*"
   },
   "dependencies": {
     "js-proxy-shared": "workspace:*",
-    "js-proxy-ui": "workspace:*",
-    "pinia": "^2.2.2",
-    "vue": "^3.4.38",
-    "vue-router": "^4.4.3"
+    "vue": "^3.4.38"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@types/node": "^22.5.0",
     "@vitejs/plugin-vue": "^5.1.2",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "eslint": "^9.9.0",
