@@ -1,4 +1,8 @@
 import process from 'node:process'
+import type { Logger } from './utils/logger'
+import tui from './utils/tui'
+import { openBrowser } from './utils/open-browser'
+import type { CreateProxyServer } from './server'
 
 export type CLIOptions = {
   open: boolean
@@ -25,3 +29,28 @@ export const processCliParams = (): Partial<CLIOptions> => {
 
   return opts
 }
+
+const displayHelp = (logger: Logger) => {
+  logger.info(`  press '${tui.tip(`h`)}' for help (this)`)
+  logger.info(`  press '${tui.tip(`o`)}' to open the browser`)
+  logger.info(`  press '${tui.tip(`q`)}' to quit`)
+  logger.info()
+}
+
+export const handleREPL = ({ logger, url }: CreateProxyServer) =>
+  process.stdin.resume().addListener('data', function (d) {
+    const cmd = d.toString().trim()
+    if (process.stdout.moveCursor(0, -1)) {
+      process.stdout.clearLine(1)
+    }
+
+    switch (cmd) {
+      case 'o':
+        return openBrowser(url)
+      case 'q':
+        return process.exit()
+
+      default:
+        return displayHelp(logger)
+    }
+  })
