@@ -1,8 +1,9 @@
 import type { PropType, Ref } from 'vue'
 import { computed, defineComponent, ref, watch } from 'vue'
-import { RequestDetails, RequestSequence, RequestStructure, VBtn, VCard, VContainer, VSheet, VSpacer } from '../../components'
+import { VBtn, VCard, VContainer, VSheet, VSpacer } from 'js-proxy-ui'
 import { useRequestStore } from '../../stores/request'
 import type { UUID } from 'js-proxy-shared/UUID'
+import { RequestDetails, RequestSequence, RequestStructure } from '../../components'
 
 export const Request = defineComponent({
   name: 'requests-monitor',

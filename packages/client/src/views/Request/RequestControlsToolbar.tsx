@@ -1,7 +1,8 @@
 import { defineComponent } from 'vue'
-import { VBreakpoints, VBtn, VCard, VDialog, VSwitch, VToolbar, VTooltip } from '../../components'
+import { VBtn, VCard, VDialog, VSwitch, VToolbar, VTooltip } from 'js-proxy-ui'
 import { useAppStore } from '../../stores/app'
 import { useRequestStore } from '../../stores/request'
+import { VBreakpoints } from '../../components'
 
 export const RequestControlsToolbar = defineComponent({
   name: 'ControlsToolbar',
