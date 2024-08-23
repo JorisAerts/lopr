@@ -1,5 +1,5 @@
-@use "../../../../ui/src/style/vars" as *;
-@use "../../../../ui/src/style/transitions" as *;
+@use "js-proxy-ui/style/vars" as *;
+@use "js-proxy-ui/style/transitions" as *;
 
 .request-structure {
 
@@ -17,7 +17,6 @@
     animation-iteration-count: 1;
     animation-timing-function: #{map-get(map-get($penner-transitions, "ease-in"), "quart")}; // var(--transition-timing-function);
   }
-
 
 }
 
