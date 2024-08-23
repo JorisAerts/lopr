@@ -1,5 +1,5 @@
 import { sendWsData } from '../../../node/src/local/websocket'
-import { WebSocketMessageType } from '../../../shared/src/WebSocketMessage'
+import { WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
 import { createErrorMessage } from '../../../node/src/utils/ws-messages'
 
 type LogType = <ErrorType, SourceObject>(error: ErrorType, source?: SourceObject) => unknown

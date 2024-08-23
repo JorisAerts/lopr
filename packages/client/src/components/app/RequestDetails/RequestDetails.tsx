@@ -9,7 +9,7 @@ import { CookiesTable } from './CookiesTable'
 import { makeUUIDProps, useUUID } from '../../../composables/uuid'
 import { useRequest } from '../../../composables/request'
 import { useResponse } from '../../../composables/response'
-import { HTTP_HEADER_COOKIE } from '../../../../../shared/src/constants'
+import { HTTP_HEADER_COOKIE } from 'js-proxy-shared/constants'
 
 const REQUEST_TAB_INDEX = 0
 const REQUEST_HEADERS_INDEX = 1

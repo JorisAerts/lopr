@@ -2,7 +2,7 @@ import type { PropType, Ref } from 'vue'
 import { computed, defineComponent, ref, watch } from 'vue'
 import { RequestDetails, RequestSequence, RequestStructure, VBtn, VCard, VContainer, VSheet, VSpacer } from '../../components'
 import { useRequestStore } from '../../stores/request'
-import type { UUID } from '../../../../shared/src/UUID'
+import type { UUID } from 'js-proxy-shared/UUID'
 
 export const Request = defineComponent({
   name: 'requests-monitor',

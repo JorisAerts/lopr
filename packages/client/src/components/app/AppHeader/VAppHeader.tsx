@@ -1,5 +1,5 @@
 import { computed, defineComponent, Teleport } from 'vue'
-import { APP_NAME } from '../../../../../shared/src/constants'
+import { APP_NAME } from 'js-proxy-shared/constants'
 import { DeployedCode_Fill } from '../../../icons'
 
 export const VAppHeader = defineComponent({

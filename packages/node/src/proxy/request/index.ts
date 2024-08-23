@@ -4,7 +4,7 @@ import type { ProxyResponse } from '../../server/ProxyResponse'
 import { handleDelete } from './handle-delete'
 import { handleXForward } from './handle-x-forward'
 import { proxyRequest } from './proxy-request'
-import type { ProxyState } from '../../../../shared/src/ProxyState'
+import type { ProxyState } from 'js-proxy-shared/ProxyState'
 
 export const forwardRequest = (req: ProxyRequest, res: ProxyResponse, options: ServerOptions, state: ProxyState) =>
   [

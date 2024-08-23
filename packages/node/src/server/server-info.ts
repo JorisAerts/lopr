@@ -1,6 +1,6 @@
 import { clearScreen } from '../utils/logger'
 import type { Server } from 'http'
-import { APP_NAME } from '../../../shared/src/constants'
+import { APP_NAME } from 'js-proxy-shared/constants'
 import { packageJson } from '../utils/package'
 import tui from '../utils/tui'
 import type { InstanceOptions } from '../utils/Options'

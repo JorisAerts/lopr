@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 import { registerDataHandler, sendWsData } from '../utils/websocket'
-import { WebSocketMessageType } from '../../../shared/src/WebSocketMessage'
-import type { ProxyState } from '../../../shared/src/ProxyState'
+import { WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
+import type { ProxyState } from 'js-proxy-shared/ProxyState'
 
 export const STORE_NAME = 'Application'
 

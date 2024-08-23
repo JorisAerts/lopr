@@ -2963,8 +2963,6 @@ __metadata:
     vitest: "npm:^2.0.5"
     vue: "npm:^3.4.38"
     vue-router: "npm:^4.4.3"
-  bin:
-    js-proxy-client: dist/index.js
   languageName: unknown
   linkType: soft
 
@@ -2982,8 +2980,6 @@ __metadata:
     typescript-eslint: "npm:^8.2.0"
     vite: "npm:^5.4.2"
     vitest: "npm:^2.0.5"
-  bin:
-    js-proxy-shared: dist/index.js
   languageName: unknown
   linkType: soft
 

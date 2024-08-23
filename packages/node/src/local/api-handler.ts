@@ -1,12 +1,12 @@
 import { sendWsData } from './websocket'
-import { WebSocketMessageType } from '../../../shared/src/WebSocketMessage'
+import { WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
 import { createErrorMessage } from '../utils/ws-messages'
 import type { ProxyResponse } from '../server/ProxyResponse'
 import type { ProxyRequest } from '../server/ProxyRequest'
 import { clearCache, getCachedData } from '../server/cache'
 import type { ServerOptions } from '../server'
 import { parse as parseUrl } from 'url'
-import type { UUID } from '../../../shared/src/UUID'
+import type { UUID } from 'js-proxy-shared/UUID'
 
 export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: ServerOptions) => {
   const url = parseUrl(req.url!, true)

@@ -1,6 +1,6 @@
-import type { WebSocketMessage, WebSocketMessageType } from '../../../shared/src/WebSocketMessage'
-import { parseWebSocketMessageEvent } from '../../../shared/src/WebSocketMessage'
-import { WEBSOCKET_ROOT } from '../../../shared/src/constants'
+import type { WebSocketMessage, WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
+import { parseWebSocketMessageEvent } from 'js-proxy-shared/WebSocketMessage'
+import { WEBSOCKET_ROOT } from 'js-proxy-shared/constants'
 
 const url = new URL(location.toString())
 url.hash = ''

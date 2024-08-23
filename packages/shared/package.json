@@ -25,11 +25,9 @@
     "type": "git",
     "url": "https://github.com/JorisAerts/js-proxy.git"
   },
-  "files": [
-    "dist/**/*"
-  ],
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./src",
+    "./*": "./src/*.ts"
   },
   "scripts": {
     "test": "vitest --typecheck"

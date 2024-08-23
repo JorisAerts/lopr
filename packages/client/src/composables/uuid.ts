@@ -1,4 +1,4 @@
-import type { UUID } from '../../../shared/src/UUID'
+import type { UUID } from 'js-proxy-shared/UUID'
 import type { ExtractPropTypes, PropType, Ref } from 'vue'
 import { toRef } from 'vue'
 

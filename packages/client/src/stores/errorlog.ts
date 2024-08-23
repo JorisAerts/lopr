@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { registerDataHandler } from '../utils/websocket'
-import type { WebSocketMessage } from '../../../shared/src/WebSocketMessage'
-import { WebSocketMessageType } from '../../../shared/src/WebSocketMessage'
+import type { WebSocketMessage } from 'js-proxy-shared/WebSocketMessage'
+import { WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
 
 export const STORE_NAME = 'Error Log'
 

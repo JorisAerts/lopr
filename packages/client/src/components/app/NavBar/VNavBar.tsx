@@ -1,7 +1,7 @@
 import type { ComponentInstance, VNode } from 'vue'
 import { defineComponent } from 'vue'
 import { VBadge, VBtn, VCard, VDialog, type VDialogActivatorProps, VIcon, VSpacer, VTooltip } from '../../ui'
-import { APP_NAME } from '../../../../../shared/src/constants'
+import { APP_NAME } from 'js-proxy-shared/constants'
 import { useErrorLogStore } from '../../../stores/errorlog'
 import { RouterView, useRouter } from 'vue-router'
 import { RouteNames } from '../../../router/RouteNames'

@@ -2,10 +2,10 @@ import { useRequestStore } from '../stores/request'
 import { parseHeaders } from '../utils/request-utils'
 import type { Ref } from 'vue'
 import { computed, isRef } from 'vue'
-import { HTTP_HEADER_CONTENT_ENCODING, HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE, HTTP_HEADER_COOKIE } from '../../../shared/src/constants'
+import { HTTP_HEADER_CONTENT_ENCODING, HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE, HTTP_HEADER_COOKIE } from 'js-proxy-shared/constants'
 import type { UUIDModelProps } from './uuid'
 import { useUUID } from './uuid'
-import type { UUID } from '../../../shared/src/UUID'
+import type { UUID } from 'js-proxy-shared/UUID'
 
 /**
  * Utility methods for handling the request

@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { computed, reactive, watch } from 'vue'
 import { useLocalStorage } from '../composables/localStorage'
 import { registerDataHandler, sendWsData } from '../utils/websocket'
-import { type WebSocketMessage, WebSocketMessageType } from '../../../shared/src/WebSocketMessage'
+import { type WebSocketMessage, WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
 
 export const STORE_NAME = 'Preferences'
 

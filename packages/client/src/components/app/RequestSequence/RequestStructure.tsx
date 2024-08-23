@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { defineComponent, withModifiers } from 'vue'
 import { VList, VListGroup, VListItem } from '../../ui'
 import { useRequestStore } from '../../../stores/request'
-import type { UUID } from '../../../../../shared/src/UUID'
+import type { UUID } from 'js-proxy-shared/UUID'
 import { makeUUIDEvents, makeUUIDProps } from '../../../composables/uuid'
 
 const removeKey = (arr: string[], key: string) => {

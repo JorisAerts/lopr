@@ -1,6 +1,6 @@
 import type { IncomingMessage } from 'http'
 import { ServerResponse } from 'http'
-import type { UUID } from '../../../shared/src/UUID'
+import type { UUID } from 'js-proxy-shared/UUID'
 import type { ProxyRequest } from './ProxyRequest'
 
 /**

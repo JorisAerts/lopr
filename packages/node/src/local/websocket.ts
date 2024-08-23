@@ -1,12 +1,12 @@
 import type WebSocket from 'ws'
 import { WebSocketServer } from 'ws'
-import type { WebSocketMessage } from '../../../shared/src/WebSocketMessage'
-import { parseWebSocketMessage, WebSocketMessageType } from '../../../shared/src/WebSocketMessage'
+import type { WebSocketMessage } from 'js-proxy-shared/WebSocketMessage'
+import { parseWebSocketMessage, WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
 import type { InstanceOptions } from '../utils/Options'
-import { WEBSOCKET_ROOT } from '../../../shared/src/constants'
+import { WEBSOCKET_ROOT } from 'js-proxy-shared/constants'
 import { createErrorHandler, createErrorHandlerFor } from '../../../client/src/utils/logging'
 import { createErrorMessage } from '../utils/ws-messages'
-import type { ProxyState } from '../../../shared/src/ProxyState'
+import type { ProxyState } from 'js-proxy-shared/ProxyState'
 import { listCertificates } from '../utils/cert-utils'
 
 const instance = {
