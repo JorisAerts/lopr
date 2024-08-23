@@ -1,6 +1,6 @@
 import type { ComponentInstance, VNode } from 'vue'
 import { defineComponent } from 'vue'
-import { VBadge, VBtn, VCard, VDialog, type VDialogActivatorProps, VIcon, VSpacer, VTooltip } from '../../ui'
+import { VBadge, VBtn, VCard, VDialog, type VDialogActivatorProps, VIcon, VSpacer, VTooltip } from 'js-proxy-ui/components'
 import { APP_NAME } from 'js-proxy-shared/constants'
 import { useErrorLogStore } from '../../../stores/errorlog'
 import { RouterView, useRouter } from 'vue-router'

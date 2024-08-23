@@ -1,0 +1,22 @@
+@use '../../style/sass-vars' as *;
+
+:root {
+
+}
+
+.v-badge {
+
+  position: relative;
+
+  &--badge {
+    border-radius: 50%;
+    position: absolute;
+    background: red;
+    right: 0;
+    top: 0;
+  }
+
+  &--dot {
+
+  }
+}

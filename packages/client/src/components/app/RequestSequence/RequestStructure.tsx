@@ -1,7 +1,7 @@
 import './RequestStructure.scss'
 import type { PropType } from 'vue'
 import { defineComponent, withModifiers } from 'vue'
-import { VList, VListGroup, VListItem } from '../../ui'
+import { VList, VListGroup, VListItem } from 'js-proxy-ui/components'
 import { useRequestStore } from '../../../stores/request'
 import type { UUID } from 'js-proxy-shared/UUID'
 import { makeUUIDEvents, makeUUIDProps } from '../../../composables/uuid'

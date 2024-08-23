@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { VCard, VSheet } from '../../ui'
+import { VCard, VSheet } from 'js-proxy-ui/components'
 
 export const VBreakpoints = defineComponent({
   name: 'VBreakpoints',

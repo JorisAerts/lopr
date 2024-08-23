@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 import type { UrlMatch } from 'js-proxy-shared/url-match'
-import { VForm, VSheet } from '../../ui'
-import TextField from '../../ui/Forms/new/TextField'
+import { VForm, VSheet } from 'js-proxy-ui/components'
+import TextField from '../../../../../ui/src/components/Forms/new/TextField'
 
 export const VUrlFilter = defineComponent({
   name: 'VUrlFilter',

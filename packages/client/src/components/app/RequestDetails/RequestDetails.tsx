@@ -1,7 +1,7 @@
 import type { Tab } from './request-detail-tabs'
 import { useRequestDetailTabs } from './request-detail-tabs'
 import { defineComponent, reactive, ref, watch } from 'vue'
-import { VTab, VTabItem, VTabItems, VTabs } from '../../ui'
+import { VTab, VTabItem, VTabItems, VTabs } from 'js-proxy-ui/components'
 import { RequestOverviewTable } from './RequestOverviewTable'
 import { HeadersTable } from './HeadersTable'
 import { ResponseBody } from './ResponseBody'

@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "js-proxy-shared": "workspace:*",
+    "js-proxy-ui": "workspace:*",
     "pinia": "^2.2.2",
     "vue": "^3.4.38",
     "vue-router": "^4.4.3"
@@ -50,7 +51,6 @@
     "eslint": "^9.9.0",
     "eslint-plugin-vue": "^9.27.0",
     "globals": "^15.9.0",
-    "js-proxy-shared": "workspace:*",
     "postcss": "^8.4.41",
     "prettier": "^3.3.3",
     "sass": "^1.77.8",

@@ -28,12 +28,20 @@
   "files": [
     "dist/**/*"
   ],
-  "exports": {
-    ".": "./dist/index.js"
-  },
   "scripts": {
     "build": "vite build",
     "test": "vitest --typecheck"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./components": "./src/components/index.ts",
+    "./components/*": "./src/components/*/index.ts",
+    "./style/main.scss": "./src/style/main.scss",
+    "./style": "./src/style/index.ts",
+    "./style/*": {
+      "sass": "./src/style/*.scss"
+    },
+    "./*": "./src/*"
   },
   "dependencies": {
     "js-proxy-shared": "workspace:*",

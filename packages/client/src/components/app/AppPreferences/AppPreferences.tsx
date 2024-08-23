@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { VCard, VCheckbox, VTooltip } from '../../ui'
+import { VCard, VCheckbox, VTooltip } from 'js-proxy-ui/components'
 import { usePreferencesStore } from '../../../stores/preferences'
 
 export const AppPreferences = defineComponent({

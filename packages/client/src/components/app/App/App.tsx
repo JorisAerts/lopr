@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 import { RouterView } from 'vue-router'
-import { VSheet } from '../../ui'
+import { VSheet } from 'js-proxy-ui/components'
 import { VAppHeader } from '../AppHeader'
 import { VNavBar } from '../NavBar'
 

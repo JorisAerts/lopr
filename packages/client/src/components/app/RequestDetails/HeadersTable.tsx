@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
-import { VTable } from '../../ui'
+import { VTable } from 'js-proxy-ui/components'
 
 export const HeadersTable = defineComponent({
   name: 'HeadersTable',
