@@ -2980,6 +2980,8 @@ __metadata:
     type-fest: "npm:^4.25.0"
     typescript: "npm:^5.5.4"
     typescript-eslint: "npm:^8.2.0"
+    vite: "npm:^5.4.2"
+    vitest: "npm:^2.0.5"
   bin:
     js-proxy-shared: dist/index.js
   languageName: unknown

@@ -26,13 +26,11 @@
     "url": "https://github.com/JorisAerts/js-proxy.git"
   },
   "scripts": {
-    "build:node": "vite build --config vite.config.node.ts",
+    "build": "cd packages/node && yarn build",
     "run:node": "node dist/index.js",
-    "build": "yarn build:node && yarn build:client",
-    "dev": "vite",
-    "build:client": "vite build",
-    "preview": "vite preview",
-    "test": "vitest --typecheck"
+    "dev": "cd packages/client && yarn dev",
+    "preview": "cd packages/client && vite preview",
+    "test": "yarn workspaces foreach --all --parallel --no-private run test --run --pass-with-no-tests"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
