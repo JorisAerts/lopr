@@ -1,0 +1,48 @@
+{
+  "name": "js-proxy-shared",
+  "version": "0.1.0",
+  "description": "A reverse proxy server with a GUI",
+  "keywords": [
+    "reverse proxy",
+    "proxy",
+    "server",
+    "web",
+    "node",
+    "ssl",
+    "http",
+    "https",
+    "monitoring"
+  ],
+  "license": "MIT",
+  "packageManager": "yarn@4.4.0",
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
+  "type": "module",
+  "author": {
+    "name": "Joris Aerts",
+    "url": "https://github.com/JorisAerts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JorisAerts/js-proxy.git"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {},
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/node": "^22.5.0",
+    "eslint": "^9.9.0",
+    "globals": "^15.9.0",
+    "prettier": "^3.3.3",
+    "type-fest": "^4.25.0",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.2.0"
+  }
+}
