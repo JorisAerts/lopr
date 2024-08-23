@@ -1,7 +1,7 @@
-import './Menu.scss'
+import './VMenu.scss'
 import type { CSSProperties, Ref } from 'vue'
 import { defineComponent, ref, Teleport, Transition, watch } from 'vue'
-import { addDOMListener } from '../../../../client/src/utils/addDOMListener'
+import { addDOMListener } from '../../utils'
 
 const getRect = (el?: HTMLElement) => {
   const x = el?.offsetLeft ?? 0

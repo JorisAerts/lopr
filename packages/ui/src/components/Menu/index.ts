@@ -1,2 +1,2 @@
-export * from './Menu'
-export * from './MenuCard'
+export * from './VMenu'
+export * from './VMenuCard'

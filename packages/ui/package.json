@@ -36,6 +36,8 @@
     ".": "./src/index.ts",
     "./components": "./src/components/index.ts",
     "./components/*": "./src/components/*/index.ts",
+    "./icons": "./src/icons/index.ts",
+    "./icons/*": "./src/icons/*.ts",
     "./style/main.scss": "./src/style/main.scss",
     "./style": "./src/style/index.ts",
     "./style/*": {
