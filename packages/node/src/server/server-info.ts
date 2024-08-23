@@ -24,7 +24,7 @@ export const displayServerInfo = ({ logger, server }: InstanceOptions) => {
   logger.info()
   logger.info(`  ${tui.tooltip(`Temp-folder: ${tui.link(tmp)}`)}`)
   logger.info(`  ${tui.tooltip(`GUI & Proxy Server: ${tui.link(getAddress(server))}`)}`)
-  logger.info(`  ${tui.tooltip(`Automatic proxy configuration (PAC): ${tui.link(getAddress(server))}/pac`)}`)
+  logger.info(`  ${tui.tooltip(`Automatic proxy configuration (PAC): ${tui.link(`${getAddress(server)}/pac`)}`)}`)
   logger.info(`  ${tui.tooltip(`Use ${tui.tip('--open')} to automatically open your browser.`)}`)
   logger.info()
   logger.info(`  ${`Press '${tui.tip('q')}' to quit.`}`)
