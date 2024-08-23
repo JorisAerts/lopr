@@ -36,7 +36,7 @@
   "scripts": {
     "build:client": "cd ../client && yarn build && cp -R ./dist ../node/dist/client",
     "build": "vite build && yarn build:client",
-    "run": "node dist/index.js",
+    "serve": "node dist/index.js",
     "test": "vitest --typecheck"
   },
   "dependencies": {

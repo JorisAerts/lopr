@@ -16,7 +16,6 @@
   "license": "MIT",
   "packageManager": "yarn@4.4.0",
   "main": "dist/index.js",
-  "bin": "dist/index.js",
   "type": "module",
   "author": {
     "name": "Joris Aerts",

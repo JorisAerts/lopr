@@ -27,7 +27,7 @@
   },
   "scripts": {
     "build": "cd packages/node && yarn build",
-    "run:node": "node dist/index.js",
+    "run:node": "cd packages/node && yarn serve",
     "dev": "cd packages/client && yarn dev",
     "preview": "cd packages/client && vite preview",
     "test": "yarn workspaces foreach --all --parallel --no-private run test --run --pass-with-no-tests"
