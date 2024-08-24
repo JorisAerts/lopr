@@ -2939,6 +2939,7 @@ __metadata:
   resolution: "js-proxy-client@workspace:packages/client"
   dependencies:
     "@eslint/js": "npm:^9.9.1"
+    "@types/node": "npm:^22.5.0"
     "@vitejs/plugin-vue": "npm:^5.1.2"
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
     eslint: "npm:^9.9.1"
