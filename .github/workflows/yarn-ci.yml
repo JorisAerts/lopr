@@ -30,4 +30,5 @@ jobs:
       - run: yarn cache clean
       - run: yarn install
       - run: yarn build
+      - run: yarn type:check
       - run: yarn test
