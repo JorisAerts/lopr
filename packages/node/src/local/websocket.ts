@@ -40,7 +40,7 @@ export const defineSocketServer = ({ logger, server, onConnect, state }: Instanc
             if (err) sendWsData(WebSocketMessageType.Error, createErrorMessage(err, ws))
           })
           .on('message', (event: MessageEvent) => {
-            const data = parseWebSocketMessage(event)
+            const data = parseWebSocketMessage(event) as WebSocketMessage
             if (typeof data === 'object') {
               registry[data.type]?.(data, state)
             } else {

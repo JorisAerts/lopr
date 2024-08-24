@@ -1,5 +1,5 @@
 import type { ExtractPropTypes, PropType } from 'vue'
-import type { IconNames } from '../../Icon'
+import type { IconNames } from '../Icon'
 
 export const makeInputFieldTypeProps = () => ({
   type: { type: String as PropType<HTMLInputElement['type']>, default: 'text' },

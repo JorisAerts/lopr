@@ -118,7 +118,6 @@
     /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "packages/**/*",
     "env.d.ts",
     "vite.config.*"
   ],
