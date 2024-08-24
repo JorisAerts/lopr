@@ -1,3 +1,4 @@
+import './RequestSequence.scss'
 import type { ComponentPublicInstance, VNode } from 'vue'
 import { defineComponent, ref, watch } from 'vue'
 import { VList, VListItem, VSheet } from 'js-proxy-ui/components'
@@ -27,7 +28,7 @@ export const RequestSequence = defineComponent({
     })
 
     return () => (
-      <VList class={['fill-height', 'overflow-auto', 'mt-2']} ref={list}>
+      <VList class={['v-request-sequence', 'fill-height', 'overflow-auto', 'mt-2']} ref={list}>
         {requestStore.ids
           .map((uuid) => {
             return requestStore.getRequest(uuid)
@@ -49,7 +50,7 @@ export const RequestSequence = defineComponent({
                   ]}
                   tooltip={`${req.method} — ${req.url}`}
                 >
-                  <VSheet class={['no-wrap', 'overflow-hidden', 'overflow-ellipsis']}>
+                  <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-hidden', 'overflow-ellipsis']}>
                     {req.method} — {req.url}
                   </VSheet>
                 </VListItem>
