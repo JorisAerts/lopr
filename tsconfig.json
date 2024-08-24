@@ -31,7 +31,7 @@
     /* Modules */
     "module": "ESNext",
     /* Specify what module code is generated. */
-    // "rootDir": "./",                                  /* Specify the root folder within your source files. */
+    "rootDir": "./", /* Specify the root folder within your source files. */
     "moduleResolution": "Bundler",
     /* Specify how TypeScript looks up a file from a given module specifier. */
     // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
@@ -118,18 +118,12 @@
     /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "packages/**/*",
     "env.d.ts",
     "vite.config.*"
   ],
   "exclude": [
     "**/node_modules/**",
     "**/dist/**",
-    ".yarn",
-    "public"
-  ],
-  "tsc-alias": {
-    "resolveFullPaths": true,
-    "verbose": false
-  }
+    ".yarn"
+  ]
 }

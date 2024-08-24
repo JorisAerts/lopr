@@ -1,0 +1,17 @@
+@use "../../style/sass-vars" as *;
+
+:root {
+  --input-label-margin: #{$spacer};
+}
+
+.v-label {
+
+  display: flex;
+  flex-direction: column;
+
+  & > span {
+    font-weight: 600;
+    margin-bottom: var(--input-label-margin);
+  }
+
+}

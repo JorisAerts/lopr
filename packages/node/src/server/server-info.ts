@@ -15,17 +15,17 @@ const getAddress = (server: Server) => {
 }
 
 export const displayServerInfo = ({ logger, server }: InstanceOptions) => {
-  const title = `${APP_NAME} - ${packageJson.version}`
+  const title = `${APP_NAME} v${packageJson.version}`
   const tmp = `file://${tempDir().split(sep).join('/')}`
 
   clearScreen()
   logger.info()
   logger.info(`  ${tui.title(title)}`)
   logger.info()
-  logger.info(`  ${tui.tooltip(`Temp-folder: ${tui.link(tmp)}`)}`)
-  logger.info(`  ${tui.tooltip(`GUI & Proxy Server: ${tui.link(getAddress(server))}`)}`)
-  logger.info(`  ${tui.tooltip(`Automatic proxy configuration (PAC): ${tui.link(`${getAddress(server)}/pac`)}`)}`)
-  logger.info(`  ${tui.tooltip(`Use ${tui.tip('--open')} to automatically open your browser.`)}`)
+  logger.info(`  ${tui.tooltip(`${tui.bold('GUI & Proxy Server:')} ${tui.link(getAddress(server))}`)}`)
+  logger.info(`  ${tui.dim(tui.tooltip(`${tui.bold('Automatic proxy configuration (PAC):')} ${tui.link(`${getAddress(server)}/pac`)}`))}`)
+  logger.info(`  ${tui.dim(tui.tooltip(`${tui.bold('Temp-folder:')} ${tui.link(tmp)}`))}`)
+  logger.info(`  ${tui.dim(tui.tooltip(`Use ${tui.bold(tui.reset('--open'))} ${tui.dim('to automatically open in browser.')}`))}`)
   logger.info()
   logger.info(`  ${`Press '${tui.tip('q')}' to quit.`}`)
 

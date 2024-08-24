@@ -1,15 +1,19 @@
-@use "../../../style/sass-vars" as *;
-@use "../../../style/vars" as *;
+@use "../../style/sass-vars" as *;
+@use "../../style/vars" as *;
 @use "disable-autofill" as *;
 
+:root {
+  --input-field-padding: #{$spacer 2*$spacer};
+  --input-field-margin-bottom: #{2 * $spacer};
+}
 
 .v-input-field {
 
   --control-emphasis-opacity: .4;
 
   display: flex;
-  margin: 0 0 4 * $spacer 0;
-  padding: 2*$spacer 2*$spacer;
+  margin: 0 0 var(--input-field-margin-bottom) 0;
+  padding: var(--input-field-padding);
   border: var(--border-size) solid var(--border-color);
   border-radius: var(--border-radius);
   background: var(--app-background);

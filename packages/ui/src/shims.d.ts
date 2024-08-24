@@ -1,6 +1,6 @@
 export * from 'vue'
 
-declare global {
+declare module 'vue/jsx-runtime' {
   namespace JSX {
     interface IntrinsicAttributes {
       [x: `on${Capitalize<string>}`]: any

@@ -1,8 +1,8 @@
 import './VInputField.scss'
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref, Transition } from 'vue'
 import { VLabelWrapper } from './VLabelWrapper'
 import { makeInputFieldProps, makeInputFieldTypeProps } from './fields'
-import { VIcon } from '../../Icon'
+import { VIcon } from '../Icon'
 
 export const VInputField = defineComponent({
   name: 'v-input-field',
@@ -38,20 +38,18 @@ export const VInputField = defineComponent({
               emit('update:modelValue', (event.target as HTMLInputElement)?.value)
             }}
           />
-          {props.clearable && (
-            <VIcon
-              class={{
-                clearable: true,
-                'clearable--icon': true,
-                'clearable--disabled': (props.modelValue?.length ?? 0) === 0,
-              }}
-              name="Cancel_Fill"
-              size={16}
-              {...{
-                onClick: () => props.modelValue && emit('update:modelValue', null),
-              }}
-            />
-          )}
+          <Transition>
+            {props.clearable && (
+              <VIcon
+                class={['clearable', 'clearable--icon', { 'clearable--disabled': (props.modelValue?.length ?? 0) === 0 }]}
+                name="Cancel_Fill"
+                size={16}
+                {...{
+                  onClick: () => props.modelValue && emit('update:modelValue', null),
+                }}
+              />
+            )}
+          </Transition>
         </div>
       </VLabelWrapper>
     )

@@ -14,8 +14,6 @@
     "monitoring"
   ],
   "license": "MIT",
-  "packageManager": "yarn@4.4.0",
-  "main": "dist/index.js",
   "type": "module",
   "author": {
     "name": "Joris Aerts",
@@ -30,12 +28,13 @@
     "./*": "./src/*.ts"
   },
   "scripts": {
+    "check:type": "tsc --noEmit",
     "test": "vitest --typecheck"
   },
   "devDependencies": {
-    "@eslint/js": "^9.9.0",
+    "@eslint/js": "^9.9.1",
     "@types/node": "^22.5.0",
-    "eslint": "^9.9.0",
+    "eslint": "^9.9.1",
     "globals": "^15.9.0",
     "prettier": "^3.3.3",
     "type-fest": "^4.25.0",
