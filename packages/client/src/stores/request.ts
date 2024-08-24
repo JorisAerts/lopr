@@ -46,12 +46,12 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   const getResponse = (uuid: UUID) => responses.value.get(uuid)
   const getRequest = (uuid: UUID) => requests.value.get(uuid)
   const isNew = (uuid: UUID | string) => recent.value.has(uuid)
-  let timeOut: NodeJS.Timeout
+  let timeOut: number // .Timeout
 
   const pushRecentUUID = (uuid: UUID | string) => {
     recent.value.add(uuid)
     clearTimeout(timeOut)
-    timeOut = setTimeout(() => recent.value.clear(), CLEAR_RECENT_TIMEOUT)
+    timeOut = window.setTimeout(() => recent.value.clear(), CLEAR_RECENT_TIMEOUT)
   }
 
   const addToStruct = (uuid: UUID, isRecent = true) => {
@@ -101,7 +101,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 
     structure.value = { key: '', isNew: false }
 
-    clearTimeout(timeOut)
+    window.clearTimeout(timeOut)
   }
 
   /**

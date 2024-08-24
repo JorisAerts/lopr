@@ -1,7 +1,7 @@
 import type { OutgoingOptions } from '../proxy/utils'
 import type { IncomingMessage, ServerResponse } from 'http'
 import type { Logger } from '../utils/logger'
-import type { UseCache } from './cache'
+import type { UseCache } from 'js-proxy-shared/ProxyState'
 
 /**
  * Options passed to the CLI

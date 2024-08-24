@@ -15,7 +15,7 @@ export const registerDataHandler = <Data = any>(type: WebSocketMessageType, data
 
 let socket = createSocket()
 
-const retryCreate = () => setTimeout(() => (socket = createSocket()), 1000)
+const retryCreate = () => window.setTimeout(() => (socket = createSocket()), 1000)
 
 function createSocket() {
   const newSocket = new WebSocket(url)
