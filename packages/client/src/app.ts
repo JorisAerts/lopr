@@ -9,7 +9,7 @@ import { useCertificateStore } from './stores/certificates'
 import { useAppStore } from './stores/app'
 
 // split the ui in another chunk
-const App = defineAsyncComponent(() => import('./components/app/App').then((c) => c.App))
+const App = defineAsyncComponent(() => import('./components/App/App').then((c) => c.App))
 
 export const app = createApp(App)
 app.use(createPinia())

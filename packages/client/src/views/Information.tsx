@@ -1,3 +1,4 @@
+import type { CSSProperties} from 'vue';
 import { computed, defineComponent, TransitionGroup } from 'vue'
 import { VCard, VIcon, VSheet, VTooltip } from 'js-proxy-ui'
 import { useCertificateStore } from '../stores/certificates'
@@ -28,7 +29,7 @@ export const Information = defineComponent({
                     <VIcon name={'ShieldLock'} class={'mr-2'} size={33} style={{ float: 'left' }} />
                     <VTooltip text={cert}>
                       <a href={file} target={'cert'}>
-                        <span style={{ 'word-wrap': 'break-word' }}>{cert}</span>
+                        <span style={{ 'word-wrap': 'break-word' as CSSProperties['word-wrap'] }}>{cert}</span>
                       </a>
                     </VTooltip>
                   </VCard>
