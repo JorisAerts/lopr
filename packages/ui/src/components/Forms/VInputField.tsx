@@ -2,7 +2,7 @@ import './VInputField.scss'
 import { defineComponent, onMounted, ref, Transition } from 'vue'
 import { VLabelWrapper } from './VLabelWrapper'
 import { makeInputFieldProps, makeInputFieldTypeProps } from './fields'
-import { VIcon } from '../../Icon'
+import { VIcon } from '../Icon'
 
 export const VInputField = defineComponent({
   name: 'v-input-field',
