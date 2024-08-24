@@ -10,9 +10,9 @@ import * as fs from 'node:fs'
 import { sendWsData } from '../local'
 import { WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
 import type { ProxyRequestHistory } from 'js-proxy-shared/ProxyRequestHistory'
-import type { ProxyState } from 'js-proxy-shared/ProxyState'
+import type { ProxyState, UseCache } from 'js-proxy-shared/ProxyState'
 
-export const useCache = () => {
+export const useCache = (): UseCache => {
   /**
    * Contains all ids (chronologically sequential)
    */
@@ -34,7 +34,6 @@ export const useCache = () => {
     uuids.clear()
     responses.clear()
     requests.clear()
-    // TODO: clearCache(options)
   }
 
   const addRequest = (info: ProxyRequestInfo, state: ProxyState) => {
@@ -65,8 +64,6 @@ export const useCache = () => {
     },
   }
 }
-
-export type UseCache = ReturnType<typeof useCache>
 
 export const getCachedData = (options: ServerOptions, uuid: UUID) => {
   const cache = cacheDir(options)
