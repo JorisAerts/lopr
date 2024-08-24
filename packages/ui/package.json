@@ -28,6 +28,7 @@
     "dist/**/*"
   ],
   "scripts": {
+    "check:type": "tsc --noEmit",
     "build": "vite build",
     "test": "vitest --typecheck"
   },

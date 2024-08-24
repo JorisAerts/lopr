@@ -36,8 +36,9 @@
     "build:client": "cd ../client && yarn build && cp -R ./dist ../node/dist/client",
     "build": "vite build",
     "build:all": "yarn build && yarn build:client",
-    "serve": "node dist/index.js",
-    "test": "vitest --typecheck"
+    "check:type": "tsc --noEmit",
+    "test": "vitest --typecheck",
+    "serve": "node dist/index.js"
   },
   "dependencies": {
     "@mongodb-js/zstd": "1.2.0",
