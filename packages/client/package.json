@@ -34,6 +34,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "check:type": "tsc --noEmit",
     "test": "vitest --typecheck"
   },
   "dependencies": {

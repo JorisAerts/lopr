@@ -30,6 +30,7 @@
     "serve": "cd packages/node && yarn serve",
     "dev": "cd packages/client && yarn dev",
     "preview": "cd packages/client && vite preview",
+    "check:type": "yarn workspaces foreach --all run check:type",
     "test": "yarn workspaces foreach --all --parallel --no-private run test --run --pass-with-no-tests"
   },
   "devDependencies": {
