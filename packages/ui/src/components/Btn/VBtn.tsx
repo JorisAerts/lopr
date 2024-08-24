@@ -1,9 +1,9 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
-import type { IconNames } from '../Icon'
-import { VIcon } from '../Icon'
 import './VBtn.scss'
 import { makeTooltipProps, useTooltip } from '../Tooltip'
+import type { IconNames } from '../Icon'
+import { VIcon } from '../Icon'
 
 export enum EventTypes {
   Click = 'click',
@@ -65,7 +65,7 @@ export const VBtn = defineComponent({
                   name={props.icon}
                   color={props.iconColor}
                   size={props.size}
-                ></VIcon>
+                />
               ))}
             {content}
             {props.dropdown && <VIcon class={['mr-n2']} name={'KeyboardArrowDown'} color={props.iconColor} size={props.size} />}
