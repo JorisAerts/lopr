@@ -28,6 +28,7 @@
     "./*": "./src/*.ts"
   },
   "scripts": {
+    "check:type": "tsc --noEmit",
     "test": "vitest --typecheck"
   },
   "devDependencies": {
