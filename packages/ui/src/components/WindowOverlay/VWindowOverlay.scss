@@ -1,7 +1,7 @@
 @use "../../style/vars" as *;
 
 :root {
-  --window-overlay-content-margin: calc(100% * (1 / 11)) auto auto auto;
+  --window-overlay-content-margin: auto auto auto auto;
 }
 
 /*
@@ -44,6 +44,8 @@
     align-content: center;
 
     > * {
+      position: relative;
+      top: -1em;
       margin: var(--window-overlay-content-margin);
     }
   }
