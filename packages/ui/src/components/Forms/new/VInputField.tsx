@@ -40,11 +40,7 @@ export const VInputField = defineComponent({
           />
           {props.clearable && (
             <VIcon
-              class={{
-                clearable: true,
-                'clearable--icon': true,
-                'clearable--disabled': (props.modelValue?.length ?? 0) === 0,
-              }}
+              class={['clearable', 'clearable--icon', { 'clearable--disabled': (props.modelValue?.length ?? 0) === 0 }]}
               name="Cancel_Fill"
               size={16}
               {...{
