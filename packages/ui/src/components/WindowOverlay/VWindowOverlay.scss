@@ -1,4 +1,4 @@
-@use "../../style/main" as *;
+@use "../../style/vars" as *;
 
 :root {
   --window-overlay-content-margin: calc(100% * (1 / 11)) auto auto auto;
@@ -8,7 +8,7 @@
  Make the backdrop fade-in
  */
 @keyframes window-overlay-intro {
-  0%, 20% {
+  0%, 15% {
     backdrop-filter: blur(0px);
   }
 }
@@ -29,7 +29,7 @@
   background: rgba(255, 255, 255, 0);
 
   & * {
-    transition: var(--transition-root);
+    transition: var(--transition);
   }
 
   &--blurred {
