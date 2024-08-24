@@ -1,5 +1,9 @@
 @use "../../style/sass-vars" as *;
 
+:root {
+  --input-label-margin: #{$spacer};
+}
+
 .v-label {
 
   display: flex;
@@ -7,7 +11,7 @@
 
   & > span {
     font-weight: 600;
-    margin-bottom: 2 * $spacer;
+    margin-bottom: var(--input-label-margin);
   }
 
 }

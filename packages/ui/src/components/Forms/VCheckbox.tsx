@@ -25,7 +25,7 @@ export const VCheckbox = defineComponent({
           disabled={props.disabled}
           onChange={(e) => emit('update:modelValue', (e.target as HTMLInputElement)?.checked)}
         />
-        <span class={['v-checkbox--label']}>{slots.label?.() ?? props.label}</span>
+        <span class={['v-checkbox--label']}>{slots.default?.() ?? props.label}</span>
       </label>
     )
   },
