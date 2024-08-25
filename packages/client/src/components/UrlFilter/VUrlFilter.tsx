@@ -66,8 +66,10 @@ export const VUrlFilter = defineComponent({
       <VSheet>
         <VForm onSubmit={handleSubmit}>
           <VTextField label={'Protocol'} onPaste={handlePaste} v-model={model.value!.protocol}></VTextField>
-          <VTextField label={'Host'} onPaste={handlePaste} v-model={model.value!.domain}></VTextField>
-          <VTextField label={'Port'} onPaste={handlePaste} v-model={model.value!.port}></VTextField>
+          <VSheet class={['d-flex', 'gap-4']}>
+            <VTextField label-class={['flex-grow-1']} label={'Host'} onPaste={handlePaste} v-model={model.value!.domain}></VTextField>
+            <VTextField label={'Port'} onPaste={handlePaste} v-model={model.value!.port}></VTextField>
+          </VSheet>
           <VTextField label={'Path'} onPaste={handlePaste} v-model={model.value!.path}></VTextField>
           <VTextField label={'Query'} onPaste={handlePaste} v-model={model.value!.query}></VTextField>
         </VForm>
