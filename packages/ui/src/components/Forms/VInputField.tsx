@@ -1,4 +1,5 @@
 import './VInputField.scss'
+import type { PropType } from 'vue'
 import { defineComponent, onMounted, ref, Transition } from 'vue'
 import { VLabelWrapper } from './VLabelWrapper'
 import { makeInputFieldProps, makeInputFieldTypeProps } from './fields'
@@ -12,6 +13,8 @@ export const VInputField = defineComponent({
   props: {
     ...makeInputFieldTypeProps(),
     ...makeInputFieldProps(),
+
+    labelClass: { type: [String, Array, Object] as PropType<any> },
   },
 
   inheritAttrs: false,
@@ -25,7 +28,7 @@ export const VInputField = defineComponent({
     })
 
     return () => (
-      <VLabelWrapper modelValue={props.label}>
+      <VLabelWrapper modelValue={props.label} class={props.labelClass}>
         <div class={['v-input-field']} {...attrs} onMousedown={focus}>
           {props.icon && <VIcon class={'v-input-field--icon'} name={props.icon} size={16} />}
           <input
