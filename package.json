@@ -26,7 +26,9 @@
     "url": "https://github.com/JorisAerts/js-proxy.git"
   },
   "scripts": {
-    "build": "cd packages/node && yarn build",
+    "build:node": "cd packages/node && yarn build",
+    "build:client": "cd packages/client && yarn build",
+    "build": "yarn build:client && yarn build:node",
     "serve": "cd packages/node && yarn serve",
     "dev": "cd packages/client && yarn dev",
     "preview": "cd packages/client && vite preview",

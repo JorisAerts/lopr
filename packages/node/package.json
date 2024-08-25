@@ -33,9 +33,8 @@
     ".": "./dist/index.js"
   },
   "scripts": {
-    "build:client": "cd ../client && yarn build && cp -R ./dist ../node/dist/client",
-    "build": "vite build",
-    "build:all": "yarn build && yarn build:client",
+    "copy:client": "cp -R ../client/dist ./dist/client",
+    "build": "yarn check:type && yarn vite build && yarn copy:client",
     "check:type": "tsc --noEmit",
     "test": "vitest --typecheck",
     "serve": "node dist/index.js"
