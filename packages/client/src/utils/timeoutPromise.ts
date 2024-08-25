@@ -1,7 +1,7 @@
 const setTimeoutPromise = (delay: number) =>
   new Promise((resolve, reject) => {
     try {
-      setTimeout(resolve, delay)
+      window.setTimeout(resolve, delay)
     } catch (error) {
       reject(error)
     }
