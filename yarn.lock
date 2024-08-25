@@ -1357,43 +1357,43 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-core@npm:^7.3.8":
-  version: 7.3.8
-  resolution: "@vue/devtools-core@npm:7.3.8"
+"@vue/devtools-core@npm:^7.3.9":
+  version: 7.3.9
+  resolution: "@vue/devtools-core@npm:7.3.9"
   dependencies:
-    "@vue/devtools-kit": "npm:^7.3.8"
-    "@vue/devtools-shared": "npm:^7.3.8"
+    "@vue/devtools-kit": "npm:^7.3.9"
+    "@vue/devtools-shared": "npm:^7.3.9"
     mitt: "npm:^3.0.1"
     nanoid: "npm:^3.3.4"
     pathe: "npm:^1.1.2"
     vite-hot-client: "npm:^0.2.3"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 10c0/210d0f0582fa4d2b162f42602b9737635d5e462c499be0a76a120b3cdaffb6252f1cd897f9a3532ff1d37dc86e122494c3c4e0cd10c847a64ad3a45b84c2a0a1
+  checksum: 10c0/09e13a3d1269197d8791b1888aadc54d0785b3b2fbe470123bd4c2b446fb46274609bcf97de014f376d379311f9e65eb89ff146c3fb9b084db6167d75783eb0a
   languageName: node
   linkType: hard
 
-"@vue/devtools-kit@npm:^7.3.8":
-  version: 7.3.8
-  resolution: "@vue/devtools-kit@npm:7.3.8"
+"@vue/devtools-kit@npm:^7.3.9":
+  version: 7.3.9
+  resolution: "@vue/devtools-kit@npm:7.3.9"
   dependencies:
-    "@vue/devtools-shared": "npm:^7.3.8"
+    "@vue/devtools-shared": "npm:^7.3.9"
     birpc: "npm:^0.2.17"
     hookable: "npm:^5.5.3"
     mitt: "npm:^3.0.1"
     perfect-debounce: "npm:^1.0.0"
     speakingurl: "npm:^14.0.1"
     superjson: "npm:^2.2.1"
-  checksum: 10c0/768195ce9162eaa6a10ef32997b109abe6a5bf4935476c3393b8c973bb661bc4da8120df7030fbe24b351c2aa0c27e0d4131a3c87db37a4aada0ddf76792ba80
+  checksum: 10c0/e557ecfb1f1599255cd2642b5d1012bcc601e9ee616914f49d4c6947c871a4c1e4130594d430b61871803fa1ae1e06639f8c886e5fe204e038d330e074851117
   languageName: node
   linkType: hard
 
-"@vue/devtools-shared@npm:^7.3.8":
-  version: 7.3.8
-  resolution: "@vue/devtools-shared@npm:7.3.8"
+"@vue/devtools-shared@npm:^7.3.9":
+  version: 7.3.9
+  resolution: "@vue/devtools-shared@npm:7.3.9"
   dependencies:
     rfdc: "npm:^1.4.1"
-  checksum: 10c0/8a728ec7f0f2a37e8d53416eaff39ab770292be8629759123a572ff6221446c3cf53f0cbd7ba740975489561c7d235d41fe281f6803c17350f5378b694ca37a1
+  checksum: 10c0/061130e432e712f2c5bd821df467fbb0a0e1259cc901c0d688d0655463879373c4ad1886d4e3eccf3b15e81c627c0d0c6882beeb155b87c8e49adc917de03dbb
   languageName: node
   linkType: hard
 
@@ -2939,6 +2939,7 @@ __metadata:
   resolution: "js-proxy-client@workspace:packages/client"
   dependencies:
     "@eslint/js": "npm:^9.9.1"
+    "@types/node": "npm:^22.5.0"
     "@vitejs/plugin-vue": "npm:^5.1.2"
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
     eslint: "npm:^9.9.1"
@@ -2956,7 +2957,7 @@ __metadata:
     typescript: "npm:^5.5.4"
     typescript-eslint: "npm:^8.2.0"
     vite: "npm:^5.4.2"
-    vite-plugin-vue-devtools: "npm:^7.3.8"
+    vite-plugin-vue-devtools: "npm:^7.3.9"
     vitest: "npm:^2.0.5"
     vue: "npm:^3.4.38"
     vue-router: "npm:^4.4.3"
@@ -3000,7 +3001,7 @@ __metadata:
     typescript: "npm:^5.5.4"
     typescript-eslint: "npm:^8.2.0"
     vite: "npm:^5.4.2"
-    vite-plugin-vue-devtools: "npm:^7.3.8"
+    vite-plugin-vue-devtools: "npm:^7.3.9"
     vitest: "npm:^2.0.5"
     vue: "npm:^3.4.38"
   peerDependencies:
@@ -4599,20 +4600,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-vue-devtools@npm:^7.3.8":
-  version: 7.3.8
-  resolution: "vite-plugin-vue-devtools@npm:7.3.8"
+"vite-plugin-vue-devtools@npm:^7.3.9":
+  version: 7.3.9
+  resolution: "vite-plugin-vue-devtools@npm:7.3.9"
   dependencies:
-    "@vue/devtools-core": "npm:^7.3.8"
-    "@vue/devtools-kit": "npm:^7.3.8"
-    "@vue/devtools-shared": "npm:^7.3.8"
+    "@vue/devtools-core": "npm:^7.3.9"
+    "@vue/devtools-kit": "npm:^7.3.9"
+    "@vue/devtools-shared": "npm:^7.3.9"
     execa: "npm:^8.0.1"
     sirv: "npm:^2.0.4"
     vite-plugin-inspect: "npm:^0.8.5"
     vite-plugin-vue-inspector: "npm:^5.1.3"
   peerDependencies:
     vite: ^3.1.0 || ^4.0.0-0 || ^5.0.0-0
-  checksum: 10c0/4e5dc92bf31788a53cc13f0a95b8a29550b98c2aa5d87c1ff740bccf67832c00d6d67d5175859e3744d7bfe1f7b8c851917eabde8abc6c33074ecc4ebaf8f9ca
+  checksum: 10c0/a77d85abe42ee687a577e16dd15f60cf55c4dd0722893230f017bfb07cb1d05932aa088dc35fef527bd37b842638f1960123f001b417c8613ff720217cd565b5
   languageName: node
   linkType: hard
 
