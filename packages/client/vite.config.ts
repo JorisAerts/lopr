@@ -2,8 +2,7 @@ import { fileURLToPath, URL } from 'url'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { defineConfig } from 'vite'
-//import VueDevTools from 'vite-plugin-vue-devtools'
-import { DEFAULT_HOST, DEFAULT_PORT, WEBSOCKET_ROOT } from 'js-proxy-shared/constants'
+import { DEFAULT_HOST, DEFAULT_PORT, WEBSOCKET_ROOT } from '../shared/src/constants' // don't refer using js-proxy-shared here
 
 // https://vitejs.dev/config/
 export default defineConfig({
