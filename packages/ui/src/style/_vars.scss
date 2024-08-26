@@ -18,7 +18,9 @@
   --line-height: 1.6;
 
   // theme colors
-  --primary-color: 99, 150, 228;
+  --primary-color: 49, 120, 198;
+  //--primary-color: 99, 150, 228;
+  --on-primary-color: 255, 255, 255;
   --secondary-color: 0, 255, 0;
 
   // background
@@ -65,4 +67,5 @@ html.dark-mode {
   --default-shadow: none;
 
   --primary-color: 49, 120, 198;
+  // --on-primary-color: 255, 255, 255;
 }

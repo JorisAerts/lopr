@@ -17,8 +17,8 @@
 
 html * {
   box-sizing: border-box;
-  transition: var(--transition);
-  transition-property: var(--transition-properties);
+  transition: inherit;
+  transition-property: inherit;
 }
 
 html, body {
@@ -35,6 +35,9 @@ html, body {
 }
 
 div#app {
+  transition: var(--transition);
+  transition-property: var(--transition-properties);
+
   padding: 1em;
   display: flex;
   flex-direction: column;
