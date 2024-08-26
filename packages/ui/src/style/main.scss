@@ -15,7 +15,7 @@
 @forward "sass-vars";
 
 
-* {
+html * {
   box-sizing: border-box;
   transition: var(--transition);
   transition-property: var(--transition-properties);
