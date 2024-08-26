@@ -3,11 +3,13 @@ import { RouterView } from 'vue-router'
 import { VSheet } from 'js-proxy-ui/components'
 import { VAppHeader } from '../AppHeader'
 import { VNavBar } from '../NavBar'
+import { useHtmlDarkMode } from 'js-proxy-ui'
 
 export const App = defineComponent({
   name: 'v-app',
 
   setup() {
+    useHtmlDarkMode()
     // the application entry point
     return () => (
       <VSheet class={['d-flex', 'flex-column', 'fill-height']}>
