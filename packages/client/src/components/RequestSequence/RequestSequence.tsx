@@ -28,7 +28,7 @@ export const RequestSequence = defineComponent({
     })
 
     return () => (
-      <VList class={['v-request-sequence', 'fill-height', 'overflow-auto', 'mt-2']} ref={list}>
+      <VList class={['v-request-sequence']} ref={list}>
         {requestStore.ids
           .map((uuid) => {
             return requestStore.getRequest(uuid)

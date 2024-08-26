@@ -125,6 +125,6 @@ export const RequestStructure = defineComponent({
         </>
       ) : null
 
-    return () => <VList class={['request-structure', 'fill-height', 'overflow-auto', 'mt-2']}>{renderTree(requestStore.structure)}</VList>
+    return () => <VList class={['request-structure']}>{renderTree(requestStore.structure)}</VList>
   },
 })
