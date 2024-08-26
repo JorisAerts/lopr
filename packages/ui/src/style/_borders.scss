@@ -1,6 +1,6 @@
 @use "vars" as *;
 
 .bordered {
-  border: var(--border-size) solid var(--border-color);
+  border: var(--border-size) var(--border-style) rgba(var(--border-color), var(--border-opacity));
   border-radius: var(--border-radius);
 }

@@ -1,4 +1,4 @@
-import { createApp, defineAsyncComponent } from 'vue'
+import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { router } from './router'
 import './utils/websocket'
@@ -7,9 +7,7 @@ import { usePreferencesStore } from './stores/preferences'
 import { useErrorLogStore } from './stores/errorlog'
 import { useCertificateStore } from './stores/certificates'
 import { useAppStore } from './stores/app'
-
-// split the ui in another chunk
-const App = defineAsyncComponent(() => import('./components/App/App').then((c) => c.App))
+import { App } from './components'
 
 export const app = createApp(App)
 app.use(createPinia())

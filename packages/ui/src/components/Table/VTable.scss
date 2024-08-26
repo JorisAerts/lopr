@@ -1,10 +1,11 @@
+@use "../../style/sass-vars" as *;
 @use "../../style/vars" as *;
 
 .v-table {
   --table-header-font-weight: var(--font-weight-bold);
   --table-border-color: var(--border-color);
   --table-border-size: var(--border-size);
-  --cell-border: var(--table-border-size) solid var(--table-border-color);
+  --cell-border: var(--table-border-size) var(--border-style) rgba(var(--table-border-color), var(--border-opacity));
 
   @at-root & {
     width: 100%;
@@ -30,7 +31,7 @@
   }
 
   td, th {
-    padding: calc(var(--spacer) * 0) calc(var(--spacer) * 2);
+    padding: 0 $spacer * 2;
   }
 
   th {

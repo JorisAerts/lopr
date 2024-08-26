@@ -28,7 +28,7 @@ export const RequestSequence = defineComponent({
     })
 
     return () => (
-      <VList class={['v-request-sequence', 'fill-height', 'overflow-auto', 'mt-2']} ref={list}>
+      <VList class={['v-request-sequence']} ref={list}>
         {requestStore.ids
           .map((uuid) => {
             return requestStore.getRequest(uuid)
@@ -50,7 +50,7 @@ export const RequestSequence = defineComponent({
                   ]}
                   tooltip={`${req.method} — ${req.url}`}
                 >
-                  <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-hidden', 'overflow-ellipsis']}>
+                  <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-ellipsis']}>
                     {req.method} — {req.url}
                   </VSheet>
                 </VListItem>
