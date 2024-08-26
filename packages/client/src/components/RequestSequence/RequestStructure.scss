@@ -26,6 +26,7 @@
 
 @keyframes new-list-item-blink {
   from {
+    color: rgba(var(--on-primary-color), var(--text-emphasis));
     background: rgb(var(--primary-color));
   }
   to {

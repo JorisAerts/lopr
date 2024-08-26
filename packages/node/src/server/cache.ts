@@ -17,11 +17,13 @@ export const useCache = (): UseCache => {
    * Contains all ids (chronologically sequential)
    */
   const uuids = new Set<UUID>()
+
   /**
    * The request data sent from the client.
    * All requests are tagged with a unique UUID
    */
   const requests = new Map<string, ProxyRequestInfo>()
+
   /**
    * A map of response data to the client, mapped to the UUID of the request
    */

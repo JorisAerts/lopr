@@ -26,12 +26,12 @@ export const VListItem = defineComponent({
   setup(props, { attrs, slots, emit }) {
     const { wrapWithTooltip } = useTooltip(props, slots)
     const renderIcon = (name: IconNames | boolean | undefined, className: string) =>
-      name === false ? undefined : <VIcon class={className} color={'white'} name={name === true ? undefined : name} size={20} />
+      name === false ? undefined : <VIcon class={className} color={'currentColor'} name={name === true ? undefined : name} size={20} />
 
     return () => (
       <div class={'v-list-item'} {...attrs} onClick={(e: MouseEvent) => emit('click', e)}>
         {wrapWithTooltip(
-          <div class={['v-list-item--content']}>
+          <div class={['v-list-item--contents']}>
             {slots.prepend?.()}
             {props.prependIcon && renderIcon(props.prependIcon, 'v-list-item--prepend-icon')}
             {slots.default?.()}

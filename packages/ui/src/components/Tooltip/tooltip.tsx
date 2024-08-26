@@ -17,7 +17,9 @@ export const useTooltip = (props: TooltipProps, slots?: Slots) => {
         }}
       </VTooltip>
     ) : props.tooltip ? (
-      <VTooltip text={props.tooltip}>{contents}</VTooltip>
+      <VTooltip text={props.tooltip} style={style} class={classes}>
+        {contents}
+      </VTooltip>
     ) : (
       contents
     )
