@@ -15,10 +15,6 @@
 @forward "sass-vars";
 
 
-:root {
-  font-size: var(--font-size);
-}
-
 * {
   box-sizing: border-box;
   transition: var(--transition);
@@ -26,7 +22,7 @@
 }
 
 html, body {
-  background: var(--app-background);
+  background: rgba(var(--app-background-color), 1);
   color: rgba(var(--text-color), var(--text-emphasis));
   font-family: var(--font-family), serif;
   letter-spacing: var(--letter-spacing);
