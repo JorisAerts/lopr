@@ -12,7 +12,7 @@ export const AppPreferences = defineComponent({
         <h2 class={'mb-2'}>Preferences</h2>
         <VCard class={['pa-3']}>
           <h3 class={'mb-2'}>Appearance</h3>
-          <VCheckbox label={'Dark Mode'} modelValue={true} disabled />
+          <VCheckbox label={'Dark Mode'} v-model={preferencesStore.isDark} />
         </VCard>
         <VCard class={['pa-3']}>
           <h3 class={'mb-2'}>Reverse Proxy</h3>

@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const prefix = `js-proxy.`
 
@@ -18,4 +18,12 @@ export const useLocalStorage = () => {
   watch(prefs, () => setJSON('prefs', prefs.value), { deep: true })
 
   return { prefs }
+}
+
+export const bindLocalStorage = (key: keyof ReturnType<typeof useLocalStorage>['prefs']['value']) => {
+  const localStore = useLocalStorage()
+  return computed<boolean>({
+    get: () => localStore.prefs.value[key],
+    set: (value) => (localStore.prefs.value[key] = value),
+  })
 }
