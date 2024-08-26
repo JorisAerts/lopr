@@ -4,7 +4,7 @@
   border: none;
   outline: none;
   background: none;
-  color: rgba(var(--text-color), 1);
+  color: rgba(var(--text-color), var(--text-emphasis));
   font-weight: var(--font-weight-bold);
   flex-grow: 1;
   text-align: center;

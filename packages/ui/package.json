@@ -43,6 +43,8 @@
     "./style/*": {
       "sass": "./src/style/*.scss"
     },
+    "./utils": "./src/utils/index.ts",
+    "./utils/*": "./src/utils/*.ts",
     "./*": "./src/*"
   },
   "devDependencies": {

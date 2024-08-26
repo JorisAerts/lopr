@@ -14,9 +14,9 @@
   display: flex;
   margin: 0 0 var(--input-field-margin-bottom) 0;
   padding: var(--input-field-padding);
-  border: var(--border-size) solid var(--border-color);
+  border: var(--border-size) var(--border-style) rgba(var(--border-color), var(--border-opacity));
   border-radius: var(--border-radius);
-  background: var(--app-background);
+  background: rgba(var(--app-background-color), 1);
 
   @include remove-autofill-background {
     font-family: var(--font-family), sans-serif !important;
