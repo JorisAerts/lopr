@@ -1,8 +1,9 @@
+@use '../../style/sass-vars' as *;
 @use '../../style/vars' as *;
 
 :root {
-  --list-ident: calc(2 * #{$spacer});
-  --list-padding: calc(2 * #{$spacer});
+  --list-indent: #{4 * $spacer};
+  --list-padding: #{2 * $spacer};
 }
 
 // tree indentation
@@ -10,18 +11,24 @@
   --parent-padding: 0px;
 
   .v-list-item {
-    --list-ident-padding: calc(var(--parent-padding) + var(--list-ident));
+    --list-indent-padding: calc(var(--parent-padding) + var(--list-indent));
+  }
+
+  // "un-indent"
+  & > .v-list-item,
+  & > .v-list-group {
+    --parent-padding: calc(-1 * var(--list-indent));
   }
 
   .v-list-group {
-    --list-ident-padding: calc(var(--parent-padding) + var(--list-ident));
+    --list-indent-padding: calc(var(--parent-padding) + var(--list-indent));
 
     &--activator {
-      --list-ident-padding: var(--parent-padding);
+      --list-indent-padding: var(--parent-padding);
     }
 
     &--items {
-      --parent-padding: var(--list-ident-padding);
+      --parent-padding: var(--list-indent-padding);
     }
   }
 }
@@ -29,7 +36,7 @@
 .v-list-item {
   cursor: default;
   padding: var(--list-padding);
-  padding-inline-start: var(--list-ident-padding);
+  padding-inline-start: var(--list-indent-padding);
 
   border-radius: var(--border-radius);
 
