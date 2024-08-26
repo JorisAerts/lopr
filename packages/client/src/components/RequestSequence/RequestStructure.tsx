@@ -109,7 +109,6 @@ export const RequestStructure = defineComponent({
                     class={[
                       'py-0',
                       'no-wrap',
-                      'overflow-ellipsis',
                       {
                         'v-list-item--new': requestStore.isNew(value),
                         selected: props.modelValue === value,
@@ -117,7 +116,9 @@ export const RequestStructure = defineComponent({
                     ]}
                     tooltip={`${request.method} ${request.url}`}
                   >
-                    {request.method} {request.url.substring(struct.key?.length + 1) || '/'}
+                    <span class={'overflow-ellipsis'}>
+                      {request.method} {request.url.substring(struct.key?.length + 1) || '/'}
+                    </span>
                   </VListItem>
                 )
               )

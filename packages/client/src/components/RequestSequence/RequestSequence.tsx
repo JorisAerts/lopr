@@ -50,7 +50,7 @@ export const RequestSequence = defineComponent({
                   ]}
                   tooltip={`${req.method} — ${req.url}`}
                 >
-                  <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-hidden', 'overflow-ellipsis']}>
+                  <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-ellipsis']}>
                     {req.method} — {req.url}
                   </VSheet>
                 </VListItem>
