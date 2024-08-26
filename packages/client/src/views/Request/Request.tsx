@@ -35,15 +35,18 @@ export const Request = defineComponent({
             <h3>
               Requests <sup>({requestStore.ids.length})</sup>
             </h3>
+            <VBtn tooltip={'Sort'} icon={'Reorder'} size={20} class={['pa-1', 'ml-2']} transparent disabled />
             <VSpacer />
             <VBtn tooltip={'Sequence view'} icon={'Reorder'} size={20} class={['pa-1', 'mr-1']} transparent onClick={() => (requestViewType.value = 0)} />
             <VBtn tooltip={'Structure view'} icon={'AccountTree'} size={20} class={['pa-1']} transparent onClick={() => (requestViewType.value = 1)} />
           </VSheet>
-          {requestViewType.value === 0 ? ( //
-            <RequestSequence v-model={current.value} />
-          ) : (
-            <RequestStructure v-model={current.value} v-model:expanded={expanded.value} />
-          )}
+          <VSheet class={['fill-height', 'overflow-auto', 'mt-2', 'px-2']}>
+            {requestViewType.value === 0 ? ( //
+              <RequestSequence v-model={current.value} />
+            ) : (
+              <RequestStructure v-model={current.value} v-model:expanded={expanded.value} />
+            )}
+          </VSheet>
         </VCard>
 
         <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
