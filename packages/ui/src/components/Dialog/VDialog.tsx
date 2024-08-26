@@ -1,3 +1,4 @@
+import './VDialog.scss'
 import { defineComponent, onMounted, ref, Teleport, watch } from 'vue'
 import { addDOMListener } from '../../utils'
 import { VWindowOverlay } from '../WindowOverlay'
@@ -53,8 +54,10 @@ export const VDialog = defineComponent({
         <>
           {modelValue.value === true && (
             <Teleport to={props.contentTarget}>
-              <VWindowOverlay transparent={props.transparent} centered={props.centered} {...attrs} {...{ onClick: close }}>
-                <section ref={dialog}>{slots.default?.()}</section>
+              <VWindowOverlay class={['v-dialog']} transparent={props.transparent} centered={props.centered} {...attrs} {...{ onClick: close }}>
+                <section ref={dialog} class={['v-dialog--contents']}>
+                  {slots.default?.()}
+                </section>
               </VWindowOverlay>
             </Teleport>
           )}

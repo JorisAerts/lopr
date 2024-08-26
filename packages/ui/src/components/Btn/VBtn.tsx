@@ -49,7 +49,7 @@ export const VBtn = defineComponent({
           <span class={'v-btn__underlay'} />
           <span
             class={[
-              'v-btn--content',
+              'v-btn--contents',
               'd-flex',
               {
                 'ml-n1': props.dropdown,

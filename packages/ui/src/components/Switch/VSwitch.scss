@@ -54,7 +54,9 @@
     background: var(--slider-color);
     color: var(--slider-text-color);
 
-    transform: translateX(calc(var(--control-height) / -2));
+    --slider-transform: calc(var(--control-height) / -2);
+
+    transform: translateX(var(--slider-transform));
     transform-origin: center center;
     transition-property: left, right;
 
