@@ -1,6 +1,12 @@
+@use '../../style/vars' as *;
+
+:root {
+  --card-background: rgba(var(--background-color), var(--background-opacity));
+}
+
 .v-card {
   border-radius: var(--border-radius);
-  background: rgba(var(--background-color), 0.05);
+  background: var(--card-background);
 
   &--clickable {
     cursor: pointer;

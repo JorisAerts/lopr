@@ -6,9 +6,9 @@
   --control-height: 1.25em;
   --control-width: calc(2.1 * var(--control-height));
   --slider-background: rgba(var(--text-color), 0.15);
-  --slider-background-on: rgba(var(--primary-color), 1);
-  --slider-color: rgba(var(--text-color), .85);
-  --slider-text-color: rgba(var(--app-background-color), 1);
+  --slider-background-on: rgb(var(--primary-color));
+  --slider-color: rgba(var(--text-color), var(--text-emphasis));
+  --slider-text-color: rgba(var(--app-background-color), var(--text-emphasis));
 
   &--input:checked + .v-switch--backdrop {
     --slider-background: var(--slider-background-on);
