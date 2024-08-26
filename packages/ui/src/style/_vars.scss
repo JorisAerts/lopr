@@ -4,8 +4,6 @@
 @forward 'sass-vars';
 
 :root {
-  --r: #3178c6;
-
   // colors
   --color-red: 255, 0, 0;
   --color-green: 0, 255, 0;
@@ -20,7 +18,7 @@
   --line-height: 1.6;
 
   // theme colors
-  --primary-color: 49, 120, 198;
+  --primary-color: 99, 150, 228;
   --secondary-color: 0, 255, 0;
 
   // background
@@ -65,4 +63,6 @@ html.dark-mode {
   --text-color: 255, 255, 255;
 
   --default-shadow: none;
+
+  --primary-color: 49, 120, 198;
 }
