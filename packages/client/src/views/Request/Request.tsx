@@ -35,6 +35,7 @@ export const Request = defineComponent({
             <h3>
               Requests <sup>({requestStore.ids.length})</sup>
             </h3>
+            <VBtn tooltip={'Sort'} icon={'Reorder'} size={20} class={['pa-1', 'ml-2']} transparent disabled />
             <VSpacer />
             <VBtn tooltip={'Sequence view'} icon={'Reorder'} size={20} class={['pa-1', 'mr-1']} transparent onClick={() => (requestViewType.value = 0)} />
             <VBtn tooltip={'Structure view'} icon={'AccountTree'} size={20} class={['pa-1']} transparent onClick={() => (requestViewType.value = 1)} />
