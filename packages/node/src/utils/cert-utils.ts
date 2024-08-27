@@ -28,8 +28,8 @@ interface RootKeyFiles {
 const ROOT_KEY_FILES: RootKeyFiles = getRootKeyFiles()
 
 function getRootKeyFiles(): RootKeyFiles {
-  const tmpCert = join(tempDir(), 'cert', 'root', 'rootCA.key')
-  const tmpKey = join(tempDir(), 'cert', 'root', 'rootCA.crt')
+  const tmpCert = join(tempDir(), 'cert', 'root', 'rootCA.crt')
+  const tmpKey = join(tempDir(), 'cert', 'root', 'rootCA.key')
   // if there's a root certificate in the temp folder, use that one
   if (existsSync(tmpCert) && existsSync(tmpKey)) return { key: tmpKey, cert: tmpCert }
 
@@ -44,7 +44,10 @@ function getRootKeyFiles(): RootKeyFiles {
 
 export const certificatesDir = () => join(tempDir(), 'cert')
 
-export const listCertificates = () => readdirSync(certificatesDir()).filter((f) => f.endsWith('.crt'))
+export const listCertificates = () =>
+  existsSync(certificatesDir()) //
+    ? readdirSync(certificatesDir()).filter((f) => f.endsWith('.crt'))
+    : []
 
 export const generatedKeyFiles = (host: string): RootKeyFiles => {
   const root = join(certificatesDir(), host)
@@ -73,7 +76,6 @@ const generateRootCert = (): RootCertificateInfo => {
   cert.publicKey = keys.publicKey
   cert.serialNumber = Date.now().toString()
   cert.validity.notBefore = new Date()
-  cert.validity.notBefore.setFullYear(cert.validity.notBefore.getFullYear() + -1)
 
   cert.validity.notAfter = new Date()
   cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
@@ -110,22 +112,23 @@ const generateRootCert = (): RootCertificateInfo => {
 
   cert.sign(keys.privateKey, md.sha256.create())
 
+  const rootKeys = getOrWriteKeys('root', ROOT_KEY_FILES, {
+    key: () => pki.privateKeyToPem(keys.privateKey),
+    cert: () => pki.certificateToPem(cert),
+  })
+
   return {
-    ...getOrWriteKeys('root', ROOT_KEY_FILES, {
-      key: () => pki.privateKeyToPem(keys.privateKey),
-      cert: () => pki.certificateToPem(cert),
-    }),
-    forgeCert: cert,
-    forgeKey: keys.privateKey,
+    ...rootKeys,
+    forgeCert: pki.certificateFromPem(rootKeys.cert.toString()),
+    forgeKey: pki.privateKeyFromPem(rootKeys.key.toString()),
   }
 }
 
 const { key: rootKey, cert: rootCert, forgeCert: forgeRootCert, forgeKey: forgeRootKey } = generateRootCert()
 
 const createCertForHost = (hostname: string) => {
-  const keys = pki.rsa.generateKeyPair(2048)
   const cert = pki.createCertificate()
-  cert.publicKey = keys.publicKey
+  cert.publicKey = forgeRootCert.publicKey //keys.publicKey
   cert.serialNumber = Date.now().toString()
   cert.validity.notBefore = new Date()
   cert.validity.notAfter = new Date()
@@ -154,7 +157,7 @@ const createCertForHost = (hostname: string) => {
   cert.sign(forgeRootKey, md.sha256.create())
 
   return getOrWriteKeys(hostname, generatedKeyFiles(hostname), {
-    key: () => pki.privateKeyToPem(keys.privateKey),
+    key: () => pki.privateKeyToPem(forgeRootKey),
     cert: () => pki.certificateToPem(cert),
   })
 }
