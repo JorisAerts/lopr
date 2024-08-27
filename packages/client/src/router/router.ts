@@ -6,14 +6,8 @@ export const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
-      name: RouteNames.Home,
-      path: '/',
-      redirect: RouteNames.Requests,
-    },
-
-    {
       name: RouteNames.Requests,
-      path: '/requests',
+      path: '/',
       components: {
         default: Request,
         controls: RequestControlsToolbar,
@@ -39,9 +33,16 @@ export const router = createRouter({
 
     {
       name: RouteNames.Error404,
-      path: '/:pathMatch(.*)*',
+      path: '/error/404',
       components: {
         default: Error404,
+      },
+    },
+
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: (to) => {
+        return { name: RouteNames.Error404, query: { p: to.fullPath } }
       },
     },
   ],

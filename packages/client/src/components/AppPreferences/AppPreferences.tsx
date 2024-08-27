@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { VCard, VCheckbox, VTooltip } from 'js-proxy-ui/components'
+import { VCard, VCheckbox, VLabel, VSwitch, VTooltip } from 'js-proxy-ui/components'
 import { usePreferencesStore } from '../../stores/preferences'
 
 export const AppPreferences = defineComponent({
@@ -12,7 +12,12 @@ export const AppPreferences = defineComponent({
         <h2 class={'mb-2'}>Preferences</h2>
         <VCard class={['pa-3']}>
           <h3 class={'mb-2'}>Appearance</h3>
-          <VCheckbox label={'Dark Mode'} v-model={preferencesStore.isDark} />
+          <VLabel class={['d-flex', 'flex-row']}>
+            <span class={['pr-1']} style={{ margin: 'auto 0' }}>
+              Dark Mode:
+            </span>{' '}
+            <VSwitch v-model:checked={preferencesStore.isDark}></VSwitch>
+          </VLabel>
         </VCard>
         <VCard class={['pa-3']}>
           <h3 class={'mb-2'}>Reverse Proxy</h3>
