@@ -1,4 +1,9 @@
 import * as readline from 'node:readline'
+import { sendWsData } from '../local'
+import { WebSocketMessageType } from '../../../shared/src/WebSocketMessage'
+import { createErrorMessage } from './ws-messages'
+
+type LogType = <ErrorType, SourceObject>(error: ErrorType, source?: SourceObject) => unknown
 
 export enum LogLevels {
   /**
@@ -53,4 +58,23 @@ export function clearScreen() {
 
 export const createLogger = (): Logger => {
   return Logger
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const warn: LogType = <ErrorType, SourceObject>(message: ErrorType, source?: SourceObject): void => {}
+
+export const createErrorHandler = <ErrorType, Parent>(source?: Parent) =>
+  function (err: ErrorType) {
+    sendWsData(WebSocketMessageType.Error, createErrorMessage(err, source))
+  }
+
+/**
+ * Creates error handlers for the given objects.
+ * They will send the error to the WebSocket.
+ *
+ * If no error handler is specified, this would lead to exiting the server process
+ */
+export const createErrorHandlerFor = (...args: { on: (...args: any[]) => unknown }[]) => {
+  args?.forEach((arg) => arg.on('error', createErrorHandler(arg)))
+  return args?.[0]
 }
