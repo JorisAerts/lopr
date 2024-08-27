@@ -68,7 +68,7 @@ export const useCache = (): UseCache => {
 export const getCachedData = (options: ServerOptions, uuid: UUID) => {
   const cache = cacheDir(options)
   const path = join(cache, uuid)
-  if (!statSync(path, { throwIfNoEntry: false })!.isFile()) return Promise.resolve('')
+  if (!statSync(path, { throwIfNoEntry: false })?.isFile()) return Promise.resolve('')
   return access(path, fs.constants.R_OK).then(() => readFile(path))
 }
 
