@@ -5,7 +5,6 @@ export const VCheckbox = defineComponent({
   name: 'v-checkbox',
 
   emits: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     'update:modelValue': (v: boolean) => true,
   },
 

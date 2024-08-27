@@ -12,7 +12,7 @@ export enum EventTypes {
 export const VBtn = defineComponent({
   name: 'v-btn',
 
-  emits: [EventTypes.Click],
+  emits: { [EventTypes.Click]: (e: MouseEvent) => true },
 
   inheritAttrs: false,
 
@@ -27,6 +27,7 @@ export const VBtn = defineComponent({
     transparent: { type: Boolean, default: false },
 
     disabled: { type: Boolean, default: false },
+    selected: { type: Boolean, default: false },
 
     ...makeTooltipProps(),
   },
