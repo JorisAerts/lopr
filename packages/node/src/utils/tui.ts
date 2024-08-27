@@ -1,6 +1,6 @@
 import pc from 'picocolors'
 
-const primaryColor = pc.magenta
+const primaryColor = pc.cyan
 const secondaryColor = pc.blue
 const disabledColor = pc.dim
 
