@@ -1,22 +1,24 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { RouteNames } from './RouteNames'
-import { Error404, ErrorLog, ErrorLogControlsToolbar, Information, Request, RequestControlsToolbar } from '../views'
+
+const views = () => import('../views')
 
 export const router = createRouter({
   history: createWebHashHistory(),
   routes: [
+    /*
     {
       name: RouteNames.Home,
       path: '/',
       redirect: RouteNames.Requests,
     },
-
+     */
     {
       name: RouteNames.Requests,
-      path: '/requests',
+      path: '/',
       components: {
-        default: Request,
-        controls: RequestControlsToolbar,
+        default: () => views().then((c) => c.Request),
+        controls: () => views().then((c) => c.RequestControlsToolbar),
       },
     },
 
@@ -24,7 +26,7 @@ export const router = createRouter({
       name: RouteNames.Information,
       path: '/info',
       components: {
-        default: Information,
+        default: () => views().then((c) => c.Information),
       },
     },
 
@@ -32,8 +34,8 @@ export const router = createRouter({
       name: RouteNames.ErrorLog,
       path: '/error-log',
       components: {
-        default: ErrorLog,
-        controls: ErrorLogControlsToolbar,
+        default: () => views().then((c) => c.ErrorLog),
+        controls: () => views().then((c) => c.ErrorLogControlsToolbar),
       },
     },
 
@@ -41,7 +43,7 @@ export const router = createRouter({
       name: RouteNames.Error404,
       path: '/:pathMatch(.*)*',
       components: {
-        default: Error404,
+        default: () => views().then((c) => c.Error404),
       },
     },
   ],
