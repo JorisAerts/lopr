@@ -1,5 +1,3 @@
-import type { OutgoingOptions } from '../proxy/utils'
-import type { IncomingMessage, ServerResponse } from 'http'
 import type { Logger } from '../utils/logger'
 import type { UseCache } from 'js-proxy-shared/ProxyState'
 
@@ -9,7 +7,6 @@ import type { UseCache } from 'js-proxy-shared/ProxyState'
 export interface CreateProxyOptions {
   port: number
   proxySSL: boolean | undefined | string | RegExp
-  map: ((options: OutgoingOptions, req: IncomingMessage, res: ServerResponse | null) => OutgoingOptions) | undefined
 }
 
 /**

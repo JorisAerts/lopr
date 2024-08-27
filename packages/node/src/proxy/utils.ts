@@ -27,18 +27,14 @@ const extractURLFromRequest = (req: IncomingMessage) => {
   return new URL(RX_PROTOCOL.test(req.url!) ? req.url! : `${extractProtocol(req)}://${req.headers.host /*?? req.client.servername*/}${req.url ?? ''}`)
 }
 
-export const setupOutgoingRequestOptions = (outgoing: Partial<OutgoingOptions>, req: IncomingMessage, res: ServerResponse | null, options: ServerOptions): OutgoingOptions => {
-  const urlObj = extractURLFromRequest(req)
-  const isHttps = isReqHttps(req)
-  const headers = req.headers
-  outgoing.port = isHttps ? 443 : +urlObj.port || 80
-  outgoing.host = urlObj.hostname || headers.host
-  outgoing.method = req.method
-  outgoing.path = urlObj.pathname + (urlObj.search || '')
-  outgoing.rejectUnauthorized = false
-  outgoing.headers = headers
-  if (options.map) {
-    outgoing = (options.map as Exclude<ServerOptions['map'], undefined>)(outgoing, req, res)
-  }
-  return outgoing
+export const createRequestOptions = (outgoing: Partial<OutgoingOptions>, req: IncomingMessage, res: ServerResponse | null, options: ServerOptions): OutgoingOptions => {
+  const url = extractURLFromRequest(req)
+  return Object.assign(outgoing, {
+    port: isReqHttps(req) ? 443 : +url.port || 80,
+    host: url.hostname || req.headers.host,
+    method: req.method,
+    path: url.pathname + (url.search || ''),
+    rejectUnauthorized: false,
+    headers: req.headers,
+  })
 }
