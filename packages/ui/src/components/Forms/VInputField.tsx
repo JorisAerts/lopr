@@ -28,8 +28,8 @@ export const VInputField = defineComponent({
     })
 
     return () => (
-      <VLabelWrapper modelValue={props.label} class={props.labelClass}>
-        <div class={['v-input-field']} {...attrs} onMousedown={focus}>
+      <VLabelWrapper modelValue={props.label} class={props.labelClass} style={attrs.style}>
+        <div class={['v-input-field']} {...{ ...attrs, style: undefined }} onMousedown={focus}>
           {props.icon && <VIcon class={'v-input-field--icon'} name={props.icon} size={16} />}
           <input
             name={props.name}
