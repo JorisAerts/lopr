@@ -41,7 +41,7 @@ export const VDialog = defineComponent({
     }
 
     const close = (e: Event) => {
-      if (!props.clickOutsideToClose || (e.target && (e.target === dialog.value || dialog.value?.contains(e.target as Node)))) return
+      if (!modelValue.value || !props.clickOutsideToClose || (e.target && (e.target === dialog.value || dialog.value?.contains(e.target as Node)))) return
       emit('update:modelValue', (modelValue.value = false))
     }
 
