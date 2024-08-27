@@ -7,4 +7,5 @@ export enum RouteNames {
   ErrorLog = 'error-log',
 
   Error404 = '404',
+  ErrorWsDown = 'error-ws-down',
 }
