@@ -1,10 +1,11 @@
 import './VTabs.scss'
 import type { ComponentPublicInstance, PropType } from 'vue'
-import { defineComponent, nextTick, onMounted, onUnmounted, onUpdated, ref, watch } from 'vue'
+import { computed, defineComponent, nextTick, onMounted, onUpdated, ref, watch } from 'vue'
 import { VSheet } from '../Sheet'
 import { VContainer } from '../Container'
 import { defineTabs, makeTabsProps } from './tabs'
 import { VTabSlider } from './VTabSlider'
+import { addResizeObserver } from '../../utils'
 
 export const VTabs = defineComponent({
   name: 'v-tabs',
@@ -36,10 +37,10 @@ export const VTabs = defineComponent({
     watch(modelValue, () => nextTick().then(updateSlider), { immediate: true })
     onUpdated(updateSlider)
     onMounted(updateSlider)
-
-    const ob = new ResizeObserver(updateSlider)
-    onMounted(() => ob.observe(root.value?.$el))
-    onUnmounted(() => ob.unobserve(root.value?.$el))
+    addResizeObserver(
+      computed(() => root.value?.$el),
+      updateSlider
+    )
 
     return () => (
       <VSheet class={['v-tabs', 'v-tabs--horizontal']} ref={root}>

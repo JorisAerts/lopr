@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { ref } from 'vue'
-import { addDOMListener } from './addDOMListener'
+import { addDOMListener } from './add-DOM-listener'
 
 export interface SystemDarkMode {
   isDark: Ref<boolean>
