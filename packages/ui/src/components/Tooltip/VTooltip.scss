@@ -14,11 +14,11 @@
 
   &--popup {
     z-index: 1000;
-    position: absolute;
+    position: fixed;
     background: transparent;
     color: currentColor;
     border: none;
-    transition: none;
+    transition: none !important;
     margin: 0;
     padding: 0;
   }
