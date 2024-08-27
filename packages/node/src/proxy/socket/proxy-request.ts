@@ -23,7 +23,7 @@ export const proxyRequest = (req: ProxyRequest, socket: Socket, options: ServerO
 
   setupSocket(null, socket)
 
-  const config = utils.setupOutgoingRequestOptions({}, req, null, options as ServerOptions)
+  const config = utils.createRequestOptions({}, req, null, options as ServerOptions)
   const proxyReq = (isReqHttps(req) ? https : http).request(config)
   proxyReq.on('error', createErrorHandler(socket))
   proxyReq.on('upgrade', function (proxyRes, proxySocket) {

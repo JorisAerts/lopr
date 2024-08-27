@@ -16,7 +16,7 @@ export const VNavBar = defineComponent({
     const router = useRouter()
     const pushRoute = (name: RouteNames) => () => {
       try {
-        return router.push(name)
+        return router.push({ name })
       } catch (error) {
         console.warn(error)
       }

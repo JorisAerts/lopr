@@ -40,7 +40,7 @@ export const VSwitch = defineComponent({
     return () =>
       wrapWithTooltip(
         <div class={['v-switch']} onClick={onClick}>
-          {slots.default?.()}
+          {slots.default && <div class={['d-block']}>{slots.default?.()}</div>}
           <input class={['v-switch--input']} name={props.name} type="checkbox" value={value.value} checked={checked.value} />
           <div class={['v-switch--backdrop']}></div>
           <div
