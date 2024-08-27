@@ -28,8 +28,8 @@ interface RootKeyFiles {
 const ROOT_KEY_FILES: RootKeyFiles = getRootKeyFiles()
 
 function getRootKeyFiles(): RootKeyFiles {
-  const tmpCert = join(tempDir(), 'cert', 'root', 'rootCA.key')
-  const tmpKey = join(tempDir(), 'cert', 'root', 'rootCA.crt')
+  const tmpCert = join(tempDir(), 'cert', 'root', 'rootCA.crt')
+  const tmpKey = join(tempDir(), 'cert', 'root', 'rootCA.key')
   // if there's a root certificate in the temp folder, use that one
   if (existsSync(tmpCert) && existsSync(tmpKey)) return { key: tmpKey, cert: tmpCert }
 
@@ -76,7 +76,6 @@ const generateRootCert = (): RootCertificateInfo => {
   cert.publicKey = keys.publicKey
   cert.serialNumber = Date.now().toString()
   cert.validity.notBefore = new Date()
-  cert.validity.notBefore.setFullYear(cert.validity.notBefore.getFullYear() + -1)
 
   cert.validity.notAfter = new Date()
   cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
