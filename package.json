@@ -9,7 +9,8 @@
     "ssl",
     "http",
     "https",
-    "monitoring"
+    "monitoring",
+    "middleware"
   ],
   "workspaces": [
     "./packages/*"

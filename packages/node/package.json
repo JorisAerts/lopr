@@ -11,7 +11,8 @@
     "ssl",
     "http",
     "https",
-    "monitoring"
+    "monitoring",
+    "middleware"
   ],
   "license": "MIT",
   "main": "dist/index.js",
