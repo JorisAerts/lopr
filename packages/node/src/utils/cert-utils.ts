@@ -44,7 +44,10 @@ function getRootKeyFiles(): RootKeyFiles {
 
 export const certificatesDir = () => join(tempDir(), 'cert')
 
-export const listCertificates = () => readdirSync(certificatesDir()).filter((f) => f.endsWith('.crt'))
+export const listCertificates = () =>
+  existsSync(certificatesDir()) //
+    ? readdirSync(certificatesDir()).filter((f) => f.endsWith('.crt'))
+    : []
 
 export const generatedKeyFiles = (host: string): RootKeyFiles => {
   const root = join(certificatesDir(), host)
