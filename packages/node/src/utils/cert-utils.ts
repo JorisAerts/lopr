@@ -112,22 +112,23 @@ const generateRootCert = (): RootCertificateInfo => {
 
   cert.sign(keys.privateKey, md.sha256.create())
 
+  const rootKeys = getOrWriteKeys('root', ROOT_KEY_FILES, {
+    key: () => pki.privateKeyToPem(keys.privateKey),
+    cert: () => pki.certificateToPem(cert),
+  })
+
   return {
-    ...getOrWriteKeys('root', ROOT_KEY_FILES, {
-      key: () => pki.privateKeyToPem(keys.privateKey),
-      cert: () => pki.certificateToPem(cert),
-    }),
-    forgeCert: cert,
-    forgeKey: keys.privateKey,
+    ...rootKeys,
+    forgeCert: pki.certificateFromPem(rootKeys.cert.toString()),
+    forgeKey: pki.privateKeyFromPem(rootKeys.key.toString()),
   }
 }
 
 const { key: rootKey, cert: rootCert, forgeCert: forgeRootCert, forgeKey: forgeRootKey } = generateRootCert()
 
 const createCertForHost = (hostname: string) => {
-  const keys = pki.rsa.generateKeyPair(2048)
   const cert = pki.createCertificate()
-  cert.publicKey = keys.publicKey
+  cert.publicKey = forgeRootCert.publicKey //keys.publicKey
   cert.serialNumber = Date.now().toString()
   cert.validity.notBefore = new Date()
   cert.validity.notAfter = new Date()
@@ -156,7 +157,7 @@ const createCertForHost = (hostname: string) => {
   cert.sign(forgeRootKey, md.sha256.create())
 
   return getOrWriteKeys(hostname, generatedKeyFiles(hostname), {
-    key: () => pki.privateKeyToPem(keys.privateKey),
+    key: () => pki.privateKeyToPem(forgeRootKey),
     cert: () => pki.certificateToPem(cert),
   })
 }
