@@ -23,7 +23,6 @@ export const RequestStructure = defineComponent({
 
   emits: {
     ...makeUUIDEvents(),
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     'update:expanded': (_: string[]) => true,
   },
 

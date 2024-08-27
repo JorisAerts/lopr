@@ -4,7 +4,6 @@ export const VForm = defineComponent({
   name: 'v-form',
 
   emits: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     submit: (event: SubmitEvent) => true,
   },
 

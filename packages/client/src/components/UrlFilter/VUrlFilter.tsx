@@ -16,7 +16,6 @@ export const VUrlFilter = defineComponent({
   name: 'VUrlFilter',
 
   emits: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     'update:modelValue': (_: string | UrlMatch | undefined) => true,
   },
 

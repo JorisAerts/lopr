@@ -9,9 +9,7 @@ export const VSwitch = defineComponent({
   name: 'VSwitch',
 
   emits: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     change: (value: any) => true,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     'update:checked': (value: boolean) => true,
   },
 
