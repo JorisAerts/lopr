@@ -31,11 +31,11 @@ export const Request = defineComponent({
             'max-width': width.value,
           }}
         >
-          <VSheet class={['d-flex', 'px-3']}>
+          <VSheet class={['d-flex', 'px-3', 'align-items-center']}>
             <h3>
               Requests <sup>({requestStore.ids.length})</sup>
             </h3>
-            <VBtn tooltip={'Sort'} icon={'Reorder'} size={20} class={['pa-1', 'ml-2']} transparent disabled />
+            <VBtn tooltip={'Sort'} icon={'Sort'} size={20} class={['pa-1', 'ml-2']} transparent disabled />
             <VSpacer />
             <VBtn tooltip={'Sequence view'} icon={'Reorder'} size={20} class={['pa-1', 'mr-1']} transparent onClick={() => (requestViewType.value = 0)} />
             <VBtn tooltip={'Structure view'} icon={'AccountTree'} size={20} class={['pa-1']} transparent onClick={() => (requestViewType.value = 1)} />
