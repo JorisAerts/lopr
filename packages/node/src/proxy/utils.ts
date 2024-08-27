@@ -1,6 +1,7 @@
 import type tls from 'node:tls'
 import type { IncomingMessage, RequestOptions, ServerResponse } from 'http'
 import type { ServerOptions } from '../server'
+import { URL } from 'node:url'
 
 export type OutgoingOptions = tls.ConnectionOptions & RequestOptions
 
@@ -33,7 +34,7 @@ export const setupOutgoingRequestOptions = (outgoing: Partial<OutgoingOptions>, 
   outgoing.port = isHttps ? 443 : +urlObj.port || 80
   outgoing.host = urlObj.hostname || headers.host
   outgoing.method = req.method
-  outgoing.path = urlObj.pathname
+  outgoing.path = urlObj.pathname + (urlObj.search || '')
   outgoing.rejectUnauthorized = false
   outgoing.headers = headers
   if (options.map) {
