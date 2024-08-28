@@ -42,6 +42,8 @@ const createBodyRenderer = (response: UseResponse) => {
     case 'application/javascript':
     case 'application/x-javascript':
     case 'application/x-ns-proxy-autoconfig':
+    case 'application/x-x509-ca-cert':
+    case 'application/x-x509-user-cert':
     case 'text/javascript':
     case 'text/css':
     case 'text/plain':
