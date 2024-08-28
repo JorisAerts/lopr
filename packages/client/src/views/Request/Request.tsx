@@ -1,6 +1,6 @@
 import type { PropType, Ref } from 'vue'
 import { computed, defineComponent, ref, Transition, watch } from 'vue'
-import { VBtn, VCard, VContainer, VSheet, VSpacer } from 'js-proxy-ui'
+import { VBtn, VBtnGroup, VCard, VContainer, VSheet, VSpacer } from 'js-proxy-ui'
 import { useRequestStore } from '../../stores/request'
 import type { UUID } from 'js-proxy-shared'
 import { Sorting } from 'js-proxy-shared'
@@ -56,8 +56,10 @@ export const Request = defineComponent({
               )}
             </Transition>
             <VSpacer />
-            <VBtn tooltip={'Sequence view'} icon={'Reorder'} size={20} class={['pa-1', 'mr-1']} transparent onClick={() => (requestViewType.value = 0)} />
-            <VBtn tooltip={'Structure view'} icon={'AccountTree'} size={20} class={['pa-1']} transparent onClick={() => (requestViewType.value = 1)} />
+            <VBtnGroup v-model={requestViewType.value}>
+              <VBtn tooltip={'Sequence view'} icon={'Reorder'} size={20} class={['pa-1', 'mr-1']} transparent onClick={() => (requestViewType.value = 0)} />
+              <VBtn tooltip={'Structure view'} icon={'AccountTree'} size={20} class={['pa-1']} transparent onClick={() => (requestViewType.value = 1)} />
+            </VBtnGroup>
           </VSheet>
           <VSheet class={['fill-height', 'overflow-auto', 'mt-2', 'px-2']}>
             {requestViewType.value === 0 ? ( //
