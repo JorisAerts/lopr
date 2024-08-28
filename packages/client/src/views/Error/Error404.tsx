@@ -3,7 +3,7 @@ import { defineComponent } from 'vue'
 import { VContainer } from 'js-proxy-ui'
 
 export const Error404 = defineComponent({
-  name: 'v-home-view',
+  name: 'v-error-404',
 
   props: {
     width: {

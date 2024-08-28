@@ -1,17 +1,20 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { registerDataHandler } from '../utils/websocket'
-import { WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
+import { WebSocketMessageType } from 'js-proxy-shared'
 
 export const STORE_NAME = 'Certificates'
 
 export const useCertificateStore = defineStore(STORE_NAME, () => {
-  const certificates = ref([] as string[])
+  const certificates = ref(new Set<string>())
 
   // register the handlers (they will overwrite the previous ones)
   registerDataHandler(WebSocketMessageType.Certificate, ({ data }: { data: string[] }) => {
-    certificates.value.push(...data)
+    data.forEach((certificate) => certificates.value.add(certificate))
   })
 
-  return { certificates }
+  return {
+    certificates,
+    isEmpty: computed(() => certificates.value.size === 0),
+  }
 })

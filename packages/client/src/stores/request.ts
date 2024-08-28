@@ -1,13 +1,11 @@
 import { defineStore } from 'pinia'
 import { computed, ref, shallowRef, triggerRef } from 'vue'
-import type { ProxyRequestInfo } from 'js-proxy-shared/Request'
+import type { ProxyRequestHistory, ProxyRequestInfo, WebSocketMessage } from 'js-proxy-shared'
+import { WebSocketMessageType } from 'js-proxy-shared'
 import { registerDataHandler } from '../utils/websocket'
-import type { WebSocketMessage } from 'js-proxy-shared/WebSocketMessage'
-import { WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
 import type { ProxyResponseInfo } from 'js-proxy-shared/Response'
 import type { UUID } from 'js-proxy-shared/UUID'
 import { isRecording } from './app'
-import type { ProxyRequestHistory } from 'js-proxy-shared/ProxyRequestHistory'
 
 export const STORE_NAME = 'Requests'
 

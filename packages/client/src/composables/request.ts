@@ -5,7 +5,7 @@ import { computed, isRef } from 'vue'
 import { HTTP_HEADER_CONTENT_ENCODING, HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE, HTTP_HEADER_COOKIE } from 'js-proxy-shared/constants'
 import type { UUIDModelProps } from './uuid'
 import { useUUID } from './uuid'
-import type { UUID } from 'js-proxy-shared/UUID'
+import type { UUID } from 'js-proxy-shared'
 
 /**
  * Utility methods for handling the request

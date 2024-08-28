@@ -1,5 +1,5 @@
 import type { Logger } from '../utils/logger'
-import type { UseCache } from 'js-proxy-shared/ProxyState'
+import type { UseCache } from 'js-proxy-shared'
 
 /**
  * Options passed to the CLI

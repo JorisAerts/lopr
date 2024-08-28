@@ -3,7 +3,7 @@ import type { ComponentPublicInstance, VNode } from 'vue'
 import { defineComponent, ref, watch } from 'vue'
 import { VList, VListItem, VSheet } from 'js-proxy-ui/components'
 import { useRequestStore } from '../../stores/request'
-import type { ProxyRequestInfo } from 'js-proxy-shared/Request'
+import type { ProxyRequestInfo } from 'js-proxy-shared'
 import { makeUUIDEvents, makeUUIDProps } from '../../composables/uuid'
 
 export const RequestSequence = defineComponent({

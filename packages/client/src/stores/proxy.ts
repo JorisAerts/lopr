@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { UrlMatch } from 'js-proxy-shared/url-match'
+import type { UrlMatch } from 'js-proxy-shared'
 
 export const STORE_NAME = 'Proxy'
 

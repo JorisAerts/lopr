@@ -67,7 +67,7 @@
     --underlay-opacity: 0.05;
   }
 
-  &.selected:not(.v-btn--disabled),
+  &--selected:not(.v-btn--disabled),
   &:not(.v-btn--disabled):active {
     --underlay-opacity: 0.2;
   }

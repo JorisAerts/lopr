@@ -1,16 +1,12 @@
-import type { UUID } from 'js-proxy-shared/UUID'
+import type { ProxyRequestHistory, ProxyRequestInfo, ProxyResponseInfo, ProxyState, UseCache, UUID } from 'js-proxy-shared'
+import { WebSocketMessageType } from 'js-proxy-shared'
 import type { ServerOptions } from './ServerOptions'
 import { cacheDir } from '../utils/temp-dir'
 import { join } from 'path'
 import { existsSync, rmSync, statSync } from 'fs'
 import { access, readFile } from 'fs/promises'
-import type { ProxyRequestInfo } from 'js-proxy-shared/Request'
-import type { ProxyResponseInfo } from 'js-proxy-shared/Response'
 import * as fs from 'node:fs'
 import { sendWsData } from '../local'
-import { WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
-import type { ProxyRequestHistory } from 'js-proxy-shared/ProxyRequestHistory'
-import type { ProxyState, UseCache } from 'js-proxy-shared/ProxyState'
 
 export const useCache = (): UseCache => {
   /**

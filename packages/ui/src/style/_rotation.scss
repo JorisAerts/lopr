@@ -12,3 +12,10 @@
   }
 }
 
+.mirror-h {
+  transform: scaleX(-1);
+}
+
+.mirror-v {
+  transform: scaleY(-1);
+}

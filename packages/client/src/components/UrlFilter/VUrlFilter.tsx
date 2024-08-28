@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 import { defineComponent, ref, toRef, watch } from 'vue'
-import type { UrlMatch } from 'js-proxy-shared/url-match'
 import { VForm, VSheet, VTextField } from 'js-proxy-ui'
 import { URI } from 'js-proxy-shared/URI'
+import type { UrlMatch } from 'js-proxy-shared'
 
 const defaultValue = {
   protocol: '*',
