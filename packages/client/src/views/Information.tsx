@@ -28,7 +28,7 @@ export const Information = defineComponent({
                   <VCard class={['pa-2', 'd-flex', 'align-items-center', 'overflow-ellipsis']} key={file} style={{ width: 'calc(20% - 8px)' }}>
                     <VIcon name={'ShieldLock'} class={'mr-2'} size={33} style={{ float: 'left' }} />
                     <VTooltip text={cert}>
-                      <a href={file} target={'cert'}>
+                      <a href={`/api/data?cert=${cert}`} download={`${cert}.crt`}>
                         <span style={{ 'word-wrap': 'break-word' as CSSProperties['word-wrap'] }}>{cert}</span>
                       </a>
                     </VTooltip>

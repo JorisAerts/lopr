@@ -2,6 +2,7 @@
 
 :root {
   --input-label-margin: #{$spacer};
+  --input-label-font-weight: 600;
 }
 
 .v-label {
@@ -10,7 +11,7 @@
   flex-direction: column;
 
   & > span {
-    font-weight: 600;
+    font-weight: var(--input-label-font-weight);
     margin-bottom: var(--input-label-margin);
   }
 
