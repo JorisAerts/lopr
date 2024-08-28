@@ -18,7 +18,7 @@ const useResponseByRef = (uuid: Ref<UUID | undefined>) => {
   const hasHeaders = computed(() => !!headersRaw.value)
   const bodyData = ref()
   watch(uuid, () => (bodyData.value = undefined))
-  const hasBody = computed(() => (response.value?.contentLength ?? 0) > 0)
+  const hasBody = computed(() => !!(response.value?.contentLength || response.value?.body))
   const body = computed(() => {
     if (hasBody.value && !bodyData.value) {
       fetch(`/api/data?uuid=${uuid.value}`)
