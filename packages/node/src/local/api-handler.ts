@@ -1,5 +1,5 @@
 import { sendWsData } from './websocket'
-import { WebSocketMessageType } from 'js-proxy-shared'
+import { HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE, WebSocketMessageType } from 'js-proxy-shared'
 import { createErrorMessage } from '../utils/ws-messages'
 import type { ProxyResponse } from '../server/ProxyResponse'
 import type { ProxyRequest } from '../server/ProxyRequest'
@@ -7,6 +7,10 @@ import { clearCache, getCachedData } from '../server/cache'
 import type { ServerOptions } from '../server'
 import { parse as parseUrl } from 'url'
 import type { UUID } from 'js-proxy-shared/UUID'
+import { readFile } from 'fs/promises'
+import { existsSync } from 'fs'
+import { join } from 'path'
+import { certificatesDir } from '../utils/cert-utils'
 
 export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: ServerOptions) => {
   const url = parseUrl(req.url!, true)
@@ -24,6 +28,26 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
           res.statusCode = 404
           res.write(err).toString()
         })
+      return true
+    } else if (url.pathname === '/api/data' && url.query.cert) {
+      const cert = join(certificatesDir(), `${url.query.cert}.crt`)
+
+      if (!existsSync(cert)) {
+        res.statusCode = 404
+        res.write('Not Found').toString()
+      } else {
+        readFile(cert)
+          .then((data) => {
+            res.setHeader(HTTP_HEADER_CONTENT_LENGTH, data.length)
+            res.setHeader(HTTP_HEADER_CONTENT_TYPE, 'application/x-x509-user-cert')
+            res.end(data)
+          })
+          .catch((err) => {
+            res.statusCode = 505
+            res.write(err).toString()
+          })
+      }
+
       return true
     } else if (url.pathname === '/api/state') {
       if (url.query.clear !== undefined) {

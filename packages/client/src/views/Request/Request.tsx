@@ -33,7 +33,7 @@ export const Request = defineComponent({
           }}
         >
           <VSheet class={['d-flex', 'px-3', 'align-items-center']}>
-            <h3>
+            <h3 class={['mb-0']}>
               Requests <sup>({requestStore.ids.length})</sup>
             </h3>
             <Transition>

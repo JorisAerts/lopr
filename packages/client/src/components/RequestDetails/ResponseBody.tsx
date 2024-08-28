@@ -35,12 +35,15 @@ const createBodyRenderer = (response: UseResponse) => {
   switch (type) {
     case 'text/html':
     case 'text/json':
+    case 'text/xml':
     case 'application/json':
     case 'application/javascript':
     case 'application/x-javascript':
     case 'application/typescript':
     case 'application/x-typescript':
     case 'application/x-ns-proxy-autoconfig': // Automatic Proxy Configuration (PAC)
+    case 'application/x-x509-ca-cert':
+    case 'application/x-x509-user-cert':
     case 'text/javascript':
     case 'text/css':
     case 'text/plain':
