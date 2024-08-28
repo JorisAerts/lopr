@@ -1,5 +1,5 @@
 import { sendWsData } from './websocket'
-import { WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
+import { WebSocketMessageType } from 'js-proxy-shared'
 import { createErrorMessage } from '../utils/ws-messages'
 import type { ProxyResponse } from '../server/ProxyResponse'
 import type { ProxyRequest } from '../server/ProxyRequest'

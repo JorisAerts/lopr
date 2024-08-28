@@ -11,7 +11,7 @@ import { mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import type { ServerOptions } from '../../server'
 import { createProxyResponse } from '../../utils/ws-messages'
-import type { ProxyState } from 'js-proxy-shared/ProxyState'
+import type { ProxyState } from 'js-proxy-shared'
 
 /**
  * Pipe to the outgoing pipeline, create the request to the ultimate destination

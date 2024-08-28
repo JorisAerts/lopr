@@ -1,10 +1,10 @@
-import type { PropType, Ref} from 'vue';
+import type { PropType, Ref } from 'vue'
 import { computed, defineComponent, ref, Transition, watch } from 'vue'
 import { VBtn, VCard, VContainer, VSheet, VSpacer } from 'js-proxy-ui'
 import { useRequestStore } from '../../stores/request'
-import type { UUID } from 'js-proxy-shared/UUID'
-import { RequestDetails, RequestSequence, RequestStructure } from '../../components'
+import type { UUID } from 'js-proxy-shared'
 import { Sorting } from 'js-proxy-shared'
+import { RequestDetails, RequestSequence, RequestStructure } from '../../components'
 
 export const Request = defineComponent({
   name: 'requests-monitor',

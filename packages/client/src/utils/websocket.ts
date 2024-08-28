@@ -1,6 +1,5 @@
-import type { WebSocketMessage, WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
-import { parseWebSocketMessageEvent } from 'js-proxy-shared/WebSocketMessage'
-import { WEBSOCKET_ROOT } from 'js-proxy-shared/constants'
+import type { WebSocketMessage, WebSocketMessageType } from 'js-proxy-shared'
+import { parseWebSocketMessageEvent, WEBSOCKET_ROOT } from 'js-proxy-shared'
 import { RouteNames } from '../router/RouteNames'
 import { router } from '../router'
 

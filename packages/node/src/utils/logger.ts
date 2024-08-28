@@ -1,6 +1,6 @@
 import * as readline from 'node:readline'
 import { sendWsData } from '../local'
-import { WebSocketMessageType } from '../../../shared/src/WebSocketMessage'
+import { WebSocketMessageType } from 'js-proxy-shared'
 import { createErrorMessage } from './ws-messages'
 
 type LogType = <ErrorType, SourceObject>(error: ErrorType, source?: SourceObject) => unknown
