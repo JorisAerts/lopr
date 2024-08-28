@@ -35,7 +35,8 @@ export const proxyRequest = (req: ProxyRequest, res: ProxyResponse, options: Ser
 
           options.cache.addResponse(createProxyResponse((req as ProxyRequest).uuid, proxyRes, data), state)
         })
-
+        .catch(createErrorHandler())
+      
       proxyRes.pipe(res)
     })
     proxyReq.on('error', createErrorHandler(proxyReq))
