@@ -37,11 +37,11 @@ const createBodyRenderer = (response: UseResponse) => {
     case 'text/json':
     case 'text/xml':
     case 'application/json':
-    case 'application/typescript':
-    case 'application/x-typescript':
     case 'application/javascript':
     case 'application/x-javascript':
-    case 'application/x-ns-proxy-autoconfig':
+    case 'application/typescript':
+    case 'application/x-typescript':
+    case 'application/x-ns-proxy-autoconfig': // Automatic Proxy Configuration (PAC)
     case 'application/x-x509-ca-cert':
     case 'application/x-x509-user-cert':
     case 'text/javascript':
