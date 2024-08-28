@@ -51,7 +51,7 @@ export const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       redirect: (to) => {
-        return { name: RouteNames.Error404, query: { p: to.fullPath } }
+        return { name: RouteNames.Error404, query: { p: to.fullPath }, params: {} }
       },
     },
   ],
