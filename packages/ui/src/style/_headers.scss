@@ -1,21 +1,27 @@
+@use "sass-vars" as *;
+
 h1 {
   font-size: 2rem;
   font-weight: 600;
+  margin-bottom: $spacer * 3;
 }
 
 h2 {
   font-size: 1.25rem;
   font-weight: 400;
+  margin-bottom: $spacer * 2.5;
 }
 
 
 h3 {
   font-size: 1.15rem;
   font-weight: 400;
+  margin-bottom: $spacer * 2;
 }
 
 
 h4 {
   font-size: 1.05rem;
   font-weight: 400;
+  margin-bottom: $spacer;
 }
