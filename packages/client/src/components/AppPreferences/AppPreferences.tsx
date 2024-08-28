@@ -12,7 +12,7 @@ export const AppPreferences = defineComponent({
         <h2 class={'mb-2'}>Preferences</h2>
         <VCard class={['pa-3']}>
           <h3 class={'mb-2'}>Appearance</h3>
-          <VLabel class={['d-flex', 'flex-row']}>
+          <VLabel class={['d-flex', 'flex-row']} style={{ '--input-label-font-weight': 'initial' }}>
             <span class={['pr-1']} style={{ margin: 'auto 0' }}>
               Dark Mode:
             </span>{' '}
