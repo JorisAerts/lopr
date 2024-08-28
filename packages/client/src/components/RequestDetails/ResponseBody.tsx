@@ -35,6 +35,7 @@ const createBodyRenderer = (response: UseResponse) => {
   switch (type) {
     case 'text/html':
     case 'text/json':
+    case 'text/xml':
     case 'application/json':
     case 'application/typescript':
     case 'application/x-typescript':
