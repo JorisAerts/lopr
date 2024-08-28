@@ -1,9 +1,10 @@
 import './RequestStructure.scss'
 import type { PropType } from 'vue'
-import { defineComponent, withModifiers } from 'vue'
+import { defineComponent, getCurrentInstance, watch, withModifiers } from 'vue'
 import { VList, VListGroup, VListItem } from 'js-proxy-ui/components'
 import { useRequestStore } from '../../stores/request'
-import type { UUID } from 'js-proxy-shared/UUID'
+import type { UUID } from 'js-proxy-shared'
+import { Sorting } from 'js-proxy-shared'
 import { makeUUIDEvents, makeUUIDProps } from '../../composables/uuid'
 
 const removeKey = (arr: string[], key: string) => {
@@ -23,13 +24,13 @@ export const RequestStructure = defineComponent({
 
   emits: {
     ...makeUUIDEvents(),
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     'update:expanded': (_: string[]) => true,
   },
 
   props: {
     ...makeUUIDProps(),
     expanded: { type: Array as PropType<string[]>, default: [] as string[] },
+    sorting: { type: Number as PropType<Sorting>, default: 0 },
   },
 
   setup(props, { emit }) {
@@ -40,11 +41,6 @@ export const RequestStructure = defineComponent({
       emit(
         'update:expanded',
         (() => {
-          //if (('metaKey' in evt && evt.metaKey) || ('ctrlKey' in evt && evt.ctrlKey)) {
-          //if (props.expanded.length) return []
-          //return Object.keys(requestStore.structure.nodes ?? {})
-          //}
-
           if (contains(key)) return removeKey(sel, key)
           const result = new Set<string>([key])
           // auto-expand single item nodes
@@ -61,12 +57,26 @@ export const RequestStructure = defineComponent({
     const handleSelect = (uuid: UUID) => {
       emit('update:modelValue', uuid)
     }
+
+    watch(
+      () => props.sorting,
+      () => getCurrentInstance()?.proxy?.$forceUpdate()
+    )
+
+    const getKeys = (struct: StructNode) =>
+      struct.nodes //
+        ? props.sorting
+          ? Object.keys(struct.nodes).toSorted(props.sorting === Sorting.Ascending ? (a, b) => a.localeCompare(b) : (a, b) => b.localeCompare(a))
+          : Object.keys(struct.nodes)
+        : []
+
     // recursively render the tree
     const renderTree = (struct: StructNode) =>
       struct ? (
         <>
           {struct.nodes &&
-            Object.entries(struct.nodes).map(([name, value]) => {
+            getKeys(struct).map((name) => {
+              const value = struct.nodes![name]
               const key = value.key
               const hasItems = !!value.items || !!value.nodes
               const isOpen = contains(key)

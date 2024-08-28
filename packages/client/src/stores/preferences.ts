@@ -1,24 +1,19 @@
 import { defineStore } from 'pinia'
 import type { Ref } from 'vue'
-import { computed, reactive, watch } from 'vue'
-import { useLocalStorage } from '../composables/localStorage'
+import { reactive, watch } from 'vue'
+import { bindLocalStorage } from '../composables/localStorage'
 import { registerDataHandler, sendWsData } from '../utils/websocket'
-import { type WebSocketMessage, WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
+import { type WebSocketMessage, WebSocketMessageType } from 'js-proxy-shared'
+import { useDarkMode } from '../composables/dark-mode'
 
 export const STORE_NAME = 'Preferences'
 
-const bindLocalStorage = (key: keyof ReturnType<typeof useLocalStorage>['prefs']['value']) => {
-  const localStore = useLocalStorage()
-  return computed<boolean>({
-    get: () => localStore.prefs.value[key],
-    set: (value) => (localStore.prefs.value[key] = value),
-  })
-}
-
 export const usePreferencesStore = defineStore(STORE_NAME, () => {
   const proxySSL = bindLocalStorage('proxySSL')
+  const { isDark } = useDarkMode()
+
   //
-  const prefs = { proxySSL }
+  const prefs = { proxySSL, isDark }
   const reactivePrefs = reactive(prefs)
 
   const send = (newValue = reactivePrefs) =>

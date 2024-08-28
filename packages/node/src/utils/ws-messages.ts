@@ -1,9 +1,6 @@
 import type { IncomingMessage } from 'http'
-import type { UUID } from 'js-proxy-shared/UUID'
-import type { ProxyResponseInfo } from 'js-proxy-shared/Response'
-import type { ProxyRequestInfo } from 'js-proxy-shared/Request'
+import type { ProxyRequestInfo, ProxyResponseInfo, Timestamped, UUID } from 'js-proxy-shared'
 import type { ProxyRequest } from '../server/ProxyRequest'
-import type { Timestamped } from 'js-proxy-shared/Timestamped'
 import type * as http from 'node:http'
 import { extractProtocol } from '../proxy/utils'
 

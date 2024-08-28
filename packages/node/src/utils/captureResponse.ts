@@ -1,11 +1,11 @@
 import { createLocalProxyResponse } from './ws-messages'
 import type { ProxyResponse } from '../server/ProxyResponse'
 import type http from 'node:http'
-import type { ServerOptions } from '../server/ServerOptions'
+import type { ServerOptions } from '../server'
 import { cacheDir } from './temp-dir'
 import { mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
-import type { ProxyState } from 'js-proxy-shared/ProxyState'
+import type { ProxyState } from 'js-proxy-shared'
 
 export const captureResponse = (res: ProxyResponse, options: ServerOptions, state: ProxyState) => {
   // Variables to capture response data

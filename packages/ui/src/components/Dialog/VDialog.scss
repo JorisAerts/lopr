@@ -1,0 +1,10 @@
+@use '../../style/vars' as *;
+@use '../../style/sass-vars' as *;
+
+.v-dialog {
+
+  &--contents > * {
+    box-shadow: var(--default-shadow);
+  }
+
+}

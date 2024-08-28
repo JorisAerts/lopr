@@ -37,10 +37,11 @@
   cursor: default;
   padding: var(--list-padding);
   padding-inline-start: var(--list-indent-padding);
+  transition: var(--transition), color 0ms, background-color 0ms;
 
   border-radius: var(--border-radius);
 
-  &--content {
+  &--contents {
     display: flex;
     align-items: center;
   }
@@ -64,12 +65,20 @@
     }
   }
 
-  &--content {
+  &--contents {
     flex-grow: 1;
   }
 
   &:hover,
   &.selected {
-    background: rgba(var(--primary-color), 100%);
+    &, * {
+      transition: inherit, background-color 0ms, color 0ms;
+      transition-property: none;
+    }
+
+    & {
+      color: rgba(var(--on-primary-color), var(--text-emphasis));
+      background: rgba(var(--primary-color), 100%);
+    }
   }
 }

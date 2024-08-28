@@ -1,6 +1,7 @@
-import type { WebSocketMessage, WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
-import { parseWebSocketMessageEvent } from 'js-proxy-shared/WebSocketMessage'
-import { WEBSOCKET_ROOT } from 'js-proxy-shared/constants'
+import type { WebSocketMessage, WebSocketMessageType } from 'js-proxy-shared'
+import { parseWebSocketMessageEvent, WEBSOCKET_ROOT } from 'js-proxy-shared'
+import { RouteNames } from '../router/RouteNames'
+import { router } from '../router'
 
 const url = new URL(location.toString())
 url.hash = ''
@@ -13,14 +14,29 @@ const registry: Record<string, ParsedDataHandler> = {}
 
 export const registerDataHandler = <Data = any>(type: WebSocketMessageType, dataHandler: ParsedDataHandler<Data>) => (registry[type] = dataHandler)
 
+const MAX_RETRY_CREATE = 10
 let socket = createSocket()
+const retryCreate = (() => {
+  let timeOut: number
+  return (count: number) => {
+    window.clearTimeout(timeOut)
+    if (count >= 0) timeOut = window.setTimeout(() => (socket = createSocket(count)), 1000)
+  }
+})()
 
-const retryCreate = () => window.setTimeout(() => (socket = createSocket()), 1000)
+function socketDown() {
+  if (router.currentRoute.value.name !== RouteNames.ErrorWsDown) {
+    router.push({ name: RouteNames.ErrorWsDown, replace: false })
+  }
+}
 
-function createSocket() {
+function createSocket(retryCount = MAX_RETRY_CREATE) {
+  if (retryCount <= 0) {
+    return socketDown()
+  }
   const newSocket = new WebSocket(url)
-  newSocket.onerror = () => {
-    console.info('WebSocket error.')
+  newSocket.onerror = (e) => {
+    console.info('WebSocket error.', e)
   }
   newSocket.onmessage = (event: MessageEvent) => {
     const data = parseWebSocketMessageEvent(event)
@@ -32,27 +48,20 @@ function createSocket() {
   }
   newSocket.onclose = () => {
     console.info('WebSocket connection lost, trying to reconnect')
-    retryCreate()
+    retryCreate(--retryCount)
   }
   return newSocket
 }
 
 export const sendWsData = (type: WebSocketMessageType, data: any) => {
+  if (!socket) return socketDown()
   if (socket.readyState === WebSocket.OPEN) {
     socket.send(JSON.stringify({ type, data } as WebSocketMessage))
   } else {
     const prevOpen = socket.onopen
     socket.onopen = (e: Event) => {
-      prevOpen?.call(socket, e)
+      prevOpen?.call(socket!, e)
       sendWsData(type, data)
     }
   }
 }
-
-// Connection opened
-// socket.addEventListener('open', (event) => {})
-
-socket.addEventListener('error', (error) => {
-  // console.error({ error })
-  // sendWsData(WebSocketMessageType.Error, createErrorMessage(error))
-})

@@ -11,7 +11,7 @@ export const VTooltip = defineComponent({
     margin: { type: Number, default: 5 },
   },
 
-  setup(props, { slots }) {
+  setup(props, { slots, attrs }) {
     const root = ref<HTMLDivElement>()
     const dlg = ref<HTMLDialogElement>()
     const show = ref(false)
@@ -27,22 +27,26 @@ export const VTooltip = defineComponent({
     }
     const style = computed(() => {
       if (!root.value) return { display: 'none' }
+      const ttbb = dlg.value?.getBoundingClientRect()
+      const tooltip = {
+        h: ttbb?.height ?? 0,
+        w: ttbb?.width ?? 0,
+      }
+
       const bb = root.value?.getBoundingClientRect()
       const pos = { x: bb.x, y: bb.y, h: bb.width, w: bb.height }
-      const tooltip = {
-        h: dlg.value?.offsetHeight ?? 0,
-        w: dlg.value?.offsetWidth ?? 0,
-      }
-      const above = pos.y - tooltip.h - props.margin - 5 // -5, because you don't want to stick it to the top either
+      const topPos = pos.y - tooltip.h - props.margin // -5, because you don't want to stick it to the top either
+      const above = topPos - 5 // -5, because you don't want to stick it to the top either
+
       return {
-        top: `${tooltip.h === 0 ? 0 : above < 0 ? pos.y + pos.h + props.margin : above}px`,
+        top: `${tooltip.h === 0 ? 0 : above < 0 ? pos.y + pos.h + props.margin : topPos}px`,
         left: `${tooltip.w === 0 ? 0 : pos.x + tooltip.w + props.margin > document.body.clientWidth ? pos.x + pos.w - tooltip.w : pos.x}px`,
       }
     })
     const tooltip = computed(
       () =>
         slots.tooltip?.() ?? (
-          <VCard class={['v-tooltip--contents']}>
+          <VCard class={['v-tooltip--contents', attrs.class]} style={attrs.style}>
             {props.text?.split('\n').flatMap((line, i, arr) => {
               return [line, i < arr.length - 1 ? <br /> : undefined]
             })}

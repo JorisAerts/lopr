@@ -9,7 +9,8 @@
     "ssl",
     "http",
     "https",
-    "monitoring"
+    "monitoring",
+    "middleware"
   ],
   "workspaces": [
     "./packages/*"
@@ -47,7 +48,7 @@
     "stylelint": "^16.8.2",
     "stylelint-config-standard-scss": "^13.1.0",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.2.0"
+    "typescript-eslint": "^8.3.0"
   },
   "packageManager": "yarn@4.4.1"
 }

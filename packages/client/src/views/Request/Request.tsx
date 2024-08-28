@@ -1,8 +1,9 @@
 import type { PropType, Ref } from 'vue'
-import { computed, defineComponent, ref, watch } from 'vue'
+import { computed, defineComponent, ref, Transition, watch } from 'vue'
 import { VBtn, VCard, VContainer, VSheet, VSpacer } from 'js-proxy-ui'
 import { useRequestStore } from '../../stores/request'
-import type { UUID } from 'js-proxy-shared/UUID'
+import type { UUID } from 'js-proxy-shared'
+import { Sorting } from 'js-proxy-shared'
 import { RequestDetails, RequestSequence, RequestStructure } from '../../components'
 
 export const Request = defineComponent({
@@ -22,6 +23,8 @@ export const Request = defineComponent({
 
     watch(requestStore.ids, (newVal) => !newVal.length && (current.value = undefined))
 
+    const sorting = ref(Sorting.None)
+
     return () => (
       <VContainer class={['fill-height', 'gap-2']}>
         <VCard
@@ -31,11 +34,27 @@ export const Request = defineComponent({
             'max-width': width.value,
           }}
         >
-          <VSheet class={['d-flex', 'px-3']}>
+          <VSheet class={['d-flex', 'px-3', 'align-items-center']}>
             <h3>
               Requests <sup>({requestStore.ids.length})</sup>
             </h3>
-            <VBtn tooltip={'Sort'} icon={'Reorder'} size={20} class={['pa-1', 'ml-2']} transparent disabled />
+            <Transition>
+              {requestViewType.value !== 0 && (
+                <VBtn
+                  tooltip={sorting.value === Sorting.None ? 'Sort ascending' : sorting.value === Sorting.Ascending ? 'Sort descending' : `Turn off sorting`}
+                  icon={'Sort'}
+                  iconClass={{
+                    'mirror-v': sorting.value === Sorting.Descending,
+                  }}
+                  size={20}
+                  class={['pa-1', 'ml-2']}
+                  transparent
+                  selected={sorting.value !== 0}
+                  disabled={requestViewType.value === 0}
+                  onClick={() => (sorting.value === 1 ? (sorting.value = -1) : sorting.value++)}
+                />
+              )}
+            </Transition>
             <VSpacer />
             <VBtn tooltip={'Sequence view'} icon={'Reorder'} size={20} class={['pa-1', 'mr-1']} transparent onClick={() => (requestViewType.value = 0)} />
             <VBtn tooltip={'Structure view'} icon={'AccountTree'} size={20} class={['pa-1']} transparent onClick={() => (requestViewType.value = 1)} />
@@ -44,7 +63,7 @@ export const Request = defineComponent({
             {requestViewType.value === 0 ? ( //
               <RequestSequence v-model={current.value} />
             ) : (
-              <RequestStructure v-model={current.value} v-model:expanded={expanded.value} />
+              <RequestStructure v-model={current.value} v-model:expanded={expanded.value} sorting={sorting.value} />
             )}
           </VSheet>
         </VCard>

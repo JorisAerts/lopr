@@ -1,3 +1,4 @@
+@use '../../style/vars' as *;
 @use '../../style/sass-vars' as *;
 
 :root {
@@ -7,7 +8,7 @@
 
   --btn-box-shadow-inset: inset -1px 1px 1px rgba(255, 255, 255, 25%);
   --btn-box-shadow-outset: -0 1px 2px rgba(0, 0, 0, 50%);
-  --btn-box-shadow: var(--btn-box-shadow-inset), var(--btn-box-shadow-outset);
+  --btn-box-shadow: none; // var(--btn-box-shadow-inset), var(--btn-box-shadow-outset);
 }
 
 .v-btn {
@@ -23,7 +24,7 @@
   border-radius: var(--btn-rounding);
   outline: none;
   cursor: pointer;
-  color: rgba(var(--text-color), var(--text-emphasis));
+  color: rgba(var(--on-primary-color), var(--text-emphasis));
 
   &__underlay {
     position: absolute;
@@ -42,6 +43,7 @@
     // override the box-shadow, we need none
     // TODO: override only the inset shadow, the outset shadow should be disabled by Dark Mode
     --btn-box-shadow: none;
+    color: rgba(var(--text-color), var(--text-emphasis));
     background: transparent;
   }
 
@@ -50,7 +52,7 @@
     margin-right: 1 * $spacer;
   }
 
-  &--content {
+  &--contents {
     position: relative;
     display: flex;
     align-items: center;
@@ -65,12 +67,13 @@
     --underlay-opacity: 0.05;
   }
 
-  &.selected:not(.v-btn--disabled),
+  &--selected:not(.v-btn--disabled),
   &:not(.v-btn--disabled):active {
     --underlay-opacity: 0.2;
   }
 
   &:not(.v-btn--disabled).active {
+    color: rgba(var(--on-primary-color), var(--text-emphasis));
     background: rgba(var(--primary-color), 1);
   }
 }

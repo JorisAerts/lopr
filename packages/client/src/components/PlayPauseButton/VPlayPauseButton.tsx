@@ -6,7 +6,6 @@ export const VPlayPauseButton = defineComponent({
   name: 'PlayPauseButton',
 
   emits: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     'update:recording': (value: boolean) => true,
   },
 

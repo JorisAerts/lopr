@@ -1,4 +1,4 @@
-import type { Prettify } from 'js-proxy-shared/Prettify'
+import type { Prettify } from 'js-proxy-shared'
 
 type ParsedHeaders<T extends string[]> = T extends [infer K, infer V, ...infer Rest] //
   ? Rest extends string[]

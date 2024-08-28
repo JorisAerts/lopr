@@ -1,6 +1,6 @@
 import pc from 'picocolors'
 
-const primaryColor = pc.yellow
+const primaryColor = pc.cyan
 const secondaryColor = pc.blue
 const disabledColor = pc.dim
 

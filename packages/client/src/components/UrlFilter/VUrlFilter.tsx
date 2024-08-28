@@ -1,13 +1,12 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
-import type { UrlMatch } from 'js-proxy-shared/url-match'
+import type { UrlMatch } from 'js-proxy-shared'
 import { VForm, VSheet, VTextField } from 'js-proxy-ui/components'
 
 export const VUrlFilter = defineComponent({
   name: 'VUrlFilter',
 
   emits: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     'update:modelValue': (_: UrlMatch) => true,
   },
 

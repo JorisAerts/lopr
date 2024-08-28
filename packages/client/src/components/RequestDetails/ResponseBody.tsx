@@ -7,7 +7,7 @@ import { VCheckbox, VSheet, VToolbar } from 'js-proxy-ui/components'
 import { useRequest } from '../../composables/request'
 import { useAppStore } from '../../stores/app'
 import { parseHeaders } from '../../utils/request-utils'
-import type { ProxyResponseInfo } from 'js-proxy-shared/Response'
+import type { ProxyResponseInfo } from 'js-proxy-shared'
 import { makeUUIDProps } from '../../composables/uuid'
 
 const RX_IS_IMAGE = /^image\//

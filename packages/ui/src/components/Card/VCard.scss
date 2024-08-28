@@ -2,11 +2,14 @@
 
 :root {
   --card-background: rgba(var(--background-color), var(--background-opacity));
+  --card-border: none;
 }
 
 .v-card {
   border-radius: var(--border-radius);
   background: var(--card-background);
+
+  border: var(--card-border);
 
   &--clickable {
     cursor: pointer;

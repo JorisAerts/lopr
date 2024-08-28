@@ -4,20 +4,20 @@ import * as https from 'https'
 import { getDecodedIncomingMessageData } from '../../utils/incoming-message'
 import type { ProxyRequest } from '../../server/ProxyRequest'
 import type { ProxyResponse } from '../../server/ProxyResponse'
-import { createErrorHandler } from '../../../../client/src/utils/logging'
-import { isReqHttps, setupOutgoingRequestOptions } from '../utils'
+import { createErrorHandler } from '../../utils/logger'
+import { createRequestOptions, isReqHttps } from '../utils'
 import { cacheDir } from '../../utils/temp-dir'
 import { mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import type { ServerOptions } from '../../server'
 import { createProxyResponse } from '../../utils/ws-messages'
-import type { ProxyState } from 'js-proxy-shared/ProxyState'
+import type { ProxyState } from 'js-proxy-shared'
 
 /**
  * Pipe to the outgoing pipeline, create the request to the ultimate destination
  */
 export const proxyRequest = (req: ProxyRequest, res: ProxyResponse, options: ServerOptions, state: ProxyState) => {
-  const requestOptions = setupOutgoingRequestOptions({}, req, res, options)
+  const requestOptions = createRequestOptions({}, req, res, options)
   if (requestOptions) {
     const proxyReq = (isReqHttps(req) ? https : http).request(requestOptions, (proxyRes) => {
       handleResponse(req, res, proxyRes)

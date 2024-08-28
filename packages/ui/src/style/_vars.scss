@@ -4,8 +4,6 @@
 @forward 'sass-vars';
 
 :root {
-  --r: #3178c6;
-
   // colors
   --color-red: 255, 0, 0;
   --color-green: 0, 255, 0;
@@ -14,33 +12,38 @@
   --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;;
   --font-family-mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", ui-monospace, monospace;
   --font-size: 12px;
-  --font-weight-normal: 100;
+  --font-weight-normal: 200;
   --font-weight-bold: 400;
   --letter-spacing: .75px;
   --line-height: 1.6;
 
   // theme colors
   --primary-color: 49, 120, 198;
+  //--primary-color: 99, 150, 228;
+  --on-primary-color: 255, 255, 255;
   --secondary-color: 0, 255, 0;
 
   // background
-  --app-background-color: 14, 19, 23;
-  --background-color: 240, 240, 255;
-  --background-opacity: .08;
-
-  // borders
-  --border-opacity: 20%;
-  --border-color: 255, 255, 255;
-  --border-radius: 4px;
-  --border-size: 1px;
-  --border-style: solid;
+  --app-background-color: 242, 240, 238;
+  --background-color: 200, 200, 210;
+  --background-opacity: .8;
 
   // text
-  --text-emphasis: 1;
-  --text-color: 255, 255, 255;
+  --text-emphasis: .85;
+  --text-color: 0, 0, 0;
   --link-color: rgba(var(--text-color), var(--text-emphasis));
   --link-hover-color: rgba(var(--primary-color), var(--text-emphasis));
   --icon-color: rgba(var(--text-color), var(--text-emphasis));
+
+  // Shadows
+  --default-shadow: 0 0 4px rgba(var(--text-color), .6), 0 0 18px rgba(var(--text-color), .25);
+
+  // borders
+  --border-opacity: 20%;
+  --border-color: var(--text-color);
+  --border-radius: 4px;
+  --border-size: 1px;
+  --border-style: solid;
 
   // animation
   --animation-duration: 1s;
@@ -48,17 +51,21 @@
   // transition
   --transition-duration: .24s;
   --transition-timing-function: #{map-get(map-get($penner-transitions, "ease-out"), "quart")};
-  --transition-properties: color, background, background-color, left, right, top, bottom, margin, padding, opacity, display, visibility;
+  --transition-properties: color, background, background-color, left, right, top, bottom, margin, padding, opacity, display, visibility, transform;
   --transition: all var(--transition-duration) var(--transition-timing-function), font-size 0s;
 
   // panel
   --panel-border: var(--border-size) var(--border-style) rgba(var(--border-color), var(--border-opacity));
 }
 
+// dark mode
 html.dark-mode {
-  //--app-background-color: 242, 240, 238;
-  //--background-color: 20, 20, 0;
-  //--background-opacity: .08;
-  //
-  //--text-color: 0, 0, 0;
+  --app-background-color: 14, 19, 23;
+  --background-color: 30, 30, 40;
+  --text-color: 255, 255, 255;
+
+  --default-shadow: none;
+
+  --primary-color: 49, 120, 198;
+  // --on-primary-color: 255, 255, 255;
 }

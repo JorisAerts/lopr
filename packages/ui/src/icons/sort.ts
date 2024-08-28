@@ -1,0 +1,2 @@
+export const Sort = 'M3.525 17.425v-0.75h5v0.75Zm0-5.45V11.2H14.5v0.775Zm0-5.475v-0.775h16.95V6.5Z'
+export const Sort_Fill = 'M3.525 17.425v-0.75h5v0.75Zm0-5.45V11.2H14.5v0.775Zm0-5.475v-0.775h16.95V6.5Z'
