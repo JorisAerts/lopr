@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { VBtn, VCard, VDialog, VSwitch, VToolbar } from 'js-proxy-ui'
 import { useAppStore } from '../../stores/app'
 import { useRequestStore } from '../../stores/request'
@@ -10,10 +10,11 @@ export const RequestControlsToolbar = defineComponent({
   setup() {
     const appStore = useAppStore()
     const requestStore = useRequestStore()
+    const dlg = ref(false)
     return () => (
       <VToolbar class={['v-app-controls-toolbar']}>
         <VSwitch tooltip={'Play/Pause'} v-model:checked={appStore.recording} onIcon={'PlayArrow_Fill'} offIcon={'Pause_Fill'} />
-        <VDialog clickOutsideToClose>
+        <VDialog clickOutsideToClose v-model={dlg.value}>
           {{
             activator: ({ props }: { props: Record<string, unknown> }) => (
               <VBtn tooltip="Breakpoints" class={['align-center', 'pa-1']} icon={'Dangerous_Fill'} size={20} transparent {...props} />
@@ -21,7 +22,7 @@ export const RequestControlsToolbar = defineComponent({
             default: () => (
               <VCard class={['pa-2']}>
                 <h3>Breakpoints</h3>
-                <VBreakpoints class={['mt-2']} />
+                <VBreakpoints class={['mt-2']} onClose={() => (dlg.value = false)} />
               </VCard>
             ),
           }}

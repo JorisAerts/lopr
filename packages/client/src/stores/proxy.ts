@@ -4,10 +4,11 @@ import type { UrlMatch } from 'js-proxy-shared'
 
 export const STORE_NAME = 'Proxy'
 
-interface BreakPoint {
-  req: boolean
-  res: boolean
+export interface BreakPoint {
+  req: boolean | undefined
+  res: boolean | undefined
   match: UrlMatch
+  disabled?: true
 }
 
 export const useProxyStore = defineStore(STORE_NAME, () => {

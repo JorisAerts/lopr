@@ -25,7 +25,6 @@ export const VUrlFilter = defineComponent({
 
   setup(props, { emit }) {
     const model = ref<UrlMatch | undefined>({ ...defaultValue } as UrlMatch)
-
     const modelValue = toRef(props, 'modelValue', undefined)
     watch(
       modelValue,
@@ -39,9 +38,11 @@ export const VUrlFilter = defineComponent({
             return (model.value = { ...defaultValue })
         }
       },
-      { immediate: true }
+      { immediate: true, deep: true }
     )
-    const handleSubmit = () => emit('update:modelValue', model.value)
+
+    watch(model, () => emit('update:modelValue', model.value), { deep: true })
+
     const handlePaste = (e: ClipboardEvent) => {
       e.preventDefault()
       const data = e.clipboardData?.getData('text') ?? ''
@@ -56,14 +57,12 @@ export const VUrlFilter = defineComponent({
         }
       } catch {
         model.value = {}
-      } finally {
-        emit('update:modelValue', model.value)
       }
     }
 
     return () => (
       <VSheet>
-        <VForm onSubmit={handleSubmit}>
+        <VForm>
           <VTextField label={'Protocol'} onPaste={handlePaste} v-model={model.value!.protocol}></VTextField>
           <VSheet class={['d-flex', 'gap-4']}>
             <VTextField label-class={['flex-grow-1']} label={'Host'} onPaste={handlePaste} v-model={model.value!.domain}></VTextField>
