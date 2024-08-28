@@ -24,7 +24,7 @@
     "url": "https://github.com/JorisAerts/js-proxy.git"
   },
   "exports": {
-    ".": "./src",
+    ".": "./src/index.ts",
     "./*": "./src/*.ts"
   },
   "scripts": {

@@ -9,6 +9,7 @@ export * from './ProxyState'
 export * from './Request'
 export * from './Response'
 
+export * from './Sorting'
 export * from './Timestamped'
 
 export * from './URI'

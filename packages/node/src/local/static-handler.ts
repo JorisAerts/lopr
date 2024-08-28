@@ -4,11 +4,10 @@ import path, { resolve } from 'path'
 import { existsSync, readFileSync, statSync } from 'fs'
 import { getContentType } from './content-type'
 import { sendWsData } from './websocket'
-import { WebSocketMessageType } from 'js-proxy-shared/WebSocketMessage'
+import { HTTP_HEADER_CONTENT_TYPE, WebSocketMessageType } from 'js-proxy-shared'
 import { createErrorMessage } from '../utils/ws-messages'
 import type { ProxyResponse } from '../server/ProxyResponse'
 import type { ProxyRequest } from '../server/ProxyRequest'
-import { HTTP_HEADER_CONTENT_TYPE } from 'js-proxy-shared/constants'
 
 const staticRoot = resolve(packageRoot, 'dist', 'client')
 

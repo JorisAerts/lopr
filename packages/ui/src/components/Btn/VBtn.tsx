@@ -22,6 +22,7 @@ export const VBtn = defineComponent({
 
   props: {
     icon: { type: String as PropType<IconNames> },
+    iconClass: { type: [String, Object, Array] as PropType<any> },
     iconColor: { type: String },
     size: { type: Number, default: 16 },
     dropdown: { type: Boolean, default: false },
@@ -74,9 +75,12 @@ export const VBtn = defineComponent({
             {slots.icon?.() ??
               (props.icon && (
                 <VIcon
-                  class={{
-                    'btn--prepend-icon': ((content as any)?.[0]?.children?.length ?? 0) > 0,
-                  }}
+                  class={[
+                    {
+                      'btn--prepend-icon': ((content as any)?.[0]?.children?.length ?? 0) > 0,
+                    },
+                    props.iconClass,
+                  ]}
                   name={props.icon}
                   color={props.iconColor}
                   size={props.size}
