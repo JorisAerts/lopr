@@ -19,6 +19,16 @@ interface StructNode {
   items?: UUID[]
 }
 
+const getPath = (struct: StructNode, uuid: UUID) => {
+  const children: string[] = struct.nodes
+    ? Object.entries(struct.nodes) //
+        .flatMap(([, value]) => getPath(value, uuid))
+    : []
+
+  if (children.length || struct.items?.includes(uuid)) children.push(struct.key)
+  return children
+}
+
 export const RequestStructure = defineComponent({
   name: 'request-structure',
 
@@ -43,13 +53,17 @@ export const RequestStructure = defineComponent({
         (() => {
           if (contains(key)) return removeKey(sel, key)
           const result = new Set<string>([key])
+
           // auto-expand single item nodes
+          // this avoids clicking open a lot of folders containing only one other folder
           let current = value
           while (current && (!current.items || current.items?.length === 0) && current.nodes && Object.keys(current.nodes).length === 1) {
             result.add(current.key)
             current = current.nodes[Object.keys(current.nodes)[0] as keyof typeof current.nodes]!
           }
           result.add(current.key)
+
+          // add everything together now
           return sel.concat([...result])
         })()
       )
@@ -57,13 +71,26 @@ export const RequestStructure = defineComponent({
     const handleSelect = (uuid: UUID) => {
       emit('update:modelValue', uuid)
     }
-
     watch(
       () => props.sorting,
       () => getCurrentInstance()?.proxy?.$forceUpdate()
     )
+    // when the current selected item changes,
+    // the selection tree should be unfolded so that this item becomes visible
+    watch(
+      () => requestStore.current,
+      (current, oldValue) => {
+        if (!current || current === oldValue) return
+        const path = getPath(requestStore.structure, current)
+        if (path.every((p) => props.expanded.includes(p))) return
+        const ret = new Set<string>(props.expanded)
+        path.forEach((p) => ret.add(p))
+        emit('update:expanded', [...ret])
+      },
+      { immediate: true }
+    )
 
-    const getKeys = (struct: StructNode) =>
+    const getSortedStructKeys = (struct: StructNode) =>
       struct.nodes //
         ? props.sorting
           ? Object.keys(struct.nodes).toSorted(props.sorting === Sorting.Ascending ? (a, b) => a.localeCompare(b) : (a, b) => b.localeCompare(a))
@@ -75,7 +102,7 @@ export const RequestStructure = defineComponent({
       struct ? (
         <>
           {struct.nodes &&
-            getKeys(struct).map((name) => {
+            getSortedStructKeys(struct).map((name) => {
               const value = struct.nodes![name]
               const key = value.key
               const hasItems = !!value.items || !!value.nodes
