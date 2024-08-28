@@ -676,7 +676,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:^9.9.1"
     "@mongodb-js/zstd": "npm:1.2.0"
-    "@types/node": "npm:^22.5.0"
+    "@types/node": "npm:^22.5.1"
     "@types/node-forge": "npm:^1.3.11"
     "@types/uuid": "npm:^10.0.0"
     "@types/ws": "npm:^8.5.12"
@@ -1026,12 +1026,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^22.5.0":
+"@types/node@npm:*":
   version: 22.5.0
   resolution: "@types/node@npm:22.5.0"
   dependencies:
     undici-types: "npm:~6.19.2"
   checksum: 10c0/45aa75c5e71645fac42dced4eff7f197c3fdfff6e8a9fdacd0eb2e748ff21ee70ffb73982f068a58e8d73b2c088a63613142c125236cdcf3c072ea97eada1559
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.5.1":
+  version: 22.5.1
+  resolution: "@types/node@npm:22.5.1"
+  dependencies:
+    undici-types: "npm:~6.19.2"
+  checksum: 10c0/35373176d8a1d4e16004a1ed303e68d39e4c6341024dc056f2577982df98c1a045a6b677f12ed557796f09bbf7d621f428f6874cc37ed28f7b336fa604b5f6a6
   languageName: node
   linkType: hard
 
@@ -2939,7 +2948,7 @@ __metadata:
   resolution: "js-proxy-client@workspace:packages/client"
   dependencies:
     "@eslint/js": "npm:^9.9.1"
-    "@types/node": "npm:^22.5.0"
+    "@types/node": "npm:^22.5.1"
     "@vitejs/plugin-vue": "npm:^5.1.2"
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
     eslint: "npm:^9.9.1"
@@ -2969,7 +2978,7 @@ __metadata:
   resolution: "js-proxy-shared@workspace:packages/shared"
   dependencies:
     "@eslint/js": "npm:^9.9.1"
-    "@types/node": "npm:^22.5.0"
+    "@types/node": "npm:^22.5.1"
     eslint: "npm:^9.9.1"
     globals: "npm:^15.9.0"
     prettier: "npm:^3.3.3"
@@ -2986,7 +2995,7 @@ __metadata:
   resolution: "js-proxy-ui@workspace:packages/ui"
   dependencies:
     "@eslint/js": "npm:^9.9.1"
-    "@types/node": "npm:^22.5.0"
+    "@types/node": "npm:^22.5.1"
     "@vitejs/plugin-vue": "npm:^5.1.2"
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
     eslint: "npm:^9.9.1"
