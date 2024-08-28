@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="serve" type="js.build_tools.npm" nameIsGenerated="true">
+  <configuration default="false" name="serve" type="js.build_tools.npm" activateToolWindowBeforeRun="false" nameIsGenerated="true">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
@@ -8,15 +8,7 @@
     <node-interpreter value="project" />
     <envs />
     <method v="2">
-      <option name="NpmBeforeRunTask" enabled="true">
-        <package-json value="$PROJECT_DIR$/package.json" />
-        <command value="run" />
-        <scripts>
-          <script value="build" />
-        </scripts>
-        <node-interpreter value="project" />
-        <envs />
-      </option>
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="build" run_configuration_type="js.build_tools.npm" />
     </method>
   </configuration>
 </component>
