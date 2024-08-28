@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import type { Ref } from 'vue'
 import { computed, ref, shallowRef, triggerRef } from 'vue'
 import type { ProxyRequestHistory, ProxyRequestInfo, WebSocketMessage } from 'js-proxy-shared'
 import { WebSocketMessageType } from 'js-proxy-shared'
@@ -19,6 +20,8 @@ export interface StructNode {
 }
 
 export const useRequestStore = defineStore(STORE_NAME, () => {
+  const current: Ref<UUID | undefined> = ref()
+
   /**
    * Contains all ids (chronologically sequential)
    */
@@ -124,6 +127,8 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
       registerUUID(uuid, false)
     })
 
+    if (current.value && !ids.value.includes(current.value)) current.value = undefined
+
     return Promise.resolve(data)
   }
 
@@ -148,6 +153,8 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   refresh()
 
   return {
+    current,
+
     ids,
     requests,
     responses,
