@@ -31,5 +31,3 @@ export const useProxyStore = defineStore(STORE_NAME, () => {
 
   return { recording, breakpoints }
 })
-
-export const isRecording = () => useProxyStore().recording

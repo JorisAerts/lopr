@@ -6,7 +6,7 @@ import { WebSocketMessageType } from 'js-proxy-shared'
 import { registerDataHandler } from '../utils/websocket'
 import type { ProxyResponseInfo } from 'js-proxy-shared/Response'
 import type { UUID } from 'js-proxy-shared/UUID'
-import { isRecording } from './app'
+import { useProxyStore } from './proxy'
 
 export const STORE_NAME = 'Requests'
 
@@ -20,6 +20,11 @@ export interface StructNode {
 }
 
 export const useRequestStore = defineStore(STORE_NAME, () => {
+  const proxyState = useProxyStore()
+
+  /**
+   * The currently selected UUID (request/response)
+   */
   const current: Ref<UUID | undefined> = ref()
 
   /**
@@ -32,6 +37,9 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
    */
   const recent = ref(new Set<UUID | string>([]))
 
+  /**
+   * Structured tree-view of the requests
+   */
   const structure = ref<StructNode>({ key: '', isNew: false })
 
   /**
@@ -136,14 +144,14 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 
   // register the handlers (they will overwrite the previous ones)
   registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
-    if (!isRecording()) return
+    if (!proxyState.recording) return
     data.ts = new Date(data.ts)
     requests.value.set(data.uuid, data)
     registerUUID(data.uuid)
   })
 
   registerDataHandler(WebSocketMessageType.ProxyResponse, ({ data }: WebSocketMessage<ProxyResponseInfo>) => {
-    if (!isRecording()) return
+    if (!proxyState.recording) return
     data.ts = new Date(data.ts)
     responses.value.set(data.uuid, data)
     registerUUID(data.uuid)
