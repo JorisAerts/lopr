@@ -11,11 +11,11 @@ export const VTab = defineComponent({
     disabled: { type: Boolean, default: false },
   },
 
-  setup(props) {
+  setup(props, { slots }) {
     const { on, classes } = useTabs(props)
     return () => (
       <button class={['v-tab', ...classes.value]} {...on} disabled={props.disabled}>
-        {props.name}
+        {slots.default?.() ?? props.name}
       </button>
     )
   },

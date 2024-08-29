@@ -3,10 +3,10 @@ import type { Ref } from 'vue'
 import { computed, ref, shallowRef, triggerRef } from 'vue'
 import type { ProxyRequestHistory, ProxyRequestInfo, WebSocketMessage } from 'js-proxy-shared'
 import { WebSocketMessageType } from 'js-proxy-shared'
-import { registerDataHandler } from '../utils/websocket'
+import { registerDataHandler, sendWsData } from '../utils/websocket'
 import type { ProxyResponseInfo } from 'js-proxy-shared/Response'
 import type { UUID } from 'js-proxy-shared/UUID'
-import { isRecording } from './app'
+import { useProxyStore } from './proxy'
 
 export const STORE_NAME = 'Requests'
 
@@ -20,6 +20,11 @@ export interface StructNode {
 }
 
 export const useRequestStore = defineStore(STORE_NAME, () => {
+  const proxyState = useProxyStore()
+
+  /**
+   * The currently selected UUID (request/response)
+   */
   const current: Ref<UUID | undefined> = ref()
 
   /**
@@ -32,6 +37,9 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
    */
   const recent = ref(new Set<UUID | string>([]))
 
+  /**
+   * Structured tree-view of the requests
+   */
   const structure = ref<StructNode>({ key: '', isNew: false })
 
   /**
@@ -136,16 +144,26 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 
   // register the handlers (they will overwrite the previous ones)
   registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
-    if (!isRecording()) return
+    if (!proxyState.recording) return
     data.ts = new Date(data.ts)
-    requests.value.set(data.uuid, data)
+    if (requests.value.has(data.uuid)) {
+      requests.value.set(data.uuid, Object.assign(requests.value.get(data.uuid)!, data))
+    } else {
+      requests.value.set(data.uuid, data)
+    }
+    triggerRef(requests)
     registerUUID(data.uuid)
   })
 
   registerDataHandler(WebSocketMessageType.ProxyResponse, ({ data }: WebSocketMessage<ProxyResponseInfo>) => {
-    if (!isRecording()) return
+    if (!proxyState.recording) return
     data.ts = new Date(data.ts)
-    responses.value.set(data.uuid, data)
+    if (responses.value.has(data.uuid)) {
+      responses.value.set(data.uuid, Object.assign(responses.value.get(data.uuid)!, data))
+    } else {
+      responses.value.set(data.uuid, data)
+    }
+    triggerRef(responses)
     registerUUID(data.uuid)
   })
 
@@ -170,3 +188,15 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     refresh,
   }
 })
+
+export const resumeRequest = (uuid: UUID) => {
+  const request = useRequestStore().getRequest(uuid)
+  if (!request) return
+  sendWsData(WebSocketMessageType.ProxyRequest, { ...request, paused: false })
+}
+
+export const resumeResponse = (uuid: UUID) => {
+  const response = useRequestStore().getResponse(uuid)
+  if (!response) return
+  sendWsData(WebSocketMessageType.ProxyResponse, { ...response, paused: false })
+}

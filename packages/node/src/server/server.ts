@@ -23,6 +23,8 @@ import { newLine } from '../proxy/socket/newline'
 import type { CreateProxyOptions, ServerOptions } from './ServerOptions'
 import { clearCache, useCache } from './cache'
 import { handleApi } from '../local/api-handler'
+import { isRequestPaused } from '../utils/breakpoints'
+import { createInternalProxyState } from './server-state'
 
 export const DEFAULT_PORT = 8080
 
@@ -48,17 +50,12 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
     proxySSL: true,
     ...userConfig,
 
-    breakpoints: [],
     cache: useCache(),
     logger: createLogger(),
   } as ServerOptions
 
   // internal state, such as cache, breakpoints, ...
-  const state = {
-    config: options,
-    recording: true,
-    cache: useCache(),
-  }
+  const state = createInternalProxyState(options)
 
   const { logger } = options
 
@@ -76,6 +73,15 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
   registerDataHandler(WebSocketMessageType.Preferences, ({ data }) => Object.assign(options, data))
   // handle state changes (recording, breakpoints, ...)
   registerDataHandler(WebSocketMessageType.State, ({ data }) => Object.assign(state, data))
+
+  // handle resume
+  registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }) => {
+    if (!data.paused && state.pausedRequests.has(data.uuid)) {
+      state.pausedRequests.get(data.uuid)!.resume()
+      state.pausedRequests.delete(data.uuid)
+      sendWsData(WebSocketMessageType.ProxyRequest, data)
+    }
+  })
 
   // this ginormous method returns a promise,
   // that — as mentioned below — will resolve once the server is up.
@@ -162,7 +168,25 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
       }
 
       // forward the request to the proxy
-      return forwardRequest(req, res, options, state)
+      const handleRequest = () => forwardRequest(req, res, options, state)
+
+      // pause the request if a breakpoint is set for this request
+      if (isRequestPaused(req, state)) {
+        const resume = () => {
+          req.off('resume', resume)
+          handleRequest()
+        }
+        req.pause()
+        req.on('resume', resume)
+
+        // keep track of the paused request
+        state.pausedRequests.set(req.uuid, req)
+
+        // send info about the pausing to the client
+        sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
+      } else {
+        handleRequest()
+      }
     }
 
     const getHttpsMediator = (host: string) => {

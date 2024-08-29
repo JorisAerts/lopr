@@ -11,6 +11,7 @@ interface RawRequest extends Unique, Timestamped {
   method: string | undefined
   statusCode: number | undefined
   contentLength: number
+  paused: boolean
 }
 
 export interface ProxyRequestInfo extends RawRequest {}

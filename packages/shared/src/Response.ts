@@ -5,6 +5,7 @@ interface RawResponse extends Unique, Timestamped {
   headers: string[]
   body: unknown
   contentLength: number
+  paused: boolean
 }
 
 export interface ProxyResponseInfo extends RawResponse {}

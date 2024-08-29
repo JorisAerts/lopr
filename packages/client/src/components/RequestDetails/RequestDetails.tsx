@@ -1,7 +1,7 @@
 import type { Tab } from './request-detail-tabs'
 import { useRequestDetailTabs } from './request-detail-tabs'
 import { defineComponent, reactive, ref, watch } from 'vue'
-import { VTab, VTabItem, VTabItems, VTabs } from 'js-proxy-ui/components'
+import { VBtn, VTab, VTabItem, VTabItems, VTabs } from 'js-proxy-ui/components'
 import { RequestOverviewTable } from './RequestOverviewTable'
 import { HeadersTable } from './HeadersTable'
 import { ResponseBody } from './ResponseBody'
@@ -10,6 +10,7 @@ import { makeUUIDProps, useUUID } from '../../composables/uuid'
 import { useRequest } from '../../composables/request'
 import { useResponse } from '../../composables/response'
 import { HTTP_HEADER_COOKIE } from 'js-proxy-shared'
+import { resumeRequest } from '../../stores/request'
 
 const REQUEST_TAB_INDEX = 0
 const REQUEST_HEADERS_INDEX = 1
@@ -55,7 +56,15 @@ export const RequestDetails = defineComponent({
       uuid.value && (
         <div class={['d-flex', 'flex-column', 'fill-height']}>
           <VTabs v-model={currentTab.value} class={['mb-2', 'flex-grow-0']}>
-            {requestTabs.map(([name, id, canDisplayTab]) => canDisplayTab && <VTab modelValue={id} name={name} />)}
+            {requestTabs.map(
+              ([name, id, canDisplayTab], i) =>
+                canDisplayTab && (
+                  <VTab modelValue={id}>
+                    {name}
+                    {0 === i && request.isPaused && <VBtn icon={'PlayArrow_Fill'} class={['ml-2', 'pa-0']} onClick={() => resumeRequest(props.modelValue!)}></VBtn>}
+                  </VTab>
+                )
+            )}
           </VTabs>
           <VTabItems modelValue={currentTab.value} class={['flex-grow-0', 'overflow-auto', 'fill-height']}>
             {requestTabs.map(
