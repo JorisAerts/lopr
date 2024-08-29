@@ -129,7 +129,7 @@ export class URI {
     return url
   }
 
-  public static parse(url: string) {
+  public static parse(url: string | URL) {
     return new URI(url)
   }
 

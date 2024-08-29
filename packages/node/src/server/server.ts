@@ -24,6 +24,7 @@ import { newLine } from '../proxy/socket/newline'
 import type { CreateProxyOptions, ServerOptions } from './ServerOptions'
 import { clearCache, useCache } from './cache'
 import { handleApi } from '../local/api-handler'
+import { isReqPaused } from '../utils/breakpoints'
 
 export const DEFAULT_PORT = 8080
 
@@ -163,7 +164,20 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
       }
 
       // forward the request to the proxy
-      return forwardRequest(req, res, options, state)
+      const handleRequest = () => forwardRequest(req, res, options, state)
+
+      // pause the request if a breakpoint is set for this request
+      if (isReqPaused(req.url, state)) {
+        console.log('paused!', req.url)
+        const resume = () => {
+          req.off('resume', resume)
+          handleRequest()
+        }
+        req.pause()
+        req.on('resume', resume)
+      } else {
+        handleRequest()
+      }
     }
 
     const getHttpsMediator = (host: string) => {

@@ -1,7 +1,6 @@
 import type { PropType } from 'vue'
 import { defineComponent, toRef } from 'vue'
-import { type BreakPoint } from '../../stores/proxy'
-import type { UrlMatch } from 'js-proxy-shared'
+import type { BreakPoint, UrlMatch } from 'js-proxy-shared'
 import { VBtn, VCard, VCheckbox, VList, VListItem, VSheet, VTooltip } from 'js-proxy-ui'
 
 const breakpointToString = (breakPoint: BreakPoint) => {

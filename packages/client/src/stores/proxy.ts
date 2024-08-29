@@ -1,17 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, shallowRef, watch } from 'vue'
-import type { UrlMatch } from 'js-proxy-shared'
+import type { BreakPoint } from 'js-proxy-shared'
 import { type ProxyState, WebSocketMessageType } from 'js-proxy-shared'
 import { registerDataHandler, sendWsData } from '../utils/websocket'
 
 export const STORE_NAME = 'Proxy State'
-
-export interface BreakPoint {
-  req: boolean | undefined
-  res: boolean | undefined
-  match: UrlMatch
-  disabled?: true | undefined
-}
 
 export const useProxyStore = defineStore(STORE_NAME, () => {
   const recording = ref(true)

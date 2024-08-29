@@ -23,7 +23,7 @@ export const extractProtocol = (req: IncomingMessage) => {
   return isReqWebSocket(req) ? (secure ? 'wss' : 'ws') : secure ? 'https' : 'http'
 }
 
-const extractURLFromRequest = (req: IncomingMessage) => {
+export const extractURLFromRequest = (req: IncomingMessage) => {
   return new URL(RX_PROTOCOL.test(req.url!) ? req.url! : `${extractProtocol(req)}://${req.headers.host /*?? req.client.servername*/}${req.url ?? ''}`)
 }
 

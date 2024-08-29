@@ -1,10 +1,10 @@
 import { defineComponent, ref, watch } from 'vue'
 import { VUrlFilter } from '../UrlFilter'
 import { VBtn, VCheckbox, VDialogCardButtons, VSheet } from 'js-proxy-ui/components'
-import type { BreakPoint } from '../../stores/proxy'
+import type { BreakPoint } from 'js-proxy-shared'
+import { jsonClone } from 'js-proxy-shared'
 import { useProxyStore } from '../../stores/proxy'
 import { VBreakPointList } from './VBreakPointList'
-import { jsonClone } from 'js-proxy-shared'
 
 export const VBreakpoints = defineComponent({
   name: 'VBreakpoints',
