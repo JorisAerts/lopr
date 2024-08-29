@@ -1,5 +1,5 @@
 @each $type in (inline, block, inline-block) {
   .d-#{$type} {
-    display: $type;
+    display: $type !important;
   }
 }

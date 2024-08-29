@@ -11,6 +11,8 @@ import { readFile } from 'fs/promises'
 import { existsSync } from 'fs'
 import { join } from 'path'
 import { certificatesDir } from '../utils/cert-utils'
+import { dirSize } from '../utils/fs'
+import { cacheDir } from '../utils/temp-dir'
 
 export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: ServerOptions) => {
   const url = parseUrl(req.url!, true)
@@ -31,7 +33,6 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
       return true
     } else if (url.pathname === '/api/data' && url.query.cert) {
       const cert = join(certificatesDir(), `${url.query.cert}.crt`)
-
       if (!existsSync(cert)) {
         res.statusCode = 404
         res.write('Not Found').toString()
@@ -47,7 +48,6 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
             res.write(err).toString()
           })
       }
-
       return true
     } else if (url.pathname === '/api/state') {
       if (url.query.clear !== undefined) {
@@ -61,6 +61,20 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
       res.setHeader('Content-Type', 'application/json')
       res.setHeader('Content-Length', data.length)
       res.end(data)
+      return true
+    } else if (url.pathname === '/api/server-info') {
+      Promise.all([dirSize(certificatesDir()), dirSize(cacheDir(options))])
+        .then(([certSize, cacheSize]) => {
+          const data = JSON.stringify({ certSize, cacheSize })
+          res.setHeader('Content-Type', 'application/json')
+          res.setHeader('Content-Length', data.length)
+          res.end(data)
+        })
+        .catch((err) => {
+          res.statusCode = 505
+          res.write(err).toString()
+        })
+
       return true
     }
 
