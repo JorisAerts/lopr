@@ -175,7 +175,12 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
         }
         req.pause()
         req.on('resume', resume)
+
+        // keep track of the paused request
         state.pausedRequests.push(req)
+
+        // send info about the pausing to the client
+        sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
       } else {
         handleRequest()
       }

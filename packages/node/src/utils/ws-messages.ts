@@ -24,6 +24,7 @@ export const createProxyRequest = (req: ProxyRequest): ProxyRequestInfo => {
     method: req.method,
     statusCode: req.statusCode,
     contentLength: req.readableLength,
+    paused: req.isPaused(),
   }
 }
 
