@@ -1,5 +1,5 @@
 import type { ServerOptions } from './ServerOptions'
-import type { BreakPoint, ProxyState } from 'js-proxy-shared'
+import type { BreakPoint, ProxyState, UUID } from 'js-proxy-shared'
 import { useCache } from './cache'
 import type { ServerResponse } from 'http'
 import type { ProxyRequest } from './ProxyRequest'
@@ -9,8 +9,8 @@ import type { ProxyRequest } from './ProxyRequest'
  */
 interface InternalBreakPointState {
   breakpoints: BreakPoint[]
-  pausedRequests: ProxyRequest[]
-  pausedResponses: ServerResponse[]
+  pausedRequests: Map<UUID, ProxyRequest>
+  pausedResponses: Map<UUID, ServerResponse>
 }
 
 /**
@@ -30,8 +30,8 @@ export const createInternalProxyState = (options: ServerOptions): InternalProxyS
 
   // break points
   breakpoints: [],
-  pausedRequests: [],
-  pausedResponses: [],
+  pausedRequests: new Map(),
+  pausedResponses: new Map(),
 })
 
 // keys only available in the internal proxy state

@@ -1,3 +1,6 @@
+import type { ProxyRequestInfo } from './Request'
+import type { ProxyResponseInfo } from './Response'
+
 export enum WebSocketMessageType {
   App,
   Error,
@@ -7,6 +10,12 @@ export enum WebSocketMessageType {
   Preferences,
   State,
 }
+
+export type WebSocketMessageTypeDataMapping<Type> = Type extends WebSocketMessageType.ProxyRequest //
+  ? ProxyRequestInfo
+  : Type extends WebSocketMessageType.ProxyResponse
+    ? ProxyResponseInfo
+    : {}
 
 export interface WebSocketMessage<Data = unknown> {
   type: WebSocketMessageType

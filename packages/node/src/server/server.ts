@@ -74,6 +74,14 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
   // handle state changes (recording, breakpoints, ...)
   registerDataHandler(WebSocketMessageType.State, ({ data }) => Object.assign(state, data))
 
+  // handle resume
+  registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }) => {
+    if (!data.paused && state.pausedRequests.has(data.uuid)) {
+      state.pausedRequests.get(data.uuid)!.resume()
+      state.pausedRequests.delete(data.uuid)
+    }
+  })
+
   // this ginormous method returns a promise,
   // that — as mentioned below — will resolve once the server is up.
   return new Promise((resolve) => {
@@ -171,7 +179,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
         req.on('resume', resume)
 
         // keep track of the paused request
-        state.pausedRequests.push(req)
+        state.pausedRequests.set(req.uuid, req)
 
         // send info about the pausing to the client
         sendWsData(WebSocketMessageType.ProxyRequest, createProxyRequest(req))
