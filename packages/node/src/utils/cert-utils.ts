@@ -164,15 +164,12 @@ const createCertForHost = (hostname: string) => {
 
 function getOrWriteKeys(hostname: string, keyFiles: typeof ROOT_KEY_FILES, { key, cert }: { key: () => string; cert: () => string }): CertificateInfo {
   if (existsSync(keyFiles.cert) && existsSync(keyFiles.key)) {
-    //console.info('reading keys')
     return {
       key: readFileSync(keyFiles.key),
       cert: readFileSync(keyFiles.cert),
     }
   }
 
-  //console.info('writing keys for host: ', hostname)
-  //console.info('   => ', dirname(keyFiles.cert))
   const data = { key: key(), cert: cert() }
   mkdirSync(dirname(keyFiles.key), { recursive: true })
   writeFileSync(keyFiles.key, data.key)
