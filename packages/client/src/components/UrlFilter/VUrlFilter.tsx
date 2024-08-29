@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
-import { VForm, VSheet, VTextField } from 'js-proxy-ui'
+import { directives, VForm, VSheet, VTextField } from 'js-proxy-ui'
 import { URI } from 'js-proxy-shared/URI'
 import type { UrlMatch } from 'js-proxy-shared'
 
@@ -9,6 +9,10 @@ export const VUrlFilter = defineComponent({
 
   emits: {
     'update:modelValue': (_: UrlMatch | undefined) => true,
+  },
+
+  directives: {
+    autofocus: directives.autofocus,
   },
 
   props: {
@@ -43,7 +47,13 @@ export const VUrlFilter = defineComponent({
       props.modelValue && (
         <VSheet>
           <VForm>
-            <VTextField label={'Protocol'} onPaste={handlePaste} modelValue={props.modelValue.protocol} onUpdate:modelValue={(e: string) => updateField('protocol', e)}></VTextField>
+            <VTextField
+              v-autofocus
+              label={'Protocol'}
+              onPaste={handlePaste}
+              modelValue={props.modelValue.protocol}
+              onUpdate:modelValue={(e: string) => updateField('protocol', e)}
+            ></VTextField>
             <VSheet class={['d-flex', 'gap-4']}>
               <VTextField
                 label={'Host'}
