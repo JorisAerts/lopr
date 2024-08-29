@@ -1,12 +1,18 @@
 import type { CSSProperties } from 'vue'
-import { computed, defineComponent, TransitionGroup } from 'vue'
-import { VCard, VIcon, VSheet, VTooltip } from 'js-proxy-ui'
+import { computed, defineComponent, ref, TransitionGroup } from 'vue'
+import { VCard, VIcon, VLabel, VSheet, VTooltip } from 'js-proxy-ui'
 import { useCertificateStore } from '../stores/certificates'
 
 export const Information = defineComponent({
   name: 'app-information',
   setup() {
     const certStore = useCertificateStore()
+
+    const sizes = ref()
+    const cc = fetch('/api/server-info')
+      .then((res) => res.json())
+      .then((s) => (sizes.value = s))
+
     const certificates = computed(() =>
       [...certStore.certificates].toSorted().map((certFile) => {
         const file = `file://${certFile.replace(/\\/, '/')}`
@@ -18,7 +24,12 @@ export const Information = defineComponent({
       <VSheet class={['fill-height']}>
         <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
           <h2>Information</h2>
-          Some practical info.
+          <div>
+            <VLabel class={['d-inline']}>Cache Size</VLabel>: {sizes.value?.cacheSize ?? '?'} bytes
+          </div>
+          <div>
+            <VLabel class={['d-inline']}>Certificates Size</VLabel>: {sizes.value?.certSize ?? '?'} bytes
+          </div>
           <h3 class={['mt-6']}>Certificates</h3>
           Below is a list of generated certificated which will be spoofed into HTTPS calls.
           <div class={['d-flex', 'mt-4', 'gap-2', 'flex-wrap']}>
