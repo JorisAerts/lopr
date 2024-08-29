@@ -1,7 +1,7 @@
 import { useRequestStore } from '../stores/request'
 import { parseHeaders } from '../utils/request-utils'
 import type { Ref } from 'vue'
-import { computed, isRef, ref, watch } from 'vue'
+import { computed, isRef, ref, triggerRef, watch } from 'vue'
 import { HTTP_HEADER_CONTENT_ENCODING, HTTP_HEADER_CONTENT_TYPE } from 'js-proxy-shared/constants'
 import type { UUIDModelProps } from './uuid'
 import { useUUID } from './uuid'
@@ -34,6 +34,13 @@ const useResponseByRef = (uuid: Ref<UUID | undefined>) => {
     return isNaN(contentLength) ? undefined : contentLength
   })
   const isEmpty = computed(() => !hasBody.value || contentLength.value === 0)
+
+  watch(
+    () => requestStore.responses,
+    () => triggerRef(response),
+    { deep: true }
+  )
+
   return { uuid, response, hasBody, body, hasHeaders, headersRaw, headers, contentType, contentEncoding, contentLength, isEmpty }
 }
 

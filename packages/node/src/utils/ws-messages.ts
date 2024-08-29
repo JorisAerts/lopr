@@ -24,6 +24,7 @@ export const createProxyRequest = (req: ProxyRequest): ProxyRequestInfo => {
     method: req.method,
     statusCode: req.statusCode,
     contentLength: req.readableLength,
+    paused: req.isPaused(),
   }
 }
 
@@ -34,6 +35,7 @@ export const createProxyResponse = (uuid: UUID, res: IncomingMessage, data: Buff
     headers: res.rawHeaders,
     contentLength: data.length,
     body: data ? 1 : undefined,
+    paused: false,
   }
 }
 
@@ -44,6 +46,7 @@ export const createLocalProxyResponse = (uuid: UUID, headers: http.OutgoingHttpH
     headers: Object.entries(headers).flatMap(([k, v]) => (Array.isArray(v) ? [k, v.join(', ')] : [k, `${v}`])),
     contentLength: data?.length ?? 0,
     body: data ? 1 : undefined,
+    paused: false,
   }
 }
 

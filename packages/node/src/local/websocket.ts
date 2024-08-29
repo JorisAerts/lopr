@@ -1,12 +1,14 @@
 import type WebSocket from 'ws'
 import { WebSocketServer } from 'ws'
-import type { ProxyState, WebSocketMessage } from 'js-proxy-shared'
+import type { ProxyState, WebSocketMessage, WebSocketMessageTypeDataMapping } from 'js-proxy-shared'
 import { parseWebSocketMessage, WebSocketMessageType } from 'js-proxy-shared'
 import type { InstanceOptions } from '../utils/Options'
 import { WEBSOCKET_ROOT } from 'js-proxy-shared/constants'
 import { createErrorHandler, createErrorHandlerFor } from '../utils/logger'
 import { createErrorMessage } from '../utils/ws-messages'
 import { listCertificates } from '../utils/cert-utils'
+import type { InternalProxyState } from '../server/server-state'
+import { toProxyState } from '../server/server-state'
 
 const instance = {
   wss: undefined as WebSocketServer | undefined,
@@ -20,7 +22,7 @@ export const sendWsData = (type: WebSocketMessageType, data: any) => {
   instance.ws.forEach((ws) => ws.send(JSON.stringify({ type, data } as WebSocketMessage)))
 }
 
-export const defineSocketServer = ({ logger, server, onConnect, state }: InstanceOptions & { onConnect?: (...args: any[]) => any; state: ProxyState }) => {
+export const defineSocketServer = ({ logger, server, onConnect, state }: InstanceOptions & { onConnect?: (...args: any[]) => any; state: InternalProxyState }) => {
   const wss = new WebSocketServer({ server, path: WEBSOCKET_ROOT })
   instance.wss = wss
     .on('connection', function connection(ws, req) {
@@ -51,12 +53,7 @@ export const defineSocketServer = ({ logger, server, onConnect, state }: Instanc
       // send "Connection Established", just for fun
       sendWsData(WebSocketMessageType.App, 'Connection Established')
       // send the current server state (is it recording?, breakpoints, ...)
-      sendWsData(WebSocketMessageType.State, {
-        ...state,
-        // don't send the cache and the options
-        cache: undefined,
-        config: undefined,
-      })
+      sendWsData(WebSocketMessageType.State, toProxyState(state))
 
       // send generated Certificates
       sendWsData(WebSocketMessageType.Certificate, listCertificates())
@@ -78,4 +75,5 @@ type ParsedDataHandler<Data = any> = (data: WebSocketMessage<Data>, state: Proxy
 
 const registry: Record<string, ParsedDataHandler> = {}
 
-export const registerDataHandler = <Data = any>(type: WebSocketMessageType, dataHandler: ParsedDataHandler<Data>) => (registry[type] = dataHandler)
+export const registerDataHandler = <Type extends WebSocketMessageType>(type: Type, dataHandler: ParsedDataHandler<WebSocketMessageTypeDataMapping<typeof type>>) =>
+  (registry[type] = dataHandler)

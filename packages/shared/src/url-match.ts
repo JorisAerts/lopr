@@ -67,4 +67,4 @@ const isMatchProps = (a: URI | URL | string, b: UrlMatch, prop?: keyof URI | key
 /**
  * Test if a given URL/URI/string matches the given "URL matcher"
  */
-export const isMatch = (a: URI | URL | string, b: UrlMatch) => isMatchProps(a instanceof URI ? a : new URI(a), b)
+export const isMatch = (a: URI | URL | string, b: UrlMatch) => isMatchProps(a instanceof URI ? a : URI.parse(a), b)

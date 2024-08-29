@@ -1,4 +1,4 @@
-import type { WebSocketMessage, WebSocketMessageType } from 'js-proxy-shared'
+import type { WebSocketMessage, WebSocketMessageType, WebSocketMessageTypeDataMapping } from 'js-proxy-shared'
 import { parseWebSocketMessageEvent, WEBSOCKET_ROOT } from 'js-proxy-shared'
 import { RouteNames } from '../router/RouteNames'
 import { router } from '../router'
@@ -53,7 +53,7 @@ function createSocket(retryCount = MAX_RETRY_CREATE) {
   return newSocket
 }
 
-export const sendWsData = (type: WebSocketMessageType, data: any) => {
+export const sendWsData = <Type extends WebSocketMessageType>(type: Type, data: WebSocketMessageTypeDataMapping<typeof type>) => {
   if (!socket) return socketDown()
   if (socket.readyState === WebSocket.OPEN) {
     socket.send(JSON.stringify({ type, data } as WebSocketMessage))

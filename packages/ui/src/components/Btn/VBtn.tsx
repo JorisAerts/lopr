@@ -1,6 +1,6 @@
+import './VBtn.scss'
 import type { PropType } from 'vue'
 import { defineComponent, ref, watch } from 'vue'
-import './VBtn.scss'
 import { makeTooltipProps, useTooltip } from '../Tooltip'
 import type { IconNames } from '../Icon'
 import { VIcon } from '../Icon'

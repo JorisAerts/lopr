@@ -7,6 +7,6 @@ export const VDialogCardButtons = defineComponent({
   name: 'v-dialog-card-buttons',
 
   setup(props, { slots }) {
-    return () => <VContainer class={['v-dialog-card-buttons']}>{{ ...slots }}</VContainer>
+    return () => <VContainer class={['v-dialog-card-buttons', 'd-flex', 'gap-2']}>{{ ...slots }}</VContainer>
   },
 })

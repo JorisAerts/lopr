@@ -2,6 +2,7 @@ import type { CSSProperties } from 'vue'
 import { computed, defineComponent, ref, TransitionGroup } from 'vue'
 import { VCard, VIcon, VLabel, VSheet, VTooltip } from 'js-proxy-ui'
 import { useCertificateStore } from '../stores/certificates'
+import { toBytes } from '../utils/to-bytes'
 
 export const Information = defineComponent({
   name: 'app-information',
@@ -25,10 +26,10 @@ export const Information = defineComponent({
         <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
           <h2>Information</h2>
           <div>
-            <VLabel class={['d-inline']}>Cache Size</VLabel>: {sizes.value?.cacheSize ?? '?'} bytes
+            <VLabel class={['d-inline']}>Cache Size</VLabel>: {toBytes(sizes.value?.cacheSize)}
           </div>
           <div>
-            <VLabel class={['d-inline']}>Certificates Size</VLabel>: {sizes.value?.certSize ?? '?'} bytes
+            <VLabel class={['d-inline']}>Certificates Size</VLabel>: {toBytes(sizes.value?.certSize)}
           </div>
           <h3 class={['mt-6']}>Certificates</h3>
           Below is a list of generated certificated which will be spoofed into HTTPS calls.
