@@ -25,6 +25,7 @@ import type { CreateProxyOptions, ServerOptions } from './ServerOptions'
 import { clearCache, useCache } from './cache'
 import { handleApi } from '../local/api-handler'
 import { isRequestPaused } from '../utils/breakpoints'
+import { createInternalState } from './server-state'
 
 export const DEFAULT_PORT = 8080
 
@@ -43,6 +44,10 @@ export interface CreateProxyServer {
   logger: Logger
 }
 
+export interface InternalProxyState extends ProxyState {
+  config: ServerOptions
+}
+
 export function createProxyServer<Options extends Partial<CreateProxyOptions>>(userConfig = {} as Options): Promise<CreateProxyServer> {
   // the options object
   const options = {
@@ -55,12 +60,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
   } as ServerOptions
 
   // internal state, such as cache, breakpoints, ...
-  const state: ProxyState & { config: ServerOptions } = {
-    config: options,
-    recording: true,
-    cache: useCache(),
-    breakpoints: [],
-  }
+  const state = createInternalState(options)
 
   const { logger } = options
 
