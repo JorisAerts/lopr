@@ -38,28 +38,30 @@ export const VBreakpoints = defineComponent({
     }
 
     return () => (
-      <VSheet class={['d-flex', 'gap-2']} style={{ 'min-width': 'calc(100vw / 3)' }}>
-        <VBreakPointList v-model:breakpoints={breakpoints.value} v-model={selected.value} style={{ 'min-width': '150px', 'max-width': '150px' }} />
-        <VSheet class={['flex-grow-1', 'd-flex', 'flex-column']} style={{ 'min-height': '290px' }}>
-          {selected.value ? (
-            <>
-              <VUrlFilter v-model={selected.value.match} />
-              <VSheet class={['d-flex', 'gap-4', 'align-items-center']}>
-                <VCheckbox v-model={selected.value.req}>Request</VCheckbox>
-                <VCheckbox v-model={selected.value.res} disabled>
-                  Response
-                </VCheckbox>
-              </VSheet>
-            </>
-          ) : (
-            <VSheet class={['flex-grow-1']}>&nbsp;</VSheet>
-          )}
-          <VDialogCardButtons>
-            <VBtn onClick={handleClose}>Cancel</VBtn>
-            <VBtn onClick={handleApply}>Apply</VBtn>
-            <VBtn onClick={handleCommit}>OK</VBtn>
-          </VDialogCardButtons>
+      <VSheet class={['d-flex', 'flex-column', 'gap-2']} style={{ 'min-width': 'calc(100vw / 3)' }}>
+        <VSheet class={['d-flex', 'gap-2']}>
+          <VBreakPointList v-model:breakpoints={breakpoints.value} v-model={selected.value} style={{ 'min-width': '150px', 'max-width': '150px' }} />
+          <VSheet class={['flex-grow-1', 'd-flex', 'flex-column']} style={{ 'min-height': '290px' }}>
+            {selected.value ? (
+              <>
+                <VUrlFilter v-model={selected.value.match} />
+                <VSheet class={['d-flex', 'gap-4', 'align-items-center']}>
+                  <VCheckbox v-model={selected.value.req}>Request</VCheckbox>
+                  <VCheckbox v-model={selected.value.res} disabled>
+                    Response
+                  </VCheckbox>
+                </VSheet>
+              </>
+            ) : (
+              <VSheet class={['flex-grow-1']}>&nbsp;</VSheet>
+            )}
+          </VSheet>
         </VSheet>
+        <VDialogCardButtons>
+          <VBtn onClick={handleClose}>Cancel</VBtn>
+          <VBtn onClick={handleApply}>Apply</VBtn>
+          <VBtn onClick={handleCommit}>OK</VBtn>
+        </VDialogCardButtons>
       </VSheet>
     )
   },
