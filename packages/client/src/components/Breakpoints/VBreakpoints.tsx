@@ -47,9 +47,7 @@ export const VBreakpoints = defineComponent({
                 <VUrlFilter v-model={selected.value.match} />
                 <VSheet class={['d-flex', 'gap-4', 'align-items-center']}>
                   <VCheckbox v-model={selected.value.req}>Request</VCheckbox>
-                  <VCheckbox v-model={selected.value.res} disabled>
-                    Response
-                  </VCheckbox>
+                  <VCheckbox v-model={selected.value.res}>Response</VCheckbox>
                 </VSheet>
               </>
             ) : (

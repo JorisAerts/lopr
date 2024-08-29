@@ -34,6 +34,7 @@ const useResponseByRef = (uuid: Ref<UUID | undefined>) => {
     return isNaN(contentLength) ? undefined : contentLength
   })
   const isEmpty = computed(() => !hasBody.value || contentLength.value === 0)
+  const isPaused = computed(() => !!response.value?.paused)
 
   watch(
     () => requestStore.responses,
@@ -41,7 +42,7 @@ const useResponseByRef = (uuid: Ref<UUID | undefined>) => {
     { deep: true }
   )
 
-  return { uuid, response, hasBody, body, hasHeaders, headersRaw, headers, contentType, contentEncoding, contentLength, isEmpty }
+  return { uuid, response, hasBody, body, hasHeaders, headersRaw, headers, contentType, contentEncoding, contentLength, isEmpty, isPaused }
 }
 
 /**
