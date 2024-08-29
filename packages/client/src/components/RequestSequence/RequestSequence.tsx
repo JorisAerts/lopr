@@ -5,22 +5,7 @@ import { VList, VListItem, VSheet } from 'js-proxy-ui/components'
 import { useRequestStore } from '../../stores/request'
 import type { ProxyRequestInfo } from 'js-proxy-shared'
 import { makeUUIDEvents, makeUUIDProps } from '../../composables/uuid'
-
-const isOnScreen = (
-  //
-  element: Element | undefined | null,
-  { x = 0, y = 0, width = window.screenX, height = window.screenY } = { x: 0, y: 0, width: window.screenX, height: window.screenY },
-  margin = 0
-) => {
-  const boundingBox = element?.getBoundingClientRect()
-  return (
-    boundingBox && //
-    boundingBox.x + boundingBox.width > x + margin &&
-    boundingBox.x < x + width - margin &&
-    boundingBox.y + boundingBox.height > y + margin &&
-    boundingBox.y < y + height - margin
-  )
-}
+import { isOnScreen } from '../../utils/is-on-screen'
 
 export const RequestSequence = defineComponent({
   name: 'request-sequence',
