@@ -161,11 +161,8 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
       // forward the request to the proxy
       const handleRequest = () => forwardRequest(req, res, options, state)
 
-      console.log({ url: req.url, paused: isRequestPaused(req.url, state) })
-
       // pause the request if a breakpoint is set for this request
-      if (isRequestPaused(req.url, state)) {
-        console.log('paused!', req.url)
+      if (isRequestPaused(req, state)) {
         const resume = () => {
           req.off('resume', resume)
           handleRequest()

@@ -1,7 +1,9 @@
 import type { BreakPoint, ProxyState } from 'js-proxy-shared'
 import { isMatch } from 'js-proxy-shared'
+import type { IncomingMessage } from 'http'
+import { extractURLFromRequest } from '../proxy/utils'
 
-const isPaused = (url: string | undefined, type: keyof BreakPoint, state: ProxyState) => {
+const isPaused = (url: URL | string | undefined, type: keyof BreakPoint, state: ProxyState) => {
   if (!state.breakpoints || !url) return false
   return state.breakpoints.some((breakpoint: BreakPoint) => !breakpoint.disabled && breakpoint[type] && isMatch(url, breakpoint.match))
 }
@@ -9,7 +11,7 @@ const isPaused = (url: string | undefined, type: keyof BreakPoint, state: ProxyS
 /**
  * Determines whether this request needs to be paused
  */
-export const isRequestPaused = (url: string | undefined, state: ProxyState) => isPaused(url, 'req', state)
+export const isRequestPaused = (req: IncomingMessage, state: ProxyState) => isPaused(extractURLFromRequest(req), 'req', state)
 
 /**
  * Determines whether this response needs to be paused
