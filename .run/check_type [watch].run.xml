@@ -1,10 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="client &gt; dev" type="js.build_tools.npm" nameIsGenerated="true">
-    <package-json value="$PROJECT_DIR$/packages/client/package.json" />
+  <configuration default="false" name="check:type [watch]" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="dev" />
+      <script value="check:type" />
     </scripts>
+    <arguments value="--watch" />
     <node-interpreter value="project" />
     <envs />
     <method v="2" />

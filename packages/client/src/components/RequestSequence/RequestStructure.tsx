@@ -1,11 +1,12 @@
 import './RequestStructure.scss'
-import type { PropType } from 'vue'
-import { defineComponent, getCurrentInstance, watch, withModifiers } from 'vue'
+import type { ComponentPublicInstance, PropType, VNode } from 'vue'
+import { defineComponent, getCurrentInstance, onMounted, ref, watch, withModifiers } from 'vue'
 import { VList, VListGroup, VListItem } from 'js-proxy-ui/components'
 import { useRequestStore } from '../../stores/request'
 import type { UUID } from 'js-proxy-shared'
 import { Sorting } from 'js-proxy-shared'
 import { makeUUIDEvents, makeUUIDProps } from '../../composables/uuid'
+import { isOnScreen } from '../../utils/is-on-screen'
 
 const removeKey = (arr: string[], key: string) => {
   const pos = arr.indexOf(key)
@@ -44,6 +45,7 @@ export const RequestStructure = defineComponent({
   },
 
   setup(props, { emit }) {
+    const list = ref<VNode & ComponentPublicInstance>()
     const requestStore = useRequestStore()
     const contains = (key: string) => props.expanded.includes(key)
     const handleFolding = (evt: Event | MouseEvent, key: string, value: StructNode) => {
@@ -163,6 +165,24 @@ export const RequestStructure = defineComponent({
         </>
       ) : null
 
-    return () => <VList class={['request-structure']}>{renderTree(requestStore.structure)}</VList>
+    const scrollIntoView = () => {
+      const listEl: Element = list.value?.$el
+      if (!listEl) return
+      if (!props.modelValue) listEl.lastElementChild?.scrollIntoView()
+      else {
+        const selected: Element | null = listEl.querySelector('.selected')
+        if (isOnScreen(selected, listEl.parentElement?.getBoundingClientRect())) return
+        selected?.scrollIntoView(false)
+      }
+    }
+
+    watch(requestStore.ids, scrollIntoView)
+    onMounted(scrollIntoView)
+
+    return () => (
+      <VList class={['request-structure']} ref={list}>
+        {renderTree(requestStore.structure)}
+      </VList>
+    )
   },
 })
