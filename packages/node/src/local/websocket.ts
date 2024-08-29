@@ -7,8 +7,8 @@ import { WEBSOCKET_ROOT } from 'js-proxy-shared/constants'
 import { createErrorHandler, createErrorHandlerFor } from '../utils/logger'
 import { createErrorMessage } from '../utils/ws-messages'
 import { listCertificates } from '../utils/cert-utils'
+import type { InternalProxyState} from '../server/server-state';
 import { toProxyState } from '../server/server-state'
-import type { InternalProxyState } from '../server'
 
 const instance = {
   wss: undefined as WebSocketServer | undefined,

@@ -10,7 +10,6 @@ import { createCertForHost, getRootCert } from '../utils/cert-utils'
 import { registerDataHandler } from '../local/websocket'
 import { defineSocketServer, handleStatic, sendWsData } from '../local'
 import { generatePAC } from '../PAC'
-import type { ProxyState } from 'js-proxy-shared'
 import { HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE, WebSocketMessageType } from 'js-proxy-shared'
 import { isLocalhost } from '../utils/is-localhost'
 import { ProxyRequest } from './ProxyRequest'
@@ -42,10 +41,6 @@ export interface CreateProxyServer {
   url: URL
   server: Server
   logger: Logger
-}
-
-export interface InternalProxyState extends ProxyState {
-  config: ServerOptions
 }
 
 export function createProxyServer<Options extends Partial<CreateProxyOptions>>(userConfig = {} as Options): Promise<CreateProxyServer> {
@@ -165,6 +160,8 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
 
       // forward the request to the proxy
       const handleRequest = () => forwardRequest(req, res, options, state)
+
+      console.log({ url: req.url, paused: isRequestPaused(req.url, state) })
 
       // pause the request if a breakpoint is set for this request
       if (isRequestPaused(req.url, state)) {
