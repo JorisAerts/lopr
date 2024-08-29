@@ -56,8 +56,11 @@ export const VBreakPointList = defineComponent({
   setup(props, { emit }) {
     const breakpoints = toRef(props, 'breakpoints', [])
     const addNewBreakpoint = () => {
-      const newBreakpoints = [...breakpoints.value, { match: { ...defaultValue }, res: false, req: false }]
+      const breakpoint: BreakPoint = { match: { ...defaultValue }, res: false, req: false }
+      const newBreakpoints = [...breakpoints.value, breakpoint]
       emit('update:breakpoints', newBreakpoints)
+
+      if (!props.modelValue) emit('update:modelValue', breakpoint)
     }
     const removeSelectedBreakpoint = () => {
       const id = props.modelValue && breakpoints.value.indexOf(props.modelValue)
