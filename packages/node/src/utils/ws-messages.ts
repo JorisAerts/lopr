@@ -14,7 +14,6 @@ export const createProxyRequest = (req: ProxyRequest): ProxyRequestInfo => {
   const host = req.headers.host
   const url = reqUrl.startsWith('/') ? `${extractProtocol(req)}://${host}${reqUrl}` : reqUrl
   const urlNormal = !RX_HAS_PROTOCOL.test(url) && url.endsWith(':443') ? `https://${url.substring(0, url.lastIndexOf(':'))}` : url
-
   return {
     ...timestamp(),
     uuid: req.uuid,

@@ -55,8 +55,7 @@ a {
 
   &:hover {
     color: var(--link-hover-color);
-    text-shadow: 0 0 1px var(--link-color);
-    -webkit-font-smoothing: antialiased;
+    text-shadow: 0 0 1px currentColor;
   }
 }
 
