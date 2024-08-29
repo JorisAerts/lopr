@@ -1,7 +1,7 @@
 import { useRequestStore } from '../stores/request'
 import { parseHeaders } from '../utils/request-utils'
 import type { Ref } from 'vue'
-import { computed, isRef } from 'vue'
+import { computed, isRef, triggerRef, watch } from 'vue'
 import { HTTP_HEADER_CONTENT_ENCODING, HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE, HTTP_HEADER_COOKIE } from 'js-proxy-shared/constants'
 import type { UUIDModelProps } from './uuid'
 import { useUUID } from './uuid'
@@ -34,6 +34,13 @@ const useRequestByRef = (uuid: Ref<UUID | undefined>) => {
         return a
       }, {}) ?? ({} as Record<string, string>)
   )
+
+  watch(
+    () => requestStore.requests,
+    () => triggerRef(request),
+    { deep: true }
+  )
+
   return { uuid, request, hasHeaders, headersRaw, headers, contentType, contentEncoding, contentLength, hasCookies, cookies, cookiesRaw, isPaused, isEmpty }
 }
 

@@ -79,6 +79,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
     if (!data.paused && state.pausedRequests.has(data.uuid)) {
       state.pausedRequests.get(data.uuid)!.resume()
       state.pausedRequests.delete(data.uuid)
+      sendWsData(WebSocketMessageType.ProxyRequest, data)
     }
   })
 

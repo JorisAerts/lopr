@@ -146,14 +146,24 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
     if (!proxyState.recording) return
     data.ts = new Date(data.ts)
-    requests.value.set(data.uuid, data)
+    if (requests.value.has(data.uuid)) {
+      requests.value.set(data.uuid, Object.assign(requests.value.get(data.uuid)!, data))
+    } else {
+      requests.value.set(data.uuid, data)
+    }
+    triggerRef(requests)
     registerUUID(data.uuid)
   })
 
   registerDataHandler(WebSocketMessageType.ProxyResponse, ({ data }: WebSocketMessage<ProxyResponseInfo>) => {
     if (!proxyState.recording) return
     data.ts = new Date(data.ts)
-    responses.value.set(data.uuid, data)
+    if (responses.value.has(data.uuid)) {
+      responses.value.set(data.uuid, Object.assign(responses.value.get(data.uuid)!, data))
+    } else {
+      responses.value.set(data.uuid, data)
+    }
+    triggerRef(responses)
     registerUUID(data.uuid)
   })
 
