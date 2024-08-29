@@ -36,6 +36,11 @@ export const createInternalProxyState = (options: ServerOptions): InternalProxyS
 
 // keys only available in the internal proxy state
 // they shouldn't be sent to the client
-const exclude = { options: undefined, cache: undefined }
+const exclude = {
+  options: undefined,
+  cache: undefined,
+  pausedRequests: undefined,
+  pausedResponses: undefined,
+}
 
 export const toProxyState = (state: InternalProxyState) => ({ ...state, ...exclude })
