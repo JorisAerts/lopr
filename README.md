@@ -1,6 +1,6 @@
 # Reverse Proxy
 
-With this JavaScript reverse proxy server with a User Interface, you can easily analyze and debug web requests.
+A reverse proxy server driven by a User Interface, which allows easy analysis and debugging of web requests.
 
 ### Building and Running
 
