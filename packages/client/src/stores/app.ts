@@ -1,22 +1,10 @@
 import { defineStore } from 'pinia'
-import { ref, watch } from 'vue'
-import { sendWsData } from '../utils/websocket'
-import { WebSocketMessageType } from 'js-proxy-shared'
+import { ref } from 'vue'
 
 export const STORE_NAME = 'Application'
 
 export const useAppStore = defineStore(STORE_NAME, () => {
-  const recording = ref(true)
+  // "Wrap" in the response body view
   const wrapResponseData = ref(false)
-
-  // send state to the server
-  watch([recording], () => {
-    sendWsData(WebSocketMessageType.State, {
-      recording: recording.value,
-    })
-  })
-
-  return { recording, wrapResponseData }
+  return { wrapResponseData }
 })
-
-export const isRecording = () => useAppStore().recording

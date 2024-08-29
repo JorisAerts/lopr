@@ -1,19 +1,19 @@
 import { defineComponent, ref } from 'vue'
 import { VBtn, VCard, VDialog, VSwitch, VToolbar } from 'js-proxy-ui'
-import { useAppStore } from '../../stores/app'
 import { useRequestStore } from '../../stores/request'
 import { VBreakpoints } from '../../components'
+import { useProxyStore } from '../../stores/proxy'
 
 export const RequestControlsToolbar = defineComponent({
   name: 'ControlsToolbar',
 
   setup() {
-    const appStore = useAppStore()
+    const proxyStore = useProxyStore()
     const requestStore = useRequestStore()
     const dlg = ref(false)
     return () => (
       <VToolbar class={['v-app-controls-toolbar']}>
-        <VSwitch tooltip={'Play/Pause'} v-model:checked={appStore.recording} onIcon={'PlayArrow_Fill'} offIcon={'Pause_Fill'} />
+        <VSwitch tooltip={'Play/Pause'} v-model:checked={proxyStore.recording} onIcon={'PlayArrow_Fill'} offIcon={'Pause_Fill'} />
         <VDialog clickOutsideToClose v-model={dlg.value}>
           {{
             activator: ({ props }: { props: Record<string, unknown> }) => (
