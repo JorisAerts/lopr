@@ -23,6 +23,7 @@ const useRequestByRef = (uuid: Ref<UUID | undefined>) => {
     return isNaN(contentLength) ? undefined : contentLength
   })
   const isEmpty = computed(() => contentLength.value === 0)
+  const isPaused = computed(() => !!request.value?.paused)
   const hasCookies = computed<boolean>(() => Object.keys(headers.value).includes(HTTP_HEADER_COOKIE))
   const cookiesRaw = computed(() => headers.value?.[HTTP_HEADER_COOKIE])
   const cookies = computed(
@@ -33,7 +34,7 @@ const useRequestByRef = (uuid: Ref<UUID | undefined>) => {
         return a
       }, {}) ?? ({} as Record<string, string>)
   )
-  return { uuid, request, hasHeaders, headersRaw, headers, contentType, contentEncoding, contentLength, hasCookies, cookies, cookiesRaw, isEmpty }
+  return { uuid, request, hasHeaders, headersRaw, headers, contentType, contentEncoding, contentLength, hasCookies, cookies, cookiesRaw, isPaused, isEmpty }
 }
 
 /**

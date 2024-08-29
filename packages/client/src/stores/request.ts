@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { computed, ref, shallowRef, triggerRef } from 'vue'
 import type { ProxyRequestHistory, ProxyRequestInfo, WebSocketMessage } from 'js-proxy-shared'
 import { WebSocketMessageType } from 'js-proxy-shared'
-import { registerDataHandler } from '../utils/websocket'
+import { registerDataHandler, sendWsData } from '../utils/websocket'
 import type { ProxyResponseInfo } from 'js-proxy-shared/Response'
 import type { UUID } from 'js-proxy-shared/UUID'
 import { useProxyStore } from './proxy'
@@ -178,3 +178,15 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     refresh,
   }
 })
+
+export const resumeRequest = (uuid: UUID) => {
+  const request = useRequestStore().getRequest(uuid)
+  if (!request) return
+  sendWsData(WebSocketMessageType.ProxyRequest, { ...request, paused: false })
+}
+
+export const resumeResponse = (uuid: UUID) => {
+  const response = useRequestStore().getResponse(uuid)
+  if (!response) return
+  sendWsData(WebSocketMessageType.ProxyResponse, { ...response, paused: false })
+}
