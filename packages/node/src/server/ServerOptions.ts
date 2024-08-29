@@ -15,7 +15,6 @@ export interface CreateProxyOptions {
 export interface CommonOptions {
   logger: Logger
   cache: UseCache
-  breakpoints: []
 }
 
 /**

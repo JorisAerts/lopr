@@ -15,4 +15,5 @@ export interface UseCache {
 export interface ProxyState {
   recording: boolean
   cache: UseCache
+  breakpoints: []
 }

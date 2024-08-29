@@ -10,6 +10,7 @@ import { createCertForHost, getRootCert } from '../utils/cert-utils'
 import { registerDataHandler } from '../local/websocket'
 import { defineSocketServer, handleStatic, sendWsData } from '../local'
 import { generatePAC } from '../PAC'
+import type { ProxyState } from 'js-proxy-shared'
 import { HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE, WebSocketMessageType } from 'js-proxy-shared'
 import { isLocalhost } from '../utils/is-localhost'
 import { ProxyRequest } from './ProxyRequest'
@@ -48,16 +49,16 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
     proxySSL: true,
     ...userConfig,
 
-    breakpoints: [],
     cache: useCache(),
     logger: createLogger(),
   } as ServerOptions
 
   // internal state, such as cache, breakpoints, ...
-  const state = {
+  const state: ProxyState & { config: ServerOptions } = {
     config: options,
     recording: true,
     cache: useCache(),
+    breakpoints: [],
   }
 
   const { logger } = options
