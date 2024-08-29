@@ -1,29 +1,10 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { VUrlFilter } from '../UrlFilter'
-import { VBtn, VCard, VCheckbox, VDialogCardButtons, VList, VListItem, VSheet, VTooltip } from 'js-proxy-ui/components'
+import { VBtn, VCheckbox, VDialogCardButtons, VSheet } from 'js-proxy-ui/components'
 import type { BreakPoint } from '../../stores/proxy'
 import { useProxyStore } from '../../stores/proxy'
-import type { UrlMatch } from 'js-proxy-shared'
-
-const matchToString = (match: UrlMatch) => {
-  let ret = ''
-
-  if (match.protocol) ret += `${match.protocol}`
-  else ret += '://'
-
-  if (match.domain) ret += match.domain
-  else ret += '*'
-
-  if (match.port) ret += `:${match.port}`
-
-  ret += '/'
-  if (match.path) ret += match.path
-  else ret += '*'
-
-  if (match.query) ret += `?${match.query}`
-
-  return ret
-}
+import { VBreakPointList } from './VBreakPointList'
+import { jsonClone } from 'js-proxy-shared'
 
 export const VBreakpoints = defineComponent({
   name: 'VBreakpoints',
@@ -33,62 +14,34 @@ export const VBreakpoints = defineComponent({
   },
 
   setup(props, { emit }) {
-    const proxyStore = useProxyStore()
-    const orig = ref<BreakPoint>()
+    const breakpoints = ref(useProxyStore().breakpoints.map((d) => jsonClone(d)))
     const selected = ref<BreakPoint>()
+    const updated = ref<BreakPoint>()
 
-    const handleClick = (e: MouseEvent) => {
+    watch(selected, () => (updated.value = jsonClone(selected.value) as BreakPoint))
+
+    const handleClose = (e: MouseEvent) => {
       e.preventDefault()
-      if (orig.value && selected.value) Object.assign(orig.value, selected.value)
       emit('close')
     }
 
-    const addNewBreakpoint = () => {
-      proxyStore.breakpoints.push({
-        match: {},
-        res: false,
-        req: false,
-      })
+    const handleApply = (e: MouseEvent) => {
+      useProxyStore().breakpoints = breakpoints.value
     }
 
-    const handleSelect = (breakpoint: BreakPoint | undefined) => {
-      orig.value = breakpoint
-      selected.value = breakpoint ? ({ ...breakpoint } as BreakPoint) : undefined
+    // only update the breakpoints in the store after pressing OK
+    // otherwise, updates would immediately alter the original object
+    // which would not allow the user to cancel the operation
+    const handleCommit = (e: MouseEvent) => {
+      handleApply(e)
+      handleClose(e)
     }
 
     return () => (
       <VSheet class={['d-flex', 'gap-2']} style={{ 'min-width': 'calc(100vw / 3)' }}>
-        <VSheet class={['bordered', 'd-flex', 'flex-column', 'overflow-hidden']} style={{ 'min-width': '100px', 'max-width': '150px' }}>
-          <VList class={['flex-grow-1', 'pa-0']}>
-            {proxyStore.breakpoints.map((breakpoint, i) => {
-              const text = matchToString(breakpoint.match)
-              return (
-                <VListItem
-                  key={i}
-                  class={[
-                    'py-0',
-                    'px-1',
-                    {
-                      selected: selected.value === breakpoint,
-                    },
-                  ]}
-                  onClick={() => handleSelect(breakpoint)}
-                >
-                  <VCheckbox modelValue={breakpoint.disabled !== true} onUpdate:modelValue={(val) => (breakpoint.disabled = !val || undefined)} />
-                  <VTooltip text={text}>{text}</VTooltip>
-                </VListItem>
-              )
-            })}
-          </VList>
-          <VCard>
-            <VBtn transparent onClick={addNewBreakpoint}>
-              +
-            </VBtn>
-            <VBtn transparent>-</VBtn>
-          </VCard>
-        </VSheet>
-        <VSheet class={['flex-grow-1']}>
-          {selected.value && (
+        <VBreakPointList v-model:breakpoints={breakpoints.value} v-model={selected.value} style={{ 'min-width': '150px', 'max-width': '150px' }} />
+        <VSheet class={['flex-grow-1', 'd-flex', 'flex-column']} style={{ 'min-height': '290px' }}>
+          {selected.value ? (
             <>
               <VUrlFilter v-model={selected.value.match} />
               <VSheet class={['d-flex', 'gap-4', 'align-items-center']}>
@@ -96,9 +49,13 @@ export const VBreakpoints = defineComponent({
                 <VCheckbox v-model={selected.value.res}>Response</VCheckbox>
               </VSheet>
             </>
+          ) : (
+            <VSheet class={['flex-grow-1']}>&nbsp;</VSheet>
           )}
           <VDialogCardButtons>
-            <VBtn onClick={handleClick}>OK</VBtn>
+            <VBtn onClick={handleClose}>Cancel</VBtn>
+            <VBtn onClick={handleApply}>Apply</VBtn>
+            <VBtn onClick={handleCommit}>OK</VBtn>
           </VDialogCardButtons>
         </VSheet>
       </VSheet>

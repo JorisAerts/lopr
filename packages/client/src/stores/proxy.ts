@@ -8,7 +8,7 @@ export interface BreakPoint {
   req: boolean | undefined
   res: boolean | undefined
   match: UrlMatch
-  disabled?: true
+  disabled?: true | undefined
 }
 
 export const useProxyStore = defineStore(STORE_NAME, () => {

@@ -1,5 +1,6 @@
 export * as base64 from './base64'
 
+export * from './clone'
 export * from './constants'
 
 export * from './Prettify'
