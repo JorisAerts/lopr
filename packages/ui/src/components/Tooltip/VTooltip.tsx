@@ -57,7 +57,7 @@ export const VTooltip = defineComponent({
       tooltip.value ? (
         <div class={'v-tooltip'}>
           {show.value && (
-            <dialog ref={dlg} open class={['v-tooltip--popup']} style={style.value}>
+            <dialog ref={dlg} open class={['v-tooltip--popup', 'overflow-ellipsis']} style={style.value}>
               <Transition>{tooltip.value}</Transition>
             </dialog>
           )}

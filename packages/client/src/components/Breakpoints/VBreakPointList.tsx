@@ -84,6 +84,7 @@ export const VBreakPointList = defineComponent({
                     selected: props.modelValue === breakpoint,
                   },
                 ]}
+                style={{ 'white-space': 'nowrap' }}
                 onClick={() => handleSelect(breakpoint)}
               >
                 <VCheckbox modelValue={breakpoint.disabled !== true} onUpdate:modelValue={(val) => (breakpoint.disabled = !val || undefined)} />
