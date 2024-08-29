@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { shallowRef, watch } from 'vue'
 import type { UrlMatch } from 'js-proxy-shared'
 
 export const STORE_NAME = 'Proxy'
@@ -12,6 +12,17 @@ export interface BreakPoint {
 }
 
 export const useProxyStore = defineStore(STORE_NAME, () => {
-  const breakpoints = ref([] as BreakPoint[])
+  const breakpoints = shallowRef([] as BreakPoint[])
+
+  watch(
+    breakpoints,
+    () => {
+      // breakpoints have been updated, send to the WS!
+      
+      console.log('breakpoint changes!', [...breakpoints.value])
+    },
+    { deep: true }
+  )
+
   return { breakpoints }
 })
