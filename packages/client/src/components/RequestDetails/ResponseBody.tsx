@@ -26,7 +26,7 @@ const getContentFilename = (response: Ref<ProxyResponseInfo | undefined>) => {
 }
 
 const createBodyRenderer = (response: UseResponse) => {
-  const classes = ['response-body', 'bordered', 'fill-height', 'pa-2', 'overflow-auto']
+  const classes = ['response-body', 'bordered', 'fill-height', 'pa-2']
   const appStore = useAppStore()
 
   if (response.isEmpty.value) return () => <VSheet class={classes}>No response data</VSheet>
@@ -48,13 +48,14 @@ const createBodyRenderer = (response: UseResponse) => {
     case 'text/css':
     case 'text/plain':
       return () => (
-        <VSheet class={[...classes, 'd-flex', 'flex-column']}>
+        <VSheet class={[...classes, 'overflow-auto', 'd-flex', 'flex-column']}>
           <VToolbar class={['mt-1', 'mb-2', 'flex-grow-0']}>
             <VCheckbox label={'Wrap'} v-model={appStore.wrapResponseData} />
           </VToolbar>
           <pre
-            class={['text-mono', 'overflow-auto']}
+            class={['text-mono', 'overflow-auto', 'flex-grow-1']}
             style={{
+              'word-break': appStore.wrapResponseData ? ('break-word' as const) : undefined,
               whiteSpace: appStore.wrapResponseData ? 'pre-wrap' : 'pre',
             }}
           >
@@ -83,7 +84,7 @@ const createBodyRenderer = (response: UseResponse) => {
     case 'image/svg':
     case 'image/svg+xml':
       return () => (
-        <VSheet class={['response-body--checkered', ...classes]}>
+        <VSheet class={['response-body--checkered', 'overflow-auto', ...classes]}>
           {response.body.value && (
             <img
               src={`data:${type};base64, ${btoa(response.body.value)}`}
@@ -101,7 +102,7 @@ const createBodyRenderer = (response: UseResponse) => {
   if (RX_IS_IMAGE.test(type)) {
     return () =>
       response.hasBody.value && (
-        <VSheet class={['response-body--checkered', ...classes]}>
+        <VSheet class={['response-body--checkered', 'overflow-auto', ...classes]}>
           <img
             src={`./api/data?uuid=${response.uuid.value}`}
             alt={filename.value}
@@ -116,8 +117,8 @@ const createBodyRenderer = (response: UseResponse) => {
 
   return () =>
     response.hasBody.value && (
-      <VSheet class={classes}>
-        <a href={`./api/data?uuid=${response.uuid.value}`} download={filename.value}>
+      <VSheet class={[...classes, 'overflow-hidden']}>
+        <a href={`./api/data?uuid=${response.uuid.value}`} download={filename.value} style={{ 'word-break': 'break-all' as const }}>
           Download: {filename.value}
         </a>
       </VSheet>
