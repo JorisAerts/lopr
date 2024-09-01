@@ -676,7 +676,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:^9.9.1"
     "@mongodb-js/zstd": "npm:1.2.0"
-    "@types/node": "npm:^22.5.1"
+    "@types/node": "npm:^22.5.2"
     "@types/node-forge": "npm:^1.3.11"
     "@types/uuid": "npm:^10.0.0"
     "@types/ws": "npm:^8.5.12"
@@ -1026,12 +1026,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^22.5.1":
-  version: 22.5.1
-  resolution: "@types/node@npm:22.5.1"
+"@types/node@npm:*, @types/node@npm:^22.5.2":
+  version: 22.5.2
+  resolution: "@types/node@npm:22.5.2"
   dependencies:
     undici-types: "npm:~6.19.2"
-  checksum: 10c0/35373176d8a1d4e16004a1ed303e68d39e4c6341024dc056f2577982df98c1a045a6b677f12ed557796f09bbf7d621f428f6874cc37ed28f7b336fa604b5f6a6
+  checksum: 10c0/624a7fd76229eacc6c158eb3b9afd55b811d7f01976c5f92c630d5b9d47047cc218928c343988484a165ac400e5eb6fe70ea300fc7242deeb0e920c7724290f6
   languageName: node
   linkType: hard
 
@@ -2939,7 +2939,7 @@ __metadata:
   resolution: "js-proxy-client@workspace:packages/client"
   dependencies:
     "@eslint/js": "npm:^9.9.1"
-    "@types/node": "npm:^22.5.1"
+    "@types/node": "npm:^22.5.2"
     "@vitejs/plugin-vue": "npm:^5.1.3"
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
     eslint: "npm:^9.9.1"
@@ -2948,7 +2948,7 @@ __metadata:
     js-proxy-shared: "workspace:*"
     js-proxy-ui: "workspace:*"
     pinia: "npm:^2.2.2"
-    postcss: "npm:^8.4.42"
+    postcss: "npm:^8.4.43"
     prettier: "npm:^3.3.3"
     sass: "npm:^1.77.8"
     stylelint: "npm:^16.9.0"
@@ -2969,7 +2969,7 @@ __metadata:
   resolution: "js-proxy-shared@workspace:packages/shared"
   dependencies:
     "@eslint/js": "npm:^9.9.1"
-    "@types/node": "npm:^22.5.1"
+    "@types/node": "npm:^22.5.2"
     eslint: "npm:^9.9.1"
     globals: "npm:^15.9.0"
     prettier: "npm:^3.3.3"
@@ -2986,13 +2986,13 @@ __metadata:
   resolution: "js-proxy-ui@workspace:packages/ui"
   dependencies:
     "@eslint/js": "npm:^9.9.1"
-    "@types/node": "npm:^22.5.1"
+    "@types/node": "npm:^22.5.2"
     "@vitejs/plugin-vue": "npm:^5.1.3"
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
     eslint: "npm:^9.9.1"
     eslint-plugin-vue: "npm:^9.27.0"
     globals: "npm:^15.9.0"
-    postcss: "npm:^8.4.42"
+    postcss: "npm:^8.4.43"
     prettier: "npm:^3.3.3"
     sass: "npm:^1.77.8"
     stylelint: "npm:^16.9.0"
@@ -3739,14 +3739,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.40, postcss@npm:^8.4.41, postcss@npm:^8.4.42":
-  version: 8.4.42
-  resolution: "postcss@npm:8.4.42"
+"postcss@npm:^8.4.40, postcss@npm:^8.4.41, postcss@npm:^8.4.43":
+  version: 8.4.43
+  resolution: "postcss@npm:8.4.43"
   dependencies:
     nanoid: "npm:^3.3.7"
     picocolors: "npm:^1.0.1"
     source-map-js: "npm:^1.2.0"
-  checksum: 10c0/ac4dd01b07b2b9db12c24284aed497d35436ed05e4944be6cf00eb8daa4914fd9fbc5ec729e47981b4f1a9c51847d043d1808c796b9440ae0c5e8ff7a29bc821
+  checksum: 10c0/7cc9c6393ca00fcdca6fef8d119218df9357389b9fed30b6d4b463fc0e85159595a877f4ac0a2a565ea4c447cab1f424e527e68d8b7d40b8c94a6684663d45c5
   languageName: node
   linkType: hard
 
@@ -3921,12 +3921,15 @@ __metadata:
     eslint: "npm:^9.9.1"
     eslint-plugin-vue: "npm:^9.27.0"
     globals: "npm:^15.9.0"
+    postcss: "npm:^8.4.43"
     prettier: "npm:^3.3.3"
     sass: "npm:^1.77.8"
     stylelint: "npm:^16.9.0"
     stylelint-config-standard-scss: "npm:^13.1.0"
     typescript: "npm:^5.5.4"
     typescript-eslint: "npm:^8.3.0"
+    vite: "npm:^5.4.2"
+    vue: "npm:^3.4.38"
   languageName: unknown
   linkType: soft
 
@@ -4618,8 +4621,8 @@ __metadata:
   linkType: hard
 
 "vite-plugin-vue-inspector@npm:^5.1.3":
-  version: 5.1.3
-  resolution: "vite-plugin-vue-inspector@npm:5.1.3"
+  version: 5.2.0
+  resolution: "vite-plugin-vue-inspector@npm:5.2.0"
   dependencies:
     "@babel/core": "npm:^7.23.0"
     "@babel/plugin-proposal-decorators": "npm:^7.23.0"
@@ -4632,7 +4635,7 @@ __metadata:
     magic-string: "npm:^0.30.4"
   peerDependencies:
     vite: ^3.0.0-0 || ^4.0.0-0 || ^5.0.0-0
-  checksum: 10c0/8d6d46778f87a32d0dd0dcaec24b9463f1d48405066212f2f0b2cfc6799ecd72f43a2e3fea7f762d9205fe519e4de4b44656637bd063b7a5f7018e00f09e9beb
+  checksum: 10c0/fb5042f9fd45edeb3523902a7b6a1971caa4da38298d6199ecaab18c35da3a10b105e36b346e13d4fcf859bfc9994bfcf4c4162d2f1d85d0c789d9f1382002d2
   languageName: node
   linkType: hard
 
