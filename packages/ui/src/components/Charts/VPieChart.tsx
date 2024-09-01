@@ -51,7 +51,7 @@ export const VPieChart = defineComponent({
             const percent = value / total.value
             const [startX, startY] = getCoordinatesForPercent(current)
             const [endX, endY] = getCoordinatesForPercent((current += percent))
-            const d = `M ${(startX * w) / 2} ${(startY * h) / 2} A  ${w / 2} ${h / 2} 0 ${percent > 0.5 ? 1 : 0} 1 ${(endX * w) / 2} ${(endY * h) / 2} L 0 0 Z`
+            const d = `M ${(startX * w) / 2} ${(startY * h) / 2} A ${w / 2} ${h / 2} 0 ${percent > 0.5 ? 1 : 0} 1 ${(endX * w) / 2} ${(endY * h) / 2} L 0 0 Z`
             const fill = item.color ?? (props.colors[index % props.colors.length] as string)
             const style = props.borderWidth != 1 ? { 'stroke-width': props.borderWidth } : undefined
             return <path d={d} fill={fill} style={style} />
