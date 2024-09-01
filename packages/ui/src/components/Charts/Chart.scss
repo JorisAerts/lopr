@@ -1,0 +1,6 @@
+@use '../../style/vars' as *;
+@use '../../style/sass-vars' as *;
+
+:root {
+  --chart-border-color: var(--text-color);
+}

@@ -1,0 +1,13 @@
+@use '../../style/vars' as *;
+@use '../../style/sass-vars' as *;
+@use './Chart';
+
+svg.v-pie-chart {
+
+  path {
+    stroke: currentColor;
+    stroke-width: 1px;
+  }
+
+
+}
