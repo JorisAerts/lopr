@@ -16,12 +16,12 @@ export const VPieChart = defineComponent({
       type: Array,
       default: () => [
         //
-        '#ff0000',
-        '#00ff00',
-        '#0000ff',
-        '#ffff00',
-        '#ff00ff',
-        '#00ffff',
+        '#800000',
+        '#008000',
+        '#000080',
+        '#808000',
+        '#800080',
+        '#008080',
       ],
     },
   },
@@ -37,8 +37,17 @@ export const VPieChart = defineComponent({
             const percent = value / total.value
             const [startX, startY] = getCoordinatesForPercent(current)
             const [endX, endY] = getCoordinatesForPercent((current += percent))
-            const d = `M ${startX} ${startY} A 1 1 0 ${percent > 0.5 ? 1 : 0} 1 ${endX} ${endY} L 0 0`
-            return <path d={d} fill={item.color ?? (props.colors[index % props.colors.length] as string)} />
+            const d = `M ${startX} ${startY} A 1 1 0 ${percent > 0.5 ? 1 : 0} 1 ${endX} ${endY} L 0 0 Z`
+            return (
+              <path
+                d={d}
+                fill={item.color ?? (props.colors[index % props.colors.length] as string)}
+                /*
+                stroke={'rgba(var(--text-color))'}
+                stroke-width={0.02}
+                */
+              />
+            )
           })}
         </svg>
       )
