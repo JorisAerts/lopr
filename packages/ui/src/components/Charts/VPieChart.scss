@@ -5,6 +5,7 @@
 svg.v-pie-chart {
 
   path {
+    transition: none;
     stroke: currentColor;
     stroke-width: 1px;
     stroke-linecap: round;
