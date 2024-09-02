@@ -43,7 +43,7 @@ export const Information = defineComponent({
             {!certStore.isEmpty ? (
               <TransitionGroup>
                 {certificates.value.map(({ file, cert }) => (
-                  <VCertificate host={cert} />
+                  <VCertificate key={cert} host={cert} />
                 ))}
               </TransitionGroup>
             ) : (
