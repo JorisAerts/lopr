@@ -1,19 +1,21 @@
 import * as process from 'node:process'
 import * as fs from 'node:fs'
-import * as path from 'node:path'
 import type { PackageJson } from 'type-fest'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
 
-const packageJsonFile = (process.env as any).npm_package_json
-
-/**
- * parsed package.json
- */
-export const packageJson: PackageJson = JSON.parse(fs.readFileSync(packageJsonFile).toString()) as PackageJson
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 /**
  * root directory
  */
-export const packageRoot = path.dirname(packageJsonFile)
+export const packageRoot = join(__dirname, '..') // only 1 up, because we'll be in "dist"
+
+/**
+ * parsed package.json
+ */
+export const packageJson: PackageJson = JSON.parse(fs.readFileSync(join(packageRoot, 'package.json')).toString()) as PackageJson
 
 /**
  * current working directory
