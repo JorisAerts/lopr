@@ -12,15 +12,23 @@ export const useAppStore = defineStore(STORE_NAME, () => {
   const sizes = ref()
 
   const refresh = (retry = 0) => {
+    if (retry > 5) {
+      fetching.value = false
+      return
+    }
     fetching.value = true
-    fetch('/api/server-info')
-      .then((res) => res.json())
-      .then((s) => (sizes.value = s))
-      .catch(() => {
-        fetching.value = false
-        if (retry < 5) refresh(++retry)
-      })
-      .then(() => (fetching.value = false))
+    try {
+      fetch('/api/server-info')
+        .then((res) => res.json())
+        .then((s) => (sizes.value = s))
+        .catch(() => {
+          fetching.value = false
+          refresh(++retry)
+        })
+        .then(() => (fetching.value = false))
+    } catch {
+      refresh(++retry)
+    }
   }
 
   const computedSizes = computed({
