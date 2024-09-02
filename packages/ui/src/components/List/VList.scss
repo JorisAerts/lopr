@@ -4,6 +4,8 @@
 :root {
   --list-indent: #{4 * $spacer};
   --list-padding: #{2 * $spacer};
+
+  --list-item-border-radius: 0;
 }
 
 // tree indentation
@@ -39,7 +41,7 @@
   padding-inline-start: var(--list-indent-padding);
   transition: var(--transition), color 0ms, background-color 0ms;
 
-  border-radius: var(--border-radius);
+  border-radius: var(--list-item-border-radius);
 
   &--contents {
     display: flex;
