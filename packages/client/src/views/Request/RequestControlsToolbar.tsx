@@ -1,5 +1,5 @@
 import { defineComponent, ref } from 'vue'
-import { VBtn, VCard, VDialog, VSwitch, VToolbar } from 'js-proxy-ui'
+import { VBtn, VCard, VDialog, VSwitch, VToolbar } from 'lopr-ui'
 import { useRequestStore } from '../../stores/request'
 import { VBreakpoints } from '../../components'
 import { useProxyStore } from '../../stores/proxy'

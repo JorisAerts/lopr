@@ -1,9 +1,9 @@
 import './RequestSequence.scss'
 import type { ComponentPublicInstance, VNode } from 'vue'
 import { defineComponent, onMounted, ref, watch } from 'vue'
-import { VList, VListItem, VSheet } from 'js-proxy-ui/components'
+import { VList, VListItem, VSheet } from 'lopr-ui/components'
 import { useRequestStore } from '../../stores/request'
-import type { ProxyRequestInfo } from 'js-proxy-shared'
+import type { ProxyRequestInfo } from 'lopr-shared'
 import { makeUUIDEvents, makeUUIDProps } from '../../composables/uuid'
 import { isOnScreen } from '../../utils/is-on-screen'
 

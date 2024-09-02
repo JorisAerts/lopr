@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
-import { VTable } from 'js-proxy-ui/components'
+import { VTable } from 'lopr-ui/components'
 
 export const HeadersTable = defineComponent({
   name: 'HeadersTable',

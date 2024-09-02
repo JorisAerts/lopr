@@ -4,7 +4,7 @@ import type { UseResponse } from '../../composables/response'
 import { useResponse } from '../../composables/response'
 import type { Ref } from 'vue'
 import { isRef, ref } from 'vue'
-import type { UUID } from 'js-proxy-shared'
+import type { UUID } from 'lopr-shared'
 
 const REQUEST_TAB_INDEX = 0
 const REQUEST_HEADERS_INDEX = 1

@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
-import { directives, VForm, VSheet, VTextField } from 'js-proxy-ui'
-import { URI } from 'js-proxy-shared/URI'
-import type { UrlMatch } from 'js-proxy-shared'
+import { directives, VForm, VSheet, VTextField } from 'lopr-ui'
+import { URI } from 'lopr-shared/URI'
+import type { UrlMatch } from 'lopr-shared'
 
 export const VUrlFilter = defineComponent({
   name: 'VUrlFilter',

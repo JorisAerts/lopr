@@ -1,6 +1,6 @@
 import { computed, ref, watch } from 'vue'
 
-const prefix = `js-proxy.`
+const prefix = `lopr.`
 
 const getJSON = (key: string, defaultValue: any = undefined) => {
   const value = localStorage.getItem(`${prefix}${key}`)

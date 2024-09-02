@@ -1,8 +1,8 @@
 import { defineComponent, ref, watch } from 'vue'
 import { VUrlFilter } from '../UrlFilter'
-import { VBtn, VCard, VCheckbox, VDialogCardButtons, VSheet } from 'js-proxy-ui/components'
-import type { BreakPoint } from 'js-proxy-shared'
-import { jsonClone } from 'js-proxy-shared'
+import { VBtn, VCard, VCheckbox, VDialogCardButtons, VSheet } from 'lopr-ui/components'
+import type { BreakPoint } from 'lopr-shared'
+import { jsonClone } from 'lopr-shared'
 import { useProxyStore } from '../../stores/proxy'
 import { VBreakPointList } from './VBreakPointList'
 

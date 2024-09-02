@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
-import { VBtn, VContainer, VIcon, VSheet } from 'js-proxy-ui'
+import { VBtn, VContainer, VIcon, VSheet } from 'lopr-ui'
 import { useRouter } from 'vue-router'
 
 export const ErrorWsDown = defineComponent({

@@ -15,9 +15,9 @@ export default defineConfig((env: ConfigEnv) => ({
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, './src/index.ts'),
-      name: 'js-proxy-shared',
+      name: 'lopr-shared',
       // the proper extensions will be added
-      fileName: 'js-proxy-shared',
+      fileName: 'lopr-shared',
       formats: ['es'],
     } as LibraryOptions,
     rollupOptions: {

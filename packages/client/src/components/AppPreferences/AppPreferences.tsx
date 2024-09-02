@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { VCard, VCheckbox, VLabel, VSwitch, VTooltip } from 'js-proxy-ui/components'
+import { VCard, VCheckbox, VLabel, VSwitch, VTooltip } from 'lopr-ui/components'
 import { usePreferencesStore } from '../../stores/preferences'
 
 export const AppPreferences = defineComponent({

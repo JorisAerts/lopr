@@ -1,5 +1,5 @@
-import type { BreakPoint, ProxyState } from 'js-proxy-shared'
-import { isMatch } from 'js-proxy-shared'
+import type { BreakPoint, ProxyState } from 'lopr-shared'
+import { isMatch } from 'lopr-shared'
 import type { IncomingMessage, ServerResponse } from 'http'
 import { extractURLFromRequest } from '../proxy/utils'
 

@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { VBtn, VToolbar } from 'js-proxy-ui'
+import { VBtn, VToolbar } from 'lopr-ui'
 import { useErrorLogStore } from '../../stores/errorlog'
 
 export const ErrorLogControlsToolbar = defineComponent({
