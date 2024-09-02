@@ -9,7 +9,7 @@ export const ErrorLog = defineComponent({
     const errorLogStore = useErrorLogStore()
     return () => (
       <VSheet class={['fill-height', 'gap-2']}>
-        <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
+        <VCard flat class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
           <h2 class={'mb-4'}>Error log</h2>
           <VSheet class={['d-flex', 'flex-column', 'gap-2']}>
             {errorLogStore.errors.length ? (

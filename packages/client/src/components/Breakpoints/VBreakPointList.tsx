@@ -95,7 +95,7 @@ export const VBreakPointList = defineComponent({
             )
           })}
         </VList>
-        <VCard>
+        <VCard flat>
           <VBtn transparent onClick={addNewBreakpoint}>
             +
           </VBtn>

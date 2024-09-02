@@ -23,7 +23,7 @@ export const Information = defineComponent({
     )
     return () => (
       <VSheet class={['fill-height']}>
-        <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
+        <VCard flat class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
           <h2>Information</h2>
           <VSheet class={['d-flex', 'gap-4']}>
             <VPieChart values={Object.entries(sizes.value ?? {}).map(([, value]) => ({ value: value as number }))} style={{ height: '3em' }} borderWidth={0.75} />

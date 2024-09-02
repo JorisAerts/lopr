@@ -1,13 +1,19 @@
 @use '../../style/vars' as *;
 
 :root {
-  --card-background: rgba(var(--background-color), var(--background-opacity));
+  --parent-card-background: rgba(var(--background-color), var(--background-opacity));
+  --card-background: var(--parent-card-background);
   --card-border: none;
   --card-shadow: none;
 }
 
+// dark mode
 html.dark-mode {
-  --card-border: var(--border-size) var(--border-style) rgb(var(--border-color));
+  --card-border: var(--border-size) var(--border-style) rgba(var(--border-color), var(--border-opacity));
+}
+
+.v-card .v-card {
+  --card-background: lch(from var(--parent-card-background) calc(l - 8 * var(--dark-modifier)) c h)
 }
 
 .v-card {
@@ -21,8 +27,8 @@ html.dark-mode {
   }
 
   &__flat {
-    --card-border: none;
-    --card-shadow: none;
+    border: none;
+    box-shadow: none;
   }
 
 }
