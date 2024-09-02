@@ -44,8 +44,9 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
             res.end(data)
           })
           .catch((err) => {
-            res.statusCode = 505
-            res.write(err).toString()
+            res.statusCode = 500
+            res.write(err?.toString() ?? '')
+            res.end()
           })
       }
       return true
@@ -71,8 +72,9 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
           res.end(data)
         })
         .catch((err) => {
-          res.statusCode = 505
-          res.write(err.message)
+          res.statusCode = 500
+          res.write(err?.toString() ?? '')
+          res.end()
         })
 
       return true

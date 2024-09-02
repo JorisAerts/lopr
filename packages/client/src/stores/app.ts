@@ -19,6 +19,10 @@ export const useAppStore = defineStore(STORE_NAME, () => {
     fetching.value = true
     try {
       fetch('/api/server-info')
+        .then((res) => {
+          if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
+          else return res
+        })
         .then((res) => res.json())
         .then((s) => (sizes.value = s))
         .catch(() => {
