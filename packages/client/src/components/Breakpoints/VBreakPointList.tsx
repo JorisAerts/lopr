@@ -73,7 +73,7 @@ export const VBreakPointList = defineComponent({
 
     return () => (
       <VSheet class={['bordered', 'd-flex', 'flex-column', 'overflow-hidden']}>
-        <VList class={['flex-grow-1', 'pa-0']}>
+        <VList class={['flex-grow-1', 'pa-0', 'pt-2']}>
           {breakpoints.value.map((breakpoint, i) => {
             const text = breakpointToString(breakpoint)
             return (
