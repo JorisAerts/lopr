@@ -1,5 +1,5 @@
 import { sendWsData } from './websocket'
-import { HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE, WebSocketMessageType } from 'lopr-shared'
+import { HTTP_HEADER_CONTENT_DISPOSITION, HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE, WebSocketMessageType } from 'lopr-shared'
 import { createErrorMessage } from '../utils/ws-messages'
 import type { ProxyResponse } from '../server/ProxyResponse'
 import type { ProxyRequest } from '../server/ProxyRequest'
@@ -32,7 +32,8 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
         })
       return true
     } else if (url.pathname === '/api/data' && url.query.cert) {
-      const cert = url.query.cert === 'root' ? getRootKeyFiles().cert : join(certificatesDir(), `${url.query.cert}.crt`)
+      const certFile = `${url.query.cert}.crt`
+      const cert = url.query.cert === 'root' ? getRootKeyFiles().cert : join(certificatesDir(), certFile)
       if (!existsSync(cert)) {
         res.statusCode = 404
         res.write('Not Found').toString()
@@ -41,6 +42,7 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
           .then((data) => {
             res.setHeader(HTTP_HEADER_CONTENT_LENGTH, data.length)
             res.setHeader(HTTP_HEADER_CONTENT_TYPE, 'application/x-x509-user-cert')
+            res.setHeader(HTTP_HEADER_CONTENT_DISPOSITION, `attachment; filename="${certFile}"`)
             res.end(data)
           })
           .catch((err) => {
