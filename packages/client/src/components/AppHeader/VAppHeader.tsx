@@ -1,6 +1,6 @@
 import { computed, defineComponent, Teleport } from 'vue'
 import { APP_NAME } from 'js-proxy-shared'
-import { DeployedCode_Fill } from 'js-proxy-ui/icons'
+import { DominoMask_Fill } from 'js-proxy-ui/icons'
 
 export const VAppHeader = defineComponent({
   name: 'v-app-header',
@@ -10,7 +10,7 @@ export const VAppHeader = defineComponent({
     const iconColor = computed(() => 'white')
     const favicon = computed(() =>
       btoa(`<svg width="${iconSize}" height="${iconSize}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="fill: ${iconColor.value}">
-          <path d="${DeployedCode_Fill}" />
+          <path d="${DominoMask_Fill}" />
         </svg>`)
     )
 

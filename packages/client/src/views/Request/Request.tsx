@@ -26,6 +26,7 @@ export const Request = defineComponent({
     return () => (
       <VContainer class={['fill-height', 'gap-2']}>
         <VCard
+          flat
           class={['fill-height', 'py-2', 'd-flex', 'flex-column']}
           style={{
             width: width.value,
@@ -68,7 +69,7 @@ export const Request = defineComponent({
           </VSheet>
         </VCard>
 
-        <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
+        <VCard flat class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
           <RequestDetails modelValue={requestStore.current} />
         </VCard>
       </VContainer>

@@ -4,7 +4,7 @@ import type { Timestamped } from './Timestamped'
 interface RawResponse extends Unique, Timestamped {
   headers: string[]
   body: unknown
-  contentLength: number
+  contentLength: number | undefined
   paused: boolean
 }
 

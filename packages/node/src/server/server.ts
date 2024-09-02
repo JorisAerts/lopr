@@ -82,6 +82,13 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
       sendWsData(WebSocketMessageType.ProxyRequest, data)
     }
   })
+  registerDataHandler(WebSocketMessageType.ProxyResponse, ({ data }) => {
+    if (!data.paused && state.pausedResponses.has(data.uuid)) {
+      state.pausedResponses.get(data.uuid)!()
+      state.pausedResponses.delete(data.uuid)
+      sendWsData(WebSocketMessageType.ProxyRequest, data)
+    }
+  })
 
   // this ginormous method returns a promise,
   // that — as mentioned below — will resolve once the server is up.
@@ -171,6 +178,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
       const handleRequest = () => forwardRequest(req, res, options, state)
 
       // pause the request if a breakpoint is set for this request
+      // TODO: move to a breakpoint handler
       if (isRequestPaused(req, state)) {
         const resume = () => {
           req.off('resume', resume)

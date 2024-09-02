@@ -1,7 +1,6 @@
 import type { ServerOptions } from './ServerOptions'
 import type { BreakPoint, ProxyState, UUID } from 'js-proxy-shared'
 import { useCache } from './cache'
-import type { ServerResponse } from 'http'
 import type { ProxyRequest } from './ProxyRequest'
 
 /**
@@ -10,7 +9,7 @@ import type { ProxyRequest } from './ProxyRequest'
 interface InternalBreakPointState {
   breakpoints: BreakPoint[]
   pausedRequests: Map<UUID, ProxyRequest>
-  pausedResponses: Map<UUID, ServerResponse>
+  pausedResponses: Map<UUID, () => unknown>
 }
 
 /**

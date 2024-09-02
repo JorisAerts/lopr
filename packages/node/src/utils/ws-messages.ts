@@ -28,12 +28,12 @@ export const createProxyRequest = (req: ProxyRequest): ProxyRequestInfo => {
   }
 }
 
-export const createProxyResponse = (uuid: UUID, res: IncomingMessage, data: Buffer): ProxyResponseInfo => {
+export const createProxyResponse = (uuid: UUID, res: IncomingMessage, data?: Buffer): ProxyResponseInfo => {
   return {
     ...timestamp(),
     uuid,
     headers: res.rawHeaders,
-    contentLength: data.length,
+    contentLength: data?.length ?? undefined,
     body: data ? 1 : undefined,
     paused: false,
   }

@@ -1,0 +1,7 @@
+@use '../../style/vars' as *;
+@use '../../style/sass-vars' as *;
+
+:root {
+  --chart-area-opacity: .75;
+  --chart-border-color: var(--text-color);
+}

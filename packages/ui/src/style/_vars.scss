@@ -4,6 +4,8 @@
 @forward 'sass-vars';
 
 :root {
+  --dark-modifier: 1;
+
   // colors
   --color-red: 255, 0, 0;
   --color-green: 0, 255, 0;
@@ -25,8 +27,8 @@
 
   // background
   --app-background-color: 242, 240, 238;
-  --background-color: 200, 200, 210;
-  --background-opacity: .8;
+  --background-color: 230, 230, 240;
+  --background-opacity: 0.8;
 
   // text
   --text-emphasis: .85;
@@ -60,12 +62,13 @@
 
 // dark mode
 html.dark-mode {
+  --dark-modifier: -1;
+
   --app-background-color: 14, 19, 23;
-  --background-color: 30, 30, 40;
+  --background-color: 30, 30, 34;
   --text-color: 255, 255, 255;
 
   --default-shadow: none;
 
   --primary-color: 49, 120, 198;
-  // --on-primary-color: 255, 255, 255;
 }

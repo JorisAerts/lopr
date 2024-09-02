@@ -1,6 +1,7 @@
 export * from './Badge'
 export * from './Btn'
 export * from './Card'
+export * from './Charts'
 export * from './Container'
 export * from './Dialog'
 export * from './Divider'

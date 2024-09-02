@@ -1,6 +1,6 @@
 import { defineComponent, ref, watch } from 'vue'
 import { VUrlFilter } from '../UrlFilter'
-import { VBtn, VCheckbox, VDialogCardButtons, VSheet } from 'js-proxy-ui/components'
+import { VBtn, VCard, VCheckbox, VDialogCardButtons, VSheet } from 'js-proxy-ui/components'
 import type { BreakPoint } from 'js-proxy-shared'
 import { jsonClone } from 'js-proxy-shared'
 import { useProxyStore } from '../../stores/proxy'
@@ -41,21 +41,19 @@ export const VBreakpoints = defineComponent({
       <VSheet class={['d-flex', 'flex-column', 'gap-2']} style={{ 'min-width': 'calc(100vw / 3)' }}>
         <VSheet class={['d-flex', 'gap-2']}>
           <VBreakPointList v-model:breakpoints={breakpoints.value} v-model={selected.value} style={{ 'min-width': '150px', 'max-width': '150px' }} />
-          <VSheet class={['flex-grow-1', 'd-flex', 'flex-column']} style={{ 'min-height': '290px' }}>
+          <VCard flat class={['pa-2', 'flex-grow-1', 'd-flex', 'flex-column']} style={{ 'min-height': '290px' }}>
             {selected.value ? (
               <>
                 <VUrlFilter v-model={selected.value.match} />
                 <VSheet class={['d-flex', 'gap-4', 'align-items-center']}>
                   <VCheckbox v-model={selected.value.req}>Request</VCheckbox>
-                  <VCheckbox v-model={selected.value.res} disabled>
-                    Response
-                  </VCheckbox>
+                  <VCheckbox v-model={selected.value.res}>Response</VCheckbox>
                 </VSheet>
               </>
             ) : (
               <VSheet class={['flex-grow-1']}>&nbsp;</VSheet>
             )}
-          </VSheet>
+          </VCard>
         </VSheet>
         <VDialogCardButtons>
           <VBtn onClick={handleClose}>Cancel</VBtn>

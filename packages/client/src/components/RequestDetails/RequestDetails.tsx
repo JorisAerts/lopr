@@ -10,7 +10,7 @@ import { makeUUIDProps, useUUID } from '../../composables/uuid'
 import { useRequest } from '../../composables/request'
 import { useResponse } from '../../composables/response'
 import { HTTP_HEADER_COOKIE } from 'js-proxy-shared'
-import { resumeRequest } from '../../stores/request'
+import { resumeRequest, resumeResponse } from '../../stores/request'
 
 const REQUEST_TAB_INDEX = 0
 const REQUEST_HEADERS_INDEX = 1
@@ -61,7 +61,8 @@ export const RequestDetails = defineComponent({
                 canDisplayTab && (
                   <VTab modelValue={id}>
                     {name}
-                    {0 === i && request.isPaused && <VBtn icon={'PlayArrow_Fill'} class={['ml-2', 'pa-0']} onClick={() => resumeRequest(props.modelValue!)}></VBtn>}
+                    {0 === i && request.isPaused && <VBtn icon={'PlayArrow_Fill'} class={['ml-2', 'pa-0']} onClick={() => resumeRequest(props.modelValue!)} />}
+                    {0 === i && response.isPaused && <VBtn icon={'PlayArrow_Fill'} class={['ml-2', 'pa-0']} onClick={() => resumeResponse(props.modelValue!)} />}
                   </VTab>
                 )
             )}

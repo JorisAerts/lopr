@@ -22,9 +22,9 @@ export const VNavBar = defineComponent({
       }
     }
     return () => (
-      <VCard class={['v-nav-bar', 'pa-2', 'd-flex', 'gap-2', 'align-items-center']}>
+      <VCard flat class={['v-nav-bar', 'pa-2', 'd-flex', 'gap-2', 'align-items-center']}>
         <h4 class={['d-flex', 'align-items-center']}>
-          <VIcon name={'DeployedCode_Fill'} size={iconSize} class={['mr-1']} />
+          <VIcon name={'DominoMask_Fill'} size={iconSize} class={['mr-1']} />
           {APP_NAME}
         </h4>
         <RouterView name="controls" class={'ml-4'}>
