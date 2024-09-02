@@ -1,5 +1,5 @@
-import type { ProxyRequestHistory, ProxyRequestInfo, ProxyResponseInfo, ProxyState, UseCache, UUID } from 'js-proxy-shared'
-import { WebSocketMessageType } from 'js-proxy-shared'
+import type { ProxyRequestHistory, ProxyRequestInfo, ProxyResponseInfo, ProxyState, UseCache, UUID } from 'lopr-shared'
+import { WebSocketMessageType } from 'lopr-shared'
 import type { ServerOptions } from './ServerOptions'
 import { cacheDir } from '../utils/temp-dir'
 import { join } from 'path'

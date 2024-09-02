@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia'
 import type { Ref } from 'vue'
 import { computed, ref, shallowRef, triggerRef } from 'vue'
-import type { ProxyRequestHistory, ProxyRequestInfo, WebSocketMessage } from 'js-proxy-shared'
-import { WebSocketMessageType } from 'js-proxy-shared'
+import type { ProxyRequestHistory, ProxyRequestInfo, WebSocketMessage } from 'lopr-shared'
+import { WebSocketMessageType } from 'lopr-shared'
 import { registerDataHandler, sendWsData } from '../utils/websocket'
-import type { ProxyResponseInfo } from 'js-proxy-shared/Response'
-import type { UUID } from 'js-proxy-shared/UUID'
+import type { ProxyResponseInfo } from 'lopr-shared/Response'
+import type { UUID } from 'lopr-shared/UUID'
 import { useProxyStore } from './proxy'
+import { useAppStore } from './app'
 
 export const STORE_NAME = 'Requests'
 
@@ -116,8 +117,11 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   /**
    * Clear the store (front- and backend)
    */
-  const clear = () => fetch('/api/state?clear').then(clearState)
-
+  const clear = () => {
+    fetch('/api/state?clear') //
+      .then(clearState)
+      .then(useAppStore().clear)
+  }
   /**
    * If no state is provided, it's requested from the server
    */
@@ -153,6 +157,8 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     }
     triggerRef(requests)
     registerUUID(data.uuid)
+
+    if (!useAppStore().fetching) useAppStore().clear()
   })
 
   registerDataHandler(WebSocketMessageType.ProxyResponse, ({ data }: WebSocketMessage<ProxyResponseInfo>) => {
@@ -165,6 +171,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     }
     triggerRef(responses)
     registerUUID(data.uuid)
+    if (!useAppStore().fetching) useAppStore().clear()
   })
 
   // initially fetch the state from the server

@@ -14,7 +14,7 @@ import { createProxyResponse } from '../../utils/ws-messages'
 import { isResponsePaused } from '../../utils/breakpoints'
 import type { InternalProxyState } from '../../server/server-state'
 import { sendWsData } from '../../local'
-import { WebSocketMessageType } from 'js-proxy-shared'
+import { WebSocketMessageType } from 'lopr-shared'
 
 /**
  * Pipe to the outgoing pipeline, create the request to the ultimate destination

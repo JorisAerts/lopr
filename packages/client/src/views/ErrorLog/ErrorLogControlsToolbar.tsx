@@ -1,15 +1,17 @@
 import { defineComponent } from 'vue'
-import { VBtn, VToolbar } from 'js-proxy-ui'
+import { VBtn, VToolbar } from 'lopr-ui'
 import { useErrorLogStore } from '../../stores/errorlog'
 
 export const ErrorLogControlsToolbar = defineComponent({
-  name: 'ControlsToolbar',
+  name: 'ErrorLogControlsToolbar',
 
   setup() {
     const errorLogStore = useErrorLogStore()
     return () => (
       <VToolbar class={['v-app-controls-toolbar']}>
-        <VBtn tooltip="Clear error log" class={['align-center', 'pa-1']} icon={'Delete'} size={20} transparent onClick={errorLogStore.clear} />
+        <VBtn class={['align-center', 'py-1']} icon={'Delete'} size={20} transparent onClick={errorLogStore.clear}>
+          Clear logs
+        </VBtn>
       </VToolbar>
     )
   },

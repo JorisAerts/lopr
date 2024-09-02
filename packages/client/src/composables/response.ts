@@ -2,10 +2,10 @@ import { useRequestStore } from '../stores/request'
 import { parseHeaders } from '../utils/request-utils'
 import type { Ref } from 'vue'
 import { computed, isRef, ref, triggerRef, watch } from 'vue'
-import { HTTP_HEADER_CONTENT_ENCODING, HTTP_HEADER_CONTENT_TYPE } from 'js-proxy-shared/constants'
+import { HTTP_HEADER_CONTENT_ENCODING, HTTP_HEADER_CONTENT_TYPE } from 'lopr-shared/constants'
 import type { UUIDModelProps } from './uuid'
 import { useUUID } from './uuid'
-import type { UUID } from 'js-proxy-shared'
+import type { UUID } from 'lopr-shared'
 
 /**
  * Utility methods for handling the response

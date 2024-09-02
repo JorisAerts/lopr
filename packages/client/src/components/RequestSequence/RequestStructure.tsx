@@ -1,10 +1,10 @@
 import './RequestStructure.scss'
 import type { ComponentPublicInstance, PropType, VNode } from 'vue'
 import { defineComponent, getCurrentInstance, onMounted, ref, watch, withModifiers } from 'vue'
-import { VList, VListGroup, VListItem } from 'js-proxy-ui/components'
+import { VList, VListGroup, VListItem } from 'lopr-ui/components'
 import { useRequestStore } from '../../stores/request'
-import type { UUID } from 'js-proxy-shared'
-import { Sorting } from 'js-proxy-shared'
+import type { UUID } from 'lopr-shared'
+import { Sorting } from 'lopr-shared'
 import { makeUUIDEvents, makeUUIDProps } from '../../composables/uuid'
 import { isOnScreen } from '../../utils/is-on-screen'
 

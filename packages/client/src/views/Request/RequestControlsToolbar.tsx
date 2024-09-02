@@ -1,11 +1,11 @@
 import { defineComponent, ref } from 'vue'
-import { VBtn, VCard, VDialog, VSwitch, VToolbar } from 'js-proxy-ui'
+import { VBtn, VCard, VDialog, VSwitch, VToolbar } from 'lopr-ui'
 import { useRequestStore } from '../../stores/request'
 import { VBreakpoints } from '../../components'
 import { useProxyStore } from '../../stores/proxy'
 
 export const RequestControlsToolbar = defineComponent({
-  name: 'ControlsToolbar',
+  name: 'RequestControlsToolbar',
 
   setup() {
     const proxyStore = useProxyStore()
@@ -27,7 +27,9 @@ export const RequestControlsToolbar = defineComponent({
             ),
           }}
         </VDialog>
-        <VBtn tooltip="Clear all requests" class={['align-center', 'pa-1']} icon={'Delete'} size={20} transparent onClick={requestStore.clear} />
+        <VBtn class={['align-center', 'py-1']} icon={'Delete'} size={20} transparent onClick={requestStore.clear}>
+          Clear history
+        </VBtn>
       </VToolbar>
     )
   },

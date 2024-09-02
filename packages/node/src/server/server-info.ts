@@ -1,6 +1,6 @@
 import { clearScreen } from '../utils/logger'
 import type { Server } from 'http'
-import { APP_NAME } from 'js-proxy-shared'
+import { APP_NAME } from 'lopr-shared'
 import { packageJson } from '../utils/package'
 import tui from '../utils/tui'
 import type { InstanceOptions } from '../utils/Options'

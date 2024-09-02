@@ -1,5 +1,5 @@
 import type { ServerOptions } from './ServerOptions'
-import type { BreakPoint, ProxyState, UUID } from 'js-proxy-shared'
+import type { BreakPoint, ProxyState, UUID } from 'lopr-shared'
 import { useCache } from './cache'
 import type { ProxyRequest } from './ProxyRequest'
 

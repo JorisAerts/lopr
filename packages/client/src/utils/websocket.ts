@@ -1,5 +1,5 @@
-import type { WebSocketMessage, WebSocketMessageType, WebSocketMessageTypeDataMapping } from 'js-proxy-shared'
-import { parseWebSocketMessageEvent, WEBSOCKET_ROOT } from 'js-proxy-shared'
+import type { WebSocketMessage, WebSocketMessageType, WebSocketMessageTypeDataMapping } from 'lopr-shared'
+import { parseWebSocketMessageEvent, WEBSOCKET_ROOT } from 'lopr-shared'
 import { RouteNames } from '../router/RouteNames'
 import { router } from '../router'
 

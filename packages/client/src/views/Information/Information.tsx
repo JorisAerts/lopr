@@ -1,18 +1,17 @@
 import type { CSSProperties } from 'vue'
-import { computed, defineComponent, ref, TransitionGroup } from 'vue'
-import { VCard, VIcon, VLabel, VPieChart, VSheet, VTooltip } from 'js-proxy-ui'
-import { useCertificateStore } from '../stores/certificates'
-import { toBytes } from '../utils/to-bytes'
+import { computed, defineComponent, onMounted, Transition, TransitionGroup } from 'vue'
+import { VCard, VIcon, VLabel, VPieChart, VSheet, VTooltip } from 'lopr-ui'
+import { useCertificateStore } from '../../stores/certificates'
+import { toBytes } from '../../utils/to-bytes'
+import { useAppStore } from '../../stores/app'
 
 export const Information = defineComponent({
   name: 'app-information',
   setup() {
     const certStore = useCertificateStore()
+    const appStore = useAppStore()
 
-    const sizes = ref()
-    const cc = fetch('/api/server-info')
-      .then((res) => res.json())
-      .then((s) => (sizes.value = s))
+    onMounted(() => (appStore.sizes = undefined))
 
     const certificates = computed(() =>
       [...certStore.certificates].toSorted().map((certFile) => {
@@ -26,13 +25,13 @@ export const Information = defineComponent({
         <VCard flat class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
           <h2>Information</h2>
           <VSheet class={['d-flex', 'gap-4']}>
-            <VPieChart values={Object.entries(sizes.value ?? {}).map(([, value]) => ({ value: value as number }))} style={{ height: '3em' }} borderWidth={0.75} />
+            <VPieChart values={Object.entries(appStore.sizes ?? {}).map(([, value]) => ({ value: value as number }))} style={{ height: '75px' }} borderWidth={0.75} />
             <VSheet>
               <div>
-                <VLabel class={['d-inline']}>Cache Size</VLabel>: {toBytes(sizes.value?.cacheSize)}
+                <VLabel class={['d-inline']}>Cache Size</VLabel>: <Transition>{toBytes(appStore.sizes?.cacheSize)}</Transition>
               </div>
               <div>
-                <VLabel class={['d-inline']}>Certificates Size</VLabel>: {toBytes(sizes.value?.certSize)}
+                <VLabel class={['d-inline']}>Certificates Size</VLabel>: <Transition>{toBytes(appStore.sizes?.certSize)}</Transition>
               </div>
             </VSheet>
           </VSheet>

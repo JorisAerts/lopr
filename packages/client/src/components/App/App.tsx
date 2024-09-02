@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 import { RouterView } from 'vue-router'
-import { VSheet } from 'js-proxy-ui/components'
+import { VSheet } from 'lopr-ui/components'
 import { VAppHeader } from '../AppHeader'
 import { VNavBar } from '../NavBar'
 import { useDarkMode } from '../../composables/dark-mode'

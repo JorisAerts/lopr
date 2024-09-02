@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
 import { computed, defineComponent, ref, Transition, watch } from 'vue'
-import { VBtn, VBtnGroup, VCard, VContainer, VSheet, VSpacer } from 'js-proxy-ui'
+import { VBtn, VBtnGroup, VCard, VContainer, VSheet, VSpacer } from 'lopr-ui'
 import { useRequestStore } from '../../stores/request'
-import { Sorting } from 'js-proxy-shared'
+import { Sorting } from 'lopr-shared'
 import { RequestDetails, RequestSequence, RequestStructure } from '../../components'
 
 export const Request = defineComponent({

@@ -1,5 +1,5 @@
 import { computed, defineComponent } from 'vue'
-import { VTable } from 'js-proxy-ui/components'
+import { VTable } from 'lopr-ui/components'
 import { useRequestStore } from '../../stores/request'
 import { makeUUIDProps, useUUID } from '../../composables/uuid'
 

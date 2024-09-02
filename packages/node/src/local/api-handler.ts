@@ -1,12 +1,12 @@
 import { sendWsData } from './websocket'
-import { HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE, WebSocketMessageType } from 'js-proxy-shared'
+import { HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE, WebSocketMessageType } from 'lopr-shared'
 import { createErrorMessage } from '../utils/ws-messages'
 import type { ProxyResponse } from '../server/ProxyResponse'
 import type { ProxyRequest } from '../server/ProxyRequest'
 import { clearCache, getCachedData } from '../server/cache'
 import type { ServerOptions } from '../server'
 import { parse as parseUrl } from 'url'
-import type { UUID } from 'js-proxy-shared/UUID'
+import type { UUID } from 'lopr-shared/UUID'
 import { readFile } from 'fs/promises'
 import { existsSync } from 'fs'
 import { join } from 'path'
@@ -44,8 +44,9 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
             res.end(data)
           })
           .catch((err) => {
-            res.statusCode = 505
-            res.write(err).toString()
+            res.statusCode = 500
+            res.write(err?.toString() ?? '')
+            res.end()
           })
       }
       return true
@@ -71,8 +72,9 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
           res.end(data)
         })
         .catch((err) => {
-          res.statusCode = 505
-          res.write(err).toString()
+          res.statusCode = 500
+          res.write(err?.toString() ?? '')
+          res.end()
         })
 
       return true

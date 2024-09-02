@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { registerDataHandler } from '../utils/websocket'
-import { WebSocketMessageType } from 'js-proxy-shared'
+import { WebSocketMessageType } from 'lopr-shared'
 
 export const STORE_NAME = 'Certificates'
 
