@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'vue'
-import { computed, defineComponent, onMounted, TransitionGroup } from 'vue'
+import { computed, defineComponent, onMounted, Transition, TransitionGroup } from 'vue'
 import { VCard, VIcon, VLabel, VPieChart, VSheet, VTooltip } from 'lopr-ui'
 import { useCertificateStore } from '../../stores/certificates'
 import { toBytes } from '../../utils/to-bytes'
@@ -28,10 +28,10 @@ export const Information = defineComponent({
             <VPieChart values={Object.entries(appStore.sizes ?? {}).map(([, value]) => ({ value: value as number }))} style={{ height: '75px' }} borderWidth={0.75} />
             <VSheet>
               <div>
-                <VLabel class={['d-inline']}>Cache Size</VLabel>: {toBytes(appStore.sizes?.cacheSize)}
+                <VLabel class={['d-inline']}>Cache Size</VLabel>: <Transition>{toBytes(appStore.sizes?.cacheSize)}</Transition>
               </div>
               <div>
-                <VLabel class={['d-inline']}>Certificates Size</VLabel>: {toBytes(appStore.sizes?.certSize)}
+                <VLabel class={['d-inline']}>Certificates Size</VLabel>: <Transition>{toBytes(appStore.sizes?.certSize)}</Transition>
               </div>
             </VSheet>
           </VSheet>

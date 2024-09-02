@@ -37,7 +37,7 @@ export const useAppStore = defineStore(STORE_NAME, () => {
 
   const computedSizes = computed({
     get: () => {
-      if (sizes.value === undefined) refresh()
+      if (sizes.value === undefined && !fetching.value) refresh()
       return sizes.value
     },
     set: () => refresh(),
@@ -53,5 +53,7 @@ export const useAppStore = defineStore(STORE_NAME, () => {
     clear,
     wrapResponseData,
     sizes: computedSizes,
+
+    fetching: computed(() => fetching.value),
   }
 })
