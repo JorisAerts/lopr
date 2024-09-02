@@ -1,6 +1,7 @@
 import './VPieChart.scss'
 import type { PropType } from 'vue'
 import { computed, defineComponent, ref, watch } from 'vue'
+import { defaultColors } from './colors'
 
 function getCoordinatesForPercent(percent: number) {
   const x = Math.cos(2 * Math.PI * percent)
@@ -16,15 +17,7 @@ export const VPieChart = defineComponent({
     borderWidth: { type: Number, default: 1 },
     colors: {
       type: Array,
-      default: () => [
-        //
-        '#800000',
-        '#008000',
-        '#000080',
-        '#808000',
-        '#800080',
-        '#008080',
-      ],
+      default: () => [...defaultColors],
     },
   },
 
