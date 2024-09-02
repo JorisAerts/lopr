@@ -1,9 +1,9 @@
-import type { CSSProperties } from 'vue'
 import { computed, defineComponent, onMounted, Transition, TransitionGroup } from 'vue'
-import { VCard, VIcon, VLabel, VPieChart, VSheet, VTooltip } from 'lopr-ui'
+import { VCard, VLabel, VPieChart, VSheet } from 'lopr-ui'
 import { useCertificateStore } from '../../stores/certificates'
 import { toBytes } from '../../utils/to-bytes'
 import { useAppStore } from '../../stores/app'
+import { VCertificate } from '../../components'
 
 export const Information = defineComponent({
   name: 'app-information',
@@ -36,19 +36,14 @@ export const Information = defineComponent({
             </VSheet>
           </VSheet>
           <h3 class={['mt-6']}>Certificates</h3>
-          Below is a list of generated certificated which will be spoofed into HTTPS calls.
-          <div class={['d-flex', 'mt-4', 'gap-2', 'flex-wrap']}>
+          The root certificate should be trusted on your system, in order for SSH tunneling to work.
+          <VCertificate host={'root'} class={['mt-1']} />
+          <h4 class={['mt-6']}>Intermediate certificates</h4>
+          <div class={['d-flex', 'gap-2', 'flex-wrap']}>
             {!certStore.isEmpty ? (
               <TransitionGroup>
                 {certificates.value.map(({ file, cert }) => (
-                  <VCard class={['pa-2', 'd-flex', 'align-items-center', 'overflow-ellipsis']} key={file} style={{ width: 'calc(20% - 8px)' }}>
-                    <VIcon name={'ShieldLock'} class={'mr-2'} size={33} style={{ float: 'left' }} />
-                    <VTooltip text={cert}>
-                      <a href={`/api/data?cert=${cert}`} download={`${cert}.crt`}>
-                        <span style={{ 'word-wrap': 'break-word' as CSSProperties['word-wrap'] }}>{cert}</span>
-                      </a>
-                    </VTooltip>
-                  </VCard>
+                  <VCertificate host={cert} />
                 ))}
               </TransitionGroup>
             ) : (

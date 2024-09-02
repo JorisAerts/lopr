@@ -1,7 +1,8 @@
 import { resolve } from 'path'
 import type { ConfigEnv, LibraryOptions } from 'vite'
 import { defineConfig } from 'vite'
-import { packageJson } from './src/utils/package'
+
+const name = 'lopr'
 
 // https://vitejs.dev/config/
 export default defineConfig((env: ConfigEnv) => ({
@@ -20,9 +21,9 @@ export default defineConfig((env: ConfigEnv) => ({
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, './src/index.ts'),
-      name: packageJson.name,
+      name: name,
       // the proper extensions will be added
-      fileName: packageJson.name,
+      fileName: name,
       formats: ['es'],
     } as LibraryOptions,
     rollupOptions: {

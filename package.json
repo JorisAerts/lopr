@@ -34,7 +34,8 @@
     "dev": "cd packages/client && yarn dev",
     "preview": "cd packages/client && vite preview",
     "check:type": "yarn workspaces foreach --all --parallel run check:type",
-    "test": "yarn workspaces foreach --all --parallel --no-private run test --run --pass-with-no-tests"
+    "test": "yarn workspaces foreach --all --parallel --no-private run test --run --pass-with-no-tests",
+    "publish": "yarn build && cd packages/node && yarn npm publish --tolerate-republish"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
@@ -43,7 +44,7 @@
     "eslint": "^9.9.1",
     "eslint-plugin-vue": "^9.27.0",
     "globals": "^15.9.0",
-    "postcss": "^8.4.43",
+    "postcss": "^8.4.44",
     "prettier": "^3.3.3",
     "sass": "^1.77.8",
     "stylelint": "^16.9.0",
