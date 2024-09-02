@@ -60,7 +60,7 @@ export const Request = defineComponent({
               <VBtn tooltip={'Structure view'} icon={'AccountTree'} size={20} class={['pa-1']} transparent onClick={() => (requestViewType.value = 1)} />
             </VBtnGroup>
           </VSheet>
-          <VSheet class={['fill-height', 'overflow-auto', 'mt-2', 'px-2']}>
+          <VSheet class={['fill-height', 'overflow-auto', 'mt-2', 'px-1']}>
             {requestViewType.value === 0 ? ( //
               <RequestSequence v-model={requestStore.current} />
             ) : (
