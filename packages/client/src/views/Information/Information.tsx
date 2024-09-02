@@ -25,7 +25,7 @@ export const Information = defineComponent({
         <VCard flat class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
           <h2>Information</h2>
           <VSheet class={['d-flex', 'gap-4']}>
-            <VPieChart values={Object.entries(appStore.sizes ?? {}).map(([, value]) => ({ value: value as number }))} style={{ height: '3em' }} borderWidth={0.75} />
+            <VPieChart values={Object.entries(appStore.sizes ?? {}).map(([, value]) => ({ value: value as number }))} style={{ height: '75px' }} borderWidth={0.75} />
             <VSheet>
               <div>
                 <VLabel class={['d-inline']}>Cache Size</VLabel>: {toBytes(appStore.sizes?.cacheSize)}
