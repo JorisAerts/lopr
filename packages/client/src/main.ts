@@ -1,5 +1,5 @@
-import 'js-proxy-ui/style'
-import 'js-proxy-ui/components/Transition'
+import 'lopr-ui/style'
+import 'lopr-ui/components/Transition'
 
 import { app } from './app'
 

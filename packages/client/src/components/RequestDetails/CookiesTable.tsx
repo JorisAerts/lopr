@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue'
 import { makeUUIDProps } from '../../composables/uuid'
 import { useRequest } from '../../composables/request'
-import { VTable } from 'js-proxy-ui/components'
+import { VTable } from 'lopr-ui/components'
 
 export const CookiesTable = defineComponent({
   name: 'CookiesTable',

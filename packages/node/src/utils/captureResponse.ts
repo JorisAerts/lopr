@@ -5,7 +5,7 @@ import type { ServerOptions } from '../server'
 import { cacheDir } from './temp-dir'
 import { mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
-import type { ProxyState } from 'js-proxy-shared'
+import type { ProxyState } from 'lopr-shared'
 
 export const captureResponse = (res: ProxyResponse, options: ServerOptions, state: ProxyState) => {
   // Variables to capture response data

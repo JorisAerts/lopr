@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, shallowRef, watch } from 'vue'
-import type { BreakPoint } from 'js-proxy-shared'
-import { type ProxyState, WebSocketMessageType } from 'js-proxy-shared'
+import type { BreakPoint } from 'lopr-shared'
+import { type ProxyState, WebSocketMessageType } from 'lopr-shared'
 import { registerDataHandler, sendWsData } from '../utils/websocket'
 
 export const STORE_NAME = 'Proxy State'

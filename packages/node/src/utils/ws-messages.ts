@@ -1,5 +1,5 @@
 import type { IncomingMessage } from 'http'
-import type { ProxyRequestInfo, ProxyResponseInfo, Timestamped, UUID } from 'js-proxy-shared'
+import type { ProxyRequestInfo, ProxyResponseInfo, Timestamped, UUID } from 'lopr-shared'
 import type { ProxyRequest } from '../server/ProxyRequest'
 import type * as http from 'node:http'
 import { extractProtocol } from '../proxy/utils'

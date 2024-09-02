@@ -1,7 +1,7 @@
 import type { Tab } from './request-detail-tabs'
 import { useRequestDetailTabs } from './request-detail-tabs'
 import { defineComponent, reactive, ref, watch } from 'vue'
-import { VBtn, VTab, VTabItem, VTabItems, VTabs } from 'js-proxy-ui/components'
+import { VBtn, VTab, VTabItem, VTabItems, VTabs } from 'lopr-ui/components'
 import { RequestOverviewTable } from './RequestOverviewTable'
 import { HeadersTable } from './HeadersTable'
 import { ResponseBody } from './ResponseBody'
@@ -9,7 +9,7 @@ import { CookiesTable } from './CookiesTable'
 import { makeUUIDProps, useUUID } from '../../composables/uuid'
 import { useRequest } from '../../composables/request'
 import { useResponse } from '../../composables/response'
-import { HTTP_HEADER_COOKIE } from 'js-proxy-shared'
+import { HTTP_HEADER_COOKIE } from 'lopr-shared'
 import { resumeRequest, resumeResponse } from '../../stores/request'
 
 const REQUEST_TAB_INDEX = 0

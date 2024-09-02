@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
-import { VContainer } from 'js-proxy-ui'
+import { VContainer } from 'lopr-ui'
 
 export const Error404 = defineComponent({
   name: 'v-error-404',

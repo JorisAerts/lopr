@@ -1,5 +1,5 @@
 {
-  "name": "@jorisaerts/js-proxy",
+  "name": "@jorisaerts/lopr",
   "version": "0.1.0",
   "description": "Local proxy server with a GUI",
   "keywords": [
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JorisAerts/js-proxy.git"
+    "url": "https://github.com/JorisAerts/lopr.git"
   },
   "files": [
     "dist/**/*",
@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@mongodb-js/zstd": "1.2.0",
-    "js-proxy-shared": "workspace:*",
+    "lopr-shared": "workspace:*",
     "node-forge": "1.3.1",
     "picocolors": "1.0.1",
     "uuid": "10.0.0",

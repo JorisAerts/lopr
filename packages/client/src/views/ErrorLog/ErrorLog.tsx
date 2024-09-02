@@ -1,5 +1,5 @@
 import { defineComponent, TransitionGroup } from 'vue'
-import { VBtn, VCard, VSheet } from 'js-proxy-ui'
+import { VBtn, VCard, VSheet } from 'lopr-ui'
 import { useErrorLogStore } from '../../stores/errorlog'
 
 export const ErrorLog = defineComponent({

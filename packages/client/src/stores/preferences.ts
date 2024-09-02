@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { reactive, watch } from 'vue'
 import { bindLocalStorage } from '../composables/localStorage'
 import { registerDataHandler, sendWsData } from '../utils/websocket'
-import { type WebSocketMessage, WebSocketMessageType } from 'js-proxy-shared'
+import { type WebSocketMessage, WebSocketMessageType } from 'lopr-shared'
 import { useDarkMode } from '../composables/dark-mode'
 
 export const STORE_NAME = 'Preferences'

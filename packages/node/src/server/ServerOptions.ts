@@ -1,5 +1,5 @@
 import type { Logger } from '../utils/logger'
-import type { UseCache } from 'js-proxy-shared'
+import type { UseCache } from 'lopr-shared'
 
 /**
  * Options passed to the CLI

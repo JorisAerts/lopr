@@ -1,6 +1,6 @@
 import { computed, defineComponent, Teleport } from 'vue'
-import { APP_NAME } from 'js-proxy-shared'
-import { DominoMask_Fill } from 'js-proxy-ui/icons'
+import { APP_NAME } from 'lopr-shared'
+import { DominoMask_Fill } from 'lopr-ui/icons'
 
 export const VAppHeader = defineComponent({
   name: 'v-app-header',

@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'vue'
 import { computed, defineComponent, onMounted, TransitionGroup } from 'vue'
-import { VCard, VIcon, VLabel, VPieChart, VSheet, VTooltip } from 'js-proxy-ui'
+import { VCard, VIcon, VLabel, VPieChart, VSheet, VTooltip } from 'lopr-ui'
 import { useCertificateStore } from '../../stores/certificates'
 import { toBytes } from '../../utils/to-bytes'
 import { useAppStore } from '../../stores/app'

@@ -1,5 +1,5 @@
 {
-  "name": "js-proxy-shared",
+  "name": "lopr-shared",
   "version": "0.1.0",
   "description": "A reverse proxy server with a GUI",
   "keywords": [
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JorisAerts/js-proxy.git"
+    "url": "https://github.com/JorisAerts/lopr.git"
   },
   "exports": {
     ".": {

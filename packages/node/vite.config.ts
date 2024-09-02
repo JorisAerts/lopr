@@ -10,7 +10,7 @@ export default defineConfig((env: ConfigEnv) => ({
     minifyIdentifiers: true,
   },
   optimizeDeps: {
-    include: ['js-proxy-shared'],
+    include: ['lopr-shared'],
   },
   build: {
     minify: true,

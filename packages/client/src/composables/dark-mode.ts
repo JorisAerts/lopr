@@ -1,4 +1,4 @@
-import { useSystemDarkMode } from 'js-proxy-ui'
+import { useSystemDarkMode } from 'lopr-ui'
 import { watchEffect } from 'vue'
 import { bindLocalStorage } from './localStorage'
 

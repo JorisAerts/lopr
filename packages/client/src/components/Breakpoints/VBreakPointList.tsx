@@ -1,7 +1,7 @@
 import type { PropType } from 'vue'
 import { defineComponent, toRef } from 'vue'
-import type { BreakPoint, UrlMatch } from 'js-proxy-shared'
-import { VBtn, VCard, VCheckbox, VList, VListItem, VSheet, VTooltip } from 'js-proxy-ui'
+import type { BreakPoint, UrlMatch } from 'lopr-shared'
+import { VBtn, VCard, VCheckbox, VList, VListItem, VSheet, VTooltip } from 'lopr-ui'
 
 const breakpointToString = (breakPoint: BreakPoint) => {
   let ret = `${
