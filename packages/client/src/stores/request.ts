@@ -118,8 +118,9 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
    * Clear the store (front- and backend)
    */
   const clear = () => {
-    fetch('/api/state?clear').then(clearState)
-    useAppStore().clear()
+    fetch('/api/state?clear') //
+      .then(clearState)
+      .then(useAppStore().clear)
   }
   /**
    * If no state is provided, it's requested from the server
@@ -156,6 +157,8 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     }
     triggerRef(requests)
     registerUUID(data.uuid)
+
+    if (!useAppStore().fetching) useAppStore().clear()
   })
 
   registerDataHandler(WebSocketMessageType.ProxyResponse, ({ data }: WebSocketMessage<ProxyResponseInfo>) => {
@@ -168,6 +171,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
     }
     triggerRef(responses)
     registerUUID(data.uuid)
+    if (!useAppStore().fetching) useAppStore().clear()
   })
 
   // initially fetch the state from the server
