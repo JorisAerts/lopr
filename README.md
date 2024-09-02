@@ -1,4 +1,4 @@
-# Local Proxy
+# lopr  ⋅  local proxy
 
 A local proxy server driven by a User Interface, that allows easy analysis and debugging of web requests.  
 Ideal for debugging your local projects
