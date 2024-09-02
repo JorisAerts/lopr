@@ -3,6 +3,11 @@
 :root {
   --card-background: rgba(var(--background-color), var(--background-opacity));
   --card-border: none;
+  --card-shadow: none;
+}
+
+html.dark-mode {
+  --card-border: var(--border-size) var(--border-style) rgb(var(--border-color));
 }
 
 .v-card {
@@ -11,7 +16,13 @@
 
   border: var(--card-border);
 
-  &--clickable {
+  &__clickable {
     cursor: pointer;
   }
+
+  &__flat {
+    --card-border: none;
+    --card-shadow: none;
+  }
+
 }
