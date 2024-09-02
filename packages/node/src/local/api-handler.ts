@@ -72,7 +72,7 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
         })
         .catch((err) => {
           res.statusCode = 505
-          res.write(err).toString()
+          res.write(err.message)
         })
 
       return true

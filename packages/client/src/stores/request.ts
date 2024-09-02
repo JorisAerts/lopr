@@ -7,6 +7,7 @@ import { registerDataHandler, sendWsData } from '../utils/websocket'
 import type { ProxyResponseInfo } from 'js-proxy-shared/Response'
 import type { UUID } from 'js-proxy-shared/UUID'
 import { useProxyStore } from './proxy'
+import { useAppStore } from './app'
 
 export const STORE_NAME = 'Requests'
 
@@ -116,8 +117,10 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   /**
    * Clear the store (front- and backend)
    */
-  const clear = () => fetch('/api/state?clear').then(clearState)
-
+  const clear = () => {
+    fetch('/api/state?clear').then(clearState)
+    useAppStore().clear()
+  }
   /**
    * If no state is provided, it's requested from the server
    */
