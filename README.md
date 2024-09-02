@@ -1,6 +1,7 @@
-# Reverse Proxy
+# Local Proxy
 
-A reverse proxy server driven by a User Interface, which allows easy analysis and debugging of web requests.
+A local proxy server driven by a User Interface, that allows easy analysis and debugging of web requests.  
+Ideal for debugging your local projects
 
 ### Building and Running
 

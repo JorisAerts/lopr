@@ -1,7 +1,7 @@
 {
   "name": "@jorisaerts/js-proxy",
   "version": "0.1.0",
-  "description": "A reverse proxy server with a GUI",
+  "description": "Local proxy server with a GUI",
   "keywords": [
     "reverse proxy",
     "proxy",
@@ -12,7 +12,8 @@
     "http",
     "https",
     "monitoring",
-    "middleware"
+    "middleware",
+    "local"
   ],
   "license": "MIT",
   "main": "dist/index.js",
