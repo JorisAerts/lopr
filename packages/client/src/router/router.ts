@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { RouteNames } from './RouteNames'
-import { Error404, ErrorLog, ErrorLogControlsToolbar, Information, Request, RequestControlsToolbar } from '../views'
-import { ErrorWsDown } from '../views/Error/ErrorWsDown'
+import { Error404, ErrorLog, ErrorLogControlsToolbar, ErrorWsDown, Information, InformationControlsToolbar, Request, RequestControlsToolbar } from '../views'
 
 export const router = createRouter({
   history: createWebHashHistory(),
@@ -20,6 +19,7 @@ export const router = createRouter({
       path: '/info',
       components: {
         default: Information,
+        controls: InformationControlsToolbar,
       },
     },
 

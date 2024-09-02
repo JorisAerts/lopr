@@ -1,8 +1,8 @@
 import type { CSSProperties } from 'vue'
 import { computed, defineComponent, ref, TransitionGroup } from 'vue'
-import { VCard, VIcon, VLabel, VPieChart, VSheet, VTooltip } from 'js-proxy-ui'
-import { useCertificateStore } from '../stores/certificates'
-import { toBytes } from '../utils/to-bytes'
+import { VCard, VIcon, VLabel, VPieChart, VSheet, VTooltip } from '../../../../ui/src'
+import { useCertificateStore } from '../../stores/certificates'
+import { toBytes } from '../../utils/to-bytes'
 
 export const Information = defineComponent({
   name: 'app-information',
