@@ -27,7 +27,7 @@ interface RootKeyFiles {
 
 const ROOT_KEY_FILES: RootKeyFiles = getRootKeyFiles()
 
-function getRootKeyFiles(): RootKeyFiles {
+export function getRootKeyFiles(): RootKeyFiles {
   const tmpCert = join(tempDir(), 'cert', 'root', 'rootCA.crt')
   const tmpKey = join(tempDir(), 'cert', 'root', 'rootCA.key')
   // if there's a root certificate in the temp folder, use that one

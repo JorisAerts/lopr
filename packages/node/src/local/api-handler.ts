@@ -10,7 +10,7 @@ import type { UUID } from 'lopr-shared/UUID'
 import { readFile } from 'fs/promises'
 import { existsSync } from 'fs'
 import { join } from 'path'
-import { certificatesDir } from '../utils/cert-utils'
+import { certificatesDir, getRootKeyFiles } from '../utils/cert-utils'
 import { dirSize } from '../utils/fs'
 import { cacheDir } from '../utils/temp-dir'
 
@@ -32,7 +32,7 @@ export const handleApi = (req: ProxyRequest, res: ProxyResponse, options: Server
         })
       return true
     } else if (url.pathname === '/api/data' && url.query.cert) {
-      const cert = join(certificatesDir(), `${url.query.cert}.crt`)
+      const cert = url.query.cert === 'root' ? getRootKeyFiles().cert : join(certificatesDir(), `${url.query.cert}.crt`)
       if (!existsSync(cert)) {
         res.statusCode = 404
         res.write('Not Found').toString()
