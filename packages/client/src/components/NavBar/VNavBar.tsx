@@ -6,17 +6,19 @@ import { useErrorLogStore } from '../../stores/errorlog'
 import { RouterView, useRouter } from 'vue-router'
 import { RouteNames } from '../../router/RouteNames'
 import { AppPreferences } from '../AppPreferences'
+import { useRequestStore } from '../../stores/request'
 
 export const VNavBar = defineComponent({
   name: 'v-nav-bar',
 
   setup() {
-    const iconSize = 20
+    const requestStore = useRequestStore()
     const errorLogStore = useErrorLogStore()
+    const iconSize = 20
     const router = useRouter()
-    const pushRoute = (name: RouteNames) => () => {
+    const pushRoute = (name: RouteNames, params?: Record<string, string>) => () => {
       try {
-        return router.push({ name })
+        return router.push({ name, params })
       } catch (error) {
         console.warn(error)
       }
@@ -33,7 +35,14 @@ export const VNavBar = defineComponent({
           }}
         </RouterView>
         <VSpacer />
-        <VBtn tooltip={'Requests'} icon={'Monitoring'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.Requests)} />
+        <VBtn
+          tooltip={'Requests'}
+          icon={'Monitoring'}
+          size={iconSize}
+          class={['pa-1']}
+          transparent
+          onClick={() => pushRoute(requestStore.current ? RouteNames.RequestDetails : RouteNames.Requests, { uuid: requestStore.current as string })()}
+        />
         <VBtn tooltip={'Information'} icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.Information)} />
         <VDialog clickOutsideToClose>
           {{

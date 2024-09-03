@@ -34,8 +34,8 @@ export const Request = defineComponent({
     watch(
       () => requestStore.current,
       () => {
-        if (requestStore.current !== route.params.uuid) {
-          router.push({ name: RouteNames.RequestsDetails, params: { uuid: requestStore.current } })
+        if (requestStore.current && requestStore.current !== route.params.uuid) {
+          return router.push({ name: RouteNames.RequestDetails, params: { uuid: requestStore.current } })
         }
       },
       { immediate: true }
@@ -45,7 +45,11 @@ export const Request = defineComponent({
     const requestViewType = ref(1)
     const expanded = ref<string[]>([])
 
-    watch(requestStore.ids, (newVal) => !newVal.length && (requestStore.current = undefined))
+    watch(requestStore.ids, (newVal) => {
+      if (newVal.length) return
+      router.push({ name: RouteNames.Requests })
+      requestStore.current = undefined
+    })
 
     const sorting = ref(Sorting.None)
 
