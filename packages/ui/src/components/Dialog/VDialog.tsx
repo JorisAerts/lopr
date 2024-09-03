@@ -11,6 +11,10 @@ export interface VDialogActivatorProps {
   props: VDialogActivatorEventHandlers
 }
 
+export interface VDialogDefaultProps {
+  close: (...args: any[]) => any
+}
+
 export const VDialog = defineComponent({
   name: 'v-dialog',
 
@@ -40,9 +44,11 @@ export const VDialog = defineComponent({
       emit('update:modelValue', modelValue.value)
     }
 
+    const internalClose = () => emit('update:modelValue', (modelValue.value = false))
+
     const close = (e: Event) => {
       if (!modelValue.value || !props.clickOutsideToClose || (e.target && (e.target === dialog.value || dialog.value?.contains(e.target as Node)))) return
-      emit('update:modelValue', (modelValue.value = false))
+      internalClose()
     }
 
     addDOMListener(document, 'mousedown', close)
@@ -55,7 +61,7 @@ export const VDialog = defineComponent({
             <Teleport to={props.contentTarget}>
               <VWindowOverlay class={['v-dialog']} transparent={props.transparent} centered={props.centered} {...attrs} {...{ onClick: close }}>
                 <section ref={dialog} class={['v-dialog--contents']}>
-                  {slots.default?.()}
+                  {slots.default?.({ close: internalClose } as VDialogDefaultProps)}
                 </section>
               </VWindowOverlay>
             </Teleport>
