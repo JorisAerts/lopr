@@ -16,9 +16,9 @@
     "local"
   ],
   "license": "MIT",
-  "main": "dist/index.js",
   "bin": "dist/index.js",
   "type": "module",
+  "module": "./dist/my-lib.js",
   "author": {
     "name": "Joris Aerts",
     "url": "https://github.com/JorisAerts"
@@ -32,7 +32,9 @@
     "cert/**/*"
   ],
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "import": "./dist/index.js"
+    }
   },
   "scripts": {
     "copy:client": "cp -R ../client/dist ./dist/client",
