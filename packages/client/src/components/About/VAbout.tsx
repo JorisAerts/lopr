@@ -1,5 +1,6 @@
 import { defineComponent } from 'vue'
-import { VBtn, VCard, VDialogCard, VDialogCardButtons } from 'lopr-ui'
+import { addDOMListenerOnMounted, VBtn, VCard, VDialogCard, VDialogCardButtons } from 'lopr-ui'
+import { APP_NAME, APP_VERSION } from 'lopr-shared'
 
 export const VAbout = defineComponent({
   name: 'VAbout',
@@ -7,9 +8,22 @@ export const VAbout = defineComponent({
   emits: ['close'],
 
   setup(props, { emit }) {
+    const close = () => emit('close')
+
+    addDOMListenerOnMounted(document, 'keydown', (e: KeyboardEvent) => {
+      console.log(e.key)
+      if (['Enter', 'Escape', 'Backspace', ' '].includes(e.key)) {
+        e.preventDefault()
+        console.log('close')
+        close()
+      }
+    })
+
     return () => (
       <VDialogCard class={['d-flex', 'flex-column', 'pa-3', 'gap-2']}>
-        <h2 class={'mb-2'}>lopr 0.0.4</h2>
+        <h2 class={'mb-2'}>
+          {APP_NAME} {APP_VERSION}
+        </h2>
         <VCard flat class={['pa-3']}>
           <div>Joris Aerts © 2024</div>
           <div>
@@ -19,7 +33,7 @@ export const VAbout = defineComponent({
           </div>
         </VCard>
         <VDialogCardButtons>
-          <VBtn onClick={() => emit('close')}>OK</VBtn>
+          <VBtn onClick={close}>OK</VBtn>
         </VDialogCardButtons>
       </VDialogCard>
     )
