@@ -1,6 +1,7 @@
 export enum RouteNames {
   Home = 'home',
   Requests = 'requests',
+  RequestsDetails = 'requests-details',
 
   Information = 'info',
   Preferences = 'preferences',

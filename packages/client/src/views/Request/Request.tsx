@@ -2,8 +2,12 @@ import type { PropType } from 'vue'
 import { computed, defineComponent, ref, Transition, watch } from 'vue'
 import { VBtn, VBtnGroup, VCard, VContainer, VSheet, VSpacer } from 'lopr-ui'
 import { useRequestStore } from '../../stores/request'
+import type { UUID } from 'lopr-shared'
 import { Sorting } from 'lopr-shared'
 import { RequestDetails, RequestSequence, RequestStructure } from '../../components'
+import { useRoute } from 'vue-router'
+import { router } from '../../router'
+import { RouteNames } from '../../router/RouteNames'
 
 export const Request = defineComponent({
   name: 'requests-monitor',
@@ -14,8 +18,30 @@ export const Request = defineComponent({
 
   setup(props) {
     const requestStore = useRequestStore()
-    const width = computed(() => (typeof props.width === 'number' ? `${props.width}px` : props.width))
+    const route = useRoute()
 
+    watch(
+      () => route.params,
+      () => {
+        const { uuid } = route.params
+        if (uuid && !Array.isArray(uuid)) {
+          requestStore.current = uuid as UUID
+        }
+      },
+      { immediate: true }
+    )
+
+    watch(
+      () => requestStore.current,
+      () => {
+        if (requestStore.current !== route.params.uuid) {
+          router.push({ name: RouteNames.RequestsDetails, params: { uuid: requestStore.current } })
+        }
+      },
+      { immediate: true }
+    )
+
+    const width = computed(() => (typeof props.width === 'number' ? `${props.width}px` : props.width))
     const requestViewType = ref(1)
     const expanded = ref<string[]>([])
 
