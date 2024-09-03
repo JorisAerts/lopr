@@ -11,10 +11,8 @@ export const VAbout = defineComponent({
     const close = () => emit('close')
 
     addDOMListenerOnMounted(document, 'keydown', (e: KeyboardEvent) => {
-      console.log(e.key)
       if (['Enter', 'Escape', 'Backspace', ' '].includes(e.key)) {
         e.preventDefault()
-        console.log('close')
         close()
       }
     })
