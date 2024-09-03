@@ -76,3 +76,10 @@ sup {
   vertical-align: top;
   vertical-align: text-top;
 }
+
+
+a.hidden-link {
+  &, &:hover, &:active, &:focus, &:visited {
+    color: var(--text-color);
+  }
+}
