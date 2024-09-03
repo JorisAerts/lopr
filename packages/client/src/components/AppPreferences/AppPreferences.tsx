@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { VCard, VCheckbox, VLabel, VSwitch, VTooltip } from 'lopr-ui/components'
+import { VCard, VCheckbox, VDialogCard, VLabel, VSwitch, VTooltip } from 'lopr-ui/components'
 import { usePreferencesStore } from '../../stores/preferences'
 
 export const AppPreferences = defineComponent({
@@ -8,7 +8,7 @@ export const AppPreferences = defineComponent({
   setup() {
     const preferencesStore = usePreferencesStore()
     return () => (
-      <VCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'd-flex', 'flex-column', 'pa-3', 'gap-2']}>
+      <VDialogCard class={['fill-height', 'overflow-auto', 'flex-grow-1', 'd-flex', 'flex-column', 'pa-3', 'gap-2']}>
         <h2 class={'mb-2'}>Preferences</h2>
         <VCard flat class={['pa-3']}>
           <h3>Appearance</h3>
@@ -25,7 +25,7 @@ export const AppPreferences = defineComponent({
             <VCheckbox label={'Enable SSL Proxying'} v-model={preferencesStore.proxySSL} />
           </VTooltip>
         </VCard>
-      </VCard>
+      </VDialogCard>
     )
   },
 })
