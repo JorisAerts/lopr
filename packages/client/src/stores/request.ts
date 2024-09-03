@@ -104,6 +104,8 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   const isEmpty = computed(() => ids.value.length === 0)
 
   const clearState = () => {
+    current.value = undefined
+
     ids.value.length = 0
     recent.value.clear()
     responses.value.clear()
