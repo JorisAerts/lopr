@@ -1,5 +1,5 @@
 import { defineComponent, ref } from 'vue'
-import { VBtn, VDialog, VDialogCard, VSwitch, VToolbar } from 'lopr-ui'
+import { VBtn, VDialog, VDialogCard, VDialogTitle, VSwitch, VToolbar } from 'lopr-ui'
 import { useRequestStore } from '../../stores/request'
 import { VBreakpoints } from '../../components'
 import { useProxyStore } from '../../stores/proxy'
@@ -21,7 +21,7 @@ export const RequestControlsToolbar = defineComponent({
             ),
             default: () => (
               <VDialogCard class={['pa-2']}>
-                <h3>Breakpoints</h3>
+                <VDialogTitle>Breakpoints</VDialogTitle>
                 <VBreakpoints class={['mt-2']} onClose={() => (dlg.value = false)} />
               </VDialogCard>
             ),

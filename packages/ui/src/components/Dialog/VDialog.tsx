@@ -1,7 +1,8 @@
 import './VDialog.scss'
-import { defineComponent, onMounted, ref, Teleport, watch } from 'vue'
+import { defineComponent, onMounted, provide, ref, Teleport, Transition, watch } from 'vue'
 import { addDOMListenerOnMounted } from '../../utils'
 import { VWindowOverlay } from '../WindowOverlay'
+import { DIALOG_CLOSE_SYMBOL } from './dialog'
 
 export interface VDialogActivatorEventHandlers {
   onClick<Args extends any[]>(...args: Args): any
@@ -60,19 +61,23 @@ export const VDialog = defineComponent({
 
     addDOMListenerOnMounted(document, 'mousedown', close)
 
+    provide(DIALOG_CLOSE_SYMBOL, internalClose)
+
     return () => (
       <>
         <>{slots.activator?.({ props: { onClick: activate } } as VDialogActivatorProps)}</>
         <>
-          {modelValue.value === true && (
-            <Teleport to={props.contentTarget}>
-              <VWindowOverlay class={['v-dialog']} transparent={props.transparent} centered={props.centered} {...attrs} {...{ onClick: close }}>
-                <section ref={dialog} class={['v-dialog--contents']}>
-                  {slots.default?.({ close: internalClose } as VDialogDefaultProps)}
-                </section>
-              </VWindowOverlay>
-            </Teleport>
-          )}
+          <Teleport to={props.contentTarget}>
+            <Transition>
+              {modelValue.value === true && (
+                <VWindowOverlay class={['v-dialog']} transparent={props.transparent} centered={props.centered} {...attrs} {...{ onClick: close }}>
+                  <section ref={dialog} class={['v-dialog--contents']}>
+                    {slots.default?.({ close: internalClose } as VDialogDefaultProps)}
+                  </section>
+                </VWindowOverlay>
+              )}
+            </Transition>
+          </Teleport>
         </>
       </>
     )
