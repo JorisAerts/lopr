@@ -2,8 +2,12 @@ import type { PropType } from 'vue'
 import { computed, defineComponent, ref, Transition, watch } from 'vue'
 import { VBtn, VBtnGroup, VCard, VContainer, VSheet, VSpacer } from 'lopr-ui'
 import { useRequestStore } from '../../stores/request'
+import type { UUID } from 'lopr-shared'
 import { Sorting } from 'lopr-shared'
 import { RequestDetails, RequestSequence, RequestStructure } from '../../components'
+import { useRoute } from 'vue-router'
+import { router } from '../../router'
+import { RouteNames } from '../../router/RouteNames'
 
 export const Request = defineComponent({
   name: 'requests-monitor',
@@ -14,12 +18,38 @@ export const Request = defineComponent({
 
   setup(props) {
     const requestStore = useRequestStore()
-    const width = computed(() => (typeof props.width === 'number' ? `${props.width}px` : props.width))
+    const route = useRoute()
 
+    watch(
+      () => route.params,
+      () => {
+        const { uuid } = route.params
+        if (uuid && !Array.isArray(uuid)) {
+          requestStore.current = uuid as UUID
+        }
+      },
+      { immediate: true }
+    )
+
+    watch(
+      () => requestStore.current,
+      () => {
+        if (requestStore.current && requestStore.current !== route.params.uuid) {
+          return router.push({ name: RouteNames.RequestDetails, params: { uuid: requestStore.current } })
+        }
+      },
+      { immediate: true }
+    )
+
+    const width = computed(() => (typeof props.width === 'number' ? `${props.width}px` : props.width))
     const requestViewType = ref(1)
     const expanded = ref<string[]>([])
 
-    watch(requestStore.ids, (newVal) => !newVal.length && (requestStore.current = undefined))
+    watch(requestStore.ids, (newVal) => {
+      if (newVal.length) return
+      router.push({ name: RouteNames.Requests })
+      requestStore.current = undefined
+    })
 
     const sorting = ref(Sorting.None)
 
@@ -31,6 +61,7 @@ export const Request = defineComponent({
           style={{
             width: width.value,
             'max-width': width.value,
+            'min-width': width.value,
           }}
         >
           <VSheet class={['d-flex', 'px-3', 'align-items-center']}>
@@ -60,7 +91,7 @@ export const Request = defineComponent({
               <VBtn tooltip={'Structure view'} icon={'AccountTree'} size={20} class={['pa-1']} transparent onClick={() => (requestViewType.value = 1)} />
             </VBtnGroup>
           </VSheet>
-          <VSheet class={['fill-height', 'overflow-auto', 'mt-2', 'px-2']}>
+          <VSheet class={['fill-height', 'overflow-auto', 'mt-2', 'px-1']}>
             {requestViewType.value === 0 ? ( //
               <RequestSequence v-model={requestStore.current} />
             ) : (

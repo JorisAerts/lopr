@@ -1,4 +1,4 @@
-import { computed, defineComponent, onMounted, Transition, TransitionGroup } from 'vue'
+import { computed, defineComponent, ref, Transition, TransitionGroup, watch } from 'vue'
 import { VCard, VLabel, VPieChart, VSheet } from 'lopr-ui'
 import { useCertificateStore } from '../../stores/certificates'
 import { toBytes } from '../../utils/to-bytes'
@@ -10,8 +10,12 @@ export const Information = defineComponent({
   setup() {
     const certStore = useCertificateStore()
     const appStore = useAppStore()
-
-    onMounted(() => (appStore.sizes = undefined))
+    const cachedSizes = ref()
+    watch(
+      () => appStore.sizes,
+      () => appStore.sizes != null && (cachedSizes.value = appStore.sizes),
+      { immediate: true, deep: true }
+    )
 
     const certificates = computed(() =>
       [...certStore.certificates].toSorted().map((certFile) => {
@@ -25,13 +29,13 @@ export const Information = defineComponent({
         <VCard flat class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
           <h2>Information</h2>
           <VSheet class={['d-flex', 'gap-4']}>
-            <VPieChart values={Object.entries(appStore.sizes ?? {}).map(([, value]) => ({ value: value as number }))} style={{ height: '75px' }} borderWidth={0.75} />
+            <VPieChart values={Object.entries(cachedSizes.value ?? {}).map(([, value]) => ({ value: value as number }))} style={{ height: '75px' }} borderWidth={0.75} />
             <VSheet>
               <div>
-                <VLabel class={['d-inline']}>Cache Size</VLabel>: <Transition>{toBytes(appStore.sizes?.cacheSize)}</Transition>
+                <VLabel class={['d-inline']}>Cache Size</VLabel>: <Transition>{toBytes(cachedSizes.value?.cacheSize)}</Transition>
               </div>
               <div>
-                <VLabel class={['d-inline']}>Certificates Size</VLabel>: <Transition>{toBytes(appStore.sizes?.certSize)}</Transition>
+                <VLabel class={['d-inline']}>Certificates Size</VLabel>: <Transition>{toBytes(cachedSizes.value?.certSize)}</Transition>
               </div>
             </VSheet>
           </VSheet>

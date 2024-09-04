@@ -12,6 +12,17 @@ export const router = createRouter({
         default: Request,
         controls: RequestControlsToolbar,
       },
+
+      children: [
+        {
+          name: RouteNames.RequestDetails,
+          path: 'r/:uuid?',
+          components: {
+            default: Request,
+            controls: RequestControlsToolbar,
+          },
+        },
+      ],
     },
 
     {

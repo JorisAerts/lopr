@@ -57,7 +57,6 @@ export const VBreakpoints = defineComponent({
         </VSheet>
         <VDialogCardButtons>
           <VBtn onClick={handleClose}>Cancel</VBtn>
-          <VBtn onClick={handleApply}>Apply</VBtn>
           <VBtn onClick={handleCommit}>OK</VBtn>
         </VDialogCardButtons>
       </VSheet>

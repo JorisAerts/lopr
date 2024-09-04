@@ -13,7 +13,7 @@
   --parent-padding: 0px;
 
   .v-list-item {
-    --list-indent-padding: calc(var(--parent-padding) + var(--list-indent));
+    --list-indent-padding: calc(var(--list-padding) + var(--parent-padding) + var(--list-indent));
   }
 
   // "un-indent"

@@ -53,7 +53,6 @@ export const RequestSequence = defineComponent({
                   prependIcon={'Public'}
                   class={[
                     'py-0',
-                    'mx-1',
                     {
                       selected: props.modelValue === req.uuid,
                     },

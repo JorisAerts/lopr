@@ -14,7 +14,7 @@ export const VCertificate = defineComponent({
       <VCard class={['pa-2', 'd-flex', 'align-items-center', 'overflow-ellipsis']} style={{ width: 'calc(20% - 8px)' }}>
         <VIcon name={'ShieldLock'} class={'mr-2'} size={33} style={{ float: 'left' }} />
         <VTooltip text={props.host}>
-          <a href={`/api/data?cert=${props.host}`} download={`${props.host}.crt`}>
+          <a href={`/api/data?cert=${props.host}`}>
             <span style={{ 'word-wrap': 'break-word' as CSSProperties['word-wrap'] }}>{props.host}</span>
           </a>
         </VTooltip>
