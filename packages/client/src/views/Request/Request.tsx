@@ -61,6 +61,7 @@ export const Request = defineComponent({
           style={{
             width: width.value,
             'max-width': width.value,
+            'min-width': width.value,
           }}
         >
           <VSheet class={['d-flex', 'px-3', 'align-items-center']}>
