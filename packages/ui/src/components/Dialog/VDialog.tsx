@@ -1,6 +1,6 @@
 import './VDialog.scss'
 import { defineComponent, onMounted, ref, Teleport, watch } from 'vue'
-import { addDOMListener } from '../../utils'
+import { addDOMListenerOnMounted } from '../../utils'
 import { VWindowOverlay } from '../WindowOverlay'
 
 export interface VDialogActivatorEventHandlers {
@@ -27,6 +27,7 @@ export const VDialog = defineComponent({
     contentTarget: { type: [String, Object], default: () => 'body' },
 
     clickOutsideToClose: { type: Boolean, default: false },
+    escapeToClose: { type: Boolean, default: false },
   },
 
   setup(props, { slots, attrs, emit }) {
@@ -51,7 +52,13 @@ export const VDialog = defineComponent({
       internalClose()
     }
 
-    addDOMListener(document, 'mousedown', close)
+    addDOMListenerOnMounted(document, 'keydown', (e: KeyboardEvent) => {
+      if (props.escapeToClose && e.key === 'Escape') {
+        internalClose()
+      }
+    })
+
+    addDOMListenerOnMounted(document, 'mousedown', close)
 
     return () => (
       <>

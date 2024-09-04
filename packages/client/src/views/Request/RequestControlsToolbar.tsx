@@ -14,7 +14,7 @@ export const RequestControlsToolbar = defineComponent({
     return () => (
       <VToolbar class={['v-app-controls-toolbar']}>
         <VSwitch tooltip={'Play/Pause'} v-model:checked={proxyStore.recording} onIcon={'PlayArrow_Fill'} offIcon={'Pause_Fill'} />
-        <VDialog clickOutsideToClose v-model={dlg.value}>
+        <VDialog escapeToClose v-model={dlg.value}>
           {{
             activator: ({ props }: { props: Record<string, unknown> }) => (
               <VBtn tooltip="Breakpoints" class={['align-center', 'pa-1']} icon={'Dangerous_Fill'} size={20} transparent {...props} />
