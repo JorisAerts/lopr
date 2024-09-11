@@ -16,9 +16,9 @@
     "local"
   ],
   "license": "MIT",
-  "bin": "dist/index.js",
   "type": "module",
-  "module": "./dist/my-lib.js",
+  "bin": "dist/index.js",
+  "module": "./dist/index.js",
   "author": {
     "name": "Joris Aerts",
     "url": "https://github.com/JorisAerts"
