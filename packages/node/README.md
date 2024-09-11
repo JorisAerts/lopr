@@ -1,13 +1,15 @@
-# lopr - local proxy
+# lopr ⋅ local proxy
 
-_lopr_ is a local proxy server, developed for debugging local requests.
+A local proxy server driven by a web interface.  
+Easy analysis and debugging of web requests, with http, https and ws support.  
+Ideal for debugging your local projects.
 
-To start lopr:
+### Usage
+
+This package is designed to run without installation:
 
 ```shell
-# pnpm
-pnpm dlx lopr
-
-# Yarn
 yarn dlx lopr
+
+pnpm dlx lopr
 ```
