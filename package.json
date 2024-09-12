@@ -1,4 +1,5 @@
 {
+  "version": "0.0.7",
   "description": "A reverse proxy server with a GUI",
   "keywords": [
     "reverse proxy",
@@ -35,7 +36,8 @@
     "preview": "cd packages/client && vite preview",
     "check:type": "yarn workspaces foreach --all --parallel run check:type",
     "test": "yarn workspaces foreach --all --parallel --no-private run test --run --pass-with-no-tests",
-    "publish": "yarn build && cd packages/node && yarn npm publish --tolerate-republish"
+    "publish": "yarn build && cd packages/node && yarn npm publish --tolerate-republish",
+    "bump-version": "tsc --outDir build && chmod +x ./build/scripts/bump.js && node ./build/scripts/bump.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",
