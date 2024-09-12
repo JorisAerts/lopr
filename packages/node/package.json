@@ -1,6 +1,6 @@
 {
   "name": "lopr",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Local proxy server with a GUI",
   "keywords": [
     "reverse proxy",
