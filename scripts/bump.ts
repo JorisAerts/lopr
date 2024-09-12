@@ -71,6 +71,13 @@ async function main() {
     json.version = str
     await writeFile(pkg, JSON.stringify(json, null, 2))
   }
+
+  console.info(`Bump constants`)
+  const RX_VERSION_REPLACE = /export const APP_VERSION = '([^']+)?'/
+  const constantsFile = join(packagesRoot, 'shared', 'src', 'constants.ts')
+  const data = await readFile(constantsFile)
+  const newConstants = data.toString().replace(RX_VERSION_REPLACE, () => `export const APP_VERSION = '${str}'`)
+  await writeFile(constantsFile, newConstants)
 }
 
 main()
