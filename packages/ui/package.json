@@ -70,8 +70,5 @@
   },
   "peerDependencies": {
     "vue": ">= 3.4 < 4"
-  },
-  "resolutions": {
-    "postcss": "^8.4.41"
   }
 }
