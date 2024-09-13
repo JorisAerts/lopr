@@ -41,7 +41,7 @@ export const Information = defineComponent({
           </VSheet>
           <h3 class={['mt-6']}>Certificates</h3>
           The root certificate should be trusted on your system, in order for SSH tunneling to work.
-          <VCertificate host={'root'} class={['mt-1']} />
+          <VCertificate host={'root'} tooltip={'The root certificate is the one from which all other certificates are generated.'} class={['mt-1']} />
           <h4 class={['mt-6']}>Intermediate certificates</h4>
           <div class={['d-flex', 'gap-2', 'flex-wrap']}>
             {!certStore.isEmpty ? (
