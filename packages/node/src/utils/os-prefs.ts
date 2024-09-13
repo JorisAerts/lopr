@@ -1,6 +1,6 @@
 import process from 'node:process'
 import { join } from 'path'
-import { readFile, writeFile } from 'fs/promises'
+import { readFile, rm, writeFile } from 'fs/promises'
 import { homedir } from 'os'
 import { APP_NAME } from 'lopr-shared'
 
@@ -14,3 +14,7 @@ export const preferencesFile = join(preferencesDir, `${APP_NAME}.prefs`)
 
 export const getPreferences = async () => readFile(preferencesFile, 'utf8')
 export const storePreferences = async (prefs: any) => writeFile(preferencesFile, JSON.stringify(prefs, null, 2))
+
+export const deletePreferences = async () => {
+  await rm(preferencesFile, { force: true })
+}
