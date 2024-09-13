@@ -14,6 +14,7 @@ export const VLabelWrapper = defineComponent(
         slots.default?.()
       ),
   {
+    inheritAttrs: false,
     name: 'v-label-wrapper',
     props: { modelValue: { type: String as PropType<string | undefined> } },
   }

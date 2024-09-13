@@ -1,12 +1,12 @@
 import type { PropType } from 'vue'
-import { computed, defineComponent, ref, Transition, watch } from 'vue'
+import { computed, defineComponent, ref, Transition, watch, watchEffect } from 'vue'
 import { VBtn, VBtnGroup, VCard, VContainer, VSheet, VSpacer } from 'lopr-ui'
 import { useRequestStore } from '../../stores/request'
 import type { UUID } from 'lopr-shared'
 import { Sorting } from 'lopr-shared'
 import { RequestDetails, RequestSequence, RequestStructure } from '../../components'
 import { useRoute } from 'vue-router'
-import { router } from '../../router'
+import { pushRoute, router } from '../../router'
 import { RouteNames } from '../../router/RouteNames'
 
 export const Request = defineComponent({
@@ -21,9 +21,9 @@ export const Request = defineComponent({
     const route = useRoute()
 
     watch(
-      () => route.params,
+      () => [route.params.uuid],
       () => {
-        const { uuid } = route.params
+        const uuid = route.params.uuid
         if (uuid && !Array.isArray(uuid)) {
           requestStore.current = uuid as UUID
         }
@@ -31,15 +31,16 @@ export const Request = defineComponent({
       { immediate: true }
     )
 
-    watch(
-      () => requestStore.current,
-      () => {
-        if (requestStore.current && requestStore.current !== route.params.uuid) {
-          return router.push({ name: RouteNames.RequestDetails, params: { uuid: requestStore.current } })
-        }
-      },
-      { immediate: true }
-    )
+    watchEffect(() => {
+      if (!requestStore.current) return
+      if (requestStore.initialized && !requestStore.isValidUUID(requestStore.current)) {
+        requestStore.current = undefined
+        return pushRoute({ name: RouteNames.Requests })
+      }
+      if (requestStore.current !== route.params.uuid) {
+        return pushRoute({ name: RouteNames.RequestDetails, params: { uuid: requestStore.current } })
+      }
+    })
 
     const width = computed(() => (typeof props.width === 'number' ? `${props.width}px` : props.width))
     const requestViewType = ref(1)

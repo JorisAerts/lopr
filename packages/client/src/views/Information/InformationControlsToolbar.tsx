@@ -9,7 +9,7 @@ export const InformationControlsToolbar = defineComponent({
     const requestStore = useRequestStore()
     return () => (
       <VToolbar class={['v-app-controls-toolbar']}>
-        <VBtn class={['align-center', 'py-1']} icon={'Delete'} size={20} transparent onClick={requestStore.clear}>
+        <VBtn class={['align-center', 'py-1']} icon={'Delete'} size={20} transparent onClick={() => requestStore.clear()}>
           Clear cache
         </VBtn>
         <VBtn disabled class={['align-center', 'py-1']} icon={'Delete'} size={20} transparent>

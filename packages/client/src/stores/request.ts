@@ -21,6 +21,7 @@ export interface StructNode {
 }
 
 export const useRequestStore = defineStore(STORE_NAME, () => {
+  const initialized = ref(false)
   const proxyState = useProxyStore()
 
   /**
@@ -119,11 +120,16 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   /**
    * Clear the store (front- and backend)
    */
-  const clear = () => {
-    fetch('/api/state?clear') //
-      .then(clearState)
-      .then(useAppStore().clear)
+  const clear = (port?: string) => {
+    if (port && port !== `${useAppStore().port}`) fetch(`/api/state?clear&port=${port}`)
+    else
+      fetch(`/api/state?clear`) //
+        .then(clearState)
+        .then(useAppStore().clear)
   }
+
+  const isValidUUID = (uuid?: string) => uuid && ids.value.includes(uuid as UUID)
+
   /**
    * If no state is provided, it's requested from the server
    */
@@ -133,7 +139,9 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
         .then((res) => res.json() as unknown as ProxyRequestHistory)
         .then((proxyState) => refresh(proxyState))
 
+    const oldCurrent = current.value
     clearState()
+    current.value = oldCurrent
     ;(Object.keys(data) as (keyof typeof data)[]).forEach((uuid) => {
       const item = data[uuid]
       if (item.request) requests.value.set(uuid, item.request)
@@ -141,12 +149,8 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
       registerUUID(uuid, false)
     })
 
-    if (current.value && !ids.value.includes(current.value)) current.value = undefined
-
     return Promise.resolve(data)
   }
-
-  const isValidUUID = (uuid?: string) => uuid && ids.value.includes(uuid as UUID)
 
   // register the handlers (they will overwrite the previous ones)
   registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }: WebSocketMessage<ProxyRequestInfo>) => {
@@ -177,9 +181,14 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   })
 
   // initially fetch the state from the server
-  refresh()
+  refresh().finally(() => {
+    initialized.value = true
+    triggerRef(current)
+  })
 
   return {
+    initialized,
+
     current,
 
     ids,

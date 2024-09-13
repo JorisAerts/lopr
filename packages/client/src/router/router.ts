@@ -67,3 +67,5 @@ export const router = createRouter({
     },
   ],
 })
+
+export const pushRoute = (...args: Parameters<(typeof router)['push']>) => router.push(...args)

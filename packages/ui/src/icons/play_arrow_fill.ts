@@ -1,0 +1,1 @@
+export const PlayArrow_Fill = "M8.6415 17.874v-11.748L17.85475 12 8.6415 17.874Z"

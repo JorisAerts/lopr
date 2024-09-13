@@ -1,7 +1,7 @@
 import type { WebSocketMessage, WebSocketMessageType, WebSocketMessageTypeDataMapping } from 'lopr-shared'
 import { parseWebSocketMessageEvent, WEBSOCKET_ROOT } from 'lopr-shared'
 import { RouteNames } from '../router/RouteNames'
-import { router } from '../router'
+import { pushRoute, router } from '../router'
 
 const url = new URL(location.toString())
 url.hash = ''
@@ -26,7 +26,7 @@ const retryCreate = (() => {
 
 function socketDown() {
   if (router.currentRoute.value.name !== RouteNames.ErrorWsDown) {
-    router.push({ name: RouteNames.ErrorWsDown, replace: false })
+    pushRoute({ name: RouteNames.ErrorWsDown, replace: false })
   }
 }
 

@@ -7,15 +7,16 @@ export const VCertificate = defineComponent({
 
   props: {
     host: { type: String },
+    tooltip: { type: String },
   },
 
-  setup(props, { emit }) {
+  setup(props, { slots }) {
     return () => (
       <VCard class={['pa-2', 'd-flex', 'align-items-center', 'overflow-ellipsis']} style={{ width: 'calc(20% - 8px)' }}>
-        <VIcon name={'ShieldLock'} class={'mr-2'} size={33} style={{ float: 'left' }} />
-        <VTooltip text={props.host}>
+        <VIcon name={'ShieldLock_Fill'} class={'mr-2'} size={33} style={{ float: 'left' }} />
+        <VTooltip text={props.tooltip ?? props.host}>
           <a href={`/api/data?cert=${props.host}`}>
-            <span style={{ 'word-wrap': 'break-word' as CSSProperties['word-wrap'] }}>{props.host}</span>
+            <span style={{ 'word-wrap': 'break-word' as CSSProperties['word-wrap'] }}>{slots.default?.() ?? props.host}</span>
           </a>
         </VTooltip>
       </VCard>

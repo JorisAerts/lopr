@@ -2,7 +2,8 @@ import { existsSync, mkdirSync } from 'fs'
 import { join } from 'path'
 import os from 'os'
 import { packageJson } from './package'
-import type { ServerOptions } from '../server/ServerOptions'
+import type { ProxyPortOptions } from '../server/ServerOptions'
+import { readdir } from 'fs/promises'
 
 const tmp = join(os.tmpdir(), `${packageJson.name!}`)
 if (!existsSync(tmp)) mkdirSync(tmp, { recursive: true })
@@ -12,4 +13,12 @@ if (!existsSync(tmp)) mkdirSync(tmp, { recursive: true })
  */
 export const tempDir = () => tmp
 
-export const cacheDir = (options: ServerOptions) => join(tempDir(), 'cache', `${options.port}`)
+export const cacheDir = (options: ProxyPortOptions) => join(tempDir(), 'cache', `${options.port}`)
+
+export const cacheDirs = async () => {
+  const cacheRoot = join(tempDir(), 'cache')
+  if (!existsSync(cacheRoot)) return []
+  return (await readdir(cacheRoot, { withFileTypes: true })) //
+    .filter((f) => f.isDirectory())
+    .map((f) => join(cacheRoot, f.name))
+}

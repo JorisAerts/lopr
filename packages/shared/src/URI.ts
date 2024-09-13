@@ -25,7 +25,7 @@ const parseDomainAndPort = (uri: URI, val: string) => {
   const match = val.match(RX_DOMAIN_PORT)
   if (!match) return val
   uri.domain = match[1]
-  if (match[3]) uri.port = parseInt(match[3])
+  if (match[3]) uri.port = parseInt(match[3], 10)
   return val.substring(match[0].length)
 }
 
