@@ -21,7 +21,7 @@ export const processCliParams = (): Partial<CLIOptions> => {
       case '--port': {
         if (process.argv[i + 1]?.startsWith('-')) continue
         const port = process.argv[++i]
-        if (port) opts.port = parseInt(process.argv[++i])
+        if (port) opts.port = parseInt(process.argv[++i], 10)
         break
       }
     }
