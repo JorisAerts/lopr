@@ -1,6 +1,6 @@
 import './ResponseBody.scss'
 import type { Ref } from 'vue'
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import type { UseResponse } from '../../composables/response'
 import { useResponse } from '../../composables/response'
 import { VCheckbox, VSheet, VToolbar } from 'lopr-ui/components'
@@ -32,12 +32,22 @@ const createBodyRenderer = (response: UseResponse) => {
   if (response.isEmpty.value) return () => <VSheet class={classes}>No response data</VSheet>
 
   const type = response.contentType.value?.toLowerCase()
+  const isJson = ref(false)
+  const prettyJson = ref(false)
+  const body = computed(() =>
+    isJson.value && prettyJson.value //
+      ? JSON.stringify(response.body.value, null, 2)
+      : response.body.value
+  )
+
   switch (type) {
-    case 'text/html':
-    case 'text/json':
-    case 'text/xml':
     case 'application/json':
     case 'application/javascript':
+      isJson.value = true
+    // eslint-disable-next-line no-fallthrough
+    case 'text/xml':
+    case 'text/html':
+    case 'text/json':
     case 'application/x-javascript':
     case 'application/typescript':
     case 'application/x-typescript':
@@ -51,6 +61,7 @@ const createBodyRenderer = (response: UseResponse) => {
         <VSheet class={[...classes, 'overflow-auto', 'd-flex', 'flex-column']}>
           <VToolbar class={['mt-1', 'mb-2', 'flex-grow-0']}>
             <VCheckbox label={'Wrap'} v-model={appStore.wrapResponseData} />
+            {isJson.value && <VCheckbox label={'Pretty'} v-model={prettyJson.value} />}
           </VToolbar>
           <pre
             class={['text-mono', 'overflow-auto', 'flex-grow-1']}
@@ -59,7 +70,7 @@ const createBodyRenderer = (response: UseResponse) => {
               whiteSpace: appStore.wrapResponseData ? 'pre-wrap' : 'pre',
             }}
           >
-            {response.body.value}
+            {body.value}
           </pre>
         </VSheet>
       )
