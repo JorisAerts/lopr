@@ -26,7 +26,7 @@ export const VNavBar = defineComponent({
     }
     return () => (
       <VCard flat class={['v-nav-bar', 'pa-2', 'd-flex', 'gap-2', 'align-items-center']}>
-        <h4 class={['d-flex', 'align-items-center']}>
+        <h4 class={['d-flex', 'align-items-center', 'ma-0']}>
           <VDialog clickOutsideToClose>
             {{
               activator: ({ props }: VDialogActivatorProps) => (
@@ -47,7 +47,7 @@ export const VNavBar = defineComponent({
         <VSpacer />
         <VBtn
           tooltip={'Requests'}
-          icon={'Monitoring'}
+          icon={'Home_Fill'}
           size={iconSize}
           class={['pa-1']}
           transparent
