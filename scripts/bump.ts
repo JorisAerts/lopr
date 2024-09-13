@@ -69,7 +69,7 @@ async function main() {
     const data = await readFile(pkg)
     const json = JSON.parse(data.toString())
     json.version = str
-    await writeFile(pkg, JSON.stringify(json, null, 2))
+    await writeFile(pkg, `${JSON.stringify(json, null, 2)}\n`)
   }
 
   console.info(`Bump constants`)
