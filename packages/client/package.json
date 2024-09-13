@@ -60,6 +60,6 @@
     "vite-plugin-vue-devtools": "^7.4.5",
     "vitest": "^2.1.0",
     "vue": "3.4.38",
-    "vue-router": "4.4.4"
+    "vue-router": "4.4.5"
   }
 }
