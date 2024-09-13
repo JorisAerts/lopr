@@ -13,7 +13,7 @@ export const Information = defineComponent({
     const cachedSizes = ref()
     watch(
       () => appStore.sizes,
-      () => appStore.sizes != null && (cachedSizes.value = appStore.sizes),
+      () => appStore.sizes != null && (cachedSizes.value = { ...appStore.sizes, cacheSizes: 0, ...appStore.sizes.cacheSizes }),
       { immediate: true, deep: true }
     )
 
