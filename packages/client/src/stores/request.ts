@@ -120,7 +120,6 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
    * Clear the store (front- and backend)
    */
   const clear = (port?: string) => {
-    console.log({ clear: port })
     if (port && port !== `${useAppStore().port}`) fetch(`/api/state?clear&port=${port}`)
     else
       fetch(`/api/state?clear`) //
