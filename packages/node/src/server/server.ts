@@ -62,7 +62,7 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
   const exit = () => {
     clearCache(options)
     clearScreen()
-    logger.info('bye.\n')
+    logger.info('👋 bye.\n')
   }
 
   // make sure the system goes to sleep with a clear mind
