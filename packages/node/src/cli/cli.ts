@@ -1,8 +1,8 @@
 import process from 'node:process'
-import type { Logger } from './utils/logger'
-import tui from './utils/tui'
-import { openBrowser } from './utils/open-browser'
-import type { CreateProxyServer } from './server'
+import type { Logger } from '../utils/logger'
+import tui from '../utils/tui'
+import { openBrowser } from '../utils/open-browser'
+import type { CreateProxyServer } from '../server'
 
 export type CLIOptions = {
   open: boolean
@@ -38,7 +38,7 @@ const displayHelp = (logger: Logger) => {
 }
 
 export const handleREPL = ({ logger, url }: CreateProxyServer) =>
-  process.stdin.resume().addListener('data', function (d) {
+  process.stdin.resume().addListener('data', function(d) {
     const cmd = d.toString().trim()
     if (process.stdout.moveCursor(0, -1)) {
       process.stdout.clearLine(1)

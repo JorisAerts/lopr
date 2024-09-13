@@ -15,7 +15,7 @@ const getAddress = (server: Server) => {
 }
 
 export const displayServerInfo = ({ logger, server }: InstanceOptions) => {
-  const title = `${APP_NAME} v${packageJson.version}`
+  const title = `${APP_NAME} 🎭 v${packageJson.version}`
   const tmp = `file://${tempDir().split(sep).join('/')}`
 
   clearScreen()
