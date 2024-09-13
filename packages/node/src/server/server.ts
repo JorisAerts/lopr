@@ -25,6 +25,7 @@ import { clearCache, useCache } from './cache'
 import { handleApi } from '../local/api-handler'
 import { isRequestPaused } from '../utils/breakpoints'
 import { createInternalProxyState } from './server-state'
+import { getPreferences, storePreferences } from '../utils/os-prefs'
 
 export const DEFAULT_PORT = 8080
 
@@ -43,7 +44,7 @@ export interface CreateProxyServer {
   logger: Logger
 }
 
-export function createProxyServer<Options extends Partial<CreateProxyOptions>>(userConfig = {} as Options): Promise<CreateProxyServer> {
+export async function createProxyServer<Options extends Partial<CreateProxyOptions>>(userConfig = {} as Options): Promise<CreateProxyServer> {
   // the options object
   const options = {
     port: DEFAULT_PORT,
@@ -55,7 +56,8 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
   } as ServerOptions
 
   // internal state, such as cache, breakpoints, ...
-  const state = createInternalProxyState(options)
+  const prefs = await getPreferences()
+  const state = { ...createInternalProxyState(options), ...prefs }
 
   const { logger } = options
 
@@ -70,9 +72,15 @@ export function createProxyServer<Options extends Partial<CreateProxyOptions>>(u
   process.on('SIGINT', () => process.exit(process.exitCode))
 
   // handle preference-changes
-  registerDataHandler(WebSocketMessageType.Preferences, ({ data }) => Object.assign(options, data))
+  registerDataHandler(WebSocketMessageType.Preferences, ({ data }) => {
+    Object.assign(options, data)
+    storePreferences(state)
+  })
   // handle state changes (recording, breakpoints, ...)
-  registerDataHandler(WebSocketMessageType.State, ({ data }) => Object.assign(state, data))
+  registerDataHandler(WebSocketMessageType.State, ({ data }) => {
+    Object.assign(state, data)
+    storePreferences(state)
+  })
 
   // handle resume
   registerDataHandler(WebSocketMessageType.ProxyRequest, ({ data }) => {
