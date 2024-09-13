@@ -1,6 +1,6 @@
 {
   "name": "lopr-shared",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A reverse proxy server with a GUI",
   "keywords": [
     "reverse proxy",
