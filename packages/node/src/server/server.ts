@@ -24,6 +24,7 @@ import type { CreateProxyOptions, ServerOptions } from './ServerOptions'
 import { clearCache, useCache } from './cache'
 import { handleApi } from '../local/api-handler'
 import { isRequestPaused } from '../utils/breakpoints'
+import type { InternalProxyState } from './server-state';
 import { createInternalProxyState } from './server-state'
 import { getPreferences, storePreferences } from '../utils/os-prefs'
 
@@ -57,7 +58,7 @@ export async function createProxyServer<Options extends Partial<CreateProxyOptio
 
   // internal state, such as cache, breakpoints, ...
   const prefs = await getPreferences()
-  const state = { ...createInternalProxyState(options), ...prefs }
+  const state: InternalProxyState = { ...createInternalProxyState(options), ...prefs }
 
   const { logger } = options
 
@@ -172,7 +173,7 @@ export async function createProxyServer<Options extends Partial<CreateProxyOptio
           return
         }
 
-        if (handleApi(req, resCaptured, options)) {
+        if (handleApi(req, resCaptured, state)) {
           return
         }
         // requests to this server (proxy UI)
