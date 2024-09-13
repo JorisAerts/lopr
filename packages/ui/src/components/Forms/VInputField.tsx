@@ -37,6 +37,7 @@ export const VInputField = defineComponent({
             ref={input}
             type={props.type}
             value={props.modelValue}
+            placeholder={props.placeholder}
             onInput={(event: Event) => {
               emit('update:modelValue', (event.target as HTMLInputElement)?.value)
             }}

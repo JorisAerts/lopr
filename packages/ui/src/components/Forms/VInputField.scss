@@ -8,7 +8,6 @@
 }
 
 .v-input-field {
-
   --control-emphasis-opacity: .4;
 
   display: flex;
@@ -29,9 +28,7 @@
 
   input {
     flex-grow: 1;
-
     width: 100%;
-
     border: none;
     color: rgba(var(--text-color), var(--text-emphasis));
     background: transparent;
@@ -44,12 +41,13 @@
   }
 
   .clearable {
-
     --opacity: 1;
+
     cursor: pointer;
 
     &--disabled {
       cursor: inherit;
+
       --opacity: .01;
     }
 
@@ -59,7 +57,7 @@
   }
 
   svg path {
-    fill: currentColor;
+    fill: currentcolor;
   }
 
 }
