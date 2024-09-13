@@ -37,7 +37,8 @@
     "check:type": "yarn workspaces foreach --all --parallel run check:type",
     "test": "yarn workspaces foreach --all --parallel --no-private run test --run --pass-with-no-tests",
     "publish": "yarn build && cd packages/node && yarn npm publish --tolerate-republish",
-    "bump-version": "tsc --outDir build && chmod +x ./build/scripts/bump.js && node ./build/scripts/bump.js"
+    "bump-version": "tsc --outDir build && chmod +x ./build/scripts/bump.js && node ./build/scripts/bump.js",
+    "copy-icons": "tsc --outDir build && chmod +x ./build/scripts/copy-icons.js && node ./build/scripts/copy-icons.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",

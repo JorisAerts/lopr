@@ -1,2 +1,1 @@
-export const ChevronLeft = 'M14 17.3L8.7 12 14 6.675l0.55 0.55L9.8 12l4.75 4.75Z'
-export const ChevronLeft_Fill = 'M14 17.3L8.7 12 14 6.675l0.55 0.55L9.8 12l4.75 4.75Z'
+export const ChevronLeft = "M13.97975 17.53275L8.44725 12l5.5325-5.53275 0.973 0.99325L10.4135 12l4.53925 4.5395-0.973 0.99325Z"

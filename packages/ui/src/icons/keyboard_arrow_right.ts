@@ -1,2 +1,1 @@
-export const KeyboardArrowRight = 'M9.4 17.3l-0.55-0.55 4.75-4.75-4.75-4.775 0.55-0.55L14.7 12Z'
-export const KeyboardArrowRight_Fill = 'M9.4 17.3l-0.55-0.55 4.75-4.75-4.75-4.775 0.55-0.55L14.7 12Z'
+export const KeyboardArrowRight = "M12.9865 12L8.44725 7.4605l0.973-0.99325L14.95275 12l-5.5325 5.53275-0.973-0.99325L12.9865 12Z"

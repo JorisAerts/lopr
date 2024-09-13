@@ -56,7 +56,7 @@ export const VNavBar = defineComponent({
         <VBtn tooltip={'Information'} icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.Information)} />
         <VDialog clickOutsideToClose>
           {{
-            activator: ({ props }: VDialogActivatorProps) => <VBtn tooltip={'Preferences'} icon={'Settings'} size={iconSize} class={['pa-1']} transparent {...props} />,
+            activator: ({ props }: VDialogActivatorProps) => <VBtn tooltip={'Preferences'} icon={'Settings_Fill'} size={iconSize} class={['pa-1']} transparent {...props} />,
             default: () => <AppPreferences />,
           }}
         </VDialog>
