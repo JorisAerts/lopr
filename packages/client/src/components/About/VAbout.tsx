@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { addDOMListenerOnMounted, VBtn, VCard, VDialogCard, VDialogCardButtons } from 'lopr-ui'
+import { addDOMListenerOnMounted, VBtn, VCard, VDialogCard, VDialogCardButtons, VIcon } from 'lopr-ui'
 import { APP_NAME, APP_VERSION } from 'lopr-shared'
 
 export const VAbout = defineComponent({
@@ -20,7 +20,7 @@ export const VAbout = defineComponent({
     return () => (
       <VDialogCard class={['d-flex', 'flex-column', 'pa-3', 'gap-2']}>
         <h2 class={'mb-2'}>
-          {APP_NAME} {APP_VERSION}
+          <VIcon name={'DominoMask_Fill'} size={28} class={['mr-1']} /> {APP_NAME} {APP_VERSION}
         </h2>
         <VCard flat class={['pa-3']}>
           <div>Joris Aerts © 2024</div>
