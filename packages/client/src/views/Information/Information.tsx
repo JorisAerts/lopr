@@ -39,10 +39,10 @@ export const Information = defineComponent({
             )}
           </h4>
           <div class={['d-flex', 'gap-2', 'flex-wrap']}>
-            {!certStore.isEmpty ? (
+            {certificates.value.length ? (
               <TransitionGroup>
-                {certificates.value.map(({ file, cert }) => (
-                  <VCertificate key={cert} host={cert} />
+                {certificates.value.map(({ cert }) => (
+                  <VCertificate key={cert}>{cert}</VCertificate>
                 ))}
               </TransitionGroup>
             ) : (
