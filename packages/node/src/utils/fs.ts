@@ -9,8 +9,12 @@ export const dirSize = async (dir: string, recursive = true): Promise<number> =>
     const path = join(dir, entry.name)
     if (recursive && entry.isDirectory()) return await dirSize(path)
     if (entry.isFile()) {
-      const { size } = await stat(path)
-      return size
+      try {
+        const { size } = await stat(path)
+        return size
+      } catch {
+        // noop
+      }
     }
     return 0
   })

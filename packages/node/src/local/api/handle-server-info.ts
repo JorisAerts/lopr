@@ -5,14 +5,18 @@ import { basename } from 'path'
 import { dirSize } from '../../utils/fs'
 import { certificatesDir } from '../../utils/cert-utils'
 import { cacheDirs } from '../../utils/temp-dir'
+import type { InternalProxyState } from '../../server/server-state'
 
-export const handle = (url: UrlWithParsedQuery, req: ProxyRequest, res: ProxyResponse) => {
+export const handle = (url: UrlWithParsedQuery, req: ProxyRequest, res: ProxyResponse, state: InternalProxyState) => {
   if (url.pathname !== '/api/server-info') return false
 
   getCacheSizes().then((sizes) =>
     Promise.all([dirSize(certificatesDir()), sizes])
       .then(([certSize, cacheSizes]) => {
-        const data = JSON.stringify({ certSize, cacheSizes })
+        const data = JSON.stringify({
+          port: state.config.port,
+          sizes: { certSize, cacheSizes: undefined, ...cacheSizes },
+        })
         res.setHeader('Content-Type', 'application/json')
         res.setHeader('Content-Length', data.length)
         res.end(data)

@@ -63,15 +63,16 @@ export const useCache = (): UseCache => {
   }
 }
 
-export const getCachedData = (options: ServerOptions, uuid: UUID) => {
+export const getCachedData = async (options: ServerOptions, uuid: UUID) => {
   const cache = cacheDir(options)
   const path = join(cache, uuid)
-  if (!statSync(path, { throwIfNoEntry: false })?.isFile()) return Promise.resolve('')
-  return access(path, fs.constants.R_OK).then(() => readFile(path))
+  if (!existsSync(cache) || !statSync(path, { throwIfNoEntry: false })?.isFile()) return ''
+  await access(path, fs.constants.R_OK)
+  return await readFile(path)
 }
 
 export const clearCache = (options: ProxyPortOptions) => {
   const cache = cacheDir(options)
-  if (!existsSync(cache) || !statSync(cache).isDirectory()) return
+  if (!existsSync(cache) || !statSync(cache, { throwIfNoEntry: false })?.isDirectory()) return
   rmSync(cache, { recursive: true, force: true })
 }

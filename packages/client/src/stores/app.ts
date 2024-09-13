@@ -9,6 +9,7 @@ export const useAppStore = defineStore(STORE_NAME, () => {
   const fetching = ref(false)
 
   // the size of the cache and certificates and such
+  const port = ref()
   const sizes = ref()
 
   const refresh = (retry = 0) => {
@@ -24,7 +25,10 @@ export const useAppStore = defineStore(STORE_NAME, () => {
           else return res
         })
         .then((res) => res.json())
-        .then((s) => (sizes.value = s))
+        .then((s) => {
+          port.value = s.port
+          sizes.value = s.sizes
+        })
         .catch(() => {
           fetching.value = false
           refresh(++retry)
@@ -52,6 +56,7 @@ export const useAppStore = defineStore(STORE_NAME, () => {
   return {
     clear,
     wrapResponseData,
+    port,
     sizes: computedSizes,
 
     fetching: computed(() => fetching.value),
