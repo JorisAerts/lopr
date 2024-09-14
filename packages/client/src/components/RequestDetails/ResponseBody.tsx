@@ -36,7 +36,7 @@ const createBodyRenderer = (response: UseResponse) => {
   const prettyJson = ref(false)
   const body = computed(() =>
     isJson.value && prettyJson.value //
-      ? JSON.stringify(response.body.value, null, 2)
+      ? JSON.stringify(JSON.parse(response.body.value), null, 2)
       : response.body.value
   )
 
