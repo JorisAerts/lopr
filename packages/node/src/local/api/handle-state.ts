@@ -1,10 +1,11 @@
 import type { UrlWithParsedQuery } from 'url'
+import { HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE, WebSocketMessageType } from 'lopr-shared'
+import { APPLICATION_JSON } from 'lopr-shared/mime-types'
 import { clearCache } from '../../server/cache'
 import type { ProxyRequest } from '../../server/ProxyRequest'
 import type { ProxyResponse } from '../../server/ProxyResponse'
 import { responseSuccess } from '../../utils/response-utils'
 import { sendWsData } from '../websocket'
-import { WebSocketMessageType } from 'lopr-shared'
 import { type InternalProxyState, toProxyState } from '../../server/server-state'
 
 export const handle = (url: UrlWithParsedQuery, req: ProxyRequest, res: ProxyResponse, state: InternalProxyState) => {
@@ -16,8 +17,8 @@ export const handle = (url: UrlWithParsedQuery, req: ProxyRequest, res: ProxyRes
   }
 
   const data = JSON.stringify(state.config.cache.state)
-  res.setHeader('Content-Type', 'application/json')
-  res.setHeader('Content-Length', data.length)
+  res.setHeader(HTTP_HEADER_CONTENT_TYPE, APPLICATION_JSON)
+  res.setHeader(HTTP_HEADER_CONTENT_LENGTH, data.length)
   res.end(data)
   return true
 }
