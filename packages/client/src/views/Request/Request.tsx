@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 import { computed, defineComponent, ref, Transition, watch, watchEffect } from 'vue'
-import { VBtn, VBtnGroup, VCard, VContainer, VSheet, VSpacer } from 'lopr-ui'
+import { VBtn, VBtnGroup, VCard, VContainer, VInputField, VSheet, VSpacer } from 'lopr-ui'
 import { useRequestStore } from '../../stores/request'
 import type { UUID } from 'lopr-shared'
 import { Sorting } from 'lopr-shared'
@@ -19,6 +19,8 @@ export const Request = defineComponent({
   setup(props) {
     const requestStore = useRequestStore()
     const route = useRoute()
+
+    const requestFilter = ref<string>()
 
     watch(
       () => [route.params.uuid],
@@ -58,7 +60,7 @@ export const Request = defineComponent({
       <VContainer class={['fill-height', 'gap-2']}>
         <VCard
           flat
-          class={['fill-height', 'py-2', 'd-flex', 'flex-column']}
+          class={['fill-height', 'pt-2', 'd-flex', 'flex-column']}
           style={{
             width: width.value,
             'max-width': width.value,
@@ -98,6 +100,9 @@ export const Request = defineComponent({
             ) : (
               <RequestStructure v-model={requestStore.current} v-model:expanded={expanded.value} sorting={sorting.value} />
             )}
+          </VSheet>
+          <VSheet class={['flex-grow-0']}>
+            <VInputField class={['mb-0']} v-model={requestFilter.value} />
           </VSheet>
         </VCard>
 
