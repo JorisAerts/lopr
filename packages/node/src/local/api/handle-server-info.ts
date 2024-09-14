@@ -2,6 +2,8 @@ import type { ProxyRequest } from '../../server/ProxyRequest'
 import type { ProxyResponse } from '../../server/ProxyResponse'
 import type { UrlWithParsedQuery } from 'url'
 import { basename } from 'path'
+import { APPLICATION_JSON } from 'lopr-shared/mime-types'
+import { HTTP_HEADER_CONTENT_LENGTH, HTTP_HEADER_CONTENT_TYPE } from 'lopr-shared'
 import { dirSize } from '../../utils/fs'
 import { certificatesDir } from '../../utils/cert-utils'
 import { cacheDirs } from '../../utils/temp-dir'
@@ -17,8 +19,8 @@ export const handle = (url: UrlWithParsedQuery, req: ProxyRequest, res: ProxyRes
           port: state.config.port,
           sizes: { certSize, cacheSizes: undefined, ...cacheSizes },
         })
-        res.setHeader('Content-Type', 'application/json')
-        res.setHeader('Content-Length', data.length)
+        res.setHeader(HTTP_HEADER_CONTENT_TYPE, APPLICATION_JSON)
+        res.setHeader(HTTP_HEADER_CONTENT_LENGTH, data.length)
         res.end(data)
       })
       .catch((err) => {

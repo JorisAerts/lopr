@@ -6,6 +6,7 @@ import { certificatesDir, getRootKeyFiles } from '../../utils/cert-utils'
 import { join } from 'path'
 import { existsSync } from 'fs'
 import { readFile } from 'fs/promises'
+import { APPLICATION_X_X509_USER_CERT } from 'lopr-shared/mime-types'
 
 export const handle = (url: UrlWithParsedQuery, req: ProxyRequest, res: ProxyResponse) => {
   if (url.pathname !== '/api/data' || !url.query.cert) return false
@@ -18,7 +19,7 @@ export const handle = (url: UrlWithParsedQuery, req: ProxyRequest, res: ProxyRes
     readFile(cert)
       .then((data) => {
         res.setHeader(HTTP_HEADER_CONTENT_LENGTH, data.length)
-        res.setHeader(HTTP_HEADER_CONTENT_TYPE, 'application/x-x509-user-cert')
+        res.setHeader(HTTP_HEADER_CONTENT_TYPE, APPLICATION_X_X509_USER_CERT)
         res.setHeader(HTTP_HEADER_CONTENT_DISPOSITION, `attachment; filename="${certFile}"`)
         res.end(data)
       })

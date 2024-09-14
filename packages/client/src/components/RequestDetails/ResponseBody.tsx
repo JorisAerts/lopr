@@ -1,13 +1,34 @@
 import './ResponseBody.scss'
 import type { Ref } from 'vue'
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, Transition } from 'vue'
+import type { ProxyResponseInfo } from 'lopr-shared'
+import {
+  APPLICATION_JAVASCRIPT,
+  APPLICATION_JSON,
+  APPLICATION_TYPESCRIPT,
+  APPLICATION_X_JAVASCRIPT,
+  APPLICATION_X_NS_PROXY_AUTOCONFIG,
+  APPLICATION_X_TYPESCRIPT,
+  APPLICATION_X_X509_CA_CERT,
+  APPLICATION_X_X509_USER_CERT,
+  APPLICATION_XHTML_PLUS_XML,
+  APPLICATION_XML,
+  IMAGE_SVG,
+  IMAGE_SVG_PLUS_XML,
+  TEXT_CSS,
+  TEXT_CSV,
+  TEXT_HTML,
+  TEXT_JAVASCRIPT,
+  TEXT_JSON,
+  TEXT_PLAIN,
+  TEXT_XML,
+} from 'lopr-shared/mime-types'
+import { VCheckbox, VSheet, VToolbar } from 'lopr-ui/components'
 import type { UseResponse } from '../../composables/response'
 import { useResponse } from '../../composables/response'
-import { VCheckbox, VSheet, VToolbar } from 'lopr-ui/components'
 import { useRequest } from '../../composables/request'
 import { useAppStore } from '../../stores/app'
 import { parseHeaders } from '../../utils/request-utils'
-import type { ProxyResponseInfo } from 'lopr-shared'
 import { makeUUIDProps } from '../../composables/uuid'
 
 const RX_IS_IMAGE = /^image\//
@@ -41,27 +62,30 @@ const createBodyRenderer = (response: UseResponse) => {
   )
 
   switch (type) {
-    case 'application/json':
-    case 'application/javascript':
+    case APPLICATION_JSON:
+    case TEXT_JSON:
       isJson.value = true
     // eslint-disable-next-line no-fallthrough
-    case 'text/xml':
-    case 'text/html':
-    case 'text/json':
-    case 'application/x-javascript':
-    case 'application/typescript':
-    case 'application/x-typescript':
-    case 'application/x-ns-proxy-autoconfig': // Automatic Proxy Configuration (PAC)
-    case 'application/x-x509-ca-cert':
-    case 'application/x-x509-user-cert':
-    case 'text/javascript':
-    case 'text/css':
-    case 'text/plain':
+    case TEXT_CSV:
+    case TEXT_XML:
+    case TEXT_HTML:
+    case APPLICATION_JAVASCRIPT:
+    case APPLICATION_X_JAVASCRIPT:
+    case APPLICATION_TYPESCRIPT:
+    case APPLICATION_X_TYPESCRIPT:
+    case APPLICATION_X_NS_PROXY_AUTOCONFIG: // Automatic Proxy Configuration (PAC)
+    case APPLICATION_X_X509_CA_CERT:
+    case APPLICATION_X_X509_USER_CERT:
+    case APPLICATION_XHTML_PLUS_XML:
+    case APPLICATION_XML:
+    case TEXT_JAVASCRIPT:
+    case TEXT_CSS:
+    case TEXT_PLAIN:
       return () => (
         <VSheet class={[...classes, 'overflow-auto', 'd-flex', 'flex-column']}>
           <VToolbar class={['mt-1', 'mb-2', 'flex-grow-0']}>
             <VCheckbox label={'Wrap'} v-model={appStore.wrapResponseData} />
-            {isJson.value && <VCheckbox label={'Pretty'} v-model={prettyJson.value} />}
+            <Transition>{isJson.value && <VCheckbox label={'Pretty'} v-model={prettyJson.value} />}</Transition>
           </VToolbar>
           <pre
             class={['text-mono', 'overflow-auto', 'flex-grow-1']}
@@ -92,8 +116,8 @@ const createBodyRenderer = (response: UseResponse) => {
   })
 
   switch (type) {
-    case 'image/svg':
-    case 'image/svg+xml':
+    case IMAGE_SVG:
+    case IMAGE_SVG_PLUS_XML:
       return () => (
         <VSheet class={['response-body--checkered', 'overflow-auto', ...classes]}>
           {response.body.value && (

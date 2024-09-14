@@ -24,9 +24,10 @@ import type { CreateProxyOptions, ServerOptions } from './ServerOptions'
 import { clearCache, useCache } from './cache'
 import { handleApi } from '../local/api-handler'
 import { isRequestPaused } from '../utils/breakpoints'
-import type { InternalProxyState } from './server-state';
+import type { InternalProxyState } from './server-state'
 import { createInternalProxyState } from './server-state'
 import { getPreferences, storePreferences } from '../utils/os-prefs'
+import { APPLICATION_X_NS_PROXY_AUTOCONFIG } from 'lopr-shared/mime-types'
 
 export const DEFAULT_PORT = 8080
 
@@ -167,8 +168,8 @@ export async function createProxyServer<Options extends Partial<CreateProxyOptio
         // intercept local requests
         if (req.url === '/pac') {
           const pac = generatePAC(`localhost:${options.port}`)
+          resCaptured.setHeader(HTTP_HEADER_CONTENT_TYPE, APPLICATION_X_NS_PROXY_AUTOCONFIG)
           resCaptured.setHeader(HTTP_HEADER_CONTENT_LENGTH, pac.length)
-          resCaptured.setHeader(HTTP_HEADER_CONTENT_TYPE, 'application/x-ns-proxy-autoconfig')
           resCaptured.end(pac)
           return
         }
