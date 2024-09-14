@@ -1,13 +1,13 @@
 import './ResponseBody.scss'
 import type { Ref } from 'vue'
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, Transition } from 'vue'
+import type { ProxyResponseInfo } from 'lopr-shared'
+import { VCheckbox, VSheet, VToolbar } from 'lopr-ui/components'
 import type { UseResponse } from '../../composables/response'
 import { useResponse } from '../../composables/response'
-import { VCheckbox, VSheet, VToolbar } from 'lopr-ui/components'
 import { useRequest } from '../../composables/request'
 import { useAppStore } from '../../stores/app'
 import { parseHeaders } from '../../utils/request-utils'
-import type { ProxyResponseInfo } from 'lopr-shared'
 import { makeUUIDProps } from '../../composables/uuid'
 
 const RX_IS_IMAGE = /^image\//
@@ -61,7 +61,7 @@ const createBodyRenderer = (response: UseResponse) => {
         <VSheet class={[...classes, 'overflow-auto', 'd-flex', 'flex-column']}>
           <VToolbar class={['mt-1', 'mb-2', 'flex-grow-0']}>
             <VCheckbox label={'Wrap'} v-model={appStore.wrapResponseData} />
-            {isJson.value && <VCheckbox label={'Pretty'} v-model={prettyJson.value} />}
+            <Transition>{isJson.value && <VCheckbox label={'Pretty'} v-model={prettyJson.value} />}</Transition>
           </VToolbar>
           <pre
             class={['text-mono', 'overflow-auto', 'flex-grow-1']}
