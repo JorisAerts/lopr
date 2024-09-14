@@ -1,8 +1,8 @@
 import { computed, defineComponent } from 'vue'
 import { MonotypeView } from './MonotypeView'
-import { useAppStore } from '../../stores/app'
+import { VSheet } from 'lopr-ui'
 import { makeFilenameProps, makeMimeTypeProps } from './mime-type'
-import { VSheet } from '../../ui'
+import { useAppStore } from '../../stores/app'
 
 export const MimeTypeDataView = defineComponent({
   name: 'MimeTypeDataView',

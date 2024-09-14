@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { VCheckbox, VSheet, VToolbar } from '../../ui'
+import { VCheckbox, VSheet, VToolbar } from 'lopr-ui'
 import { makeMimeTypeProps } from './mime-type'
 
 export const MonotypeView = defineComponent({
