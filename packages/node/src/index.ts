@@ -1,8 +1,7 @@
 import type { CreateProxyOptions } from './server/ServerOptions'
 import { createProxyServer, DEFAULT_PORT } from './server'
 import { openBrowser } from './utils/open-browser'
-import { displayServerInfo } from './server/server-info'
-import { handleREPL, processCliParams } from './cli'
+import { displayServerInfo, handleREPL, processCliParams } from './cli'
 
 export { createProxyServer }
 
