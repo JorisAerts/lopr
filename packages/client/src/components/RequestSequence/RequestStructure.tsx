@@ -138,31 +138,34 @@ export const RequestStructure = defineComponent({
             })}
 
           {struct.items &&
-            (struct.items as UUID[]).map((value) => {
-              const request = requestStore.getRequest(value)
-              return (
-                request && (
-                  <VListItem
-                    key={value}
-                    onClick={() => handleSelect(value)}
-                    prependIcon={'Public'}
-                    class={[
-                      'py-0',
-                      'no-wrap',
-                      {
-                        'v-list-item--new': requestStore.isNew(value),
-                        selected: props.modelValue === value,
-                      },
-                    ]}
-                    tooltip={`${request.method} ${request.url}`}
-                  >
-                    <span class={'overflow-ellipsis'}>
-                      {request.method} {request.url.substring(struct.key?.length + 1) || '/'}
-                    </span>
-                  </VListItem>
+            (struct.items as UUID[])
+              .map((uuid) => requestStore.getRequest(uuid))
+              .map((request) => {
+                if (!request || (props.filterText && request.url.indexOf(props.filterText) < 0)) return
+                const uuid = request!.uuid
+                return (
+                  request && (
+                    <VListItem
+                      key={request.uuid}
+                      onClick={() => handleSelect(uuid)}
+                      prependIcon={'Public'}
+                      class={[
+                        'py-0',
+                        'no-wrap',
+                        {
+                          'v-list-item--new': requestStore.isNew(uuid),
+                          selected: props.modelValue === uuid,
+                        },
+                      ]}
+                      tooltip={`${request.method} ${request.url}`}
+                    >
+                      <span class={'overflow-ellipsis'}>
+                        {request.method} {request.url.substring(struct.key?.length + 1) || '/'}
+                      </span>
+                    </VListItem>
+                  )
                 )
-              )
-            })}
+              })}
         </>
       ) : null
 
