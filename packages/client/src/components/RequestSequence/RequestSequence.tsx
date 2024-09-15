@@ -1,7 +1,7 @@
 import './RequestSequence.scss'
 import type { ComponentPublicInstance, VNode } from 'vue'
 import { defineComponent, onMounted, ref, watch } from 'vue'
-import { VList, VListItem, VSheet } from 'lopr-ui/components'
+import { VHighlight, VList, VListItem, VSheet } from 'lopr-ui/components'
 import { useRequestStore } from '../../stores/request'
 import type { ProxyRequestInfo } from 'lopr-shared'
 import { makeUUIDEvents, makeUUIDProps } from '../../composables/uuid'
@@ -47,6 +47,11 @@ export const RequestSequence = defineComponent({
           .map((req) => {
             if (!req) return
             const text = `${req.method} — ${req.url}`
+            const highlighted = props.filterText ? ( //
+              <VHighlight text={text} highlight={props.filterText} />
+            ) : (
+              text
+            )
             return (
               <VListItem
                 key={req.uuid}
@@ -60,7 +65,9 @@ export const RequestSequence = defineComponent({
                 ]}
                 tooltip={text}
               >
-                <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-ellipsis']}>{text}</VSheet>
+                {{
+                  default: () => <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-ellipsis']}>{highlighted}</VSheet>,
+                }}
               </VListItem>
             )
           })}
