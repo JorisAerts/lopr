@@ -8,7 +8,7 @@ export const makeTooltipProps = () => ({
 type TooltipProps = ExtractPropTypes<ReturnType<typeof makeTooltipProps>>
 
 export const useTooltip = (props: TooltipProps, slots?: Slots) => {
-  const wrapWithTooltip = (contents: VNode | VNode[], classes?: any, style?: any) =>
+  const wrapWithTooltip = (contents: VNode | VNode[], classes?: unknown, style?: unknown) =>
     slots?.tooltip ? (
       <VTooltip style={style} class={classes}>
         {{
