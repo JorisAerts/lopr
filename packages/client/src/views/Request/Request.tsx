@@ -102,7 +102,7 @@ export const Request = defineComponent({
             )}
           </VSheet>
           <VSheet class={['flex-grow-0']}>
-            <VInputField class={['py-0', 'px-1', 'ma-1']} v-model={requestFilter.value} />
+            <VInputField class={['py-0', 'px-1', 'ma-1']} placeholder={'Filter'} v-model={requestFilter.value} />
           </VSheet>
         </VCard>
 

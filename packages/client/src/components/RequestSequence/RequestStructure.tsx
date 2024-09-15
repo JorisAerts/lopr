@@ -108,6 +108,7 @@ export const RequestStructure = defineComponent({
             getSortedStructKeys(struct).map((name) => {
               const value = struct.nodes![name]
               const key = value.key
+              
               const hasItems = !!value.items || !!value.nodes
               const isOpen = contains(key)
               const onClick = (evt: Event) => (hasItems ? handleFolding(evt, key, value) : undefined)
