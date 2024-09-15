@@ -101,14 +101,20 @@ export const RequestStructure = defineComponent({
         : []
 
     // recursively render the tree
-    const renderTree = (struct: StructNode) =>
-      struct ? (
+    const renderTree = (struct: StructNode) => {
+      if (!struct) return
+
+      const items: UUID[] = struct.items ?? []
+      const filteredItems = items //
+        .map((uuid) => requestStore.getRequest(uuid))
+        .filter((request) => !props.filterText || !request || request.url.indexOf(props.filterText) > -1)
+
+      return (
         <>
           {struct.nodes &&
             getSortedStructKeys(struct).map((name) => {
               const value = struct.nodes![name]
               const key = value.key
-              
               const hasItems = !!value.items || !!value.nodes
               const isOpen = contains(key)
               const onClick = (evt: Event) => (hasItems ? handleFolding(evt, key, value) : undefined)
@@ -138,37 +144,34 @@ export const RequestStructure = defineComponent({
               )
             })}
 
-          {struct.items &&
-            (struct.items as UUID[])
-              .map((uuid) => requestStore.getRequest(uuid))
-              .map((request) => {
-                if (!request || (props.filterText && request.url.indexOf(props.filterText) < 0)) return
-                const uuid = request!.uuid
-                return (
-                  request && (
-                    <VListItem
-                      key={request.uuid}
-                      onClick={() => handleSelect(uuid)}
-                      prependIcon={'Public'}
-                      class={[
-                        'py-0',
-                        'no-wrap',
-                        {
-                          'v-list-item--new': requestStore.isNew(uuid),
-                          selected: props.modelValue === uuid,
-                        },
-                      ]}
-                      tooltip={`${request.method} ${request.url}`}
-                    >
-                      <span class={'overflow-ellipsis'}>
-                        {request.method} {request.url.substring(struct.key?.length + 1) || '/'}
-                      </span>
-                    </VListItem>
-                  )
-                )
-              })}
+          {filteredItems.map((request) => {
+            const uuid = request!.uuid
+            return (
+              request && (
+                <VListItem
+                  key={uuid}
+                  onClick={() => handleSelect(uuid)}
+                  prependIcon={'Public'}
+                  class={[
+                    'py-0',
+                    'no-wrap',
+                    {
+                      'v-list-item--new': requestStore.isNew(uuid),
+                      selected: props.modelValue === uuid,
+                    },
+                  ]}
+                  tooltip={`${request.method} ${request.url}`}
+                >
+                  <span class={'overflow-ellipsis'}>
+                    {request.method} {request.url.substring(struct.key?.length + 1) || '/'}
+                  </span>
+                </VListItem>
+              )
+            )
+          })}
         </>
-      ) : null
+      )
+    }
 
     const scrollIntoView = () => {
       const listEl: Element = list.value?.$el
