@@ -1,0 +1,11 @@
+@use "../../style/vars" as *;
+
+:root {
+  --text-highlight: var(--primary-color);
+  --on-text-highlight: var(--on-primary-color);
+}
+
+.v-highlighted-text {
+  color: rgb(var(--text-highlight));
+  background-color: rgb(var(--on-primary-color));
+}
