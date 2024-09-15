@@ -94,15 +94,15 @@ export const Request = defineComponent({
               <VBtn tooltip={'Structure view'} icon={'AccountTree'} size={20} class={['pa-1']} transparent onClick={() => (requestViewType.value = 1)} />
             </VBtnGroup>
           </VSheet>
-          <VSheet class={['fill-height', 'overflow-auto', 'mt-2', 'px-1']}>
+          <VSheet class={['fill-height', 'overflow-auto', 'my-2', 'px-1']}>
             {requestViewType.value === 0 ? ( //
-              <RequestSequence v-model={requestStore.current} />
+              <RequestSequence v-model={requestStore.current} filterText={requestFilter.value} />
             ) : (
-              <RequestStructure v-model={requestStore.current} v-model:expanded={expanded.value} sorting={sorting.value} />
+              <RequestStructure v-model={requestStore.current} v-model:expanded={expanded.value} sorting={sorting.value} filterText={requestFilter.value} />
             )}
           </VSheet>
           <VSheet class={['flex-grow-0']}>
-            <VInputField class={['mb-0']} v-model={requestFilter.value} />
+            <VInputField class={['py-0', 'px-1', 'ma-1']} v-model={requestFilter.value} />
           </VSheet>
         </VCard>
 

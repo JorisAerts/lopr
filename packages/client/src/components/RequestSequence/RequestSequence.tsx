@@ -16,6 +16,7 @@ export const RequestSequence = defineComponent({
 
   props: {
     ...makeUUIDProps(),
+    filterText: { type: String },
   },
 
   setup(props, { emit }) {
@@ -41,30 +42,28 @@ export const RequestSequence = defineComponent({
     return () => (
       <VList class={['v-request-sequence']} ref={list}>
         {requestStore.ids
-          .map((uuid) => {
-            return requestStore.getRequest(uuid)
-          })
-          .map(
-            (req) =>
-              req && (
-                <VListItem
-                  key={req.uuid}
-                  onClick={() => handleSelect(req)}
-                  prependIcon={'Public'}
-                  class={[
-                    'py-0',
-                    {
-                      selected: props.modelValue === req.uuid,
-                    },
-                  ]}
-                  tooltip={`${req.method} — ${req.url}`}
-                >
-                  <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-ellipsis']}>
-                    {req.method} — {req.url}
-                  </VSheet>
-                </VListItem>
-              )
-          )}
+          .map((uuid) => requestStore.getRequest(uuid))
+          .filter((req) => !props.filterText || (req && req.url.indexOf(props.filterText) > -1))
+          .map((req) => {
+            if (!req) return
+            const text = `${req.method} — ${req.url}`
+            return (
+              <VListItem
+                key={req.uuid}
+                onClick={() => handleSelect(req)}
+                prependIcon={'Public'}
+                class={[
+                  'py-0',
+                  {
+                    selected: props.modelValue === req.uuid,
+                  },
+                ]}
+                tooltip={text}
+              >
+                <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-ellipsis']}>{text}</VSheet>
+              </VListItem>
+            )
+          })}
       </VList>
     )
   },

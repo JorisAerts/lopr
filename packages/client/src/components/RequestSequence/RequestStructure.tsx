@@ -40,6 +40,7 @@ export const RequestStructure = defineComponent({
 
   props: {
     ...makeUUIDProps(),
+    filterText: { type: String },
     expanded: { type: Array as PropType<string[]>, default: [] as string[] },
     sorting: { type: Number as PropType<Sorting>, default: 0 },
   },
