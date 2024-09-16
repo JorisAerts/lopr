@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 import { computed, defineComponent, ref, Transition, watch, watchEffect } from 'vue'
-import { VBtn, VBtnGroup, VCard, VContainer, VInputField, VSheet, VSpacer } from 'lopr-ui'
+import { VBadge, VBtn, VBtnGroup, VCard, VContainer, VInputField, VSheet, VSpacer } from 'lopr-ui'
 import { useCache } from '../../stores/cache'
 import type { UUID } from 'lopr-shared'
 import { Sorting } from 'lopr-shared'
@@ -69,7 +69,8 @@ export const Request = defineComponent({
         >
           <VSheet class={['d-flex', 'px-3', 'align-items-center']}>
             <h3 class={['mb-0']}>
-              Requests <sup>({cache.ids.length})</sup>
+              Requests <VBadge modelValue={256}></VBadge>
+              <sup>({cache.ids.length})</sup>
             </h3>
             <Transition>
               {requestViewType.value !== 0 && (
