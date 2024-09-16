@@ -8,6 +8,7 @@ import type { ProxyResponseInfo } from 'lopr-shared/Response'
 import type { UUID } from 'lopr-shared/UUID'
 import { useProxyStore } from './proxy'
 import { useAppStore } from './app'
+import { useRequestStore } from './request'
 
 export const STORE_NAME = 'Cache'
 
@@ -40,11 +41,6 @@ export const useCache = defineStore(STORE_NAME, () => {
   const recent = ref(new Set<UUID | string>([]))
 
   /**
-   * Structured tree-view of the requests
-   */
-  const structure = ref<StructNode>({ key: '', isNew: false })
-
-  /**
    * The request data sent from the client.
    * All requests are tagged with a unique UUID
    */
@@ -59,47 +55,19 @@ export const useCache = defineStore(STORE_NAME, () => {
   const isNew = (uuid: UUID | string) => recent.value.has(uuid)
   let timeOut: number // .Timeout
 
-  const pushRecentUUID = (uuid: UUID | string) => {
-    recent.value.add(uuid)
+  const addRecent = (...ids: (UUID | string)[]) => {
+    ids.forEach((id) => recent.value.add(id))
     clearTimeout(timeOut)
     timeOut = window.setTimeout(() => recent.value.clear(), CLEAR_RECENT_TIMEOUT)
   }
 
-  const addToStruct = (uuid: UUID, isRecent = true) => {
-    const request = getRequest(uuid)
-    if (!request?.url) return
-
-    const url = request.urlNormal ?? request.url
-    const indexOf = url.indexOf('://')
-    const parts = (indexOf > -1 ? url.substring(indexOf + 3) : url) //
-      .split('/')
-
-    if (indexOf > -1) parts[0] = (indexOf > -1 ? url.substring(0, indexOf + 3) : '') + parts[0]
-    if (parts.length === 1) parts.push('/')
-
-    let current: StructNode = structure.value
-    parts.reduce((key, p, i) => {
-      current.key = key
-      if (isRecent) pushRecentUUID(key)
-      if (i === parts.length - 1) {
-        current.items ??= []
-        current.items.push(uuid)
-      } else {
-        current.nodes ??= {}
-        current.nodes![p] ??= Object.create(null)
-        current = current.nodes![p]
-      }
-      return `${key}${key ? '/' : ''}${p}`
-    }, '')
-
-    triggerRef(structure)
-  }
+  const requestStore = useRequestStore()
 
   const registerUUID = (uuid: UUID, isRecent = true) => {
     if (ids.value.includes(uuid)) return
     ids.value.push(uuid)
-    addToStruct(uuid, isRecent)
-    if (isRecent) pushRecentUUID(uuid)
+    requestStore.addRequest(uuid, isRecent)
+    if (isRecent) addRecent(uuid)
   }
 
   const isEmpty = computed(() => ids.value.length === 0)
@@ -112,7 +80,7 @@ export const useCache = defineStore(STORE_NAME, () => {
     responses.value.clear()
     requests.value.clear()
 
-    structure.value = { key: '', isNew: false }
+    triggerRef(ids)
 
     window.clearTimeout(timeOut)
   }
@@ -197,10 +165,11 @@ export const useCache = defineStore(STORE_NAME, () => {
     getRequest,
     getResponse,
     isNew,
-    structure,
     recent,
     isEmpty,
     isValidUUID,
+
+    addRecent,
 
     clear,
     refresh,

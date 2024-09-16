@@ -7,6 +7,7 @@ import type { UUID } from 'lopr-shared'
 import { Sorting } from 'lopr-shared'
 import { makeUUIDEvents, makeUUIDProps } from '../../composables/uuid'
 import { isOnScreen } from '../../utils/is-on-screen'
+import { useRequestStore } from '../../stores/request'
 
 const removeKey = (arr: string[], key: string) => {
   const pos = arr.indexOf(key)
@@ -47,7 +48,8 @@ export const RequestStructure = defineComponent({
 
   setup(props, { emit }) {
     const list = ref<VNode & ComponentPublicInstance>()
-    const requestStore = useCache()
+    const cache = useCache()
+    const requestStore = useRequestStore()
     const contains = (key: string) => props.expanded.includes(key)
     const handleFolding = (evt: Event | MouseEvent, key: string, value: StructNode) => {
       const sel = props.expanded
@@ -81,7 +83,7 @@ export const RequestStructure = defineComponent({
     // when the current selected item changes,
     // the selection tree should be unfolded so that this item becomes visible
     watch(
-      () => requestStore.current,
+      () => cache.current,
       (current, oldValue) => {
         if (!current || current === oldValue) return
         const path = getPath(requestStore.structure, current)
@@ -106,7 +108,7 @@ export const RequestStructure = defineComponent({
 
       const items: UUID[] = struct.items ?? []
       const filteredItems = items //
-        .map((uuid) => requestStore.getRequest(uuid))
+        .map((uuid) => cache.getRequest(uuid))
         .filter((request) => !props.filterText || !request || request.url.indexOf(props.filterText) > -1)
 
       return (
@@ -130,7 +132,7 @@ export const RequestStructure = defineComponent({
                     'request-structure-group',
                     {
                       'request-structure-group--open': isOpen,
-                      'v-list-group--new': requestStore.isNew(key),
+                      'v-list-group--new': cache.isNew(key),
                     },
                   ]}
                 >
@@ -156,7 +158,7 @@ export const RequestStructure = defineComponent({
                     'py-0',
                     'no-wrap',
                     {
-                      'v-list-item--new': requestStore.isNew(uuid),
+                      'v-list-item--new': cache.isNew(uuid),
                       selected: props.modelValue === uuid,
                     },
                   ]}
@@ -184,7 +186,8 @@ export const RequestStructure = defineComponent({
       }
     }
 
-    watch(requestStore.ids, scrollIntoView)
+    watch(cache.ids, scrollIntoView)
+
     onMounted(scrollIntoView)
 
     return () => (

@@ -9,7 +9,7 @@ export const RequestControlsToolbar = defineComponent({
 
   setup() {
     const proxyStore = useProxyStore()
-    const requestStore = useCache()
+    const cache = useCache()
     const dlg = ref(false)
     return () => (
       <VToolbar class={['v-app-controls-toolbar']}>
@@ -27,7 +27,7 @@ export const RequestControlsToolbar = defineComponent({
             ),
           }}
         </VDialog>
-        <VBtn class={['align-center', 'py-1']} icon={'Delete'} size={20} transparent onClick={() => requestStore.clear()}>
+        <VBtn class={['align-center', 'py-1']} icon={'Delete'} size={20} transparent onClick={() => cache.clear()}>
           Clear history
         </VBtn>
       </VToolbar>
