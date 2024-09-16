@@ -61,7 +61,7 @@ export const VNavBar = defineComponent({
           }}
         </VDialog>
         <VTooltip text={'Error log'}>
-          <VBadge modelValue={errorLogStore.hasErrors} position={[4, -4]}>
+          <VBadge modelValue={errorLogStore.hasErrors} dot position={[4, -4]}>
             <VBtn icon={'Warning'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.ErrorLog)} />
           </VBadge>
         </VTooltip>
