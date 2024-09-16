@@ -42,7 +42,9 @@ export const Information = defineComponent({
             {certificates.value.length ? (
               <TransitionGroup>
                 {certificates.value.map(({ cert }) => (
-                  <VCertificate key={cert}>{cert}</VCertificate>
+                  <VCertificate key={cert} tooltip={cert}>
+                    {cert}
+                  </VCertificate>
                 ))}
               </TransitionGroup>
             ) : (
