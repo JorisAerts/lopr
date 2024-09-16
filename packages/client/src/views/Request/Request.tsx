@@ -8,6 +8,7 @@ import { useRoute } from 'vue-router'
 import { pushRoute, router } from '../../router'
 import { RouteNames } from '../../router/RouteNames'
 import { useRequestStore } from '../../stores/request'
+import { formatNumber } from '../../utils/numberUtils'
 
 export const Request = defineComponent({
   name: 'requests-monitor',
@@ -66,7 +67,7 @@ export const Request = defineComponent({
         >
           <VSheet class={['d-flex', 'px-3', 'align-items-center']}>
             <h3 class={['mb-0']}>
-              Requests <VBadge modelValue={cache.ids.length} color={'--primary-color'} style={{ color: 'rgb(var(--on-primary-color))' }}></VBadge>
+              Requests <VBadge modelValue={formatNumber(cache.ids.length)} color={'--primary-color'} style={{ color: 'rgb(var(--on-primary-color))' }} />
             </h3>
             <Transition>
               {requestViewType.value !== 0 && (
