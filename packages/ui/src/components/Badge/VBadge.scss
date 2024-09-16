@@ -17,7 +17,6 @@
   position: relative;
 
   &--badge {
-    padding: var(--badge-text-padding);
 
     border-radius: 1em;
     background: rgb(var(--badge-color));
@@ -27,6 +26,7 @@
   }
 
   &--text {
+    padding: var(--badge-text-padding);
     position: relative;
     top: math.div($spacer, -2);
     vertical-align: middle;
