@@ -3,6 +3,21 @@ import { MonotypeView } from './MonotypeView'
 import { VSheet } from 'lopr-ui'
 import { makeFilenameProps, makeMimeTypeProps } from './mime-type'
 import { useAppStore } from '../../stores/app'
+import {
+  APPLICATION_JAVASCRIPT,
+  APPLICATION_JSON,
+  APPLICATION_TYPESCRIPT,
+  APPLICATION_X_JAVASCRIPT,
+  APPLICATION_X_NS_PROXY_AUTOCONFIG,
+  APPLICATION_X_TYPESCRIPT,
+  IMAGE_SVG,
+  IMAGE_SVG_PLUS_XML,
+  TEXT_CSS,
+  TEXT_HTML,
+  TEXT_JAVASCRIPT,
+  TEXT_JSON,
+  TEXT_PLAIN,
+} from 'lopr-shared/mime-types'
 
 export const MimeTypeDataView = defineComponent({
   name: 'MimeTypeDataView',
@@ -17,21 +32,21 @@ export const MimeTypeDataView = defineComponent({
     const Renderer = computed(() => {
       if (!props.data || !props.mimeType) return undefined
       switch (props.mimeType?.toLowerCase()) {
-        case 'text/html':
-        case 'text/json':
-        case 'application/json':
-        case 'application/javascript':
-        case 'application/x-javascript':
-        case 'application/typescript':
-        case 'application/x-typescript':
-        case 'application/x-ns-proxy-autoconfig': // Automatic Proxy Configuration (PAC)
-        case 'text/javascript':
-        case 'text/css':
-        case 'text/plain':
+        case TEXT_HTML:
+        case TEXT_JSON:
+        case APPLICATION_JSON:
+        case APPLICATION_JAVASCRIPT:
+        case APPLICATION_X_JAVASCRIPT:
+        case APPLICATION_TYPESCRIPT:
+        case APPLICATION_X_TYPESCRIPT:
+        case APPLICATION_X_NS_PROXY_AUTOCONFIG: // Automatic Proxy Configuration (PAC)
+        case TEXT_JAVASCRIPT:
+        case TEXT_CSS:
+        case TEXT_PLAIN:
           return () => <MonotypeView {...props} v-model:wrap={appStore.wrapResponseData} />
 
-        case 'image/svg':
-        case 'image/svg+xml':
+        case IMAGE_SVG:
+        case IMAGE_SVG_PLUS_XML:
           return () => (
             <img
               src={`data:${props.mimeType};base64, ${btoa(props.data as string)}`}
