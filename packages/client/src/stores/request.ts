@@ -19,11 +19,6 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
   /**
    * The currently selected UUID (request/response)
    */
-  const current: Ref<UUID | undefined> = ref()
-
-  /**
-   * The currently selected UUID (request/response)
-   */
   const filter: Ref<string | undefined> = ref()
 
   /**
@@ -89,5 +84,5 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 
   //
 
-  return { current, structure, filter, addRequest }
+  return { structure, filter, addRequest }
 })

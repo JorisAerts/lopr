@@ -2,7 +2,6 @@ import type { PropType } from 'vue'
 import { computed, defineComponent, ref, Transition, watch, watchEffect } from 'vue'
 import { VBadge, VBtn, VBtnGroup, VCard, VContainer, VInputField, VSheet, VSpacer } from 'lopr-ui'
 import { useCache } from '../../stores/cache'
-import type { UUID } from 'lopr-shared'
 import { Sorting } from 'lopr-shared'
 import { RequestDetails, RequestSequence, RequestStructure } from '../../components'
 import { useRoute } from 'vue-router'
@@ -22,17 +21,6 @@ export const Request = defineComponent({
     const requestStore = useRequestStore()
     const route = useRoute()
 
-    watch(
-      () => [route.params.uuid],
-      () => {
-        const uuid = route.params.uuid
-        if (uuid && !Array.isArray(uuid)) {
-          cache.current = uuid as UUID
-        }
-      },
-      { immediate: true }
-    )
-
     watchEffect(() => {
       if (!cache.current) return
       if (cache.initialized && !cache.isValidUUID(cache.current)) {
@@ -40,7 +28,7 @@ export const Request = defineComponent({
         return pushRoute({ name: RouteNames.Requests })
       }
       if (cache.current !== route.params.uuid) {
-        return pushRoute({ name: RouteNames.RequestDetails, params: { uuid: cache.current } })
+        return pushRoute({ name: RouteNames.RequestDetails, params: { uuid: cache.current }, query: route.query })
       }
     })
 
@@ -53,6 +41,15 @@ export const Request = defineComponent({
       router.push({ name: RouteNames.Requests })
       cache.current = undefined
     })
+
+    let timeout = -1
+    watch(
+      () => requestStore.filter,
+      () => {
+        window.clearTimeout(timeout)
+        timeout = window.setTimeout(() => pushRoute({ ...route, query: { ...route.query, q: requestStore.filter || undefined } }), 33)
+      }
+    )
 
     const sorting = ref(Sorting.None)
 
