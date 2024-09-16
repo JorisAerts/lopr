@@ -1,8 +1,8 @@
 import './RequestSequence.scss'
 import type { ComponentPublicInstance, VNode } from 'vue'
 import { defineComponent, onMounted, ref, watch } from 'vue'
-import { VList, VListItem, VSheet } from 'lopr-ui/components'
-import { useRequestStore } from '../../stores/request'
+import { VHighlight, VList, VListItem, VSheet } from 'lopr-ui/components'
+import { useCache } from '../../stores/cache'
 import type { ProxyRequestInfo } from 'lopr-shared'
 import { makeUUIDEvents, makeUUIDProps } from '../../composables/uuid'
 import { isOnScreen } from '../../utils/is-on-screen'
@@ -16,10 +16,11 @@ export const RequestSequence = defineComponent({
 
   props: {
     ...makeUUIDProps(),
+    filterText: { type: String },
   },
 
   setup(props, { emit }) {
-    const requestStore = useRequestStore()
+    const cache = useCache()
     const list = ref<VNode & ComponentPublicInstance>()
     const handleSelect = (item: ProxyRequestInfo) => {
       emit('update:modelValue', item.uuid)
@@ -35,36 +36,41 @@ export const RequestSequence = defineComponent({
       }
     }
 
-    watch(requestStore.ids, scrollIntoView)
+    watch(cache.ids, scrollIntoView)
     onMounted(scrollIntoView)
 
     return () => (
       <VList class={['v-request-sequence']} ref={list}>
-        {requestStore.ids
-          .map((uuid) => {
-            return requestStore.getRequest(uuid)
-          })
-          .map(
-            (req) =>
-              req && (
-                <VListItem
-                  key={req.uuid}
-                  onClick={() => handleSelect(req)}
-                  prependIcon={'Public'}
-                  class={[
-                    'py-0',
-                    {
-                      selected: props.modelValue === req.uuid,
-                    },
-                  ]}
-                  tooltip={`${req.method} — ${req.url}`}
-                >
-                  <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-ellipsis']}>
-                    {req.method} — {req.url}
-                  </VSheet>
-                </VListItem>
-              )
-          )}
+        {cache.ids
+          .map((uuid) => cache.getRequest(uuid))
+          .filter((req) => !props.filterText || (req && req.url.indexOf(props.filterText) > -1))
+          .map((req) => {
+            if (!req) return
+            const text = `${req.method} — ${req.url}`
+            const highlighted = props.filterText ? ( //
+              <VHighlight text={text} highlight={props.filterText} />
+            ) : (
+              text
+            )
+            return (
+              <VListItem
+                key={req.uuid}
+                onClick={() => handleSelect(req)}
+                prependIcon={'Public'}
+                class={[
+                  'py-0',
+                  {
+                    selected: props.modelValue === req.uuid,
+                  },
+                ]}
+                tooltip={text}
+              >
+                {{
+                  default: () => <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-ellipsis']}>{highlighted}</VSheet>,
+                }}
+              </VListItem>
+            )
+          })}
       </VList>
     )
   },

@@ -2,13 +2,13 @@ import { defineComponent, ref, Transition, watch } from 'vue'
 import { VBtn, VIcon, VLabel, VPieChart, VSheet } from 'lopr-ui'
 import { toBytes } from '../../utils/to-bytes'
 import { useAppStore } from '../../stores/app'
-import { useRequestStore } from '../../stores/request'
+import { useCache } from '../../stores/cache'
 
 export const VSizeChart = defineComponent({
   name: 'VSizeChart',
 
   setup() {
-    const requestStore = useRequestStore()
+    const cache = useCache()
     const appStore = useAppStore()
     const cachedSizes = ref()
     watch(
@@ -37,7 +37,7 @@ export const VSizeChart = defineComponent({
                           <VIcon name="KeyboardArrowRight" /> {key}
                           {isCurrent && ' (current)'}
                         </VLabel>
-                        : <Transition>{toBytes(value as number)}</Transition> <VBtn icon={'Delete'} transparent class={['pa-1']} onClick={() => requestStore.clear(key)} />
+                        : <Transition>{toBytes(value as number)}</Transition> <VBtn icon={'Delete'} transparent class={['pa-1']} onClick={() => cache.clear(key)} />
                       </VSheet>
                     )
                   })}

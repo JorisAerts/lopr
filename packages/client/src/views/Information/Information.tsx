@@ -33,7 +33,7 @@ export const Information = defineComponent({
             {!certStore.isEmpty && (
               <Transition>
                 <div class={['ml-2', 'd-inline-block']}>
-                  <VTextField placeholder={'Filter'} v-model={certFilter.value} />
+                  <VTextField class={['pa-0', 'px-1']} placeholder={'Filter'} v-model={certFilter.value} />
                 </div>
               </Transition>
             )}

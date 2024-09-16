@@ -1,0 +1,6 @@
+@use "../../style/vars" as *;
+
+.v-highlighted-text {
+  color: rgb(var(--on-highlight-color));
+  background-color: rgb(var(--highlight-color));
+}
