@@ -69,8 +69,7 @@ export const Request = defineComponent({
         >
           <VSheet class={['d-flex', 'px-3', 'align-items-center']}>
             <h3 class={['mb-0']}>
-              Requests <VBadge modelValue={256}></VBadge>
-              <sup>({cache.ids.length})</sup>
+              Requests <VBadge modelValue={cache.ids.length} color={'--primary-color'} style={{ color: 'rgb(var(--on-primary-color))' }}></VBadge>
             </h3>
             <Transition>
               {requestViewType.value !== 0 && (
