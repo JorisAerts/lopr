@@ -6,10 +6,13 @@ import { useAppStore } from '../../stores/app'
 import {
   APPLICATION_JAVASCRIPT,
   APPLICATION_JSON,
+  APPLICATION_LD_PLUS_JSON,
+  APPLICATION_RTF,
   APPLICATION_TYPESCRIPT,
   APPLICATION_X_JAVASCRIPT,
   APPLICATION_X_NS_PROXY_AUTOCONFIG,
   APPLICATION_X_TYPESCRIPT,
+  APPLICATION_XML,
   IMAGE_SVG,
   IMAGE_SVG_PLUS_XML,
   TEXT_CSS,
@@ -17,6 +20,7 @@ import {
   TEXT_JAVASCRIPT,
   TEXT_JSON,
   TEXT_PLAIN,
+  TEXT_XML,
 } from 'lopr-shared/mime-types'
 
 export const MimeTypeDataView = defineComponent({
@@ -33,6 +37,9 @@ export const MimeTypeDataView = defineComponent({
       if (!props.data || !props.mimeType) return undefined
       switch (props.mimeType?.toLowerCase()) {
         case TEXT_HTML:
+        case TEXT_XML:
+        case APPLICATION_XML:
+        case APPLICATION_LD_PLUS_JSON:
         case TEXT_JSON:
         case APPLICATION_JSON:
         case APPLICATION_JAVASCRIPT:
@@ -42,6 +49,7 @@ export const MimeTypeDataView = defineComponent({
         case APPLICATION_X_NS_PROXY_AUTOCONFIG: // Automatic Proxy Configuration (PAC)
         case TEXT_JAVASCRIPT:
         case TEXT_CSS:
+        case APPLICATION_RTF:
         case TEXT_PLAIN:
           return () => <MonotypeView {...props} v-model:wrap={appStore.wrapResponseData} />
 
