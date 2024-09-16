@@ -26,7 +26,6 @@ const getPath = (struct: StructNode, uuid: UUID) => {
     ? Object.entries(struct.nodes) //
         .flatMap(([, value]) => getPath(value, uuid))
     : []
-
   if (children.length || struct.items?.includes(uuid)) children.push(struct.key)
   return children
 }
@@ -83,10 +82,9 @@ export const RequestStructure = defineComponent({
     // when the current selected item changes,
     // the selection tree should be unfolded so that this item becomes visible
     watch(
-      () => cache.current,
-      (current, oldValue) => {
-        if (!current || current === oldValue) return
-        const path = getPath(requestStore.structure, current)
+      () => [cache.current, requestStore.structure],
+      ([current]) => {
+        const path = getPath(requestStore.structure, current as UUID)
         if (path.every((p) => props.expanded.includes(p))) return
         const ret = new Set<string>(props.expanded)
         path.forEach((p) => ret.add(p))

@@ -44,6 +44,7 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 
   function clearStructure() {
     structure.value = { key: '', isNew: false }
+    triggerRef(structure)
   }
 
   function isMatch(request: ProxyRequestInfo) {
