@@ -1,7 +1,7 @@
 import type { PropType } from 'vue'
 import { computed, defineComponent, ref, Transition, watch, watchEffect } from 'vue'
 import { VBtn, VBtnGroup, VCard, VContainer, VInputField, VSheet, VSpacer } from 'lopr-ui'
-import { useRequestStore } from '../../stores/request'
+import { useCache } from '../../stores/cache'
 import type { UUID } from 'lopr-shared'
 import { Sorting } from 'lopr-shared'
 import { RequestDetails, RequestSequence, RequestStructure } from '../../components'
@@ -17,7 +17,7 @@ export const Request = defineComponent({
   },
 
   setup(props) {
-    const requestStore = useRequestStore()
+    const requestStore = useCache()
     const route = useRoute()
 
     const requestFilter = ref<string>()

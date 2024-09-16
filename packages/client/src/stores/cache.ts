@@ -9,7 +9,7 @@ import type { UUID } from 'lopr-shared/UUID'
 import { useProxyStore } from './proxy'
 import { useAppStore } from './app'
 
-export const STORE_NAME = 'Requests'
+export const STORE_NAME = 'Cache'
 
 const CLEAR_RECENT_TIMEOUT = 500
 
@@ -20,7 +20,7 @@ export interface StructNode {
   items?: UUID[]
 }
 
-export const useRequestStore = defineStore(STORE_NAME, () => {
+export const useCache = defineStore(STORE_NAME, () => {
   const initialized = ref(false)
   const proxyState = useProxyStore()
 
@@ -208,13 +208,13 @@ export const useRequestStore = defineStore(STORE_NAME, () => {
 })
 
 export const resumeRequest = (uuid: UUID) => {
-  const request = useRequestStore().getRequest(uuid)
+  const request = useCache().getRequest(uuid)
   if (!request) return
   sendWsData(WebSocketMessageType.ProxyRequest, { ...request, paused: false })
 }
 
 export const resumeResponse = (uuid: UUID) => {
-  const response = useRequestStore().getResponse(uuid)
+  const response = useCache().getResponse(uuid)
   if (!response) return
   sendWsData(WebSocketMessageType.ProxyResponse, { ...response, paused: false })
 }

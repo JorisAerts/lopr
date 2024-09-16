@@ -1,6 +1,6 @@
 import { defineComponent, ref } from 'vue'
 import { VBtn, VDialog, VDialogCard, VDialogTitle, VSwitch, VToolbar } from 'lopr-ui'
-import { useRequestStore } from '../../stores/request'
+import { useCache } from '../../stores/cache'
 import { VBreakpoints } from '../../components'
 import { useProxyStore } from '../../stores/proxy'
 
@@ -9,7 +9,7 @@ export const RequestControlsToolbar = defineComponent({
 
   setup() {
     const proxyStore = useProxyStore()
-    const requestStore = useRequestStore()
+    const requestStore = useCache()
     const dlg = ref(false)
     return () => (
       <VToolbar class={['v-app-controls-toolbar']}>

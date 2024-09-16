@@ -6,14 +6,14 @@ import { useErrorLogStore } from '../../stores/errorlog'
 import { RouterView, useRouter } from 'vue-router'
 import { RouteNames } from '../../router/RouteNames'
 import { AppPreferences } from '../AppPreferences'
-import { useRequestStore } from '../../stores/request'
+import { useCache } from '../../stores/cache'
 import { VAbout } from '../About'
 
 export const VNavBar = defineComponent({
   name: 'v-nav-bar',
 
   setup() {
-    const requestStore = useRequestStore()
+    const requestStore = useCache()
     const errorLogStore = useErrorLogStore()
     const iconSize = 20
     const router = useRouter()

@@ -2,7 +2,7 @@ import './RequestStructure.scss'
 import type { ComponentPublicInstance, PropType, VNode } from 'vue'
 import { defineComponent, getCurrentInstance, onMounted, ref, watch, withModifiers } from 'vue'
 import { VList, VListGroup, VListItem } from 'lopr-ui/components'
-import { useRequestStore } from '../../stores/request'
+import { useCache } from '../../stores/cache'
 import type { UUID } from 'lopr-shared'
 import { Sorting } from 'lopr-shared'
 import { makeUUIDEvents, makeUUIDProps } from '../../composables/uuid'
@@ -47,7 +47,7 @@ export const RequestStructure = defineComponent({
 
   setup(props, { emit }) {
     const list = ref<VNode & ComponentPublicInstance>()
-    const requestStore = useRequestStore()
+    const requestStore = useCache()
     const contains = (key: string) => props.expanded.includes(key)
     const handleFolding = (evt: Event | MouseEvent, key: string, value: StructNode) => {
       const sel = props.expanded

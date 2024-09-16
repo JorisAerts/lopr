@@ -2,7 +2,7 @@ import './RequestSequence.scss'
 import type { ComponentPublicInstance, VNode } from 'vue'
 import { defineComponent, onMounted, ref, watch } from 'vue'
 import { VHighlight, VList, VListItem, VSheet } from 'lopr-ui/components'
-import { useRequestStore } from '../../stores/request'
+import { useCache } from '../../stores/cache'
 import type { ProxyRequestInfo } from 'lopr-shared'
 import { makeUUIDEvents, makeUUIDProps } from '../../composables/uuid'
 import { isOnScreen } from '../../utils/is-on-screen'
@@ -20,7 +20,7 @@ export const RequestSequence = defineComponent({
   },
 
   setup(props, { emit }) {
-    const requestStore = useRequestStore()
+    const requestStore = useCache()
     const list = ref<VNode & ComponentPublicInstance>()
     const handleSelect = (item: ProxyRequestInfo) => {
       emit('update:modelValue', item.uuid)

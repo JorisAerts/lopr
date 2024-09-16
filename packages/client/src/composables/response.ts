@@ -1,4 +1,4 @@
-import { useRequestStore } from '../stores/request'
+import { useCache } from '../stores/cache'
 import { parseHeaders } from '../utils/request-utils'
 import type { Ref } from 'vue'
 import { computed, isRef, ref, triggerRef, watch } from 'vue'
@@ -11,7 +11,7 @@ import type { UUID } from 'lopr-shared'
  * Utility methods for handling the response
  */
 const useResponseByRef = (uuid: Ref<UUID | undefined>) => {
-  const requestStore = useRequestStore()
+  const requestStore = useCache()
   const response = computed(() => uuid.value && requestStore.getResponse(uuid.value))
   const headersRaw = computed(() => response.value?.headers)
   const headers = computed<Record<string, string>>(() => parseHeaders(headersRaw.value))

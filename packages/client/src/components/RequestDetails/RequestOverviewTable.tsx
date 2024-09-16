@@ -1,6 +1,6 @@
 import { computed, defineComponent } from 'vue'
 import { VTable } from 'lopr-ui/components'
-import { useRequestStore } from '../../stores/request'
+import { useCache } from '../../stores/cache'
 import { makeUUIDProps, useUUID } from '../../composables/uuid'
 
 export const RequestOverviewTable = defineComponent({
@@ -12,7 +12,7 @@ export const RequestOverviewTable = defineComponent({
 
   setup(props) {
     const uuid = useUUID(props)
-    const requestStore = useRequestStore()
+    const requestStore = useCache()
     const request = computed(() => (uuid.value ? requestStore.getRequest(uuid.value) : undefined))
     return () =>
       props.modelValue && (
