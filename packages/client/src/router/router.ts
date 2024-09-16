@@ -1,6 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { RouteNames } from './RouteNames'
 import { Error404, ErrorLog, ErrorLogControlsToolbar, ErrorWsDown, Information, InformationControlsToolbar, Request, RequestControlsToolbar } from '../views'
+import type { UUID } from 'lopr-shared'
+import { useCache } from '../stores/cache'
+import { useRequestStore } from '../stores/request'
 
 export const router = createRouter({
   history: createWebHashHistory(),
@@ -20,6 +23,10 @@ export const router = createRouter({
           components: {
             default: Request,
             controls: RequestControlsToolbar,
+          },
+          beforeEnter: (to) => {
+            useCache().current = to.params.uuid as UUID
+            useRequestStore().filter = to.query.q as string
           },
         },
       ],

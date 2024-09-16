@@ -1,3 +1,5 @@
+import { formatNumber } from './numberUtils'
+
 const suffix = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
 
 const precision = 100
@@ -9,5 +11,5 @@ export const toBytes = (num?: number, defaultValue = '') => {
     num /= 1024
   }
   num = Math.round(num * precision) / precision
-  return new Intl.NumberFormat('en-US').format(num) + suffix[i]
+  return formatNumber(num) + suffix[i]
 }
