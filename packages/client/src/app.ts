@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { router } from './router'
 import './utils/websocket'
-import { useRequestStore } from './stores/request'
+import { useCache } from './stores/cache'
 import { usePreferencesStore } from './stores/preferences'
 import { useErrorLogStore } from './stores/errorlog'
 import { useCertificateStore } from './stores/certificates'
@@ -16,7 +16,7 @@ app.use(router)
 // init stores that automagically will register web socket handlers
 // should be extracted
 useProxyStore()
-useRequestStore()
+useCache()
 usePreferencesStore()
 useErrorLogStore()
 useCertificateStore()

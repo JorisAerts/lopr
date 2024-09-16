@@ -1,12 +1,13 @@
 import './RequestStructure.scss'
 import type { ComponentPublicInstance, PropType, VNode } from 'vue'
 import { defineComponent, getCurrentInstance, onMounted, ref, watch, withModifiers } from 'vue'
-import { VList, VListGroup, VListItem } from 'lopr-ui/components'
-import { useRequestStore } from '../../stores/request'
+import { VHighlight, VList, VListGroup, VListItem } from 'lopr-ui/components'
+import { useCache } from '../../stores/cache'
 import type { UUID } from 'lopr-shared'
 import { Sorting } from 'lopr-shared'
 import { makeUUIDEvents, makeUUIDProps } from '../../composables/uuid'
 import { isOnScreen } from '../../utils/is-on-screen'
+import { useRequestStore } from '../../stores/request'
 
 const removeKey = (arr: string[], key: string) => {
   const pos = arr.indexOf(key)
@@ -40,12 +41,14 @@ export const RequestStructure = defineComponent({
 
   props: {
     ...makeUUIDProps(),
+    filterText: { type: String },
     expanded: { type: Array as PropType<string[]>, default: [] as string[] },
     sorting: { type: Number as PropType<Sorting>, default: 0 },
   },
 
   setup(props, { emit }) {
     const list = ref<VNode & ComponentPublicInstance>()
+    const cache = useCache()
     const requestStore = useRequestStore()
     const contains = (key: string) => props.expanded.includes(key)
     const handleFolding = (evt: Event | MouseEvent, key: string, value: StructNode) => {
@@ -80,7 +83,7 @@ export const RequestStructure = defineComponent({
     // when the current selected item changes,
     // the selection tree should be unfolded so that this item becomes visible
     watch(
-      () => requestStore.current,
+      () => cache.current,
       (current, oldValue) => {
         if (!current || current === oldValue) return
         const path = getPath(requestStore.structure, current)
@@ -99,9 +102,23 @@ export const RequestStructure = defineComponent({
           : Object.keys(struct.nodes)
         : []
 
+    const renderText = (text: string) =>
+      !props.filterText ? (
+        text //
+      ) : (
+        <VHighlight text={text} highlight={props.filterText} />
+      )
+
     // recursively render the tree
-    const renderTree = (struct: StructNode) =>
-      struct ? (
+    const renderTree = (struct: StructNode) => {
+      if (!struct) return
+
+      const items: UUID[] = struct.items ?? []
+      const filteredItems = items //
+        .map((uuid) => cache.getRequest(uuid))
+        .filter((request) => !props.filterText || !request || request.url.indexOf(props.filterText) > -1)
+
+      return (
         <>
           {struct.nodes &&
             getSortedStructKeys(struct).map((name) => {
@@ -112,7 +129,7 @@ export const RequestStructure = defineComponent({
               const onClick = (evt: Event) => (hasItems ? handleFolding(evt, key, value) : undefined)
               const item = () => (
                 <VListItem key={key} class={['py-0', 'no-wrap', 'overflow-ellipsis']} onClick={withModifiers(onClick, ['prevent'])} prependIcon={hasItems ? 'KeyboardArrowRight' : undefined}>
-                  {name}
+                  {renderText(name)}
                 </VListItem>
               )
               return hasItems ? (
@@ -122,7 +139,7 @@ export const RequestStructure = defineComponent({
                     'request-structure-group',
                     {
                       'request-structure-group--open': isOpen,
-                      'v-list-group--new': requestStore.isNew(key),
+                      'v-list-group--new': cache.isNew(key),
                     },
                   ]}
                 >
@@ -136,34 +153,32 @@ export const RequestStructure = defineComponent({
               )
             })}
 
-          {struct.items &&
-            (struct.items as UUID[]).map((value) => {
-              const request = requestStore.getRequest(value)
-              return (
-                request && (
-                  <VListItem
-                    key={value}
-                    onClick={() => handleSelect(value)}
-                    prependIcon={'Public'}
-                    class={[
-                      'py-0',
-                      'no-wrap',
-                      {
-                        'v-list-item--new': requestStore.isNew(value),
-                        selected: props.modelValue === value,
-                      },
-                    ]}
-                    tooltip={`${request.method} ${request.url}`}
-                  >
-                    <span class={'overflow-ellipsis'}>
-                      {request.method} {request.url.substring(struct.key?.length + 1) || '/'}
-                    </span>
-                  </VListItem>
-                )
-              )
-            })}
+          {filteredItems.map((request) => {
+            if (!request) return
+            const uuid = request.uuid
+            const text = `${request.method} ${request.url.substring(struct.key?.length + 1) || '/'}`
+            return (
+              <VListItem
+                key={uuid}
+                onClick={() => handleSelect(uuid)}
+                prependIcon={'Public'}
+                class={[
+                  'py-0',
+                  'no-wrap',
+                  {
+                    'v-list-item--new': cache.isNew(uuid),
+                    selected: props.modelValue === uuid,
+                  },
+                ]}
+                tooltip={`${request.method} ${request.url}`}
+              >
+                <span class={'overflow-ellipsis'}>{renderText(text)}</span>
+              </VListItem>
+            )
+          })}
         </>
-      ) : null
+      )
+    }
 
     const scrollIntoView = () => {
       const listEl: Element = list.value?.$el
@@ -176,7 +191,8 @@ export const RequestStructure = defineComponent({
       }
     }
 
-    watch(requestStore.ids, scrollIntoView)
+    watch(cache.ids, scrollIntoView)
+
     onMounted(scrollIntoView)
 
     return () => (

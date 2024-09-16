@@ -21,9 +21,12 @@
 
   // theme colors
   --primary-color: 49, 120, 198;
-  //--primary-color: 99, 150, 228;
   --on-primary-color: 255, 255, 255;
   --secondary-color: 0, 255, 0;
+
+  // special colors
+  --highlight-color: 103, 176, 244;
+  --on-highlight-color: 0, 0, 0;
 
   // background
   --app-background-color: 242, 240, 238;
@@ -62,13 +65,19 @@
 
 // dark mode
 html.dark-mode {
+  // modifier (1 or -1) used for multiplication in CSS vars
   --dark-modifier: -1;
 
+  // basic colors
   --app-background-color: 14, 19, 23;
   --background-color: 30, 30, 34;
   --text-color: 255, 255, 255;
 
+  // theme colors
+  --primary-color: 49, 120, 198;
+  //--highlight-color: ;
+
+  // there's no shadows in dark mode
   --default-shadow: none;
 
-  --primary-color: 49, 120, 198;
 }
