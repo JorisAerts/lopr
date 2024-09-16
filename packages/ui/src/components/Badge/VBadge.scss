@@ -1,22 +1,39 @@
+@use 'sass:math';
 @use '../../style/sass-vars' as *;
 
 :root {
+  --badge-color: 255, 0, 0;
 
+  --badge-font-size: .75rem;
+  --badge-font-kerning: -.25px;
+
+  --badge-text-padding: 0 #{math.div($spacer, 2)};
 }
 
 .v-badge {
 
+  display: inline-block;
   position: relative;
 
   &--badge {
-    border-radius: 50%;
-    position: absolute;
-    background: red;
-    right: 0;
-    top: 0;
+    padding: var(--badge-text-padding);
+
+    border-radius: 1em;
+    background: rgb(var(--badge-color));
+
+    font-size: var(--badge-font-size);
+    letter-spacing: var(--badge-font-kerning);
+  }
+
+  &--text {
+    position: relative;
+    top: math.div($spacer, -2);
+    vertical-align: middle;
   }
 
   &--dot {
-
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 }

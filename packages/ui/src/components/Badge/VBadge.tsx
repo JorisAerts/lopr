@@ -7,9 +7,10 @@ export const VBadge = defineComponent({
 
   props: {
     modelValue: { type: [Number, String, Boolean], default: false },
-    size: { type: Number, default: 6 },
     position: { type: [Number, Array] as PropType<number | (undefined | number)[]>, default: 0 },
     color: { type: String },
+    dot: { type: Boolean, default: false },
+    size: { type: Number, default: 6 },
   },
 
   setup(props, { slots }) {
@@ -28,11 +29,13 @@ export const VBadge = defineComponent({
     const badgeStyle = computed(() => {
       const pos = Array.isArray(props.position) ? props.position : [props.position]
       return {
-        width: `${props.size}px`,
-        height: `${props.size}px`,
-        top: `${pos[0] ?? 0}px`,
-        right: `${0 - (pos[1] ?? 0)}px`,
-        ...(props.color && { background: props.color }),
+        ...(props.color && { background: props.color?.startsWith('--') ? `rgb(var(${props.color}))` : props.color }),
+        ...(props.dot && {
+          width: `${props.size}px`,
+          height: `${props.size}px`,
+          top: `${pos[0] ?? 0}px`,
+          right: `${0 - (pos[1] ?? 0)}px`,
+        }),
       }
     })
     return () => (
@@ -40,7 +43,16 @@ export const VBadge = defineComponent({
         <div class={'v-badge--wrapper'}>{slots.default?.()}</div>
         <Transition>
           {show.value && (
-            <div class={['v-badge--badge', { 'v-badge--dot': !badgeText.value }]} style={badgeStyle.value}>
+            <div
+              class={[
+                'v-badge--badge',
+                {
+                  'v-badge--dot': props.dot,
+                  'v-badge--text': !props.dot && badgeText.value,
+                },
+              ]}
+              style={badgeStyle.value}
+            >
               {badgeText.value}
             </div>
           )}
