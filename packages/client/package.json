@@ -1,6 +1,6 @@
 {
   "name": "lopr-client",
-  "version": "0.0.10",
+  "version": "0.1.0",
   "description": "A reverse proxy server with a GUI",
   "keywords": [
     "reverse proxy",
