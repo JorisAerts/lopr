@@ -1,11 +1,6 @@
 @use "../../style/vars" as *;
 
-:root {
-  --text-highlight: lch(from rgb(var(--primary-color)) calc(l + 10 * var(--dark-modifier)) c h);
-  --on-text-highlight: var(--on-text-color);
-}
-
 .v-highlighted-text {
-  color: rgb(var(--on-text-highlight));
-  background-color: var(--text-highlight);
+  color: rgb(var(--on-highlight-color));
+  background-color: rgb(var(--highlight-color));
 }
