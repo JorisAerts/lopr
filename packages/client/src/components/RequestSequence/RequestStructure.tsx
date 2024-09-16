@@ -1,7 +1,7 @@
 import './RequestStructure.scss'
 import type { ComponentPublicInstance, PropType, VNode } from 'vue'
 import { defineComponent, getCurrentInstance, onMounted, ref, watch, withModifiers } from 'vue'
-import { VList, VListGroup, VListItem } from 'lopr-ui/components'
+import { VHighlight, VList, VListGroup, VListItem } from 'lopr-ui/components'
 import { useCache } from '../../stores/cache'
 import type { UUID } from 'lopr-shared'
 import { Sorting } from 'lopr-shared'
@@ -102,6 +102,13 @@ export const RequestStructure = defineComponent({
           : Object.keys(struct.nodes)
         : []
 
+    const renderText = (text: string) =>
+      !props.filterText ? (
+        text //
+      ) : (
+        <VHighlight text={text} highlight={props.filterText} />
+      )
+
     // recursively render the tree
     const renderTree = (struct: StructNode) => {
       if (!struct) return
@@ -122,7 +129,7 @@ export const RequestStructure = defineComponent({
               const onClick = (evt: Event) => (hasItems ? handleFolding(evt, key, value) : undefined)
               const item = () => (
                 <VListItem key={key} class={['py-0', 'no-wrap', 'overflow-ellipsis']} onClick={withModifiers(onClick, ['prevent'])} prependIcon={hasItems ? 'KeyboardArrowRight' : undefined}>
-                  {name}
+                  {renderText(name)}
                 </VListItem>
               )
               return hasItems ? (
@@ -147,28 +154,26 @@ export const RequestStructure = defineComponent({
             })}
 
           {filteredItems.map((request) => {
-            const uuid = request!.uuid
+            if (!request) return
+            const uuid = request.uuid
+            const text = `${request.method} ${request.url.substring(struct.key?.length + 1) || '/'}`
             return (
-              request && (
-                <VListItem
-                  key={uuid}
-                  onClick={() => handleSelect(uuid)}
-                  prependIcon={'Public'}
-                  class={[
-                    'py-0',
-                    'no-wrap',
-                    {
-                      'v-list-item--new': cache.isNew(uuid),
-                      selected: props.modelValue === uuid,
-                    },
-                  ]}
-                  tooltip={`${request.method} ${request.url}`}
-                >
-                  <span class={'overflow-ellipsis'}>
-                    {request.method} {request.url.substring(struct.key?.length + 1) || '/'}
-                  </span>
-                </VListItem>
-              )
+              <VListItem
+                key={uuid}
+                onClick={() => handleSelect(uuid)}
+                prependIcon={'Public'}
+                class={[
+                  'py-0',
+                  'no-wrap',
+                  {
+                    'v-list-item--new': cache.isNew(uuid),
+                    selected: props.modelValue === uuid,
+                  },
+                ]}
+                tooltip={`${request.method} ${request.url}`}
+              >
+                <span class={'overflow-ellipsis'}>{renderText(text)}</span>
+              </VListItem>
             )
           })}
         </>
