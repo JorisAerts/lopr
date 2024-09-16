@@ -12,8 +12,8 @@ export const RequestOverviewTable = defineComponent({
 
   setup(props) {
     const uuid = useUUID(props)
-    const requestStore = useCache()
-    const request = computed(() => (uuid.value ? requestStore.getRequest(uuid.value) : undefined))
+    const cache = useCache()
+    const request = computed(() => (uuid.value ? cache.getRequest(uuid.value) : undefined))
     return () =>
       props.modelValue && (
         <VTable class={'gap-2'}>

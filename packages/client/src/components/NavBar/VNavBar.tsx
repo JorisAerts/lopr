@@ -13,7 +13,7 @@ export const VNavBar = defineComponent({
   name: 'v-nav-bar',
 
   setup() {
-    const requestStore = useCache()
+    const cache = useCache()
     const errorLogStore = useErrorLogStore()
     const iconSize = 20
     const router = useRouter()
@@ -51,7 +51,7 @@ export const VNavBar = defineComponent({
           size={iconSize}
           class={['pa-1']}
           transparent
-          onClick={() => pushRoute(requestStore.current ? RouteNames.RequestDetails : RouteNames.Requests, { uuid: requestStore.current as string })()}
+          onClick={() => pushRoute(cache.current ? RouteNames.RequestDetails : RouteNames.Requests, { uuid: cache.current as string })()}
         />
         <VBtn tooltip={'Information'} icon={'Info'} size={iconSize} class={['pa-1']} transparent onClick={pushRoute(RouteNames.Information)} />
         <VDialog clickOutsideToClose>

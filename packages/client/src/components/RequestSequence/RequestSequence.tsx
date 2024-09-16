@@ -20,7 +20,7 @@ export const RequestSequence = defineComponent({
   },
 
   setup(props, { emit }) {
-    const requestStore = useCache()
+    const cache = useCache()
     const list = ref<VNode & ComponentPublicInstance>()
     const handleSelect = (item: ProxyRequestInfo) => {
       emit('update:modelValue', item.uuid)
@@ -36,13 +36,13 @@ export const RequestSequence = defineComponent({
       }
     }
 
-    watch(requestStore.ids, scrollIntoView)
+    watch(cache.ids, scrollIntoView)
     onMounted(scrollIntoView)
 
     return () => (
       <VList class={['v-request-sequence']} ref={list}>
-        {requestStore.ids
-          .map((uuid) => requestStore.getRequest(uuid))
+        {cache.ids
+          .map((uuid) => cache.getRequest(uuid))
           .filter((req) => !props.filterText || (req && req.url.indexOf(props.filterText) > -1))
           .map((req) => {
             if (!req) return

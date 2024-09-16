@@ -11,8 +11,8 @@ import type { UUID } from 'lopr-shared'
  * Utility methods for handling the response
  */
 const useResponseByRef = (uuid: Ref<UUID | undefined>) => {
-  const requestStore = useCache()
-  const response = computed(() => uuid.value && requestStore.getResponse(uuid.value))
+  const cache = useCache()
+  const response = computed(() => uuid.value && cache.getResponse(uuid.value))
   const headersRaw = computed(() => response.value?.headers)
   const headers = computed<Record<string, string>>(() => parseHeaders(headersRaw.value))
   const hasHeaders = computed(() => !!headersRaw.value)
@@ -37,7 +37,7 @@ const useResponseByRef = (uuid: Ref<UUID | undefined>) => {
   const isPaused = computed(() => !!response.value?.paused)
 
   watch(
-    () => requestStore.responses,
+    () => cache.responses,
     () => triggerRef(response),
     { deep: true }
   )
