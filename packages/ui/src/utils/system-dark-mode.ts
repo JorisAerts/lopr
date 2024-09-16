@@ -1,6 +1,5 @@
 import type { Ref } from 'vue'
 import { ref } from 'vue'
-import { addDOMListener } from './add-DOM-listener'
 
 export interface SystemDarkMode {
   isDark: Ref<boolean>
@@ -14,6 +13,8 @@ export const useSystemDarkMode = ((): UseSystemDarkMode =>
     : () => {
         const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)')
         const isDark = ref(mediaQueryList.matches)
-        addDOMListener(mediaQueryList, 'change', (event: MediaQueryListEvent) => (isDark.value = event.matches))
+        const handleToggleDarkMode = (event: MediaQueryListEvent) => (isDark.value = event.matches)
+        // no removeEventListener, it never expires within the lifecycle of the page
+        mediaQueryList.addEventListener('change', handleToggleDarkMode)
         return { isDark }
       })()
