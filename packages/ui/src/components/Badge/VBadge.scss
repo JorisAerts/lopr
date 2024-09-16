@@ -7,7 +7,8 @@
   --badge-font-size: .75rem;
   --badge-font-kerning: -.25px;
 
-  --badge-text-padding: 0 #{math.div($spacer, 2)};
+  --badge-text-padding: 0 #{math.div($spacer, 1)};
+  --badge-text-line-height: 1.4;
 }
 
 .v-badge {
@@ -29,6 +30,7 @@
     position: relative;
     top: math.div($spacer, -2);
     vertical-align: middle;
+    line-height: var(--badge-text-line-height);
   }
 
   &--dot {
