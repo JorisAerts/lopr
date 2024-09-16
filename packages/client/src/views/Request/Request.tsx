@@ -8,6 +8,7 @@ import { RequestDetails, RequestSequence, RequestStructure } from '../../compone
 import { useRoute } from 'vue-router'
 import { pushRoute, router } from '../../router'
 import { RouteNames } from '../../router/RouteNames'
+import { useRequestStore } from '../../stores/request'
 
 export const Request = defineComponent({
   name: 'requests-monitor',
@@ -17,30 +18,29 @@ export const Request = defineComponent({
   },
 
   setup(props) {
-    const requestStore = useCache()
+    const cache = useCache()
+    const requestStore = useRequestStore()
     const route = useRoute()
-
-    const requestFilter = ref<string>()
 
     watch(
       () => [route.params.uuid],
       () => {
         const uuid = route.params.uuid
         if (uuid && !Array.isArray(uuid)) {
-          requestStore.current = uuid as UUID
+          cache.current = uuid as UUID
         }
       },
       { immediate: true }
     )
 
     watchEffect(() => {
-      if (!requestStore.current) return
-      if (requestStore.initialized && !requestStore.isValidUUID(requestStore.current)) {
-        requestStore.current = undefined
+      if (!cache.current) return
+      if (cache.initialized && !cache.isValidUUID(cache.current)) {
+        cache.current = undefined
         return pushRoute({ name: RouteNames.Requests })
       }
-      if (requestStore.current !== route.params.uuid) {
-        return pushRoute({ name: RouteNames.RequestDetails, params: { uuid: requestStore.current } })
+      if (cache.current !== route.params.uuid) {
+        return pushRoute({ name: RouteNames.RequestDetails, params: { uuid: cache.current } })
       }
     })
 
@@ -48,10 +48,10 @@ export const Request = defineComponent({
     const requestViewType = ref(1)
     const expanded = ref<string[]>([])
 
-    watch(requestStore.ids, (newVal) => {
+    watch(cache.ids, (newVal) => {
       if (newVal.length) return
       router.push({ name: RouteNames.Requests })
-      requestStore.current = undefined
+      cache.current = undefined
     })
 
     const sorting = ref(Sorting.None)
@@ -69,7 +69,7 @@ export const Request = defineComponent({
         >
           <VSheet class={['d-flex', 'px-3', 'align-items-center']}>
             <h3 class={['mb-0']}>
-              Requests <sup>({requestStore.ids.length})</sup>
+              Requests <sup>({cache.ids.length})</sup>
             </h3>
             <Transition>
               {requestViewType.value !== 0 && (
@@ -96,18 +96,18 @@ export const Request = defineComponent({
           </VSheet>
           <VSheet class={['fill-height', 'overflow-auto', 'my-2', 'px-1']}>
             {requestViewType.value === 0 ? ( //
-              <RequestSequence v-model={requestStore.current} filterText={requestFilter.value} />
+              <RequestSequence v-model={cache.current} filterText={requestStore.filter} />
             ) : (
-              <RequestStructure v-model={requestStore.current} v-model:expanded={expanded.value} sorting={sorting.value} filterText={requestFilter.value} />
+              <RequestStructure v-model={cache.current} v-model:expanded={expanded.value} sorting={sorting.value} filterText={requestStore.filter} />
             )}
           </VSheet>
           <VSheet class={['flex-grow-0']}>
-            <VInputField class={['py-0', 'px-1', 'ma-1']} placeholder={'Filter'} v-model={requestFilter.value} />
+            <VInputField class={['py-0', 'px-1', 'ma-1']} placeholder={'Filter'} v-model={requestStore.filter} />
           </VSheet>
         </VCard>
 
         <VCard flat class={['fill-height', 'overflow-auto', 'flex-grow-1', 'pa-3']}>
-          <RequestDetails modelValue={requestStore.current} />
+          <RequestDetails modelValue={cache.current} />
         </VCard>
       </VContainer>
     )
