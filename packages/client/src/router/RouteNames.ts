@@ -3,6 +3,8 @@ export enum RouteNames {
   Requests = 'requests',
   RequestDetails = 'requests-details',
 
+  Rules = 'rules',
+
   Information = 'info',
   Preferences = 'preferences',
   ErrorLog = 'error-log',

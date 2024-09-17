@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { RouteNames } from './RouteNames'
-import { Error404, ErrorLog, ErrorLogControlsToolbar, ErrorWsDown, Information, InformationControlsToolbar, Request, RequestControlsToolbar } from '../views'
+import { Error404, ErrorLog, ErrorLogControlsToolbar, ErrorWsDown, Information, InformationControlsToolbar, Request, RequestControlsToolbar, Rules } from '../views'
 import type { UUID } from 'lopr-shared'
 import { useCache } from '../stores/cache'
 import { useRequestStore } from '../stores/request'
@@ -30,6 +30,15 @@ export const router = createRouter({
           },
         },
       ],
+    },
+
+    {
+      name: RouteNames.Rules,
+      path: '/rules',
+      components: {
+        default: Rules,
+        controls: RequestControlsToolbar,
+      },
     },
 
     {

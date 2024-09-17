@@ -3,6 +3,8 @@ import { VBtn, VDialog, VDialogCard, VDialogTitle, VSwitch, VToolbar } from 'lop
 import { useCache } from '../../stores/cache'
 import { VBreakpoints } from '../../components'
 import { useProxyStore } from '../../stores/proxy'
+import { pushRoute } from '../../router'
+import { RouteNames } from '../../router/RouteNames'
 
 export const RequestControlsToolbar = defineComponent({
   name: 'RequestControlsToolbar',
@@ -27,7 +29,7 @@ export const RequestControlsToolbar = defineComponent({
             ),
           }}
         </VDialog>
-        <VBtn tooltip="Edit rules" class={['align-center', 'pa-1']} icon={'EditNote'} size={20} transparent />
+        <VBtn tooltip="Edit rules" class={['align-center', 'pa-1']} icon={'EditNote'} size={20} transparent onClick={() => pushRoute({ name: RouteNames.Rules })} />
         <VBtn class={['align-center', 'py-1']} icon={'Delete'} size={20} transparent onClick={() => cache.clear()}>
           Clear history
         </VBtn>
