@@ -27,6 +27,7 @@ export const RequestControlsToolbar = defineComponent({
             ),
           }}
         </VDialog>
+        <VBtn tooltip="Edit rules" class={['align-center', 'pa-1']} icon={'EditNote'} size={20} transparent />
         <VBtn class={['align-center', 'py-1']} icon={'Delete'} size={20} transparent onClick={() => cache.clear()}>
           Clear history
         </VBtn>
