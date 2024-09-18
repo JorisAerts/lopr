@@ -39,6 +39,7 @@ export const router = createRouter({
         default: Rules,
         controls: RequestControlsToolbar,
       },
+      meta: {},
     },
 
     {
@@ -82,6 +83,11 @@ export const router = createRouter({
       },
     },
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  to.meta.from = from
+  next()
 })
 
 export const pushRoute = (...args: Parameters<(typeof router)['push']>) => router.push(...args)
