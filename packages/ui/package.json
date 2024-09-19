@@ -30,7 +30,9 @@
   "scripts": {
     "check:type": "tsc --noEmit",
     "build": "vite build",
-    "test": "vitest --typecheck"
+    "test": "vitest --typecheck",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "exports": {
     ".": "./src/index.ts",
@@ -48,16 +50,27 @@
     "./*": "./src/*"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^1.9.0",
     "@eslint/js": "^9.10.0",
+    "@storybook/addon-essentials": "^8.3.2",
+    "@storybook/addon-interactions": "^8.3.2",
+    "@storybook/addon-links": "^8.3.2",
+    "@storybook/addon-onboarding": "^8.3.2",
+    "@storybook/blocks": "^8.3.2",
+    "@storybook/test": "^8.3.2",
+    "@storybook/vue3": "^8.3.2",
+    "@storybook/vue3-vite": "^8.3.2",
     "@types/node": "^22.5.5",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "eslint": "^9.10.0",
+    "eslint-plugin-storybook": "^0.8.0",
     "eslint-plugin-vue": "^9.28.0",
     "globals": "^15.9.0",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "sass": "^1.79.1",
+    "storybook": "^8.3.2",
     "stylelint": "^16.9.0",
     "stylelint-config-standard-scss": "^13.1.0",
     "type-fest": "^4.26.1",
@@ -69,5 +82,10 @@
   },
   "peerDependencies": {
     "vue": ">= 3.4 < 4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   }
 }
