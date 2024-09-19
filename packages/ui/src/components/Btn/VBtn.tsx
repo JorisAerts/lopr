@@ -57,6 +57,7 @@ export const VBtn = defineComponent({
             'v-btn--transparent': props.transparent,
             'v-btn--disabled': props.disabled,
             'v-btn--selected': selected.value,
+            'v-vtn--icon-only': !content && props.icon,
           }}
           onClick={(e) => emit(EventTypes.Click, e)}
           {...attrs}
