@@ -333,16 +333,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chromatic-com/storybook@npm:^1.9.0":
-  version: 1.9.0
-  resolution: "@chromatic-com/storybook@npm:1.9.0"
+"@chromatic-com/storybook@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@chromatic-com/storybook@npm:2.0.2"
   dependencies:
     chromatic: "npm:^11.4.0"
     filesize: "npm:^10.0.12"
     jsonfile: "npm:^6.1.0"
     react-confetti: "npm:^6.1.0"
     strip-ansi: "npm:^7.1.0"
-  checksum: 10c0/c4b0fbfcb3394c2814e445471b1528179c2144d70d4a13c9a70545c2f2052c6366f73893b16e1490e658d43d905fc726bbb78d7c126c839a3c7ee3d8f3ad21c2
+  checksum: 10c0/a997e8247168d9c30030966877836839951b6acd65899a4bb683d78d37e549a3285ca14a721893d75bef5b89e075d7090d084023c142680efaef60c9db64e7fa
   languageName: node
   linkType: hard
 
@@ -3160,9 +3160,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.4":
-  version: 1.5.25
-  resolution: "electron-to-chromium@npm:1.5.25"
-  checksum: 10c0/2ea818d22592754b902df70d48b82c5d9e3cc2a221d3d0c39d7a7967780601a5cebd5fa10628c6d0ba918582c268a20392279e8bee93edba2e499681056ae143
+  version: 1.5.26
+  resolution: "electron-to-chromium@npm:1.5.26"
+  checksum: 10c0/7ccff0cda9573a692cb04648cddd9f92981f495547b77d5f0388ba0d522f634f1e1499a74bd8be0de969fb1f7cffb30941aa2bcb541a59ea6f67fc3ea0e90c07
   languageName: node
   linkType: hard
 
@@ -4785,7 +4785,7 @@ __metadata:
     pinia: "npm:2.2.2"
     postcss: "npm:^8.4.47"
     prettier: "npm:^3.3.3"
-    sass: "npm:^1.79.1"
+    sass: "npm:^1.79.2"
     stylelint: "npm:^16.9.0"
     stylelint-config-standard-scss: "npm:^13.1.0"
     terser: "npm:^5.33.0"
@@ -4820,7 +4820,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "lopr-ui@workspace:packages/ui"
   dependencies:
-    "@chromatic-com/storybook": "npm:^1.9.0"
+    "@chromatic-com/storybook": "npm:^2.0.2"
     "@eslint/js": "npm:^9.10.0"
     "@storybook/addon-essentials": "npm:^8.3.2"
     "@storybook/addon-interactions": "npm:^8.3.2"
@@ -4839,7 +4839,7 @@ __metadata:
     globals: "npm:^15.9.0"
     postcss: "npm:^8.4.47"
     prettier: "npm:^3.3.3"
-    sass: "npm:^1.79.1"
+    sass: "npm:^1.79.2"
     storybook: "npm:^8.3.2"
     stylelint: "npm:^16.9.0"
     stylelint-config-standard-scss: "npm:^13.1.0"
@@ -6108,7 +6108,7 @@ __metadata:
     globals: "npm:^15.9.0"
     postcss: "npm:^8.4.47"
     prettier: "npm:^3.3.3"
-    sass: "npm:^1.79.1"
+    sass: "npm:^1.79.2"
     stylelint: "npm:^16.9.0"
     stylelint-config-standard-scss: "npm:^13.1.0"
     typescript: "npm:^5.6.2"
@@ -6141,16 +6141,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.79.1":
-  version: 1.79.1
-  resolution: "sass@npm:1.79.1"
+"sass@npm:^1.79.2":
+  version: 1.79.2
+  resolution: "sass@npm:1.79.2"
   dependencies:
     chokidar: "npm:^4.0.0"
     immutable: "npm:^4.0.0"
     source-map-js: "npm:>=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 10c0/187bc885bad2e81e5414a146c9e14a28f622b5aba5c1425f4dd6d8ef2045b66c69de93689503886a8d2cc55d6bcce97b05ee87b074628fefd03e762789f931d0
+  checksum: 10c0/b637daf133da4fbafbb7e6ae07b01ff7c73e406f3134e66749bf6f712dcc0056c6971d8629d8cc2b186df5ffb2282baa8f1818f35e326b3558ab284e31fdd87d
   languageName: node
   linkType: hard
 

@@ -50,7 +50,7 @@
     "globals": "^15.9.0",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
-    "sass": "^1.79.1",
+    "sass": "^1.79.2",
     "stylelint": "^16.9.0",
     "stylelint-config-standard-scss": "^13.1.0",
     "typescript": "^5.6.2",
