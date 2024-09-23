@@ -1,6 +1,6 @@
 import './RequestSequence.scss'
 import type { ComponentPublicInstance, VNode } from 'vue'
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { defineComponent, onMounted, ref, watch, withModifiers } from 'vue'
 import { VHighlight, VList, VListItem, VSheet } from 'lopr-ui/components'
 import { useCache } from '../../stores/cache'
 import type { ProxyRequestInfo } from 'lopr-shared'
@@ -66,7 +66,13 @@ export const RequestSequence = defineComponent({
                 tooltip={text}
               >
                 {{
-                  default: () => <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-ellipsis']}>{highlighted}</VSheet>,
+                  default: () => (
+                    <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-ellipsis']}>
+                      <a class={['hidden-link']} href={req.url} onClick={withModifiers(() => {}, ['prevent'])}>
+                        {highlighted}
+                      </a>
+                    </VSheet>
+                  ),
                 }}
               </VListItem>
             )

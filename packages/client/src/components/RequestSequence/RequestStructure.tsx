@@ -170,7 +170,9 @@ export const RequestStructure = defineComponent({
                 ]}
                 tooltip={`${request.method} ${request.url}`}
               >
-                <span class={'overflow-ellipsis'}>{renderText(text)}</span>
+                <a class={['overflow-ellipsis', 'hidden-link']} href={request.url} onClick={withModifiers(() => {}, ['prevent'])}>
+                  {renderText(text)}
+                </a>
               </VListItem>
             )
           })}
