@@ -6,7 +6,7 @@ import { DEFAULT_HOST, DEFAULT_PORT, WEBSOCKET_ROOT } from '../shared/src/consta
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [/*VueDevTools(),*/ vue(), vueJsx()],
+  plugins: [vue(), vueJsx()],
   base: './',
 
   build: {
