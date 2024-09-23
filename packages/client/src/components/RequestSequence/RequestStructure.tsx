@@ -1,6 +1,6 @@
 import './RequestStructure.scss'
-import type { ComponentPublicInstance, PropType, VNode } from 'vue'
-import { defineComponent, getCurrentInstance, onMounted, ref, watch, withModifiers } from 'vue'
+import type { ComponentPublicInstance, PropType, VNode} from 'vue';
+import { defineComponent, getCurrentInstance, onMounted, ref, TransitionGroup, watch, withModifiers } from 'vue'
 import { VHighlight, VList, VListGroup, VListItem } from 'lopr-ui/components'
 import { useCache } from '../../stores/cache'
 import type { UUID } from 'lopr-shared'
@@ -117,7 +117,7 @@ export const RequestStructure = defineComponent({
         .filter((request) => !props.filterText || !request || request.url.indexOf(props.filterText) > -1)
 
       return (
-        <>
+        <TransitionGroup>
           {struct.nodes &&
             getSortedStructKeys(struct).map((name) => {
               const value = struct.nodes![name]
@@ -176,7 +176,7 @@ export const RequestStructure = defineComponent({
               </VListItem>
             )
           })}
-        </>
+        </TransitionGroup>
       )
     }
 
