@@ -15,6 +15,9 @@ export const router = createRouter({
         default: Request,
         controls: RequestControlsToolbar,
       },
+      beforeEnter: (to) => {
+        useRequestStore().filter = to.query.q as string
+      },
 
       children: [
         {
@@ -26,7 +29,6 @@ export const router = createRouter({
           },
           beforeEnter: (to) => {
             useCache().current = to.params.uuid as UUID
-            useRequestStore().filter = to.query.q as string
           },
         },
       ],

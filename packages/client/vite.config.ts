@@ -9,6 +9,14 @@ export default defineConfig({
   plugins: [vue(), vueJsx()],
   base: './',
 
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+      },
+    },
+  },
+
   build: {
     minify: 'terser',
     terserOptions: {
