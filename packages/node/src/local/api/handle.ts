@@ -1,5 +1,5 @@
 import * as handleDataUUID from './handle-data-uuid'
-import * as handleDataCert from './handle-data-uuid'
+import * as handleDataCert from './handle-data-cert'
 import * as handleServerInfo from './handle-server-info'
 import * as handleDataState from './handle-state'
 import * as handlePreferences from './handle-prefs'
