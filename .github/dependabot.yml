@@ -18,7 +18,7 @@ updates:
       day: 'monday'
 
     groups:
-      eslint:
+      ESLint:
         patterns:
           - 'eslint*'
           - 'globals'
@@ -26,17 +26,17 @@ updates:
           - '@typescript-eslint/*'
           - '@rushstack/eslint-patch'
           - '@types/eslint'
-      stylelint:
+      Stylelint:
         patterns:
           - 'stylelint*'
-      vue:
+      Vue.js:
         patterns:
           - 'vue*'
           - '@vue/*'
-      vite:
+      Vite.js:
         patterns:
           - 'vite*'
           - '@vitejs/*'
-      vueuse:
+      VueUse:
         patterns:
           - '@vueuse/*'
