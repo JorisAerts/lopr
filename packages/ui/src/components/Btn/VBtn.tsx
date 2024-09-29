@@ -44,12 +44,13 @@ export const VBtn = defineComponent({
     watch(
       () => props.selected,
       (value, oldValue) => value !== oldValue && emit(EventTypes.UpdateSelected, (selected.value = props.selected)),
-      { immediate: true }
+      { immediate: true },
     )
     expose({ selected })
 
     return () => {
       const content = slots.default?.()
+      const hasContent = (((content as any)?.[0]?.children?.length ?? 0)) > 0
       return wrapWithTooltip(
         <button
           class={{
@@ -57,6 +58,7 @@ export const VBtn = defineComponent({
             'v-btn--transparent': props.transparent,
             'v-btn--disabled': props.disabled,
             'v-btn--selected': selected.value,
+            'v-btn--icon-only': !hasContent && props.icon,
           }}
           onClick={(e) => emit(EventTypes.Click, e)}
           {...attrs}
@@ -76,9 +78,7 @@ export const VBtn = defineComponent({
               (props.icon && (
                 <VIcon
                   class={[
-                    {
-                      'btn--prepend-icon': ((content as any)?.[0]?.children?.length ?? 0) > 0,
-                    },
+                    { 'btn--prepend-icon': hasContent },
                     props.iconClass,
                   ]}
                   name={props.icon}
@@ -86,10 +86,10 @@ export const VBtn = defineComponent({
                   size={props.size}
                 />
               ))}
-            {content}
+            <span class={'v-btn--text'}>{content}</span>
             {props.dropdown && <VIcon class={['mr-n2']} name={'KeyboardArrowDown'} color={props.iconColor} size={props.size} />}
           </span>
-        </button>
+        </button>,
       )
     }
   },
