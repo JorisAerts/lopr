@@ -1,6 +1,12 @@
+import { Meta } from '@storybook/blocks'
 import * as icons from '../icons'
 
+<Meta title="Icons" />
+
+
 # Icons
+
+(_Click to copy_)
 
 <div style={{ display: "flex", "flexWrap": "wrap", gap: "8px" }}>
   {Object
@@ -16,10 +22,15 @@ import * as icons from '../icons'
           width: "50px",
           border: "1px solid rgba(0,0,0,.2)",
           borderRadius: "8px",
-          padding: "8px"
-        }}>
+          padding: "8px",
+          cursor: "pointer"
+        }}
+        onClick={() => {
+          navigator.clipboard.writeText(name)
+        }}
+      >
         <label style={{ opacity: .5, "fontSize": ".8rem", "wordBreak": "break-word", lineHeight: 1 }}>{name}</label>
-        <svg viewBox="0 0 24 24" style={{ width: "20px", height: "20px", "margin": "auto 8px 8px 8px" }}>
+        <svg viewBox="0 0 24 24" style={{ width: "24px", height: "24px", "margin": "auto 8px 4px 8px" }}>
           <path d={d} />
         </svg>
       </div>
