@@ -145,3 +145,5 @@ vite.config.*ts.timestamp*
 
 # Generated certificates
 packages/node/cert/generated/**
+
+*storybook.log
