@@ -19,7 +19,7 @@ export const VDialogTitle = defineComponent({
         <VSheet class={['d-flex', 'mb-2', 'align-items-center']}>
           <h3 class={['mb-0']}>{slots.default?.()}</h3>
           <VSpacer />
-          {slots.closeButton?.() ?? <VBtn icon={'Close'} class={'pa-1'} onClick={close} />}
+          {slots.closeButton?.() ?? <VBtn icon={'Close'} onClick={close} />}
         </VSheet>
       ) : (
         <h3 class={'mb-2'}>{slots.default?.()}</h3>
