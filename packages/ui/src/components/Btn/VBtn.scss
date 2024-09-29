@@ -26,6 +26,7 @@
   cursor: pointer;
   color: rgba(var(--on-primary-color), var(--text-emphasis));
 
+
   &__underlay {
     position: absolute;
     inset: 0;
@@ -51,6 +52,18 @@
     margin-left: -2 * $spacer;
     margin-right: 1 * $spacer;
   }
+
+  .v-btn--text {
+    margin: $spacer * .5 0;
+  }
+
+  .v-icon > svg {
+  }
+
+  &--icon-only {
+    padding: $spacer * 1.5;
+  }
+
 
   &--contents {
     position: relative;
