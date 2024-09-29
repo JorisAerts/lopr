@@ -55,7 +55,6 @@
     "@storybook/addon-essentials": "^8.3.4",
     "@storybook/addon-interactions": "^8.3.4",
     "@storybook/addon-links": "^8.3.4",
-    "@storybook/addon-onboarding": "^8.3.4",
     "@storybook/blocks": "^8.3.4",
     "@storybook/test": "^8.3.4",
     "@storybook/vue3": "^8.3.4",
