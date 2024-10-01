@@ -44,7 +44,7 @@
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "eslint": "^9.11.1",
     "eslint-plugin-vue": "^9.28.0",
-    "globals": "^15.9.0",
+    "globals": "^15.10.0",
     "lopr-shared": "workspace:*",
     "lopr-ui": "workspace:*",
     "pinia": "2.2.4",
