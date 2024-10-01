@@ -47,7 +47,7 @@
     "globals": "^15.9.0",
     "lopr-shared": "workspace:*",
     "lopr-ui": "workspace:*",
-    "pinia": "2.2.3",
+    "pinia": "2.2.4",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "sass": "^1.79.4",
