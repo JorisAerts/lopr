@@ -1334,11 +1334,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/builder-vite@npm:8.3.4":
-  version: 8.3.4
-  resolution: "@storybook/builder-vite@npm:8.3.4"
+"@storybook/builder-vite@npm:8.3.5":
+  version: 8.3.5
+  resolution: "@storybook/builder-vite@npm:8.3.5"
   dependencies:
-    "@storybook/csf-plugin": "npm:8.3.4"
+    "@storybook/csf-plugin": "npm:8.3.5"
     "@types/find-cache-dir": "npm:^3.2.1"
     browser-assert: "npm:^1.2.1"
     es-module-lexer: "npm:^1.5.0"
@@ -1349,7 +1349,7 @@ __metadata:
     ts-dedent: "npm:^2.0.0"
   peerDependencies:
     "@preact/preset-vite": "*"
-    storybook: ^8.3.4
+    storybook: ^8.3.5
     typescript: ">= 4.3.x"
     vite: ^4.0.0 || ^5.0.0
     vite-plugin-glimmerx: "*"
@@ -1360,7 +1360,7 @@ __metadata:
       optional: true
     vite-plugin-glimmerx:
       optional: true
-  checksum: 10c0/27c6ef364d6b51d69fd839f6f56e1f05bec97526bdbbb4c2a86c516bba20090d5f7e2ed835deb1d6c18d9625cac7c4992ab66294bb3b098ec85e78393e49d6f1
+  checksum: 10c0/7f597c1f0ae252e408863b34011f9210dc4247f96c4790836efb004081d426131ff9bfa23d4b69da7479a4ec8cb81f430b9538ce62b87621747ffd389741c296
   languageName: node
   linkType: hard
 
@@ -1370,6 +1370,15 @@ __metadata:
   peerDependencies:
     storybook: ^8.3.4
   checksum: 10c0/550ab87b9cf8db8a93ec19f183267aafb13e722ca975330898867853e52b562004d38b35954aa4d6bc1a2ed160145c4c3efed21514ba82ef258618514414ec69
+  languageName: node
+  linkType: hard
+
+"@storybook/components@npm:^8.3.5":
+  version: 8.3.5
+  resolution: "@storybook/components@npm:8.3.5"
+  peerDependencies:
+    storybook: ^8.3.5
+  checksum: 10c0/20b3217f1a0a48ab5a40c08960d966be1fc6842dd40fc9951328d9bdc76411e3d3820865fd93895eeccec718ef8c8512f19d1fcad9bdd2cb6a792f92ca4d73ce
   languageName: node
   linkType: hard
 
@@ -1402,6 +1411,17 @@ __metadata:
   peerDependencies:
     storybook: ^8.3.4
   checksum: 10c0/c21a721ab25ca2b6575ff19ca6ce0b4e9dc37ddd3d642f4e410fc9bbf8f0c9fecd06a2bd933eab4f6c58ef4fe037bf7f19cbbdb3803dac9e956e5518f9bed252
+  languageName: node
+  linkType: hard
+
+"@storybook/csf-plugin@npm:8.3.5":
+  version: 8.3.5
+  resolution: "@storybook/csf-plugin@npm:8.3.5"
+  dependencies:
+    unplugin: "npm:^1.3.1"
+  peerDependencies:
+    storybook: ^8.3.5
+  checksum: 10c0/528af7509500afe1baf446fb8d52978c71d18df0abafd27a81ab821977cfb211bb02190f5a7d09005c4c10dac5e91ef978e35c74ee477ed7d6e45583ebc8412d
   languageName: node
   linkType: hard
 
@@ -1462,12 +1482,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/manager-api@npm:^8.3.5":
+  version: 8.3.5
+  resolution: "@storybook/manager-api@npm:8.3.5"
+  peerDependencies:
+    storybook: ^8.3.5
+  checksum: 10c0/4983af0e3a05abec0114acfa8bfe9d5df816b91f76614eb3c37dd654a0d4fdf5379d4d0cffc1676c6681d6142acd44e81abcb7c4f6de6108c8d26158cca9820d
+  languageName: node
+  linkType: hard
+
 "@storybook/preview-api@npm:^8.3.4":
   version: 8.3.4
   resolution: "@storybook/preview-api@npm:8.3.4"
   peerDependencies:
     storybook: ^8.3.4
   checksum: 10c0/e1ea98abe35c5b5b1928f5f0f4c9a22f5c6abd952f12a01addb185e31fbcaed493fa753354e1d0dfba619992a864b7a11e3fe70dc2b28f6b4c7ec3416114238a
+  languageName: node
+  linkType: hard
+
+"@storybook/preview-api@npm:^8.3.5":
+  version: 8.3.5
+  resolution: "@storybook/preview-api@npm:8.3.5"
+  peerDependencies:
+    storybook: ^8.3.5
+  checksum: 10c0/12d81d57c0931983428b8621311de79a3846ec0f1c51ab94c5a9e7795a1e4bade74aa62de3693c488001630403c98a5372caca4be613f6f806e7265afb22e3d7
   languageName: node
   linkType: hard
 
@@ -1510,25 +1548,54 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/vue3-vite@npm:^8.3.4":
-  version: 8.3.4
-  resolution: "@storybook/vue3-vite@npm:8.3.4"
+"@storybook/theming@npm:^8.3.5":
+  version: 8.3.5
+  resolution: "@storybook/theming@npm:8.3.5"
+  peerDependencies:
+    storybook: ^8.3.5
+  checksum: 10c0/25455033b2b3bdb86083f759df77df42bfff71405c6abd301963dd7596003b462a0960a86c5cec3503dc9e1eba565eeb82a897002c6823f9ee361155b9ddfd23
+  languageName: node
+  linkType: hard
+
+"@storybook/vue3-vite@npm:^8.3.5":
+  version: 8.3.5
+  resolution: "@storybook/vue3-vite@npm:8.3.5"
   dependencies:
-    "@storybook/builder-vite": "npm:8.3.4"
-    "@storybook/vue3": "npm:8.3.4"
+    "@storybook/builder-vite": "npm:8.3.5"
+    "@storybook/vue3": "npm:8.3.5"
     find-package-json: "npm:^1.2.0"
     magic-string: "npm:^0.30.0"
     typescript: "npm:^5.0.0"
     vue-component-meta: "npm:^2.0.0"
     vue-docgen-api: "npm:^4.75.1"
   peerDependencies:
-    storybook: ^8.3.4
+    storybook: ^8.3.5
     vite: ^4.0.0 || ^5.0.0
-  checksum: 10c0/47c74bc80b22a655f02995b3dd3bf4273e98d4b5e14dab26b540741be6807e9ae8f842ff939814386ef35a58b5a5e0308c9228b02fcf81154665d91c70fe27d7
+  checksum: 10c0/c09c6958327182a1f69a177b822d284a3269d460f3820b3d84510f5be0e1c52456a95b2a0c6c47d261370d383d784b1fd54150d2ded476a56cfdad3c18280e5b
   languageName: node
   linkType: hard
 
-"@storybook/vue3@npm:8.3.4, @storybook/vue3@npm:^8.3.4":
+"@storybook/vue3@npm:8.3.5":
+  version: 8.3.5
+  resolution: "@storybook/vue3@npm:8.3.5"
+  dependencies:
+    "@storybook/components": "npm:^8.3.5"
+    "@storybook/global": "npm:^5.0.0"
+    "@storybook/manager-api": "npm:^8.3.5"
+    "@storybook/preview-api": "npm:^8.3.5"
+    "@storybook/theming": "npm:^8.3.5"
+    "@vue/compiler-core": "npm:^3.0.0"
+    ts-dedent: "npm:^2.0.0"
+    type-fest: "npm:~2.19"
+    vue-component-type-helpers: "npm:latest"
+  peerDependencies:
+    storybook: ^8.3.5
+    vue: ^3.0.0
+  checksum: 10c0/6deddacd1445615c092f87db1efcbe221e0111c71a611dc172832ddcbe6428bba5ab39491fbaa40a4943d1f9ae427a442bdd8dde36f9e1544110b1c753a18e58
+  languageName: node
+  linkType: hard
+
+"@storybook/vue3@npm:^8.3.4":
   version: 8.3.4
   resolution: "@storybook/vue3@npm:8.3.4"
   dependencies:
@@ -4820,7 +4887,7 @@ __metadata:
     "@storybook/blocks": "npm:^8.3.4"
     "@storybook/test": "npm:^8.3.4"
     "@storybook/vue3": "npm:^8.3.4"
-    "@storybook/vue3-vite": "npm:^8.3.4"
+    "@storybook/vue3-vite": "npm:^8.3.5"
     "@types/node": "npm:^22.7.4"
     "@vitejs/plugin-vue": "npm:^5.1.4"
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
