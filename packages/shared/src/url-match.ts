@@ -1,12 +1,12 @@
 import { URI } from './URI'
 
-type WildcardAsterix = '*'
+type WildcardAstrix = '*'
 type WildcardQuestion = '?'
-type Wildcard = WildcardAsterix | WildcardQuestion
+type Wildcard = WildcardAstrix | WildcardQuestion
 
 const RX_DOTS = /\./g
-const RX_ASTERIX = /\*/g
-const RX_QUESTIONMARK = /\?/g
+const RX_ASTRIX = /\*/g
+const RX_QUESTION_MARK = /\?/g
 
 export interface UrlMatch {
   scheme?: string | Wildcard
@@ -22,8 +22,8 @@ const createRx = (val: string, begin = '^', end = '$') =>
   new RegExp(
     `${begin}${val //
       .replace(RX_DOTS, '\\.')
-      .replace(RX_ASTERIX, '.*')
-      .replace(RX_QUESTIONMARK, '.{1}')}${end}`
+      .replace(RX_ASTRIX, '.*')
+      .replace(RX_QUESTION_MARK, '.{1}')}${end}`
   )
 
 const isMatchProps = (a: URI | URL | string, b: UrlMatch, prop?: keyof URI | keyof UrlMatch): boolean => {
@@ -52,7 +52,7 @@ const isMatchProps = (a: URI | URL | string, b: UrlMatch, prop?: keyof URI | key
     case 'query': {
       const matchVal = b.query as string
       if (matchVal === '*') return true
-      return createRx(matchVal, '(^|&)', '($|&)').test(uri.query)
+      return createRx(matchVal, '(^|&|\\?)', '($|&)').test(uri.query)
     }
 
     default: {
