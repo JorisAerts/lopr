@@ -1722,12 +1722,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^22.7.4":
+"@types/node@npm:*":
   version: 22.7.4
   resolution: "@types/node@npm:22.7.4"
   dependencies:
     undici-types: "npm:~6.19.2"
   checksum: 10c0/c22bf54515c78ff3170142c1e718b90e2a0003419dc2d55f79c9c9362edd590a6ab1450deb09ff6e1b32d1b4698da407930b16285e8be3a009ea6cd2695cac01
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.7.5":
+  version: 22.7.5
+  resolution: "@types/node@npm:22.7.5"
+  dependencies:
+    undici-types: "npm:~6.19.2"
+  checksum: 10c0/cf11f74f1a26053ec58066616e3a8685b6bcd7259bc569738b8f752009f9f0f7f85a1b2d24908e5b0f752482d1e8b6babdf1fbb25758711ec7bb9500bfcd6e60
   languageName: node
   linkType: hard
 
@@ -4774,7 +4783,7 @@ __metadata:
   resolution: "lopr-client@workspace:packages/client"
   dependencies:
     "@eslint/js": "npm:^9.12.0"
-    "@types/node": "npm:^22.7.4"
+    "@types/node": "npm:^22.7.5"
     "@vitejs/plugin-vue": "npm:^5.1.4"
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
     eslint: "npm:^9.12.0"
@@ -4804,7 +4813,7 @@ __metadata:
   resolution: "lopr-shared@workspace:packages/shared"
   dependencies:
     "@eslint/js": "npm:^9.12.0"
-    "@types/node": "npm:^22.7.4"
+    "@types/node": "npm:^22.7.5"
     eslint: "npm:^9.12.0"
     globals: "npm:^15.10.0"
     prettier: "npm:^3.3.3"
@@ -4829,7 +4838,7 @@ __metadata:
     "@storybook/test": "npm:^8.3.5"
     "@storybook/vue3": "npm:^8.3.5"
     "@storybook/vue3-vite": "npm:^8.3.5"
-    "@types/node": "npm:^22.7.4"
+    "@types/node": "npm:^22.7.5"
     "@vitejs/plugin-vue": "npm:^5.1.4"
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
     eslint: "npm:^9.12.0"
@@ -4859,7 +4868,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:^9.12.0"
     "@mongodb-js/zstd": "npm:1.2.2"
-    "@types/node": "npm:^22.7.4"
+    "@types/node": "npm:^22.7.5"
     "@types/node-forge": "npm:^1.3.11"
     "@types/uuid": "npm:^10.0.0"
     "@types/ws": "npm:^8.5.12"
@@ -6099,7 +6108,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.12.0"
-    "@types/node": "npm:^22.7.4"
+    "@types/node": "npm:^22.7.5"
     "@vitejs/plugin-vue": "npm:^5.1.4"
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
     eslint: "npm:^9.12.0"
