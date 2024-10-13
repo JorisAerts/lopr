@@ -1,5 +1,5 @@
 export const APP_NAME = 'lopr'
-export const APP_VERSION = '0.1.5'
+export const APP_VERSION = '0.1.6'
 
 export const WEBSOCKET_ROOT = '/ws'
 
