@@ -3678,9 +3678,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:^9.28.0":
-  version: 9.28.0
-  resolution: "eslint-plugin-vue@npm:9.28.0"
+"eslint-plugin-vue@npm:^9.29.0":
+  version: 9.29.0
+  resolution: "eslint-plugin-vue@npm:9.29.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.4.0"
     globals: "npm:^13.24.0"
@@ -3692,7 +3692,7 @@ __metadata:
     xml-name-validator: "npm:^4.0.0"
   peerDependencies:
     eslint: ^6.2.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/97a52895599321b04d0617ae465c66257709e81b1967310cfafe143441a9f7e5ef38e010e51d4f1916e3fe5b0bbadcc18a99297e23225ac757a7262ab0a37e99
+  checksum: 10c0/940cf183d85fefa23eba46cbef4ade7556746867b4f5d18261d84fa1049ee311b800236d390cc29cf46d47488f6895833d4bdb8b14a4848b905e024a769618b9
   languageName: node
   linkType: hard
 
@@ -4307,10 +4307,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^15.10.0":
-  version: 15.10.0
-  resolution: "globals@npm:15.10.0"
-  checksum: 10c0/fef8f320e88f01f1492fef1b04b056908e1f6726eeaffe3bca03247237300c2d86e71585ee641b62ba71460a6eaff0d6ca7fca284e61bd1b3f833c7ad68b160a
+"globals@npm:^15.11.0":
+  version: 15.11.0
+  resolution: "globals@npm:15.11.0"
+  checksum: 10c0/861e39bb6bd9bd1b9f355c25c962e5eb4b3f0e1567cf60fa6c06e8c502b0ec8706b1cce055d69d84d0b7b8e028bec5418cf629a54e7047e116538d1c1c1a375c
   languageName: node
   linkType: hard
 
@@ -4978,8 +4978,8 @@ __metadata:
     "@vitejs/plugin-vue": "npm:^5.1.4"
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
     eslint: "npm:^9.12.0"
-    eslint-plugin-vue: "npm:^9.28.0"
-    globals: "npm:^15.10.0"
+    eslint-plugin-vue: "npm:^9.29.0"
+    globals: "npm:^15.11.0"
     lopr-shared: "workspace:*"
     lopr-ui: "workspace:*"
     pinia: "npm:2.2.4"
@@ -5006,7 +5006,7 @@ __metadata:
     "@eslint/js": "npm:^9.12.0"
     "@types/node": "npm:^22.7.4"
     eslint: "npm:^9.12.0"
-    globals: "npm:^15.10.0"
+    globals: "npm:^15.11.0"
     prettier: "npm:^3.3.3"
     type-fest: "npm:^4.26.1"
     typescript: "npm:^5.6.3"
@@ -5034,8 +5034,8 @@ __metadata:
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
     eslint: "npm:^9.12.0"
     eslint-plugin-storybook: "npm:^0.9.0"
-    eslint-plugin-vue: "npm:^9.28.0"
-    globals: "npm:^15.10.0"
+    eslint-plugin-vue: "npm:^9.29.0"
+    globals: "npm:^15.11.0"
     postcss: "npm:^8.4.47"
     prettier: "npm:^3.3.3"
     sass: "npm:^1.79.5"
@@ -5064,7 +5064,7 @@ __metadata:
     "@types/uuid": "npm:^10.0.0"
     "@types/ws": "npm:^8.5.12"
     eslint: "npm:^9.12.0"
-    globals: "npm:^15.10.0"
+    globals: "npm:^15.11.0"
     lopr-shared: "workspace:*"
     node-forge: "npm:1.3.1"
     picocolors: "npm:1.1.0"
@@ -6312,8 +6312,8 @@ __metadata:
     "@vitejs/plugin-vue": "npm:^5.1.4"
     "@vitejs/plugin-vue-jsx": "npm:^4.0.1"
     eslint: "npm:^9.12.0"
-    eslint-plugin-vue: "npm:^9.28.0"
-    globals: "npm:^15.10.0"
+    eslint-plugin-vue: "npm:^9.29.0"
+    globals: "npm:^15.11.0"
     postcss: "npm:^8.4.47"
     prettier: "npm:^3.3.3"
     sass: "npm:^1.79.5"
