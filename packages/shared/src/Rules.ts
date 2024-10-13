@@ -1,6 +1,5 @@
 import type { UrlMatch } from './url-match'
 
-
 export enum ModificationType {
   UserAgent = 'User Agent',
   RewriteHeader = 'Rewrite Header',
@@ -9,29 +8,32 @@ export enum ModificationType {
   MapRequest = 'Map Request',
 }
 
-export enum ModificationTarget {Request, Response}
+export enum ModificationTarget {
+  Request,
+  Response,
+}
 
 export interface RequestMod {
   match: string
-  request: true,
-  type: ModificationType,
+  request: true
+  type: ModificationType
   target?: ModificationTarget
 }
 
 export interface Rule {
-  name: string | undefined,
-  disabled: boolean,
+  name: string | undefined
+  disabled: boolean
   filters?: UrlMatch[]
   mods: RequestMod[]
 }
 
 const defaultRule = () => ({
-  name: '',
+  name: undefined,
   disabled: false,
   mods: [],
 })
 
-export const createRule = (rule: Partial<Rule>) => ({
+export const createRule = (rule: Partial<Rule>): Rule => ({
   ...defaultRule(),
   ...rule,
 })
