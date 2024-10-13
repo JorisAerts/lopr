@@ -2,11 +2,11 @@ name: Yarn Dedupe
 
 on:
   workflow_dispatch:
-  pull_request_target:
-    types:
-      - closed
-    branches:
-      - 'main'
+  #pull_request_target:
+  #  types:
+  #    - closed
+  #  branches:
+  #    - 'main'
 
 jobs:
   yarn_dedupe:
