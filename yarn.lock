@@ -4970,7 +4970,7 @@ __metadata:
     sass: "npm:^1.79.5"
     stylelint: "npm:^16.10.0"
     stylelint-config-standard-scss: "npm:^13.1.0"
-    terser: "npm:^5.34.1"
+    terser: "npm:^5.36.0"
     type-fest: "npm:^4.26.1"
     typescript: "npm:^5.6.3"
     typescript-eslint: "npm:^8.8.1"
@@ -6859,9 +6859,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:^5.34.1":
-  version: 5.34.1
-  resolution: "terser@npm:5.34.1"
+"terser@npm:^5.36.0":
+  version: 5.36.0
+  resolution: "terser@npm:5.36.0"
   dependencies:
     "@jridgewell/source-map": "npm:^0.3.3"
     acorn: "npm:^8.8.2"
@@ -6869,7 +6869,7 @@ __metadata:
     source-map-support: "npm:~0.5.20"
   bin:
     terser: bin/terser
-  checksum: 10c0/51c7d704c5c4ae88bf937124112c9972aed4e1fd29d805cc2d86e0f54cd631ecd4e69db5bb3c1e3b450c741c86e2313328bea0fde925329e8a31a07a7941723c
+  checksum: 10c0/f4ed2bead19f64789ddcfb85b7cef78f3942f967b8890c54f57d1e35bc7d547d551c6a4c32210bce6ba45b1c738314bbfac6acbc6c762a45cd171777d0c120d9
   languageName: node
   linkType: hard
 
