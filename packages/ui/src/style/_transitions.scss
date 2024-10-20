@@ -1,3 +1,5 @@
+@use "sass:map";
+
 // generated from https://matthewlein.com/tools/ceaser
 $penner-transitions: (
         ease-in: (
@@ -36,8 +38,8 @@ $transition_duration: 500ms !default;
 $transition_property: all !default;
 
 @mixin penner-transition($type, $name, $property:$transition_property, $duration:$transition_duration ) {
-  transition: $property $duration map-get(map-get($penner-transitions, $type), $name);
-  transition-timing-function: map-get(map-get($penner-transitions, $type), $name);
+  transition: $property $duration map.get(map.get($penner-transitions, $type), $name);
+  transition-timing-function: map.get(map.get($penner-transitions, $type), $name);
   @content
 }
 
