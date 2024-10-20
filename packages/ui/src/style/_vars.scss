@@ -1,3 +1,4 @@
+@use "sass:map";
 @use 'sass-vars' as *;
 @use 'transitions' as *;
 
@@ -55,7 +56,7 @@
 
   // transition
   --transition-duration: .24s;
-  --transition-timing-function: #{map-get(map-get($penner-transitions, "ease-out"), "quart")};
+  --transition-timing-function: #{map.get(map.get($penner-transitions, "ease-out"), "quart")};
   --transition-properties: all;
   --transition: var(--transition-properties) var(--transition-duration) var(--transition-timing-function), font-size 0s;
 
