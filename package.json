@@ -58,5 +58,5 @@
     "vite": "^5.4.9",
     "vue": "3.5.12"
   },
-  "packageManager": "yarn@4.5.0"
+  "packageManager": "yarn@4.5.1"
 }
