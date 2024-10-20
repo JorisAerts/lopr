@@ -1,3 +1,4 @@
+@use "sass:map";
 @use "lopr-ui/style/vars" as *;
 @use "lopr-ui/style/transitions" as *;
 
@@ -23,7 +24,7 @@
     animation: new-list-item-blink;
     animation-duration: var(--animation-duration);
     animation-iteration-count: 1;
-    animation-timing-function: #{map-get(map-get($penner-transitions, "ease-in"), "quart")}; // var(--transition-timing-function);
+    animation-timing-function: #{map.get(map.get($penner-transitions, "ease-in"), "quart")}; // var(--transition-timing-function);
   }
 
 }

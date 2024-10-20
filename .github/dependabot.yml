@@ -26,6 +26,10 @@ updates:
           - '@typescript-eslint/*'
           - '@rushstack/eslint-patch'
           - '@types/eslint'
+      Storybook:
+        patterns:
+          - 'storybook'
+          - '@storybook/*'
       Stylelint:
         patterns:
           - 'stylelint*'
