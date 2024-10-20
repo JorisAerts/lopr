@@ -38,11 +38,11 @@
     "test": "vitest --typecheck"
   },
   "devDependencies": {
-    "@eslint/js": "^9.12.0",
+    "@eslint/js": "^9.13.0",
     "@types/node": "^22.7.6",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
-    "eslint": "^9.12.0",
+    "eslint": "^9.13.0",
     "eslint-plugin-vue": "^9.29.0",
     "globals": "^15.11.0",
     "lopr-shared": "workspace:*",
