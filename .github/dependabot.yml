@@ -23,6 +23,7 @@ updates:
           - 'eslint*'
           - 'globals'
           - '@eslint/*'
+          - 'eslint-plugin-*'
           - '@typescript-eslint/*'
           - '@rushstack/eslint-patch'
           - '@types/eslint'
@@ -30,17 +31,22 @@ updates:
         patterns:
           - 'storybook'
           - '@storybook/*'
+          - '*/storybook'
       Stylelint:
         patterns:
           - 'stylelint*'
+      VueUse:
+        patterns:
+          - '@vueuse/*'
       Vue.js:
         patterns:
           - 'vue*'
           - '@vue/*'
+      Vitest:
+        patterns:
+          - 'vitest*'
+          - '@vitest/*'
       Vite.js:
         patterns:
           - 'vite*'
           - '@vitejs/*'
-      VueUse:
-        patterns:
-          - '@vueuse/*'
