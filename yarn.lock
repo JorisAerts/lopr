@@ -333,16 +333,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chromatic-com/storybook@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@chromatic-com/storybook@npm:2.0.2"
+"@chromatic-com/storybook@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@chromatic-com/storybook@npm:3.1.0"
   dependencies:
-    chromatic: "npm:^11.4.0"
+    "@storybook/channels": "npm:^8.3.0"
+    "@storybook/telemetry": "npm:^8.3.0"
+    "@storybook/types": "npm:^8.3.0"
+    chromatic: "npm:^11.15.0"
     filesize: "npm:^10.0.12"
     jsonfile: "npm:^6.1.0"
     react-confetti: "npm:^6.1.0"
     strip-ansi: "npm:^7.1.0"
-  checksum: 10c0/a997e8247168d9c30030966877836839951b6acd65899a4bb683d78d37e549a3285ca14a721893d75bef5b89e075d7090d084023c142680efaef60c9db64e7fa
+  peerDependencies:
+    storybook: ^8.3.0
+  checksum: 10c0/cb9672d828f076e9a6c7277fe08a846d05316fb7d3e625862fc667718f5abc2746ff7cea04507e5cbc0136a4d55950fce88ea91420e8d3c05d84f528050a1dce
   languageName: node
   linkType: hard
 
@@ -1515,6 +1520,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/channels@npm:^8.3.0":
+  version: 8.3.6
+  resolution: "@storybook/channels@npm:8.3.6"
+  peerDependencies:
+    storybook: ^8.3.6
+  checksum: 10c0/3c34ed2b03c60c6ed1160d9a0efdb836be892e333556848ff492c16ab6d92521207512670d42f69d681f521e50f130a00f692610a3ca63228a8d2b49be57f4fa
+  languageName: node
+  linkType: hard
+
 "@storybook/components@npm:^8.3.6":
   version: 8.3.6
   resolution: "@storybook/components@npm:8.3.6"
@@ -1624,6 +1638,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/telemetry@npm:^8.3.0":
+  version: 8.3.6
+  resolution: "@storybook/telemetry@npm:8.3.6"
+  peerDependencies:
+    storybook: ^8.3.6
+  checksum: 10c0/b4fd8d0e238335249aa82dea49bde56813e0c771e67dd7110fb9e038d1e2bd64aa03e76ee865ef6a7f0fd5220d02bd7bcf3273bb4c19403e3d527d9dd7a258d4
+  languageName: node
+  linkType: hard
+
 "@storybook/test@npm:8.3.6, @storybook/test@npm:^8.3.6":
   version: 8.3.6
   resolution: "@storybook/test@npm:8.3.6"
@@ -1649,6 +1672,15 @@ __metadata:
   peerDependencies:
     storybook: ^8.3.6
   checksum: 10c0/9e6dc4cb4bb444cbf3ac0f5b42696d462cd4886a5dcd42b4a8aee332ab141a1b745041bbb3fb36ab220820a3ab36ac4edd5f1ef81b66bba4059b4bdaa890006e
+  languageName: node
+  linkType: hard
+
+"@storybook/types@npm:^8.3.0":
+  version: 8.3.6
+  resolution: "@storybook/types@npm:8.3.6"
+  peerDependencies:
+    storybook: ^8.3.6
+  checksum: 10c0/482f55e34877f9eb94a8ff4627a254f3b5442f91f13363e6837e3a9c220a369be1c6ce4652b870b7fa4e522c3365825651f9e04a21bda76b104a6c1f7435e274
   languageName: node
   linkType: hard
 
@@ -2887,9 +2919,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromatic@npm:^11.4.0":
-  version: 11.12.6
-  resolution: "chromatic@npm:11.12.6"
+"chromatic@npm:^11.15.0":
+  version: 11.16.1
+  resolution: "chromatic@npm:11.16.1"
   peerDependencies:
     "@chromatic-com/cypress": ^0.*.* || ^1.0.0
     "@chromatic-com/playwright": ^0.*.* || ^1.0.0
@@ -2902,7 +2934,7 @@ __metadata:
     chroma: dist/bin.js
     chromatic: dist/bin.js
     chromatic-cli: dist/bin.js
-  checksum: 10c0/7d161c52bc239ac6e8380f9a64533dd3792819d8f103d0083a805d5c9ece0844787eedd45c19c41e69d0ef0a3756051fa3e5c1f2fc9630d60f2ada4d5452e929
+  checksum: 10c0/bd0b5ba68d44a9947677690e9fc72bcf76c4b4069580ed763900befd207e20baad22f45a9a1e46468ddeb6f0f867a33ee37149041c66991d088ca2cfb8c3fa42
   languageName: node
   linkType: hard
 
@@ -4866,7 +4898,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "lopr-ui@workspace:packages/ui"
   dependencies:
-    "@chromatic-com/storybook": "npm:^2.0.2"
+    "@chromatic-com/storybook": "npm:^3.1.0"
     "@eslint/js": "npm:^9.13.0"
     "@storybook/addon-essentials": "npm:^8.3.6"
     "@storybook/addon-interactions": "npm:^8.3.6"
