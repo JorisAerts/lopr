@@ -46,11 +46,11 @@ export const RequestSequence = defineComponent({
           .filter((req) => !props.filterText || (req && req.url.indexOf(props.filterText) > -1))
           .map((req) => {
             if (!req) return
-            const text = `${req.method} — ${req.url}`
+            const text = `${req.url}`
             const highlighted = props.filterText ? ( //
               <VHighlight text={text} highlight={props.filterText} />
             ) : (
-              text
+              <span>{text}</span>
             )
             return (
               <VListItem
@@ -69,6 +69,7 @@ export const RequestSequence = defineComponent({
                   default: () => (
                     <VSheet class={['v-request-sequence--item', 'no-wrap', 'overflow-ellipsis']}>
                       <a class={['hidden-link']} href={req.url} onClick={withModifiers(() => {}, ['prevent'])}>
+                        <span>{req.method} — </span>
                         {highlighted}
                       </a>
                     </VSheet>

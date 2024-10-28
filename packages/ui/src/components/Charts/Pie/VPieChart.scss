@@ -1,6 +1,6 @@
-@use '../../style/vars' as *;
-@use '../../style/sass-vars' as *;
-@use './Chart';
+@use '../../../style/vars' as *;
+@use '../../../style/sass-vars' as *;
+@use '../Chart/Chart';
 
 svg.v-pie-chart {
 

@@ -1,1 +1,1 @@
-export * from './VPieChart'
+export * from './Pie'
