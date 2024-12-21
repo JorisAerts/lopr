@@ -67,7 +67,7 @@
     "eslint-plugin-vue": "^9.32.0",
     "globals": "^15.14.0",
     "postcss": "^8.4.49",
-    "prettier": "^3.4.1",
+    "prettier": "^3.4.2",
     "sass": "^1.83.0",
     "storybook": "^8.4.6",
     "stylelint": "^16.11.0",
