@@ -59,7 +59,7 @@
     "@storybook/test": "^8.4.6",
     "@storybook/vue3": "^8.4.6",
     "@storybook/vue3-vite": "^8.4.6",
-    "@types/node": "^22.10.1",
+    "@types/node": "^22.10.2",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitejs/plugin-vue-jsx": "^4.1.1",
     "eslint": "^9.17.0",
