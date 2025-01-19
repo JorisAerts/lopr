@@ -48,7 +48,7 @@
     "lopr-shared": "workspace:*",
     "lopr-ui": "workspace:*",
     "pinia": "2.3.0",
-    "postcss": "^8.4.49",
+    "postcss": "^8.5.1",
     "prettier": "^3.4.2",
     "sass": "^1.83.1",
     "stylelint": "^16.13.0",
