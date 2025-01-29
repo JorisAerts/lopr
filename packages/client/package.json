@@ -51,7 +51,7 @@
     "postcss": "^8.5.1",
     "prettier": "^3.4.2",
     "sass": "^1.83.4",
-    "stylelint": "^16.13.2",
+    "stylelint": "^16.14.1",
     "stylelint-config-standard-scss": "^14.0.0",
     "terser": "^5.37.0",
     "type-fest": "^4.32.0",
