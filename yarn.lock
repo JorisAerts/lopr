@@ -4239,7 +4239,7 @@ __metadata:
     stylelint: "npm:^16.14.1"
     stylelint-config-standard-scss: "npm:^14.0.0"
     terser: "npm:^5.37.0"
-    type-fest: "npm:^4.33.0"
+    type-fest: "npm:^4.35.0"
     typescript: "npm:^5.7.3"
     typescript-eslint: "npm:^8.23.0"
     vite: "npm:^6.0.11"
@@ -4258,7 +4258,7 @@ __metadata:
     eslint: "npm:^9.19.0"
     globals: "npm:^15.14.0"
     prettier: "npm:^3.4.2"
-    type-fest: "npm:^4.33.0"
+    type-fest: "npm:^4.35.0"
     typescript: "npm:^5.7.3"
     typescript-eslint: "npm:^8.23.0"
     vite: "npm:^6.0.11"
@@ -4292,7 +4292,7 @@ __metadata:
     storybook: "npm:^8.5.3"
     stylelint: "npm:^16.14.1"
     stylelint-config-standard-scss: "npm:^14.0.0"
-    type-fest: "npm:^4.33.0"
+    type-fest: "npm:^4.35.0"
     typescript: "npm:^5.7.3"
     typescript-eslint: "npm:^8.23.0"
     vite: "npm:^6.0.11"
@@ -4319,7 +4319,7 @@ __metadata:
     node-forge: "npm:1.3.1"
     picocolors: "npm:1.1.1"
     prettier: "npm:^3.4.2"
-    type-fest: "npm:^4.33.0"
+    type-fest: "npm:^4.35.0"
     typescript: "npm:^5.7.3"
     typescript-eslint: "npm:^8.23.0"
     uuid: "npm:11.0.5"
@@ -6165,10 +6165,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^4.33.0":
-  version: 4.33.0
-  resolution: "type-fest@npm:4.33.0"
-  checksum: 10c0/20015eea353605e08e3f4b967291b225fa4e7c43361de44f39b88131715e41877458af80da59c8f17e40c0e3842298996f0651219dc9823e35c7e46ecbc8a44f
+"type-fest@npm:^4.35.0":
+  version: 4.35.0
+  resolution: "type-fest@npm:4.35.0"
+  checksum: 10c0/7032a8a940c33d45947a4ff0f74e3aa43b6fd8bb4745b32bba8e61ee47c0dd088cacd102f8377e9e889362e1ae8e0292b64a4c0698c1e42fd297bf6f8899d220
   languageName: node
   linkType: hard
 
