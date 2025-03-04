@@ -50,7 +50,7 @@
     "pinia": "3.0.1",
     "postcss": "^8.5.1",
     "prettier": "^3.4.2",
-    "sass": "^1.83.4",
+    "sass": "^1.85.1",
     "stylelint": "^16.14.1",
     "stylelint-config-standard-scss": "^14.0.0",
     "terser": "^5.37.0",
