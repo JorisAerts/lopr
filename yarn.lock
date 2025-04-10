@@ -4967,7 +4967,7 @@ __metadata:
     type-fest: "npm:^4.37.0"
     typescript: "npm:^5.8.2"
     typescript-eslint: "npm:^8.26.1"
-    vite: "npm:^6.2.0"
+    vite: "npm:^6.2.5"
     vitest: "npm:^3.1.1"
     vue: "npm:3.5.13"
     vue-router: "npm:4.5.0"
@@ -4986,7 +4986,7 @@ __metadata:
     type-fest: "npm:^4.37.0"
     typescript: "npm:^5.8.2"
     typescript-eslint: "npm:^8.26.1"
-    vite: "npm:^6.2.0"
+    vite: "npm:^6.2.5"
     vitest: "npm:^3.1.1"
   languageName: unknown
   linkType: soft
@@ -5020,7 +5020,7 @@ __metadata:
     type-fest: "npm:^4.37.0"
     typescript: "npm:^5.8.2"
     typescript-eslint: "npm:^8.26.1"
-    vite: "npm:^6.2.0"
+    vite: "npm:^6.2.5"
     vitest: "npm:^3.1.1"
     vue: "npm:3.5.13"
   peerDependencies:
@@ -5048,7 +5048,7 @@ __metadata:
     typescript: "npm:^5.8.2"
     typescript-eslint: "npm:^8.26.1"
     uuid: "npm:11.1.0"
-    vite: "npm:^6.2.0"
+    vite: "npm:^6.2.5"
     vitest: "npm:^3.1.1"
     ws: "npm:8.18.1"
   bin:
@@ -6312,7 +6312,7 @@ __metadata:
     stylelint-config-standard-scss: "npm:^14.0.0"
     typescript: "npm:^5.8.2"
     typescript-eslint: "npm:^8.26.1"
-    vite: "npm:^6.2.0"
+    vite: "npm:^6.2.5"
     vue: "npm:3.5.13"
   languageName: unknown
   linkType: soft
@@ -7227,9 +7227,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "vite@npm:6.2.0"
+"vite@npm:^6.2.5":
+  version: 6.2.6
+  resolution: "vite@npm:6.2.6"
   dependencies:
     esbuild: "npm:^0.25.0"
     fsevents: "npm:~2.3.3"
@@ -7275,7 +7275,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/db62c93d4a823e805c6f8429de035528b3c35cc7f6de4948b41e0528f94ed2ac55047d90f8534f626ef3a04e682883b570fe5ec9ee92f51bf0c3c210dbec5ac1
+  checksum: 10c0/68a2ed3e61bdd654c59b817b4f3203065241c66d1739faa707499130f3007bc3a666c7a8320a4198e275e62b5e4d34d9b78a6533f69e321d366e76f5093b2071
   languageName: node
   linkType: hard
 
