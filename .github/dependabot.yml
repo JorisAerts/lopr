@@ -9,6 +9,9 @@ updates:
     directory: '/' # Location of package manifests
     open-pull-requests-limit: 25
     # target-branch: "package-updates"
+    
+    assignees:
+      - "JorisAerts"
 
     schedule:
       interval: 'monthly'
