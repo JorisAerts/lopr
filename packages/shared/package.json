@@ -38,10 +38,10 @@
     "test": "vitest --typecheck"
   },
   "devDependencies": {
-    "@eslint/js": "^9.26.0",
+    "@eslint/js": "^9.28.0",
     "@types/node": "^22.15.29",
-    "eslint": "^9.26.0",
-    "globals": "^16.1.0",
+    "eslint": "^9.28.0",
+    "globals": "^16.2.0",
     "prettier": "^3.5.3",
     "type-fest": "^4.41.0",
     "typescript": "^5.8.3",
