@@ -2167,12 +2167,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-forge@npm:^1.3.11":
-  version: 1.3.11
-  resolution: "@types/node-forge@npm:1.3.11"
+"@types/node-forge@npm:^1.3.13":
+  version: 1.3.13
+  resolution: "@types/node-forge@npm:1.3.13"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 10c0/3d7d23ca0ba38ac0cf74028393bd70f31169ab9aba43f21deb787840170d307d662644bac07287495effe2812ddd7ac8a14dbd43f16c2936bbb06312e96fc3b9
+  checksum: 10c0/95d004c2af465f27c3eefc805d4de5a4a9bfb8f715b3e733ca085f7cd4e33b23cde1928ad7a14691957c40d86ca7c7678790d34ebf3223aecf8bda38327cb714
   languageName: node
   linkType: hard
 
@@ -5580,7 +5580,7 @@ __metadata:
     "@eslint/js": "npm:^9.26.0"
     "@mongodb-js/zstd": "npm:2.0.1"
     "@types/node": "npm:^22.15.29"
-    "@types/node-forge": "npm:^1.3.11"
+    "@types/node-forge": "npm:^1.3.13"
     "@types/uuid": "npm:^10.0.0"
     "@types/ws": "npm:^8.18.1"
     eslint: "npm:^9.26.0"
