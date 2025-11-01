@@ -5505,7 +5505,7 @@ __metadata:
     pinia: "npm:3.0.2"
     postcss: "npm:^8.5.4"
     prettier: "npm:^3.5.3"
-    sass: "npm:^1.89.1"
+    sass: "npm:^1.93.3"
     stylelint: "npm:^16.19.1"
     stylelint-config-standard-scss: "npm:^14.0.0"
     terser: "npm:^5.40.0"
@@ -5558,7 +5558,7 @@ __metadata:
     globals: "npm:^16.1.0"
     postcss: "npm:^8.5.4"
     prettier: "npm:^3.5.3"
-    sass: "npm:^1.89.1"
+    sass: "npm:^1.93.3"
     storybook: "npm:^8.6.12"
     stylelint: "npm:^16.19.1"
     stylelint-config-standard-scss: "npm:^14.0.0"
@@ -7001,7 +7001,7 @@ __metadata:
     globals: "npm:^16.1.0"
     postcss: "npm:^8.5.4"
     prettier: "npm:^3.5.3"
-    sass: "npm:^1.89.1"
+    sass: "npm:^1.93.3"
     stylelint: "npm:^16.19.1"
     stylelint-config-standard-scss: "npm:^14.0.0"
     typescript: "npm:^5.8.3"
@@ -7047,9 +7047,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.89.1":
-  version: 1.89.1
-  resolution: "sass@npm:1.89.1"
+"sass@npm:^1.93.3":
+  version: 1.93.3
+  resolution: "sass@npm:1.93.3"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
     chokidar: "npm:^4.0.0"
@@ -7060,7 +7060,7 @@ __metadata:
       optional: true
   bin:
     sass: sass.js
-  checksum: 10c0/4406c441f71f5e0ec056345e6091cef51fd1786dac6e5b3eb1e87df464c40b3278219cc51df98309c36794503787ab0fe88fd45f2b0464f22000b68e755883ee
+  checksum: 10c0/b9facc64de10c9d1514272c1dcbb48ca99d5f591a1cd43fd27d641275d9d95948f1299107ab5b309e2abb552667cca84a38a1a3df5116eb72eba4144bf850b6a
   languageName: node
   linkType: hard
 
